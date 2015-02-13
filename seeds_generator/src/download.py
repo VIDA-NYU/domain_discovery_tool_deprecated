@@ -2,6 +2,7 @@ import sys
 import urllib2
 import socket
 import traceback
+import requests
 
 def encode(url):
   return urllib2.quote(url).replace("/", "%2F")
@@ -23,9 +24,11 @@ def download(inputfile, outputdir):
       try:
         url = line.strip("\n")
         url = validate_url(url)
-        handle = urllib2.urlopen(url)
-        src = handle.read()
-        #src = src.encode('utf-8')
+        #handle = urllib2.urlopen(url)
+        #src = handle.read()
+        res = requests.get(url)
+        src = res.text
+        src = src.encode('utf-8')
         print "GOOD\t" + url
         encoded_url = encode(url)
         f = open(outputdir + "/" + encoded_url, "w")
