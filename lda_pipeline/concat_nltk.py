@@ -21,8 +21,9 @@ def is_english(text):
     return len(words & ENGLISH_STOPWORDS) > len(words & NON_ENGLISH_STOPWORDS)
 
 def valid_words(text):
-    words = text.split(' ')
-    filtered = [w for w in words if not w.lower() in ENGLISH_STOPWORDS]
+    tokenizer = nltk.tokenize.RegexpTokenizer(r'\w+')
+    words = tokenizer.tokenize(text)
+    filtered = [w for w in words if (not w.lower() in ENGLISH_STOPWORDS and len(w) > 2)]
     return " ".join(filtered)
 '''
 KEY = re.compile("sex|woman|labor|slave|prostitution|organ|child|traffic|force")
@@ -65,5 +66,5 @@ for content in sys.stdin:
   #en_count += 1
   if len(text) > 100:
     len_count += 1
-    output.write("\"" + url + "\",\"" + text + "\"\n")
+    output.write("\"" + url + "\";\"" + text + "\"\n")
 output.close()
