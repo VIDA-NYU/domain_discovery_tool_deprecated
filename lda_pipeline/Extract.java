@@ -46,6 +46,7 @@ public class Extract {
         content = ArticleExtractor.INSTANCE.getText(content);
         content = content.trim().replaceAll(" +", " ");
         content = content.replaceAll("[\n\"\t]", " ");
+	content = content.replaceAll(",","");
         System.out.println(url + "\t"  + content);
         
     }
