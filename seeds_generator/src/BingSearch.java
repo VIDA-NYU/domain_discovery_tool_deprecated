@@ -59,12 +59,12 @@ public class BingSearch {
 	}
 	ArrayList<String> results = new ArrayList<String>();
 	query = query.replaceAll(" ", "%20");
-	//String accountKey="jgRfXs073p8B87c/TJamrnIDjbeyYtH5gAe7+TYvsIw";
 	byte[] accountKeyBytes = Base64.encodeBase64((this.accountKey + ":" + this.accountKey).getBytes());
 	String accountKeyEnc = new String(accountKeyBytes);
 	URL url;
 	try {
 	    url = new URL("https://api.datamarket.azure.com/Data.ashx/Bing/Search/v1/Web?Query=%27" + query + "%27&$top="+ top);
+	    System.out.println(url);
 	    HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 	    conn.setRequestMethod("GET");
 	    conn.setRequestProperty("Authorization", "Basic " + accountKeyEnc);

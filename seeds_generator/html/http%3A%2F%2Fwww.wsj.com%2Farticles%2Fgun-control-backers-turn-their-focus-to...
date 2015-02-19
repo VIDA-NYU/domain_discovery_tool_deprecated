@@ -1,0 +1,426 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><!-- TESLA DESKTOP V1 --><!-- LOCAL -->
+<html itemscope="" itemtype="http://schema.org/NewsArticle" xmlns="http://www.w3.org/1999/xhtml"
+      lang="" data-env="prod" data-site="wsj" data-region="na,us" data-layouttype="article">
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <title>WSJ</title> 
+  <meta name="dj.asn" content="192-83" />
+<meta name="user.type" content="nonsubscriber" />
+<meta name="user.exp" content="default" />
+<meta name="page.site" content="wsj" />
+<meta name="page.region" content="na,us" />
+<meta name="page.section" content="Article" />
+<meta name="page.content.type" content="article" />
+<meta name="page.content.source" content="WSJ Online Article" />
+<meta name="article.template" content="full" />   <script type="text/javascript" src="http://s.wsj.net/javascript/j_top-static.js"></script>
+  <script type="text/javascript">var jsexec = dj.util.JSExec(dj.context.jsexec);
+  globalPerfTesting = true;
+  djPerf.init({ type:'gomez', frequency:'20', acctId:'72D329', pgId:'Tesla Article', grpId:'Articles' });</script>
+
+  <link rel="stylesheet" type="text/css" href="http://stv.wsj.net/dpm/styles?key=e1d5513a193f41d9cd04ffbc4cad6b6191c6377e">
+  <link rel="stylesheet" type="text/css" href="http://stv.wsj.net/dpm/styles?key=4f7abd97870d27289b33900615279c0fdd84fc18">
+  <link rel="stylesheet" type="text/css" href="http://stv.wsj.net/dpm/styles?key=a851887e626aa27de7c70e544c1b040df64b6ba4">
+
+  <link rel="stylesheet" media="all" href="http://online.wsj.com/css/standalone_partner_hat.css" type="text/css">
+
+  <meta name="viewport" content="width=device-width, user-scalable=yes, target-densitydpi=160">
+
+  <script src="http://requirejs.org/docs/release/1.0.1/minified/require.js" type="text/javascript"></script>
+
+  <script id="peer39ScriptLoader" type="text/javascript" src="http://stags.peer39.net/712/trg_712.js"></script>
+
+  <script type='text/javascript'>
+  var googletag = googletag ? googletag : {};
+  googletag.cmd = googletag.cmd ? googletag.cmd : [];
+  (function() {
+  var gads = document.createElement('script');
+  gads.async = true;
+  gads.type = 'text/javascript';
+  var useSSL = 'https:' == document.location.protocol;
+  gads.src = (useSSL ? 'https:' : 'http:') + '//www.googletagservices.com/tag/js/gpt.js';
+  var node = document.getElementsByTagName('script')[0];
+  node.parentNode.insertBefore(gads, node);
+  })();
+  </script>
+
+  <script type='text/javascript'>
+    var googleAdSlots = {};
+  </script>
+
+    <script type='text/javascript'>
+    googletag.cmd.push(function() {
+      googletag.pubads().setTargeting("page","article");
+      googletag.companionAds().setRefreshUnfilledSlots(true);
+      googletag.enableServices();
+    });
+  </script>
+</head>
+<body class="standard">
+<div class="pageFrame standard subType-unsubscribed">
+  <div class="contentFrame sliderBox">
+    <header class="header mobile tablet column col10wide">
+      <div class="module header"><!--WSJ-UXR 01 Global Header - Phone [INT]--></div>
+      <div class="module drawer"><!--MR3 08 Drawer Module - Phone [INT]--></div>
+    </header>
+    <header class="header desktop column col10wide"><!--BEGIN Desktop Global Hat -->
+<div data-module-id="2" data-module-name="resp.module.cookie_policy.Module" data-module-zone="hat" class="zonedModule">
+<!-- empty cookie notice view -->
+
+</div> <!-- data-module-name="resp.module.cookie_policy.Module" -->
+
+
+<div data-module-id="3" data-module-name="resp.module.hat.DesktopHat" data-module-zone="hat" class="zonedModule">
+<div class="module hat">
+<nav class="rw-hat "><ul><li class="hat-tab current wsj nonregistered">
+  <a class="hat-link " href="http://www.wsj.com">
+    <h4 class="product-name">WSJ</h4>
+    <ul class="social-links">
+      <li class="social-icon facebook" title="Follow WSJ on Facebook">
+        <div id="hatFacebook" style="border: none;">&lt;h4&gt;WSJ on Facebook&lt;/h4&gt;&lt;div style=&quot;border: none; padding: 2px 3px;&quot; class=&quot;fb-like&quot; data-href=&quot;http://www.facebook.com/wsj&quot; data-send=&quot;false&quot; data-layout=&quot;button_count&quot; data-width=&quot;250&quot; data-show-faces=&quot;false&quot; data-action=&quot;recommend&quot;&gt;&lt;/div&gt;</div>
+      </li>
+      <li class="social-icon twitter" title="Follow WSJ on Twitter">
+        <div id="hatTwitter">&lt;h4&gt;WSJ on Twitter&lt;/h4&gt;&lt;a href=&quot;https://twitter.com/wsj&quot; class=&quot;twitter-follow-button&quot; data-show-count=&quot;true&quot;&gt;Follow @wsj&lt;/a&gt;</div>
+      </li>
+    </ul>
+  </a>
+</li>
+<li class="hat-tab wsjlive">
+  <a class="hat-link" href="http://live.wsj.com">
+    <h4 class="product-name">WSJ LIVE</h4>
+    <ul class="social-links">
+      <li class="social-icon facebook ">
+        <div><h4>WSJ Live on Facebook</h4></div>
+      </li>
+      <li class="social-icon twitter">
+        <div><h4>WSJ Live on Twitter</h4></div>
+      </li>
+    </ul>
+  </a>
+</li>
+<!-- <li class="hat-tab market">
+  <a class="hat-link" href="http://www.marketwatch.com">
+    <h4 class="product-name">MARKETWATCH</h4>
+    <ul class="social-links">
+      <li class="social-icon facebook">
+        <div><h4>MarketWatch on Facebook</h4></div>
+      </li>
+      <li class="social-icon twitter">
+        <div><h4>MarketWatch on Twitter</h4></div>
+      </li>
+    </ul>
+  </a>
+</li> -->
+<li class="hat-tab realtor">
+  <a class="hat-link " href="http://www.realtor.com">
+    <h4 class="product-name">REALTOR.COM</h4>
+    <ul class="social-links">
+      <li class="social-icon realtor">
+        <div><h4>Realtor on Facebook</h4></div>
+      </li>
+      <li class="social-icon twitter">
+        <div><h4>Realtor on Twitter</h4></div>
+      </li>
+    </ul>
+  </a>
+</li>
+<li class="hat-tab barrons">
+  <a class="hat-link " href="http://online.barrons.com/home">
+    <h4 class="product-name">BARRON'S</h4>
+    <ul class="social-links">
+      <li class="social-icon facebook ">
+        <div><h4>Barron's on Facebook</h4></div>
+      </li>
+      <li class="social-icon twitter">
+        <div><h4>Barron's on Twitter</h4></div>
+      </li>
+    </ul>
+  </a>
+</li>
+<li class="hat-tab wsjplus">
+  <a class="hat-link " href="http://www.wsjplus.com">
+    <h4 class="product-name">Membership</h4>
+    <ul class="social-links">
+      <li class="social-icon facebook ">
+        <div><h4>Member on Facebook</h4></div>
+      </li>
+      <li class="social-icon twitter">
+        <div><h4>Member on Twitter</h4></div>
+      </li>
+    </ul>
+  </a>
+</li>
+<!-- moved into dropdown
+<li class="hat-tab portfolio">
+  <a class="hat-link " href="http://portfolio.wsj.com?mod=wsj_port_hat">
+    <h4 class="product-name">Portfolio</h4>
+    <ul class="social-links">
+      <li class="social-icon facebook ">
+        <div><h4>Portfolio on Facebook</h4></div>
+      </li>
+      <li class="social-icon twitter">
+        <div><h4>Portfolio on Twitter</h4></div>
+      </li>
+    </ul>
+  </a>
+</li>
+-->
+<li class="hat-tab productx">
+  <a class="hat-link" href="http://dj.wsj.com/hub?mod=WSJ_Hat">
+    <h4 class="product-name">DJX</h4>
+    <ul class="social-links">
+      <li class="social-icon facebook ">
+        <div><h4>Product X on Facebook</h4></div>
+      </li>
+      <li class="social-icon twitter">
+        <div><h4>Product X on Twitter</h4></div>
+      </li>
+    </ul>
+  </a>
+  <ul class="productx-dropdown">
+      <li class="productx-products"><a class="rt" href="https://id.wsj.com/access/pages/wsj/us/login_standalone.html?mg=reno64-wsj&amp;url=http%3A%2F%2Fonline.wsj.com%2Fpage%2FDJX.html%3Fmod%3DProdX_MktgHub">RT</a></li>
+      <li class="productx-products"><a class="f" href="http://global.factiva.com?mod=ProdX_MktgHub">F</a></li>
+      <li class="productx-products"><a class="rc" href="https://djrc.dowjones.com/?mod=ProdX_MktgHub">R&amp;C</a></li>
+      <li class="productx-products"><a class="pevc" href="http://pevc.dowjones.com/?mod=ProdX_MktgHub">PE&amp;VC</a></li>
+      <li class="productx-products disabled"><a class="wsj" href="#">WSJ</a></li>
+      <li class="productx-products"><a class="b" href="https://id.barrons.com/access/pages/barrons/us/login_standalone.html?url=http%3A%2F%2Fonline.barrons.com%2Fhome-page%3Fmod%3DProdX_MktgHub">B</a></li>
+      <li class="tri"></li>
+  </ul>
+</li>
+<li class="hat-tab more" id="morehatlinks">
+  <div class="hat-link ">
+    <h4 class="product-name menu">MORE</h4>
+    <ul class="more-list">
+      <li>
+        <a href="https:/portfolio.wsj.com/" class="more-item" rel="nofollow">Portfolio</a>
+      </li>
+      <li>
+        <a href="https://secure.wsj.com/" class="more-item" rel="nofollow">WSJ Secure</a>
+      </li>
+      <li>
+        <a href="http://bigcharts.marketwatch.com/" class="more-item" rel="nofollow">BigCharts</a>
+      </li>
+      <li>
+        <a href="http://www.efinancialnews.com/" class="more-item" rel="nofollow">Financial News</a>
+      </li>
+      <li>
+        <a href="http://professor.wsj.com/" class="more-item" rel="nofollow">Professor Journal</a>
+      </li>
+      <li>
+        <a href="http://wsjstudent.com/" class="more-item" rel="nofollow">Student Journal</a>
+      </li>
+      <li>
+        <a href="http://www.marketwatch.com/Game/" class="more-item" rel="nofollow">Virtual Stock Exchange</a>
+      </li>
+      <li>
+        <a href="http://classifieds.wsj.com/" class="more-item" rel="nofollow">WSJ Classifieds</a>
+      </li>
+      <li>
+        <a href="http://classroom.wsj.com/" class="more-item" rel="nofollow">WSJ Classrooms</a>
+      </li>
+      <li>
+        <a href="http://www.wsjwine.com/" class="more-item" rel="nofollow">WSJ Wine</a>
+      </li>
+    </ul>
+  </div>
+</li>
+</ul>
+<div class="rw-header-search wsj-search">
+  <div class="container ">
+    <form><input type="text" value="News, Quotes, Companies, Videos" class="hdrSearchInput unUsed" id="globalHatSearchInput" size="28">
+      <button class="button-search" type="button">Search</button>
+    </form>
+  </div>
+  <div id="epGlobalHeaderAutoComplete" class="search-list" 
+       data-symbol="Companies &amp; Quotes"
+       data-private="Private Companies" 
+	   data-recent="Recent Searches"
+	   data-all="View All Search Results »"></div>
+</div>
+</nav>
+</div>
+</div> <!-- data-module-name="resp.module.hat.DesktopHat" -->
+
+
+      <!--END Desktop Global Hat -->
+<div data-module-id="4" data-module-name="dj.module.header.DesktopHeader" data-module-zone="header" class="zonedModule">
+<!-- module slimheader -->
+<div class="slimheader_c headerType-dark" data-fxgridwrap="headerWrapBG" data-fxgridtarget=".colgroup-lv1.header">
+	<div class="module slimheader">
+      <div class="leftCol"><a class="headerLogo" href="http://www.wsj.com/">The Wall Street Journal</a></div>
+      <div class="centerCol">
+        <div class="popC lnMenuC">
+          <span id="popButton" class="popTrigger lnMenu">Menu</span>
+          <div class="popBox pop-secs">
+            <div class="colA">
+              <ul>
+                <li class="lnLi"><a href="http://www.wsj.com/">Home</a></li>
+                <li class="lnLi"><a href="http://www.wsj.com/public/page/news-global-world.html">World</a></li>
+                <li class="lnLi"><a href="http://www.wsj.com/public/page/news-world-business.html">U.S.</a></li>
+                <li class="lnLi"><a href="http://www.wsj.com/public/page/news-business-us.html">Business</a></li>
+                <li class="lnLi"><a href="http://www.wsj.com/news/technology">Tech</a></li>
+                <li class="lnLi"><a href="http://www.wsj.com/public/page/news-financial-markets-stock.html">Markets</a></li>
+                <li class="lnLi"><a href="http://markets.wsj.com/usoverview">Market Data</a></li>
+                <li class="lnLi"><a href="http://www.wsj.com/public/page/news-personal-finance.html">Your Money</a></li>
+                <li class="lnLi"><a href="http://www.wsj.com/public/page/news-opinion-commentary.html">Opinion</a></li>
+                <li class="lnLi"><a href="http://www.wsj.com/public/page/news-lifestyle-arts-entertainment.html">Life &amp; Culture</a></li>
+                <li class="lnLi"><a href="http://www.wsj.com/public/page/new-york-main.html">New York</a></li>
+                <li class="lnLi"><a href="http://www.wsj.com/public/page/news-real-estate-homes.html">Real Estate</a></li>
+                <li class="lnLi"><a href="http://www.wsj.com/public/page/management.html">Management</a></li>
+              </ul>
+            </div>
+            <div class="colB">
+              <ul>
+
+
+              </ul>
+            </div>
+          </div> <!--[if lte IE 9]><![endif]-->
+        </div>
+      </div>
+      <div class="rightCol">
+           <menu class="unsubNav">
+            <li><a class="ln" href="https://id.wsj.com/access/509b1a086458232f6e000002/latest/login_standalone.html?url=http%3A%2F%2Fwww.wsj.com%2Farticles%2Fgun-control-backers-turn-their-focus-to..." ref="nofollow" data-widget="LIFP.login">Log In</a></li>
+            <li><a class="ln" href="https://subscribe.wsj.com/hpheaderlink" ref="nofollow">Subscribe</a></li>
+            <li class="subPromo"><div class="subPromo" id="" data-dj-adwidgettype="googleCircAd" data-dj-adwidgetdivid="" data-dj-adactivate="" data-dj-adsize="[[377,50]]" data-dj-admetazone="" data-dj-adsite="" data-dj-adpage="" data-dj-admsrcvalue="" data-dj-showcircad="" data-dj-adcircvalue="" >
+</div>
+</li>
+          </menu>
+            <div class="subPromo" id="" data-dj-adwidgettype="googleCircAd" data-dj-adwidgetdivid="" data-dj-adactivate="" data-dj-adsize="[[377,50]]" data-dj-admetazone="" data-dj-adsite="" data-dj-adpage="" data-dj-admsrcvalue="" data-dj-showcircad="" data-dj-adcircvalue="" >
+            </div>
+      </div>
+</div>
+</div>
+<!-- end module slimheader -->
+
+</div> <!-- data-module-name="dj.module.header.DesktopHeader" -->
+
+
+    </header>
+    
+    <section class="errorBody">
+      <div class="errorNotFound">
+        <h2>PAGE UNAVAILABLE</h2>
+        <p>The document you requested either no longer exists or is not currently available.</p>
+        <p>You may use the "Back" button in your browser to return to the previous page or click <a href="http://online.wsj.com">Home</a> to return to the WSJ.com home page.</p>
+        <p>To report this problem, contact Customer Support at <a href="mailto:support@wsj.com">support@wsj.com</a></p>
+        </br></br>
+      </div>
+    </section>
+
+    <footer class="footer desktop column col10wide"><!-- BEGIN Desktop Footer-->
+<div data-module-id="1" data-module-name="dj.module.footer.DesktopFooter" data-module-zone="desktop_footer" class="zonedModule">
+<div class="module deskfoot" data-fxgridwrap="footWrapBG" data-fxgridtarget=".colgroup-lv1.footer">
+  <div class="newFooterWrap r-dsk">
+    <div class="newFooter units12wide" intent="" in-at4units-class="nix" in-at8units-class="units8wide" in-at12units-class="units12wide" in-at16units-class="units16wide">
+      <!--TOP BAR LINKS-->
+      <menu class="topLinks clearFix">
+        <li class="wsjLogo"><a href="http://www.wsj.com/?mod=WSJDE_footer">Wall Street Journal</a></li>
+        <li class="socialLogo"><a title="Facebook" href="http://www.facebook.com/wsj" class="facebook">Facebook</a></li>
+        <li class="socialLogo"><a title="Twitter" href="http://twitter.com/WSJ" class="twitter">Twitter</a></li>
+        <li class="socialLogo"><a title="LinkedIn" href="http://www.linkedin.com/today/online.wsj.com" class="linkedin">LinkedIn</a></li>
+        <li class="socialLogo"><a title="FourSquare" href="https://foursquare.com/wsj" class="foursquare">FourSquare</a></li>
+        <li class="socialLogo"><a title="Google+" href="https://plus.google.com/117720626238470886461/posts" class="gplus" rel="publisher">Google+</a></li>
+        <li class="socialLogo"><a title="YouTube" href="http://www.youtube.com/user/WSJDigitalNetwork" class="youtube">YouTube</a></li>
+        <li class="socialLogo"><a title="Podcasts" href="http://www.wsj.com/public/page/podcast.html?mod=WSJ_footer" class="podcast">Podcasts</a></li>
+        <li class="socialLogo"><a title="RSS" href="http://www.wsj.com/public/page/rss_news_and_feeds.html?mod=WSJ_footer" class="rssfeed">RSS Feed</a></li>
+        <li class="socialLogo"><a title="AppStore" href="https://itunes.apple.com/us/app/the-wall-street-journal./id364387007?mt=8" class="appstore">AppStore</a></li>
+        <li class="login_sub">
+          <menu class="clearFix">
+            <li class="subscribe"><a href="https://subscribe.wsj.com/hpheaderlink">Subscribe</a></li>
+            <li class="login"><span>/</span><a href="https://id.wsj.com/access/509b1a086458232f6e000002/latest/login_standalone.html?url=http%3A%2F%2Fwww.wsj.com%2Farticles%2Fgun-control-backers-turn-their-focus-to..." ref="nofollow" data-widget="LIFP.login">Login</a></li>
+          </menu>
+        </li>
+        <li class="backToTop"><a href="#top">Back to Top<span class="rotate">«</span></a></li>
+      </menu>
+      <!--MIDDLE COLUMN LINKS-->
+      <menu class="contentLinks clearFix">
+        <li class="linksCol"><h4>Customer Service</h4>
+          <menu>
+            <li><a href="http://help.wsj.com/customer-service/?mod=WSJ_footer">Customer Center</a></li>
+            <li><a href="#" class="liveChat"><span class="lcHighlight">New!</span> Live Help</a></li>
+            <li><a href="https://customercenter.wsj.com/view/contactus.html?mod=WSJ_footer">Contact Us</a></li>
+            <li><a href="http://www.subscribe.wsj.com/getweekendnow?mod=WSJ_footer">WSJ Weekend</a></li>
+            <li><a href="https://customercenter.wsj.com/view/ctdir/contactdirectory.html?mod=WSJ_footer">Contact Directory</a></li>
+            <li><a href="http://www.wsj.com/news/column/Corrections?mod=WSJ_footer">Corrections</a></li>
+          </menu>
+        </li>
+        <li class="linksCol"><h4>Policy</h4>
+          <menu>
+            <li><a href="http://www.wsj.com/public/page/privacy-policy.html?mod=WSJ_footer">Privacy Policy</a></li>
+            <li><a href="http://www.wsj.com/public/page/cookie-policy.html?mod=WSJ_footer">Cookie Policy</a></li>
+            <li><a href="http://www.wsj.com/public/page/data-policy.html?mod=WSJ_footer">Data Policy</a></li>
+            <li><a href="http://www.wsj.com/public/page/copyright_policy.html?mod=WSJ_footer">Copyright Policy</a></li>
+            <li><a href="http://www.wsj.com/public/page/subscriber_agreement.html?mod=WSJ_footer">
+            Subscriber Agreement<br>&amp; Terms of Use
+            </a></li>
+            <li><a href="http://www.wsj.com/public/page/cookie-policy.html?mod=WSJ_footer#cookies_advertising">Your Ad Choices</a></li>
+          </menu>
+        </li>
+        <li class="linksCol"><h4>Ads</h4>
+          <menu>
+            <li><a href="http://www.wsjdigital.com/?mod=WSJ_footer">Advertise</a></li>
+            <li><a href="http://classifieds.wsj.com/?mod=WSJ_footer">Place a Classified Ad</a></li>
+            <li><a href="https://classifieds.wsj.com/ad/Residential-Real-Estate-Ads?mod=WSJ_footer">Sell Your Home</a></li>
+            <li><a href="https://classifieds.wsj.com/ad/Business-For-Sale-Ads?mod=WSJ_footer">Sell Your Business</a></li>
+            <li><a href="https://classifieds.wsj.com/ad/Commercial-Real-Estate-Ads?mod=WSJ_footer">Commercial Real Estate Ads</a></li>
+            <li><a href="https://classifieds.wsj.com/ad/Job-Ads?mod=WSJ_footer">Recruitment &amp; Career Ads</a></li>
+            <li><a href="https://classifieds.wsj.com/ad/Franchise-For-Sale-Ads?mod=WSJ_footer">Franchising</a></li>
+            <li><a href="http://www.wsjlocal.com/?mod=WSJ_footer">Advertise Locally</a></li>
+          </menu>
+        </li>
+        <li class="linksCol"><h4>Tools &amp; Features</h4>
+          <menu>
+            <li><a href="http://www.wsj.com/public/page/designtech-wsjModuleHome.html?mod=WSJ_footer">Apps</a></li>
+            <li><a href="http://www.wsj.com/public/page/email-setup.html?mod=WSJ_footer">Emails &amp; Alerts</a></li>
+            <li><a href="http://www.wsj.com/public/page/news-interactive-features-trends.html?mod=WSJ_footer">Graphics &amp; Photos</a></li>
+            <li><a href="http://www.wsj.com/page/columnists.html?mod=WSJ_footer">Columns</a></li>
+            <li><a href="http://topics.wsj.com/?mod=WSJ_footer">Topics</a></li>
+            <li><a href="http://www.wsj.com/public/page/guides.html?mod=WSJ_footer">Guides</a></li>
+            <li><a href="http://portfolio.wsj.com/?mod=wsj_port_foot">Portfolio</a></li>
+            <li><a href="http://ds.wsj.com/wsjportfolio/portfolio?cmd=mainwindow&mod=wsj_portold_foot">Old Portfolio</a></li>
+          </menu>
+        </li>
+        <li class="linksCol"><h4>More</h4>
+          <menu>
+            <li><a class="registerUserClass" rel="nofollow" href="https://id.wsj.com/access/509b1a086458232f6e000002/latest/register_standalone.html" ref="nofollow" data-widget="LIFP.freeregistration">Register for Free</a></li>
+            <li><a href="http://www.djreprints.com/?mod=WSJ_footer">Reprints</a></li>
+            <li><a href="http://wsj.com/partner/?mod=WSJ_footer">Content Partnerships</a></li>
+            <li><a href="http://www.wsj.com/conferences?mod=WSJ_footer">Conferences</a></li>
+            <li><a href="https://www.wsjsafehouse.com/">SafeHouse</a></li>
+            <li><a href="http://m.wsj.com" id="mobilesite">Mobile Site</a></li>
+            <li><a href="http://www.wsj.com/public/page/archive.html">News Archive</a></li>
+          </menu>
+        </li>
+      </menu>
+      <!--FOOTNOTE LINKS-->
+      <menu class="footnoteLinks clearFix">
+        <li class="http://www.dowjones.com/careers.asp?mod=WSJ_footer"><a href="http://www.dowjones.com/careers.asp?mod=WSJ_footer">Jobs at WSJ</a></li>
+        <li class="copyright">Copyright &copy;2015 <a href="#">Dow Jones &amp; Company</a>, Inc. All Rights Reserved.</li>
+      </menu>
+    </div>
+  </div>
+</div>
+
+<div id="cX-root" class="test" style="display:none"><!--PLEASE DO NOT REMOVE--></div>
+
+<div id="cX-footer-ad" class="footer_bar"><!--  This is placeholder for Cxense Footer Bar  --></div>
+
+<div id='SI_73f3k49S18cgGAR'><!--DO NOT REMOVE-CONTENTS PLACED HERE--></div>
+
+</div> <!-- data-module-name="dj.module.footer.DesktopFooter" -->
+
+
+      <!-- END Desktop Footer--></footer>
+    <input type="hidden" id="print-css"
+           value="//s.s.dev.wsj.com/responsive-web/1.1.24/build/templates/css/rw-articlemain-print.css"><input
+    type="hidden" id="print-css-ie8"
+    value="//s.s.dev.wsj.com/responsive-web/1.2.8/build/templates/css/rw-articlemain-print-ie8.css"></div>
+</div>
+
+ <script type="text/javascript" src="http://stv.wsj.net/dpm/scripts?key=3f402b9ebdb4ad9979e5d79b389dfb73af848846"></script>
+ <script type="text/javascript" src="http://stv.wsj.net/dpm/scripts?key=6b228e420c8359362fdb8bd5358166a24f30a0e5"></script>
+
+</body>
+</html>

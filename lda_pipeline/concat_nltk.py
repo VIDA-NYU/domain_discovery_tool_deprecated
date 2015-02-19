@@ -45,26 +45,18 @@ def get_all_files(dirname):
   print "Done loading filenes", len(files)
   return files
 
-#dirname = sys.argv[1]
-#files = get_all_files(dirname)
 output = open(sys.argv[1], "w")
 len_count = 0 #Count number of documents have less than 100 characters
-en_count = 0 #Count number of documents that are not written in English
 count = 0
 #for file in files:
 for content in sys.stdin:
-  if (count % 1000) == 0:
-    #print "all count:\t" + str(count) + "\tenglish count:\t" + str(en_count) + "\tless-100 count:\t" + str(len_count) 
-    print "all count:\t" + str(count) + "\tless-100 count:\t" + str(len_count) 
-  count += 1
-  #content = open(file).read().replace("\"", "")
-  #content = content.replace("\n", " ") 
-  content = content.strip("\n")
-  url, text = content.split("\t")
-#  if is_english(text):
-  text = valid_words(text)
-  #en_count += 1
-  if len(text) > 100:
-    len_count += 1
-    output.write("\"" + url + "\";\"" + text + "\"\n")
+ if (count % 1000) == 0:
+  print "all count:\t" + str(count) + "\tless-100 count:\t" + str(len_count) 
+ count += 1
+ content = content.strip("\n")
+ url, text = content.split("\t")
+ text = valid_words(text)
+ #if len(text) > 100:
+ # len_count += 1
+ output.write("\"" + url + "\";\"" + text + "\"\n")
 output.close()

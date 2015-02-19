@@ -1,0 +1,801 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="Description" content=""The Defense Advanced Research Projects Agency (DARPA) is soliciting proposals for innovative research to maintain technological superiority...">
+<meta name="Keywords" content=""The Defense Advanced Research Projects Agency (DARPA) is soliciting proposals for innovative research to maintain technological superiority...">
+<meta name="Author" content="Help Net Security">
+<meta name="Copyright" content="Copyright 1998-2015 by Help Net Security">
+<meta property="og:title" content="DARPA's Memex project aids fight against human trafficking" />
+<meta property="og:description" content=""The Defense Advanced Research Projects Agency (DARPA) is soliciting proposals for innovative research to maintain technological superiority..." />
+<meta property="og:image" content="http://www.net-security.org/images/FBOG2.jpg" />
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://feeds2.feedburner.com/HelpNetSecurity" />
+
+<link rel="stylesheet" type="text/css" href="netsec-layout.css" />
+<link rel="stylesheet" type="text/css" href="netsec-presentation.css" />
+
+<title>DARPA's Memex project aids fight against human trafficking</title>
+
+
+
+<script type='text/javascript'>
+var googletag = googletag || {};
+googletag.cmd = googletag.cmd || [];
+(function() {
+var gads = document.createElement('script');
+gads.async = true;
+gads.type = 'text/javascript';
+var useSSL = 'https:' == document.location.protocol;
+gads.src = (useSSL ? 'https:' : 'http:') + 
+'//www.googletagservices.com/tag/js/gpt.js';
+var node = document.getElementsByTagName('script')[0];
+node.parentNode.insertBefore(gads, node);
+})();
+</script>
+
+<script type='text/javascript'>
+googletag.cmd.push(function() {
+googletag.defineSlot('/1007384/ROS-leaderboard-down', [728, 90], 'div-gpt-ad-1351698654779-0').addService(googletag.pubads());
+googletag.defineSlot('/1007384/ROS-leaderboard-up', [728, 90], 'div-gpt-ad-1351698654779-1').addService(googletag.pubads());
+googletag.defineSlot('/1007384/ROS-left-150', [150, 150], 'div-gpt-ad-1351698654779-2').addService(googletag.pubads());
+googletag.defineSlot('/1007384/ROS-right-150', [150, 150], 'div-gpt-ad-1351698654779-3').addService(googletag.pubads());
+googletag.defineSlot('/1007384/ROS-square-1', [336, 280], 'div-gpt-ad-1351698654779-4').addService(googletag.pubads());
+googletag.defineSlot('/1007384/ROS-square-2', [336, 280], 'div-gpt-ad-1351698654779-5').addService(googletag.pubads());
+googletag.defineSlot('/1007384/ROS-textlink-dole', [397, 46], 'div-gpt-ad-1351698654779-6').addService(googletag.pubads());
+googletag.defineSlot('/1007384/ROS-textlink-gore', [397, 46], 'div-gpt-ad-1351698654779-7').addService(googletag.pubads());
+googletag.pubads().enableSingleRequest();
+googletag.enableServices();
+});
+</script>
+
+
+
+
+
+</head>
+
+<body>
+
+<a name="top"></a>
+
+<map name="top_left">
+<area shape="rect" coords="0,0,419,35" href="/">
+</map>
+
+<map name="top_right">
+<area shape="rect" coords="0,0,26,27" target="_blank" href="http://feeds2.feedburner.com/HelpNetSecurity">
+<area shape="rect" coords="27,0,55,27" href="/aboutus.php">
+<area shape="rect" coords="56,0,82,27" target="_blank" href="http://twitter.com/helpnetsecurity">
+</map>
+
+<map name="menu_map">
+<area shape="rect" coords="0,0,62,35" href="/secworld_main.php">
+<area shape="rect" coords="64,0,169,35" href="/malware_center.php">
+<area shape="rect" coords="171,0,274,35" href="/articles_main.php">
+<area shape="rect" coords="276,0,376,35" href="/reviews.php">
+<area shape="rect" coords="378,0,453,35" href="/articles_cat.php?cat=3">
+<area shape="rect" coords="455,0,546,35" href="/conferences.php">
+<area shape="rect" coords="548,0,665,35" href="/software_main.php">
+<area shape="rect" coords="667,0,805,35" href="/infosecuritynews.php">
+</map>
+
+<map name="magazine">
+<area shape="poly" coords="155,0,0,23,25,189,185,189,155,0" href="/insecuremag.php">
+</map>
+
+<div id="pageWrapper2">
+<div id="pageWrapper">
+
+<!-- header div -->
+<div id="header">
+ <div id="topleft"><img src="/images/2/hns-logo2.gif" border="0" width="419" height="35" usemap="#top_left"></div>
+ <div id="topcenter">
+ 
+<!-- SiteSearch Google -->
+<form action="http://www.google.com/cse" target="_blank">
+<table cellspacing="0" cellpadding="0" border="0"><tr><td height="30"><input type="text" class="google_input" name="q" onfocus="if(this.value == 'Search Help Net Security') { this.value = ''; }" value="Search Help Net Security"/></td><td height="30"><input type="submit" class="google_submit" name="sa" value=""/></td></tr></table>
+<input type="hidden" name="cx" value="partner-pub-4877126615183971:6235586322" /><input type="hidden" name="ie" value="UTF-8"/>
+</form>
+<!-- <script type="text/javascript" src="http://www.google.com/cse/brand?form=cref_iframe&lang=en"></script> -->
+<!-- SiteSearch Google -->
+  
+ </div>
+ <div id="topright"><img src="images/2/menu_top_right.gif" border="0" width="82" height="27" usemap="#top_right"></div>
+ <div id="menu"><img src="images/2/menu-top.gif" border="0" width="806" height="35" usemap="#menu_map"></div>
+</div>
+
+<div id="subheader">
+
+    <div style="position:absolute;bottom:0px;left:-6px;">   
+	<!-- Insecuremag -->
+     <div style="position:absolute;bottom:0px;left:0px;"><img src="images/2/mag44.png" border="0" usemap="#magazine"></div>
+     <div style="position:absolute;left:102px;bottom:47px;">
+	  <div style="position:absolute;z-index:150;left:0px;bottom:0px;-ms-filter:'progid:DXImageTransform.Microsoft.Alpha(Opacity=90)'; filter: alpha(opacity=90); opacity: .9;"><a href="insecure-subscribe.php"><img src="images/2/magazine_browse.gif" border="0" width="147" height="30"></a></div>
+      <div style="position:absolute;z-index:250;left:22px;bottom:9px;width:120px;"><a href="insecure-subscribe.php"><span class="plaintext font_bold color_white">Subscribe for free</span></a></div>
+	 </div>  
+     <div style="position:absolute;left:102px;bottom:15px;">
+	  <div style="position:absolute;z-index:150;left:0px;bottom:0px;-ms-filter:'progid:DXImageTransform.Microsoft.Alpha(Opacity=90)'; filter: alpha(opacity=90); opacity: .9;"><a href="insecure-archive.php"><img src="images/2/magazine_browse.gif" border="0" width="147" height="30"></a></div>
+	  <div style="position:absolute;z-index:250;left:28px;bottom:9px;width:120px;"><a href="insecure-archive.php"><span class="plaintext font_bold color_white">Browse archive</span></a></div>
+	 </div>
+	 <div class="clear"></div>
+	<!-- Insecuremag -->
+    </div> 
+	
+ <div style="position: absolute; bottom: 0px; left: 5px; z-index: 200; width: 252px; height: 4px; background-color: #DC0100;"></div>
+ <div id="header-banner" style="text-align:right;"><!-- ROS-leaderboard-up -->
+<div id='div-gpt-ad-1351698654779-1' style='width:728px; height:90px;'>
+<script type='text/javascript'>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1351698654779-1'); });
+</script>
+</div></div>
+</div>
+
+<div style="width: 988px; height:8px; "></div>
+
+<!-- COLUMNS -->
+<div id="container">
+ <div id="innercontainer">
+ <div id="main_top" style="background-color:#FFFFFF;">
+  <div id="main_left_and_center" style="position:relative; float:left;width:643px; ">
+   <div id="main_left" style="position:relative;float:left;"><!-- left -->
+  <!-- left column -->
+  <div style="position:relative; float:left;width: 158px;">  
+
+<!-- LEFT NEWS -->
+<div style="margin-left: 2px; padding: 10px;background-color: #F2F2F2;border-bottom:1px solid #000000;">
+<p class="title_medium color_blue display_inline">Featured news</p>
+</div>
+
+<div style="background-color: #F2F2F2;margin-left:2px;">
+
+<div style="overflow:hidden; margin: 0pt; padding: 6px 5px 6px 5px;background-color: #F2F2F2;">
+ <ul class="nomargin"><li class="bullet_gray"><a href="secworld.php?id=17939" class="plaintext color_black">Dangerous vulnerabilities plague IoT home security systems</a></li></ul>
+</div>
+<div style="position:relative; left:10px; border-top:1px dotted #000000;height:0px;width:91%;"></div>
+
+<div style="overflow:hidden; margin: 0pt; padding: 6px 5px 6px 5px;background-color: #F2F2F2;">
+ <ul class="nomargin"><li class="bullet_gray"><a href="secworld.php?id=17942" class="plaintext color_black">Google Play flaw opens Android devices to silent malware installation</a></li></ul>
+</div>
+<div style="position:relative; left:10px; border-top:1px dotted #000000;height:0px;width:91%;"></div>
+
+<div style="overflow:hidden; margin: 0pt; padding: 6px 5px 6px 5px;background-color: #F2F2F2;">
+ <ul class="nomargin"><li class="bullet_gray"><a href="secworld.php?id=17941" class="plaintext color_black">Jeb Bush dumps emails full of private data online</a></li></ul>
+</div>
+<div style="position:relative; left:10px; border-top:1px dotted #000000;height:0px;width:91%;"></div>
+
+<div style="overflow:hidden; margin: 0pt; padding: 6px 5px 6px 5px;background-color: #F2F2F2;">
+ <ul class="nomargin"><li class="bullet_gray"><a href="secworld.php?id=17940" class="plaintext color_black">Tens of thousands MongoDB databases easily accessible from the Internet</a></li></ul>
+</div>
+<div style="position:relative; left:10px; border-top:1px dotted #000000;height:0px;width:91%;"></div>
+
+<div style="overflow:hidden; margin: 0pt; padding: 6px 5px 6px 5px;background-color: #F2F2F2;">
+ <ul class="nomargin"><li class="bullet_gray"><a href="secworld.php?id=17938" class="plaintext color_black">Forbes.com compromised by Chinese cyber spies targeting US firms</a></li></ul>
+</div>
+<div style="position:relative; left:10px; border-top:1px dotted #000000;height:0px;width:91%;"></div>
+
+<div style="overflow:hidden; margin: 0pt; padding: 6px 5px 6px 5px;background-color: #F2F2F2;">
+ <ul class="nomargin"><li class="bullet_gray"><a href="article.php?id=2221" class="plaintext color_black">Are organizations ready for the embedded computing takeover?</a></li></ul>
+</div>
+<div style="position:relative; left:10px; border-top:1px dotted #000000;height:0px;width:91%;"></div>
+
+<div style="overflow:hidden; margin: 0pt; padding: 6px 5px 6px 5px;background-color: #F2F2F2;">
+ <ul class="nomargin"><li class="bullet_gray"><a href="secworld.php?id=17937" class="plaintext color_black">Majority of dating apps are open to hacks</a></li></ul>
+</div>
+<div style="position:relative; left:10px; border-top:1px dotted #000000;height:0px;width:91%;"></div>
+
+<div style="overflow:hidden; margin: 0pt; padding: 6px 5px 6px 5px;background-color: #F2F2F2;">
+ <ul class="nomargin"><li class="bullet_gray"><a href="secworld.php?id=17936" class="plaintext color_black">How public Wi-Fi puts unprotected users at risk</a></li></ul>
+</div>
+<div style="position:relative; left:10px; border-top:1px dotted #000000;height:0px;width:91%;"></div>
+
+<div style="overflow:hidden; margin: 0pt; padding: 6px 5px 6px 5px;background-color: #F2F2F2;">
+ <ul class="nomargin"><li class="bullet_gray"><a href="secworld.php?id=17935" class="plaintext color_black">Microsoft fixes critical remotely exploitable Windows root-level design bug</a></li></ul>
+</div>
+<div style="position:relative; left:10px; border-top:1px dotted #000000;height:0px;width:91%;"></div>
+
+<div style="overflow:hidden; margin: 0pt; padding: 6px 5px 6px 5px;background-color: #F2F2F2;">
+ <ul class="nomargin"><li class="bullet_gray"><a href="article.php?id=2220" class="plaintext color_black">Kill Chain 3.0: Update the cyber kill chain for better defense</a></li></ul>
+</div>
+<div style="position:relative; left:10px; border-top:1px dotted #000000;height:0px;width:91%;"></div>
+
+<div style="overflow:hidden; margin: 0pt; padding: 6px 5px 6px 5px;background-color: #F2F2F2;">
+ <ul class="nomargin"><li class="bullet_gray"><a href="secworld.php?id=17932" class="plaintext color_black">Researcher publishes 10M usernames and passwords to aid future research</a></li></ul>
+</div>
+<div style="position:relative; left:10px; border-top:1px dotted #000000;height:0px;width:91%;"></div>
+
+<div style="overflow:hidden; margin: 0pt; padding: 6px 5px 6px 5px;background-color: #F2F2F2;">
+ <ul class="nomargin"><li class="bullet_gray"><a href="secworld.php?id=17934" class="plaintext color_black">DARPA's Memex project aids fight against human trafficking</a></li></ul>
+</div>
+<div style="position:relative; left:10px; border-top:1px dotted #000000;height:0px;width:91%;"></div>
+
+<div style="overflow:hidden; margin: 0pt; padding: 6px 5px 6px 5px;background-color: #F2F2F2;">
+ <ul class="nomargin"><li class="bullet_gray"><a href="secworld.php?id=17933" class="plaintext color_black">Car hacking and hijacking is too easy, report says</a></li></ul>
+</div>
+<div style="position:relative; left:10px; border-top:1px dotted #000000;height:0px;width:91%;"></div>
+
+<div style="overflow:hidden; margin: 0pt; padding: 6px 5px 6px 5px;background-color: #F2F2F2;">
+ <ul class="nomargin"><li class="bullet_gray"><a href="malware_news.php?id=2960" class="plaintext color_black">Corporate users hit with fake Microsoft email delivering sneaky malware</a></li></ul>
+</div>
+<div style="position:relative; left:10px; border-top:1px dotted #000000;height:0px;width:91%;"></div>
+
+<div style="overflow:hidden; margin: 0pt; padding: 6px 5px 6px 5px;background-color: #F2F2F2;">
+ <ul class="nomargin"><li class="bullet_gray"><a href="article.php?id=2218" class="plaintext color_black">Which kind of security professional are you?</a></li></ul>
+</div>
+<div style="position:relative; left:10px; border-top:1px dotted #000000;height:0px;width:91%;"></div>
+
+<div style="overflow:hidden; margin: 0pt; padding: 6px 5px 6px 5px;background-color: #F2F2F2;">
+ <ul class="nomargin"><li class="bullet_gray"><a href="article.php?id=2219" class="plaintext color_black">INTERPOL and the fast-paced digital threat landscape</a></li></ul>
+</div>
+<div style="position:relative; left:10px; border-top:1px dotted #000000;height:0px;width:91%;"></div>
+
+<div style="overflow:hidden; margin: 0pt; padding: 6px 5px 6px 5px;background-color: #F2F2F2;">
+ <ul class="nomargin"><li class="bullet_gray"><a href="malware_news.php?id=2959" class="plaintext color_black">New multi-purpose backdoor targets Linux servers</a></li></ul>
+</div>
+<div style="position:relative; left:10px; border-top:1px dotted #000000;height:0px;width:91%;"></div>
+
+<div style="overflow:hidden; margin: 0pt; padding: 6px 5px 6px 5px;background-color: #F2F2F2;">
+ <ul class="nomargin"><li class="bullet_gray"><a href="article.php?id=2216" class="plaintext color_black">IT professional, hack thyself</a></li></ul>
+</div>
+<div style="position:relative; left:10px; border-top:1px dotted #000000;height:0px;width:91%;"></div>
+
+<div style="overflow:hidden; margin: 0pt; padding: 6px 5px 6px 5px;background-color: #F2F2F2;">
+ <ul class="nomargin"><li class="bullet_gray"><a href="article.php?id=2214" class="plaintext color_black">Who are the role models in cyberspace?</a></li></ul>
+</div>
+<div style="position:relative; left:10px; border-top:1px dotted #000000;height:0px;width:91%;"></div>
+
+<div style="overflow:hidden; margin: 0pt; padding: 6px 5px 6px 5px;background-color: #F2F2F2;">
+ <ul class="nomargin"><li class="bullet_gray"><a href="secworld.php?id=17868" class="plaintext color_black">How GitHub is redefining software development</a></li></ul>
+</div>
+</div>
+
+  <div style="margin-left: 10px;overflow:hidden;height:3px;background-color: #FFFFFF;"></div>
+  <div style="margin-left: 10px;overflow:hidden;height:1px;background-color: #000000;"></div><!-- //LEFT NEWS -->
+<br>
+
+  </div>
+  <!-- //left column -->
+
+ </div>
+ <div style="position:relative;float:right;width:479px;margin-left:6px;">
+<!-- //left --><div style="margin-top:5px; margin-bottom:5px"><!-- ROS-textlink-gore -->
+<div id='div-gpt-ad-1351698654779-7' style='width:397px; height:46px;'>
+<script type='text/javascript'>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1351698654779-7'); });
+</script>
+</div></div><div class="dernek">
+<div class="content-title">
+DARPA's Memex project aids fight against human trafficking</div></div>
+<div class="dernek-text-under">
+Posted on 10 February 2015.</div>
+
+
+<div class="content-item">
+"The Defense Advanced Research Projects Agency (DARPA) is soliciting proposals for innovative research to maintain technological superiority in the area of content indexing and web search on the Internet," the agency has <a href="https://www.fbo.gov/index?s=opportunity&mode=form&id=426485bc9531aaccba1b01ea6d4316ee&tab=core&_cview=0" target="_new">announced</a> last week.<br />
+<br />
+Dubbed Memex (a combination of memory and index) after a hypothetical device described in a 1945 article by Vannevar Bush, director of the US Office of Scientific Research and Development during World War II, the project's goal is to develop software that will enable domain-specific indexing of public web content and domain-specific search capabilities.<br />
+<br />
+"Today's web search is limited by a one-size-fits-all approach offered by web-scale commercial providers. They provide a centralized search, which has limitations in the scope of what gets indexed and the richness of available details," they <a href="https://www.fbo.gov/utils/view?id=32c351ba7850360e140a29f363819052" target="_new">explained</a>. "For example, common practice misses information in the deep web and ignores shared content across pages. Today's largely manual search process does not save sessions or allow sharing, requires nearly exact input with one at a time entry, and doesn't organize or aggregate results beyond a list of links."<br />
+<br />
+Initially, the program is aimed to help with a key Defense Department mission: fighting human trafficking.<br />
+<br />
+"Human trafficking is a line of business with significant web presence to attract customers and is relevant to many types of military, law enforcement, and intelligence investigations," they noted. "The use of forums, chats, advertisements, job postings, hidden services, etc., continues to enable a growing industry of modern slavery. An index curated for the counter trafficking domain (which includes labor and sex trafficking), along with configurable interfaces for search and analysis will enable a new opportunity to defeat trafficking enterprises."<br />
+<br />
+This project has already helped in <a href="http://www.scientificamerican.com/article/human-traffickers-caught-on-hidden-internet/" target="_new">at least one</a> human trafficking investigation.<br />
+<br />
+"Memex plans to explore three technical areas of interest: domain-specific indexing, domain-specific search, and DoD-specified applications," DARPA noted, and added that the program is specifically not interested in proposals for attributing anonymous services, deanonymizing or attributing identity to servers or IP addresses, or accessing information not intended to be publicly available. <br />
+<br />
+<a href="mailto:zeljka.zorz(at)net-security.org"><img src="http://www.net-security.org/images/articles/zeljka.jpg" border="0" align="left"></a><br />
+<br />
+<a href="https://twitter.com/zeljkazorz" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @zeljkazorz</a><br />
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div>
+<div class="horizontal_break"></div>
+
+
+<center><img src="http://www.net-security.org/images/ads/newsletter14.jpg"></center>
+
+<!-- Begin MailChimp Signup Form -->
+<link href="http://cdn-images.mailchimp.com/embedcode/classic-081711.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+	#mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; }
+	/* Add your own MailChimp form style overrides in your site stylesheet or in this style block.
+	   We recommend moving this block and the preceding CSS link to the HEAD of your HTML file. */
+</style>
+<div id="mc_embed_signup">
+<form action="http://net-security.us2.list-manage.com/subscribe/post?u=f76e9593a7d90f4024574218d&amp;id=d2d471aafa" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
+	
+<div class="mc-field-group">
+	<label for="mce-EMAIL">Email Address </label>
+	<input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL">
+</div>
+	<div id="mce-responses" class="clear">
+		<div class="response" id="mce-error-response" style="display:none"></div>
+		<div class="response" id="mce-success-response" style="display:none"></div>
+	</div>	<div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
+</form>
+</div>
+<script type="text/javascript">
+var fnames = new Array();var ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';
+try {
+    var jqueryLoaded=jQuery;
+    jqueryLoaded=true;
+} catch(err) {
+    var jqueryLoaded=false;
+}
+var head= document.getElementsByTagName('head')[0];
+if (!jqueryLoaded) {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js';
+    head.appendChild(script);
+    if (script.readyState && script.onload!==null){
+        script.onreadystatechange= function () {
+              if (this.readyState == 'complete') mce_preload_check();
+        }    
+    }
+}
+var script = document.createElement('script');
+script.type = 'text/javascript';
+script.src = 'http://downloads.mailchimp.com/js/jquery.form-n-validate.js';
+head.appendChild(script);
+var err_style = '';
+try{
+    err_style = mc_custom_error_style;
+} catch(e){
+    err_style = '#mc_embed_signup input.mce_inline_error{border-color:#6B0505;} #mc_embed_signup div.mce_inline_error{margin: 0 0 1em 0; padding: 5px 10px; background-color:#6B0505; font-weight: bold; z-index: 1; color:#fff;}';
+}
+var head= document.getElementsByTagName('head')[0];
+var style= document.createElement('style');
+style.type= 'text/css';
+if (style.styleSheet) {
+  style.styleSheet.cssText = err_style;
+} else {
+  style.appendChild(document.createTextNode(err_style));
+}
+head.appendChild(style);
+setTimeout('mce_preload_check();', 250);
+
+var mce_preload_checks = 0;
+function mce_preload_check(){
+    if (mce_preload_checks>40) return;
+    mce_preload_checks++;
+    try {
+        var jqueryLoaded=jQuery;
+    } catch(err) {
+        setTimeout('mce_preload_check();', 250);
+        return;
+    }
+    try {
+        var validatorLoaded=jQuery("#fake-form").validate({});
+    } catch(err) {
+        setTimeout('mce_preload_check();', 250);
+        return;
+    }
+    mce_init_form();
+}
+function mce_init_form(){
+    jQuery(document).ready( function($) {
+      var options = { errorClass: 'mce_inline_error', errorElement: 'div', onkeyup: function(){}, onfocusout:function(){}, onblur:function(){}  };
+      var mce_validator = $("#mc-embedded-subscribe-form").validate(options);
+      $("#mc-embedded-subscribe-form").unbind('submit');//remove the validator so we can get into beforeSubmit on the ajaxform, which then calls the validator
+      options = { url: 'http://net-security.us2.list-manage1.com/subscribe/post-json?u=f76e9593a7d90f4024574218d&id=d2d471aafa&c=?', type: 'GET', dataType: 'json', contentType: "application/json; charset=utf-8",
+                    beforeSubmit: function(){
+                        $('#mce_tmp_error_msg').remove();
+                        $('.datefield','#mc_embed_signup').each(
+                            function(){
+                                var txt = 'filled';
+                                var fields = new Array();
+                                var i = 0;
+                                $(':text', this).each(
+                                    function(){
+                                        fields[i] = this;
+                                        i++;
+                                    });
+                                $(':hidden', this).each(
+                                    function(){
+                                        var bday = false;
+                                        if (fields.length == 2){
+                                            bday = true;
+                                            fields[2] = {'value':1970};//trick birthdays into having years
+                                        }
+                                    	if ( fields[0].value=='MM' && fields[1].value=='DD' && (fields[2].value=='YYYY' || (bday && fields[2].value==1970) ) ){
+                                    		this.value = '';
+									    } else if ( fields[0].value=='' && fields[1].value=='' && (fields[2].value=='' || (bday && fields[2].value==1970) ) ){
+                                    		this.value = '';
+									    } else {
+	                                        this.value = fields[0].value+'/'+fields[1].value+'/'+fields[2].value;
+	                                    }
+                                    });
+                            });
+                        return mce_validator.form();
+                    }, 
+                    success: mce_success_cb
+                };
+      $('#mc-embedded-subscribe-form').ajaxForm(options);
+      
+      
+    });
+}
+function mce_success_cb(resp){
+    $('#mce-success-response').hide();
+    $('#mce-error-response').hide();
+    if (resp.result=="success"){
+        $('#mce-'+resp.result+'-response').show();
+        $('#mce-'+resp.result+'-response').html(resp.msg);
+        $('#mc-embedded-subscribe-form').each(function(){
+            this.reset();
+    	});
+    } else {
+        var index = -1;
+        var msg;
+        try {
+            var parts = resp.msg.split(' - ',2);
+            if (parts[1]==undefined){
+                msg = resp.msg;
+            } else {
+                i = parseInt(parts[0]);
+                if (i.toString() == parts[0]){
+                    index = parts[0];
+                    msg = parts[1];
+                } else {
+                    index = -1;
+                    msg = resp.msg;
+                }
+            }
+        } catch(e){
+            index = -1;
+            msg = resp.msg;
+        }
+        try{
+            if (index== -1){
+                $('#mce-'+resp.result+'-response').show();
+                $('#mce-'+resp.result+'-response').html(msg);            
+            } else {
+                err_id = 'mce_tmp_error_msg';
+                html = '<div id="'+err_id+'" style="'+err_style+'"> '+msg+'</div>';
+                
+                var input_id = '#mc_embed_signup';
+                var f = $(input_id);
+                if (ftypes[index]=='address'){
+                    input_id = '#mce-'+fnames[index]+'-addr1';
+                    f = $(input_id).parent().parent().get(0);
+                } else if (ftypes[index]=='date'){
+                    input_id = '#mce-'+fnames[index]+'-month';
+                    f = $(input_id).parent().parent().get(0);
+                } else {
+                    input_id = '#mce-'+fnames[index];
+                    f = $().parent(input_id).get(0);
+                }
+                if (f){
+                    $(f).append(html);
+                    $(input_id).focus();
+                } else {
+                    $('#mce-'+resp.result+'-response').show();
+                    $('#mce-'+resp.result+'-response').html(msg);
+                }
+            }
+        } catch(e){
+            $('#mce-'+resp.result+'-response').show();
+            $('#mce-'+resp.result+'-response').html(msg);
+        }
+    }
+}
+
+</script>
+<!--End mc_embed_signup-->
+
+
+<br/><br/><BR><!-- ROS-textlink-dole -->
+<div id='div-gpt-ad-1351698654779-6' style='width:397px; height:46px;'>
+<script type='text/javascript'>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1351698654779-6'); });
+</script>
+</div><br/><br/> </div>
+</div> 
+
+<!-- end of center column -->
+
+<!-- right column -->
+<div style="position:relative;width: 337px;float:right;margin: 0px 5px 5px 5px; background-color:#F2F2F2;">
+
+
+
+ <div id="main__topright">
+ 
+
+ </div>
+ 
+ <script type="text/javascript">     
+<!--//         
+function spotlight_change2(selected_number)
+  {
+  for(n=1; n<=5; n++)
+    {
+	if(n==selected_number)
+	  {
+	  document.getElementById("spotlight_right_news"+n).style.visibility="visible";
+	  document.getElementById("spotlight_navigation_right_box"+n).style.backgroundColor="#d92e1d";
+	  }
+	else
+	  {
+	  document.getElementById("spotlight_right_news"+n).style.visibility="hidden";
+	  document.getElementById("spotlight_navigation_right_box"+n).style.backgroundColor="#393939";
+	  }	
+    }
+  return false;
+  }
+//-->
+</script>
+
+<div id="main_spotlight_right">
+ <h1>Spotlight</h1>
+ <div id="spotlight_right_news1" style="position:absolute; overflow:hidden; width: 312px; height: 142px; z-index:100; "> 
+
+
+<h2><a href="secworld.php?id=17935">Microsoft fixes critical remotely exploitable Windows root-level design bug</a></h2>
+  <p>The vulnerability could allow remote code execution if an attacker convinces a user with a domain-configured system to connect to an attacker-controlled network.</p>
+ </div>  
+ <div id="spotlight_navigation_right_box1" class="navigation_box2_selected" style="position:absolute;top:10px;left:193px;z-index:200;"><a href="javascript:void(0)" class="navbtn1" onmouseover="return spotlight_change2(1);">1</a></div>
+
+ <div id="spotlight_right_news2" style="position:absolute; overflow:hidden; width: 312px; height: 142px; z-index:99; visibility:hidden;"> 
+
+
+<h2><a href="article.php?id=2218">Which kind of security professional are you?</a></h2>
+  <p>What does your inner voice say? Which kind of a professional are you? Are you arrogant, haughty and superior? Or humble, modest and respectful?</p>
+ </div>  
+ <div id="spotlight_navigation_right_box2" class="navigation_box2" style="position:absolute;top:10px;left:221px;z-index:200;"><a href="javascript:void(0)" class="navbtn1" onmouseover="return spotlight_change2(2);">2</a></div>
+
+ <div id="spotlight_right_news3" style="position:absolute; overflow:hidden; width: 312px; height: 142px; z-index:98; visibility:hidden;"> 
+
+
+<h2><a href="malware_news.php?id=2960">Corporate users hit with fake Microsoft email delivering sneaky malware</a></h2>
+  <p>A legit-looking spam email campaign is currently targeting corporate users, ultimately leading the victims to difficult-to-detect malware that downloads additional malicious programs on the target's computer.</p>
+ </div>  
+ <div id="spotlight_navigation_right_box3" class="navigation_box2" style="position:absolute;top:10px;left:249px;z-index:200;"><a href="javascript:void(0)" class="navbtn1" onmouseover="return spotlight_change2(3);">3</a></div>
+
+ <div id="spotlight_right_news4" style="position:absolute; overflow:hidden; width: 312px; height: 142px; z-index:97; visibility:hidden;"> 
+
+
+<h2><a href="article.php?id=2214">Who are the role models in cyberspace?</a></h2>
+  <p>As kids, we emulated role modelswe created magical adventures while playing with our toys and friends. We practiced navigating our future lives using our imagination. Who do our kids aspire to be in their digital lives?</p>
+ </div>  
+ <div id="spotlight_navigation_right_box4" class="navigation_box2" style="position:absolute;top:10px;left:277px;z-index:200;"><a href="javascript:void(0)" class="navbtn1" onmouseover="return spotlight_change2(4);">4</a></div>
+
+ <div id="spotlight_right_news5" style="position:absolute; overflow:hidden; width: 312px; height: 142px; z-index:96; visibility:hidden;"> 
+
+
+<h2><a href="article.php?id=2213">How a penetration test helps you meet PCI compliance guidelines</a></h2>
+  <p>In order to protect credit card data, sometimes businesses have to think like a hacker. So how does a penetration test work, and why is it so important for meeting PCI compliance guidelines?</p>
+ </div>  
+ <div id="spotlight_navigation_right_box5" class="navigation_box2" style="position:absolute;top:10px;left:305px;z-index:200;"><a href="javascript:void(0)" class="navbtn1" onmouseover="return spotlight_change2(5);">5</a></div>
+ 
+ </div>
+ <!-- SPOTLIGHT RIGHT-->
+<div style="position:relative; width: 337px; height:5px;"></div> 
+
+ <div id="main_banner_topright">
+  <table cellspacing="0" cellpadding="0" border="0"><tr><td width="337" height="287" align="center" valign="middle"><BR><!-- ROS-square-1 -->
+<div id='div-gpt-ad-1351698654779-4' style='width:336px; align=center; height:280px;'>
+<script type='text/javascript'>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1351698654779-4'); });
+</script>
+</div></td></tr></table>
+ </div>
+ 
+ 
+
+<div style="position:relative; width: 337px; height:5px;background-color: #F2F2F2;"></div>
+
+  <div style="margin: 12px 11px 13px 15px; background-color: #F2F2F2;">
+   <span class="title color_gray">Weekly newsletter</span><br/><br/>
+   <span class="plaintext color_black linespacing">Reading our newsletter every Monday will keep you up-to-date with security news.</span><br>
+	<form action="http://net-security.us2.list-manage.com/subscribe/post?u=f76e9593a7d90f4024574218d&amp;id=d2d471aafa" method="post" target="_blank">
+    <table cellspacing="0" cellpadding="0" border="0">
+	<tr>
+     <td valign="middle"><input type="text" name="EMAIL" class="newsletter_input" onfocus="if(this.value == 'Email @ Address') { this.value = ''; }" value="Email @ Address" maxlength="255"></td>
+     <td valign="middle" height="30">&nbsp;&nbsp;<input type="submit" value="" name="subscribe" class="newsletter_submit"></td>
+	<tr>
+    </table>
+    </form>	
+  </div>
+  
+  <hr style="width:100%;color:#FFFFFF;background-color:#393939;height:1px;border:none; margin: 0px 0px 21px 0px;" />
+  
+<div style="position:relative; background-color: #F2F2F2; width: 337px;">
+  <table cellspacing="0" cellpadding="0" border="0"><tr><td width="337" height="287" align="center" valign="middle"><BR><!-- ROS-square-2 -->
+<div id='div-gpt-ad-1351698654779-5' style='width:336px; height:280px;'>
+<script type='text/javascript'>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1351698654779-5'); });
+</script>
+</div></td></tr></table>
+
+ <hr style="width:100%;color:#FFFFFF;background-color:#393939;height:1px;border:none;" />
+ 
+    <div style="margin: 10px 11px 15px 15px;">
+  
+   <span class="title color_gray">Daily digest</span><br/><br/><span class="plaintext color_black linespacing">Receive a daily digest of the latest security news.</span><br>
+   <form action="http://net-security.us2.list-manage.com/subscribe/post?u=f76e9593a7d90f4024574218d&amp;id=520ac2f639" method="post" target="_blank">
+   <table cellspacing="0" cellpadding="0" border="0">
+	<tr>
+	 <td valign="middle" height="30"><input type="text" name="EMAIL" class="newsletter_input" onfocus="if(this.value == 'Email @ Address') { this.value = ''; }" value="Email @ Address" maxlength="255"></td>
+	 <td valign="middle" height="30">&nbsp;&nbsp;<input type="submit" value="" name="subscribe" class="newsletter_submit"></td>
+    </tr>
+   </table>
+   </form>
+  </div>
+  
+  
+
+  
+  
+  <div style="overflow:hidden;height:3px;background-color: #FFFFFF;"></div>
+  <div style="overflow:hidden;height:3px;background-color: #393939;"></div>
+</div>
+<div style="position:relative; background-color: #FFFFFF; width: 337px;"></div></div>
+<div class="clear"></div>
+
+</div> <!-- HERE ENDS main_top -->
+
+<!-- DON'T MISS -->
+<div style="position:relative;width:100%;height:135px;background-color:#FFFFFF;">
+ <div style="width:97%;background-color:#393939;height:1px;margin: 0px 10px 0px 12px;"></div>
+ <div style="position:absolute; left:0px; top:17px; width:125px; height:98px; background-color:#01506f; text-align:center;">
+  <span class="section color_white font_bold" >DON'T<br>MISS</span><br><span class="plaintext color_white">Wed, Feb 11th</span>
+ </div>
+ <div style="position:absolute; overflow:hidden; left:125px; top:17px; width:860px; height:98px; background-color:#FFFFFF; text-align:center;">
+   <table cellspacing="0" cellpadding="0" border="0" width="860">
+   <tr><td>
+   <table cellspacing="0" cellpadding="0" border="0" >
+   <tr>
+
+    <td width="167" height="98" valign="top" align="left">
+	 <p style="margin-top:10px;margin-left:10px;" class="plaintext color_gray2">	 <a href="article.php?id=2221" class="largertext2 font_bold color_gray">Are you ready for the embedded computing takeover?</a>
+	 </p>
+	</td>
+	<td width="1" bgcolor="#000000"><img src="images/2/spacer.gif" width="1" height="1" border="0"><br></td>
+
+    <td width="167" height="98" valign="top" align="left">
+	 <p style="margin-top:10px;margin-left:10px;" class="plaintext color_gray2">	 <a href="secworld.php?id=17939" class="largertext2 font_bold color_gray">Dangerous vulnerabilities plague IoT home security systems</a>
+	 </p>
+	</td>
+	<td width="1" bgcolor="#000000"><img src="images/2/spacer.gif" width="1" height="1" border="0"><br></td>
+
+    <td width="167" height="98" valign="top" align="left">
+	 <p style="margin-top:10px;margin-left:10px;" class="plaintext color_gray2">	 <a href="secworld.php?id=17935" class="largertext2 font_bold color_gray">Microsoft fixes critical remotely exploitable Windows bug</a>
+	 </p>
+	</td>
+	<td width="1" bgcolor="#000000"><img src="images/2/spacer.gif" width="1" height="1" border="0"><br></td>
+
+    <td width="167" height="98" valign="top" align="left">
+	 <p style="margin-top:10px;margin-left:10px;" class="plaintext color_gray2">	 <a href="article.php?id=2218" class="largertext2 font_bold color_gray">Which kind of security professional are you?</a>
+	 </p>
+	</td>
+	<td width="1" bgcolor="#000000"><img src="images/2/spacer.gif" width="1" height="1" border="0"><br></td>
+
+    <td width="167" height="98" valign="top" align="left">
+	 <p style="margin-top:10px;margin-left:10px;" class="plaintext color_gray2">	 <a href="article.php?id=2219" class="largertext2 font_bold color_gray">INTERPOL and the fast-paced digital threat landscape</a>
+	 </p>
+	</td>
+	<td width="1" bgcolor="#000000"><img src="images/2/spacer.gif" width="1" height="1" border="0"><br></td>
+
+   </tr>
+   </table>
+   </td></tr></table> 
+ </div>
+ <div style="position:absolute; right:0px; top:17px; width:5px; height:98px; background-color:#01506f; text-align:center;"></div>
+</div>
+<!-- //DON'T MISS -->
+
+<div style="position:relative;width:100%;background-color:#FFFFFF;">
+ <div style="width:97%;border-top:1px solid #000000; background-color:#FFFFFF;height:1px;margin: 0px 10px 0px 12px;padding-bottom:10px;"></div>
+</div><div id="footer_backtotop" style="background-color: #FFFFFF; text-align:right;">
+ <a href="#top" style="position:relative;right:10px;"><img src="images/2/back_to_top.jpg" border="0" width="87" height="26"></a><br>
+ <hr style="position:relative;width:98%;color:#393939;background-color:#393939;height:4px;border:none;" />
+ <div style="height: 9px;"></div>
+</div>
+<div style="height: 38px;background-color:#E0E0E0;"></div>
+ 
+
+ </div>
+</div>
+
+</div>
+</div>
+<div style="background-color:#000000;width:100%;height:10px;"></div>
+
+   
+<div style="overflow:hidden;background-color:#393939;width:100%;">
+ <div id="pageWrapper2">
+  <div id="pageWrapper">
+
+<!-- Footer top -->  
+   <div style="position:relative;background-color:#393939;height:213px;">
+
+    <div style="position:absolute;left:210px;top:20px;z-index:200;width:419px;">
+     <img src="/images/2/hns-logo2.gif" border="0" width="419" height="35" usemap="#top_left">
+    </div>
+    <div style="position:absolute;width:233px;left:650px;top:25px;">
+   
+<!-- SiteSearch Google -->
+<form action="http://www.google.com/cse" target="_blank">
+<table cellspacing="0" cellpadding="0" border="0"><tr><td height="30"><input type="text" class="google_input" name="q" onfocus="if(this.value == 'Search Help Net Security') { this.value = ''; }" value="Search Help Net Security"/></td><td height="30"><input type="submit" class="google_submit" name="sa" value=""/></td></tr></table>
+<input type="hidden" name="cx" value="partner-pub-4877126615183971:6235586322" /><input type="hidden" name="ie" value="UTF-8"/>
+</form>
+<!-- <script type="text/javascript" src="http://www.google.com/cse/brand?form=cref_iframe&lang=en"></script> -->
+<!-- SiteSearch Google -->
+
+    </div>
+    <div style="position:absolute;width:82px;left:890px;top:25px;z-index:200;"><img src="images/2/menu_top_right.gif" border="0" width="82" height="27" usemap="#top_right"></div>
+    <div style="position:absolute;background-color:#a7a7a7;width:990px;height:4px;top:70px;"></div>
+    <div style="position:absolute;bottom:17px;left:-2px;">   
+	<!-- Insecuremag -->
+     <div style="position:absolute;bottom:0px;left:0px;"><img src="images/2/mag42a.png" border="0" width="185" height="189" usemap="#magazine"></div>
+     <div style="position:absolute;left:102px;bottom:47px;">
+	  <div style="position:absolute;z-index:150;left:0px;bottom:0px;-ms-filter:'progid:DXImageTransform.Microsoft.Alpha(Opacity=90)'; filter: alpha(opacity=90); opacity: .9;"><a href="insecure-subscribe.php"><img src="images/2/magazine_browse.gif" border="0" width="147" height="30"></a></div>
+      <div style="position:absolute;z-index:250;left:22px;bottom:9px;width:120px;"><a href="insecure-subscribe.php"><span class="plaintext font_bold color_white">Subscribe for free</span></a></div>
+	 </div>  
+     <div style="position:absolute;left:102px;bottom:15px;">
+	  <div style="position:absolute;z-index:150;left:0px;bottom:0px;-ms-filter:'progid:DXImageTransform.Microsoft.Alpha(Opacity=90)'; filter: alpha(opacity=90); opacity: .9;"><a href="insecure-archive.php"><img src="images/2/magazine_browse.gif" border="0" width="147" height="30"></a></div>
+	  <div style="position:absolute;z-index:250;left:28px;bottom:9px;width:120px;"><a href="insecure-archive.php"><span class="plaintext font_bold color_white">Browse archive</span></a></div>
+	 </div>
+	 <div class="clear"></div>
+	<!-- Insecuremag -->
+    </div> 
+	<div style="position:absolute; right:0px; bottom:32px; z-index:200;"><!-- ROS-leaderboard-down -->
+<div id='div-gpt-ad-1351698654779-0' style='width:728px; height:90px;'>
+<script type='text/javascript'>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1351698654779-0'); });
+</script>
+</div>
+</div>
+	<div style="position:absolute; background-color:#a7a7a7;width:990px;height:4px;bottom:13px;"></div>
+    <div style="position:absolute; background-color:#393939;width:990px;height:13px;bottom:0px;"></div>
+	
+   </div>
+<!-- //Footer top -->  
+<div class="clear"></div>
+
+  <div style="background-color:#393939;width:990px;" class="smalltext color_gray3">
+   &nbsp;&nbsp;&nbsp;&nbsp;COPYRIGHT 1998-2015 BY <a href="imprint.php" class="smalltext color_gray3">HELP NET SECURITY</a>.&nbsp;&nbsp; 
+    //&nbsp;<a href="privacy.php" class="smalltext color_gray3">READ OUR PRIVACY POLICY</a>&nbsp;// <a href="aboutus.php" class="smalltext color_gray3">ABOUT US</a>&nbsp;// <a href="promote.php" class="smalltext color_gray3">ADVERTISE</a> //<br><br><br><br><br><br>
+  </div>
+  
+ </div>
+</div>
+</div>
+
+<div class="clear"></div>   
+<!-- END COLUMNS -->
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-194098-5");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+
+
+<!-- Start of StatCounter Code -->
+<script type="text/javascript">
+var sc_project=5069583; 
+var sc_invisible=1; 
+var sc_partition=58; 
+var sc_click_stat=1; 
+var sc_security="59ee0134";
+</script>
+
+<script type="text/javascript"
+src="http://www.statcounter.com/counter/counter_xhtml.js"></script><noscript><div
+class="statcounter"><a title="myspace visitor"
+class="statcounter"
+href="http://www.statcounter.com/myspace/"><img
+class="statcounter"
+src="http://c.statcounter.com/5069583/0/59ee0134/1/"
+alt="myspace visitor" /></a></div></noscript>
+<!-- End of StatCounter Code -->
+
+</body>
+</html>

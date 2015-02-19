@@ -1,0 +1,1801 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html class="no-js ie6 ie oldie" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="no-js ie7 ie oldie" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="no-js ie8 ie oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" version="XHTML+RDFa 1.1"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/"
+  xmlns:dc="http://purl.org/dc/terms/"
+  xmlns:foaf="http://xmlns.com/foaf/0.1/"
+  xmlns:og="http://ogp.me/ns#"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:sioc="http://rdfs.org/sioc/ns#"
+  xmlns:sioct="http://rdfs.org/sioc/types#"
+  xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+  xmlns:fb="http://ogp.me/ns/fb#"
+  xmlns:article="http://ogp.me/ns/article#"
+  xmlns:book="http://ogp.me/ns/book#"
+  xmlns:profile="http://ogp.me/ns/profile#"> <!--<![endif]-->
+<head profile="http://www.w3.org/1999/xhtml/vocab">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta charset="utf-8" />
+<meta about="/research/gun-control" typeof="skos:Concept" property="rdfs:label skos:prefLabel" content="Gun Control" />
+<meta name="site" content="Cato Institute" />
+<link rel="shortcut icon" href="http://object.cato.org/sites/cato.org/files/favicon_1.ico" type="image/vnd.microsoft.icon" />
+<link rel="dns-prefetch" href="//object.cato.org" />
+<meta http-equiv="x-dns-prefetch-control" content="on" />
+<meta name="description" content="For decades, the Second Amendment was consigned to constitutional exile, all but erased from constitutional law textbooks and effectively banished from the nation’s courts. But no more. Recent developments in the law and in political culture have begun the process of returning the amendment to its proper place in our constitutional pantheon. Congress now has a historic opportunity, not simply to stave off new gun-control proposals, but to begin restoring Americans’ right to keep and bear arms. View Cato’s Interactive Google Map on Guns and Self Defense" />
+<meta name="robots" content="noodp" />
+<link rel="image_src" href="http://www.cato.org/sites/cato.org/files/logos/cato-logo.jpg" />
+<link rel="canonical" href="http://www.cato.org/research/gun-control" />
+<link rel="shortlink" href="http://www.cato.org/taxonomy/term/53" />
+<link rel="publisher" href="https://plus.google.com/+TheCatoInstitute" />
+<meta property="fb:admins" content="5311211" />
+<meta property="fb:app_id" content="158687980817033" />
+<meta property="og:site_name" content="Cato Institute" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://social.cato.org/research/gun-control" />
+<meta property="og:title" content="Gun Control" />
+<meta property="og:description" content="For decades, the Second Amendment was consigned to constitutional exile, all but erased from constitutional law textbooks and effectively banished from the nation’s courts. But no more. Recent developments in the law and in political culture have begun the process of returning the amendment to its proper place in our constitutional pantheon. Congress now has a historic opportunity, not simply to stave off new gun-control proposals, but to begin restoring Americans’ right to keep and bear arms. View Cato’s Interactive Google Map on Guns and Self Defense" />
+<meta name="twitter:title" content="Gun Control" />
+<meta name="twitter:description" content="For decades, the Second Amendment was consigned to constitutional exile, all but erased from constitutional law textbooks and effectively banished from the nation’s courts. But no more. Recent developments in the law and in political culture have begun the process of returning the amendment to its proper place in our constitutional pantheon. Congress now has a historic opportunity, not simply to stave off new gun-control proposals, but to begin restoring Americans’ right to keep and bear arms. View Cato’s Interactive Google Map on Guns and Self Defense" />
+  <title>Gun Control | Cato Institute</title>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0">
+  <link rel="stylesheet" href="http://object.cato.org/sites/cato.org/files/cdn/css/http/css_xJKt9crF-zzB8wQ1liF-Ci4wh5CJm9nufi_oOWgtXi0.css" media="all" />
+<link rel="stylesheet" href="http://object.cato.org/sites/cato.org/files/cdn/css/http/css_nyITTtpJjeSN2HcHLPVhos5Tdpq3E1ftb0-HPeS-feY.css" media="all" />
+<link rel="stylesheet" href="http://object.cato.org/sites/cato.org/files/cdn/css/http/css_xs038jFzugBQxN5FctSTGaPlIYL1xIJG9Q4I6nu4W8I.css" media="all" />
+
+<!--[if gte IE 9]><!-->
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" media="all" />
+<!--<![endif]-->
+<link rel="stylesheet" href="http://object.cato.org/sites/cato.org/files/cdn/css/http/css_HskcQrMS-tlmg9m8witUewc6Fxe0cWT5MpbQY9fJgkU.css" media="all" />
+<link rel="stylesheet" href="http://object.cato.org/sites/cato.org/files/cdn/css/http/css_y1yqnfd__E_AAa-NV7kl2OPls_ZnSmm7A1zYovwPRRI.css" media="all" />
+  <script src="http://object.cato.org/sites/all/themes/cato/_js/webfonts.js?v3"></script>
+  <script async='true' src='//naytev.global.ssl.fastly.net/js/embed/54aeecfde4b045b77b4f729b.js'></script>
+  <!-- Do you want IE to work? -->
+  <!--[if lt IE 9 ]>
+  <script src="/sites/all/themes/cato/_js/libs/ieshiv.js"></script>
+  <script src="/sites/all/themes/cato/_js/browser-update.js"></script>
+  <![endif]-->
+  <link rel="alternate" title="Cato Daily Podcast RSS" href="http://feeds.cato.org/CatoDailyPodcast" type="application/rss+xml" />
+  <link rel="alternate" title="Cato Event Podcast RSS" href="http://feeds.cato.org/CatoEventPodcasts" type="application/rss+xml" />
+  <link rel="alternate" title="Cato Event Videos (Full) RSS" href="http://feeds.cato.org/CatoEventVideos" type="application/rss+xml" />
+  <link rel="alternate" title="Cato Video RSS" href="http://feeds.cato.org/CatoWeeklyVideo" type="application/rss+xml" />
+  <link rel="alternate" title="Cato Audio RSS" href="http://feeds.cato.org/CatoAudio" type="application/rss+xml" />
+  <link rel="alternate" title="Cato Homepage Headlines RSS" href="http://feeds.cato.org/CatoHomepageHeadlines" type="application/rss+xml" />
+  <link rel="alternate" title="Cato Media Updates RSS" href="http://feeds.cato.org/CatoMediaUpdates" type="application/rss+xml" />
+  <link rel="alternate" title="Cato Recent Op-eds RSS" href="http://feeds.cato.org/CatoRecentOpeds" type="application/rss+xml" />
+  <link rel="alternate" title="Cato Studies" href="http://feeds.cato.org/PublicationsFromTheCatoInstitute" type="application/rss+xml" />
+  <link rel="alternate" title="Cato Upcoming Events RSS" href="http://feeds.cato.org/CatoEvents" type="application/rss+xml" />
+  <link rel="alternate" title="Cato@Liberty RSS" href="http://feeds.cato.org/Cato-at-liberty" type="application/rss+xml" />
+  <link rel="alternate" title="Cato Unbound RSS" href="http://www.cato-unbound.org/rss" type="application/rss+xml" />
+</head>
+<body class="html not-front not-logged-in one-sidebar sidebar-second page-taxonomy page-taxonomy-term page-taxonomy-term- page-taxonomy-term-53 topic-detail experts-detail" >
+<div id="skip-link">
+  <a href="#main-content" class="element-invisible element-focusable">Skip to main content</a>
+</div>
+<header id="header" class="header">
+  <div class="wrapper">
+
+        <a href="/" title="Home" rel="home" id="logo" class="hdr-logo">
+      <img src="http://object.cato.org/sites/cato.org/files/cato-logo_0.png" alt="Home"/>
+    </a>
+    
+    <div id="block-system-main-menu-trigger"><i class="fa fa-bars"></i></div>
+    <div id="main-search-trigger"><i class="fa fa-search"></i></div>
+
+    <!--googleoff: index-->
+      <div class="region region-menu">
+    <div id="block-catomegamenu-catomegamenu" class="block block-catomegamenu main-nav">
+
+      
+  <div class="content">
+    <div class="item-list"><ul class="menu"><li class="expanded level-1 mega-top-link first"><a href="/research">Research</a><div class="item-list"><ul class="expanded level-1 mega-top-link"><li class="first last"><div id="block-panels-mini-research-megamenu-layout" class="block block-panels-mini two-col-7030">
+
+      
+  <div class="content">
+    <div class="panel-display panel-2col clearfix" id="mini-panel-research_megamenu_layout">
+  <div class="panel-panel panel-col-first">
+    <div class="inside"><div class="panel-pane pane-block pane-menu-block-6 pane-menu-block "  >
+  
+      
+  
+  <div class="pane-content">
+    <div class="menu-block-wrapper menu-block-6 menu-name-main-menu parent-mlid-8026 menu-level-1">
+  <ul class="menu"><li class="first leaf menu-mlid-10413 level-2"><a href="/publications/archives/studies">Studies</a></li>
+<li class="leaf menu-mlid-10412 level-2"><a href="/projects">Centers and Projects</a></li>
+<li class="leaf menu-mlid-10415 level-2"><a href="/research">Research by Topic</a></li>
+<li class="leaf menu-mlid-10414 level-2"><a href="/publications/recent-books">Recent Books</a></li>
+<li class="last leaf menu-mlid-63922 level-2"><a href="/research/reading-list">Reading Lists</a></li>
+</ul></div>
+  </div>
+
+  
+  </div>
+</div>
+  </div>
+
+  <div class="panel-panel panel-col-last">
+    <div class="inside"><div class="panel-pane pane-views-panes pane-publications-research-megamenu"  >
+  
+      
+  
+  <div class="pane-content">
+    <div class="view view-publications view-id-publications view-display-id-research_megamenu view-dom-id-606ec8f826c5bc7ec80b60ea61fdf22e">
+            <div class="view-header">
+      <p class="section-h3">Latest Study</p>    </div>
+  
+  
+  
+      <div class="view-content">
+          <article class="pub-books">
+      
+      <div class="featured-book">
+  
+    
+      <a href="/publications/policy-analysis/toward-free-trade-sugar"><picture >
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source srcset="http://object.cato.org/sites/cato.org/files/styles/resp__img__megabooks__default/public/pubs/covers/pa768-cover.jpg?itok=dC1i0sYJ 1x, http://object.cato.org/sites/cato.org/files/styles/resp__img__megabooks__default-15x/public/pubs/covers/pa768-cover.jpg?itok=oH5FYsc0 1.5x, http://object.cato.org/sites/cato.org/files/styles/resp__img__megabooks__default-2x/public/pubs/covers/pa768-cover.jpg?itok=GQBsiub1 2x" media="(min-width: 0px)" />
+<!--[if IE 9]></video><![endif]-->
+<img srcset="http://object.cato.org/sites/cato.org/files/styles/resp__img__megabooks__default-2x/public/pubs/covers/pa768-cover.jpg?itok=GQBsiub1 220w" alt="" title="" />
+</picture></a>
+      </div>
+  
+
+      <p class="sans-h4">
+  
+    
+      <a href="/publications/policy-analysis/toward-free-trade-sugar">Toward Free Trade in Sugar</a>
+      </p>
+  
+
+      <p class="mega-authors">
+  
+    
+      <a href="/people/daniel-pearson" typeof="foaf:Person" property="foaf:name" rel="foaf:publications" html="1">Daniel R. Pearson</a>
+      </p>
+  
+
+      <div class="text-sans">
+  
+    
+      
+For decades, political support for the U.S. sugar program has been underpinned by the general sense that the costs of producing sugar in...
+      </div>
+  
+    </article>
+      </div>
+  
+  
+  
+  
+  
+  
+</div>  </div>
+
+  
+  </div>
+</div>
+  </div>
+</div>
+  </div>
+</div>
+</li>
+</ul></div></li>
+<li class="expanded level-1 mega-top-link"><a href="/events">Events</a><div class="item-list"><ul class="expanded level-1 mega-top-link"><li class="first last"><div id="block-panels-mini-events-megamenu-layout" class="block block-panels-mini two-col-7030">
+
+      
+  <div class="content">
+    <div class="panel-display panel-2col clearfix" id="mini-panel-events_megamenu_layout">
+  <div class="panel-panel panel-col-first">
+    <div class="inside"><div class="panel-pane pane-block pane-menu-block-2 pane-menu-block "  >
+  
+      
+  
+  <div class="pane-content">
+    <div class="menu-block-wrapper menu-block-2 menu-name-main-menu parent-mlid-8027 menu-level-1">
+  <ul class="menu"><li class="first leaf menu-mlid-9373 level-2"><a href="/events/upcoming">Upcoming</a></li>
+<li class="leaf menu-mlid-9374 level-2"><a href="/events/archives">Archives</a></li>
+<li class="leaf menu-mlid-9375 level-2"><a href="/multimedia/events">Multimedia</a></li>
+<li class="leaf menu-mlid-9376 level-2"><a href="/events/faqs">FAQs</a></li>
+<li class="leaf menu-mlid-9377 level-2"><a href="http://www.cato.org/cato-university/">Cato University</a></li>
+<li class="leaf menu-mlid-9378 level-2"><a href="/events/directions">Directions</a></li>
+<li class="last leaf menu-mlid-10132 level-2"><a href="/live">Cato Live</a></li>
+</ul></div>
+  </div>
+
+  
+  </div>
+</div>
+  </div>
+
+  <div class="panel-panel panel-col-last">
+    <div class="inside"><div class="panel-pane pane-views-panes pane-events-events-mega"  >
+  
+      
+  
+  <div class="pane-content">
+    <div class="view view-events view-id-events view-display-id-events_mega view-dom-id-6f50a909eaf4daca95eeb844dd6205be">
+            <div class="view-header">
+      <p class="section-h3">Featured Event</p>    </div>
+  
+  
+  
+      <div class="view-content">
+          <article class="events-megamenu">
+      
+      <p class="overline">
+  
+    
+      <span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="2015-02-06T12:00:00-05:00">February 6</span>
+      </p>
+  
+
+      <h4 class="sans-h4">
+  
+    
+      <a href="/events/libertarian-state-union-2015">The Libertarian State of the Union</a>
+      </h4>
+  
+
+      <div>
+  
+    
+      <a href="http://www.cato.org/events/libertarian-state-union-2015"><a href="/multimedia/events/libertarian-state-union-2"><picture  title="The Libertarian State of the Union">
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source srcset="http://object.cato.org/sites/cato.org/files/styles/resp__img__megaevents__default/public/multimedia/2015/chb-02-06-15.jpg?itok=cZAcW85n 1x, http://object.cato.org/sites/cato.org/files/styles/resp__img__megaevents__default-15x/public/multimedia/2015/chb-02-06-15.jpg?itok=i6xEsY4Q 1.5x, http://object.cato.org/sites/cato.org/files/styles/resp__img__megaevents__default-2x/public/multimedia/2015/chb-02-06-15.jpg?itok=wckfrcya 2x" media="(min-width: 0px)" />
+<!--[if IE 9]></video><![endif]-->
+<img srcset="http://object.cato.org/sites/cato.org/files/styles/Array/public/multimedia/2015/chb-02-06-15.jpg?itok=xI6u57xs 1280w" alt="The Libertarian State of the Union" title="The Libertarian State of the Union" />
+</picture></a></a>
+      </div>
+  
+
+      <p class="text-sans">
+  
+    
+      Featuring <strong>Mark Calabria</strong>, Director, Financial Regulation Studies, Cato Institute; <strong>Chris Edwards</strong>, Director, Tax Policy Studies, Cato Institute, and Editor, DownsizingGovernment.org; <strong>Julian Sanchez</strong>, Senior Fellow, Cato Institute; and <strong>Daniel J. Ikenson</strong>, Director, Herbert A. Stiefel Center for Trade Policy Studies, Cato Institute; moderated by <strong>Peter Russo</strong>, Director, Congressional Affairs, Cato Institute.
+      </p>
+  
+    </article>
+      </div>
+  
+  
+  
+  
+  
+  
+</div>  </div>
+
+  
+  </div>
+</div>
+  </div>
+</div>
+  </div>
+</div>
+</li>
+</ul></div></li>
+<li class="expanded level-1 mega-top-link"><a href="/publications">Publications</a><div class="item-list"><ul class="expanded level-1 mega-top-link"><li class="first last"><div id="block-panels-mini-publications-megamenu-layout" class="block block-panels-mini">
+
+      
+  <div class="content">
+    <div class="panel-display panel-2col clearfix" id="mini-panel-publications_megamenu_layout">
+  <div class="panel-panel panel-col-first">
+    <div class="inside"><div class="panel-pane pane-block pane-menu-block-5 pane-menu-block "  >
+  
+      
+  
+  <div class="pane-content">
+    <div class="menu-block-wrapper menu-block-5 menu-name-main-menu parent-mlid-8028 menu-level-1">
+  <ul class="menu"><li class="first leaf menu-mlid-10655 level-2"><a href="http://store.cato.org/books">Books</a></li>
+<li class="leaf menu-mlid-9641 level-2"><a href="/publications/archives/studies">Studies</a></li>
+<li class="leaf menu-mlid-9642 level-2"><a href="/publications/archives/public-filings/legal-briefs">Legal Briefs</a></li>
+<li class="leaf menu-mlid-9644 level-2"><a href="/cato-handbook-policymakers"><em>Cato Handbook for Policymakers</em></a></li>
+<li class="leaf menu-mlid-9643 level-2"><a href="/cato-journal"><em>Cato Journal</em></a></li>
+<li class="leaf menu-mlid-9651 level-2"><a href="/catos-letter"><em>Cato's Letter</em></a></li>
+<li class="leaf menu-mlid-9652 level-2"><a href="/catos-letters"><em>Cato's Letters</em></a></li>
+<li class="leaf menu-mlid-9645 level-2"><a href="/cato-papers-public-policy"><em>Cato Papers on Public Policy</em></a></li>
+<li class="leaf menu-mlid-9646 level-2"><a href="/policy-report"><em>Cato Policy Report</em></a></li>
+<li class="leaf menu-mlid-9649 level-2"><a href="/state-legislative-guide"><em>Cato State Legislative Guide</em></a></li>
+<li class="leaf menu-mlid-11712 level-2"><a href="/cracking-books"><em>Cracking the Books</em></a></li>
+<li class="leaf menu-mlid-10654 level-2"><a href="/economic-freedom-states-india"><em>Economic Freedom of the States of India</em></a></li>
+<li class="leaf menu-mlid-9650 level-2"><a href="/economic-freedom-world"><em>Economic Freedom of the World</em></a></li>
+<li class="leaf menu-mlid-11825 level-2"><a href="/publications/archives/public-filings/public-comments">Public Comments</a></li>
+<li class="leaf menu-mlid-9647 level-2"><a href="/regulation"><em>Regulation</em></a></li>
+<li class="last leaf menu-mlid-9648 level-2"><a href="/supreme-court-review"><em>Supreme Court Review</em></a></li>
+</ul></div>
+  </div>
+
+  
+  </div>
+</div>
+  </div>
+
+  <div class="panel-panel panel-col-last">
+    <div class="inside"><div class="panel-pane pane-views-panes pane-latest-serial-issues-pubs-mega"  >
+  
+      
+  
+  <div class="pane-content">
+    <div class="view view-latest-serial-issues view-id-latest_serial_issues view-display-id-pubs_mega view-dom-id-50124f95eb0fe0d7864f71f505a244c4">
+            <div class="view-header">
+      <p class="section-h3">Featured Publication</p>    </div>
+  
+  
+  
+      <div class="view-content">
+          <div class="recent-issue first last">
+      
+      <h4 class="sans-h4 clearfix">
+  
+    
+      <a href="/regulation/winter-2014-2015">Winter 2014-2015</a>
+      </h4>
+  
+
+      <div class="featured-book">
+  
+    
+      <a href="/regulation/winter-2014-2015"><picture >
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source srcset="http://object.cato.org/sites/cato.org/files/styles/resp__img__megapubs__default/public/serials/covers/regulation-v37n4-cover.jpg?itok=J851d1cv 1x, http://object.cato.org/sites/cato.org/files/styles/resp__img__megapubs__default-15x/public/serials/covers/regulation-v37n4-cover.jpg?itok=lIlqvbpm 1.5x, http://object.cato.org/sites/cato.org/files/styles/resp__img__megapubs__default-2x/public/serials/covers/regulation-v37n4-cover.jpg?itok=FPNjF65o 2x" media="(min-width: 0px)" />
+<!--[if IE 9]></video><![endif]-->
+<img srcset="http://object.cato.org/sites/cato.org/files/styles/resp__img__megapubs__default-2x/public/serials/covers/regulation-v37n4-cover.jpg?itok=FPNjF65o 188w" alt="" title="" />
+</picture></a>
+      </div>
+  
+
+      <div class="text-sans">
+  
+    
+      <p>Obesity remains a serious health problem and it is no secret that many people want to lose weight. Behavioral economists typically argue that “nudges” help individuals with various decisionmaking flaws to live longer, healthier, and better lives.&nbsp; In an article in the <a href="http://www.cato.org/regulation/winter-2014-2015">new issue of <em>Regulation</em></a>, Michael L. Marlow discusses how nudging by government differs from nudging by markets, and explains why <a href="http://object.cato.org/sites/cato.org/files/serials/files/regulation/2014/12/regulation-v37n4-1.pdf">market nudging</a> is the more promising avenue for helping citizens to lose weight.</p>
+
+      </div>
+  
+    </div>
+      </div>
+  
+  
+  
+  
+  
+  
+</div>  </div>
+
+  
+  </div>
+</div>
+  </div>
+</div>
+  </div>
+</div>
+</li>
+</ul></div></li>
+<li class="expanded reverse-flyout level-1 mega-top-link"><a href="/commentary">Commentary</a><div class="item-list"><ul class="expanded reverse-flyout level-1 mega-top-link"><li class="first last"><div id="block-panels-mini-commentary-megamenu-layout" class="block block-panels-mini">
+
+      
+  <div class="content">
+    <div class="panel-display panel-2col clearfix" id="mini-panel-commentary_megamenu_layout">
+  <div class="panel-panel panel-col-first">
+    <div class="inside"><div class="panel-pane pane-views-panes pane-multimedia-comm-mega"  >
+  
+      
+  
+  <div class="pane-content">
+    <div class="view view-multimedia view-id-multimedia view-display-id-comm_mega view-dom-id-cd5b913315e8b584cccae9b9642a325f">
+            <div class="view-header">
+      <p class="section-h3">Latest Multimedia</p>
+    </div>
+  
+  
+  
+      <div class="view-content">
+            
+      <div>
+  
+    
+      <a href="/multimedia/daily-podcast/end-socialism"><picture  title="The End of Socialism">
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source srcset="http://object.cato.org/sites/cato.org/files/styles/resp__img__megamulti__default/public/multimedia/podcast/base_daily_podcast2.jpg?itok=RmFV_CE9 1x, http://object.cato.org/sites/cato.org/files/styles/resp__img__megamulti__default-15x/public/multimedia/podcast/base_daily_podcast2.jpg?itok=ahQiqBaA 1.5x, http://object.cato.org/sites/cato.org/files/styles/resp__img__megamulti__default-2x/public/multimedia/podcast/base_daily_podcast2.jpg?itok=IRlPgFff 2x" media="(min-width: 0px)" />
+<!--[if IE 9]></video><![endif]-->
+<img srcset="http://object.cato.org/sites/cato.org/files/styles/Array/public/multimedia/podcast/base_daily_podcast2.jpg?itok=DHb_DgIa 1280w" alt="The End of Socialism" title="The End of Socialism" />
+</picture></a>
+      </div>
+  
+
+      <h4 class="sans-h4">
+  
+    
+      <a href="/multimedia/daily-podcast/end-socialism"><em>The End of Socialism</em></a>
+      </h4>
+  
+
+      <p class="mega-authors">
+  
+    
+      James R. Otteson
+      </p>
+  
+
+      <p class="text-sans">
+  
+    
+      <span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="2015-02-11T21:00:00-05:00">February 11, 2015</span>
+      </p>
+  
+        
+      <div>
+  
+    
+      <a href="/multimedia/media-highlights-radio/robert-levy-discusses-supreme-court-same-sex-marriage-bob-harden-0"><picture >
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source srcset="http://object.cato.org/sites/cato.org/files/styles/resp__img__megamulti__default/public/multimedia/radio-highlight/levy-radio.jpg?itok=wWQdBxPL 1x, http://object.cato.org/sites/cato.org/files/styles/resp__img__megamulti__default-15x/public/multimedia/radio-highlight/levy-radio.jpg?itok=3K2-o3Un 1.5x, http://object.cato.org/sites/cato.org/files/styles/resp__img__megamulti__default-2x/public/multimedia/radio-highlight/levy-radio.jpg?itok=d0p2wzyT 2x" media="(min-width: 0px)" />
+<!--[if IE 9]></video><![endif]-->
+<img srcset="http://object.cato.org/sites/cato.org/files/styles/Array/public/multimedia/radio-highlight/levy-radio.jpg?itok=mAt1jD86 1280w" alt="" title="" />
+</picture></a>
+      </div>
+  
+
+      <h4 class="sans-h4">
+  
+    
+      <a href="/multimedia/media-highlights-radio/robert-levy-discusses-supreme-court-same-sex-marriage-bob-harden-0">Robert A. Levy discusses the Supreme Court on same-sex marriage on <em>The Bob Harden Show</em></a>
+      </h4>
+  
+
+      <p class="text-sans">
+  
+    
+      <span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="2015-02-11T11:38:00-05:00">February 11, 2015</span>
+      </p>
+  
+      </div>
+  
+  
+  
+      <h4 class="section-h3 more-link">
+  <a href="/multimedia">
+    More Multimedia  </a>
+</h4>  
+  
+  
+</div>  </div>
+
+  
+  </div>
+</div>
+  </div>
+
+  <div class="panel-panel panel-col-last">
+    <div class="inside"><div class="panel-pane pane-views-panes pane-publications-oped-mega"  >
+  
+      
+  
+  <div class="pane-content">
+    <div class="view view-publications view-id-publications view-display-id-oped_mega view-dom-id-7e3e2d472f7d5fe7565652e3e722b87e">
+            <div class="view-header">
+      <p class="section-h3">Latest Commentary</p>    </div>
+  
+  
+  
+      <div class="view-content">
+            
+      <h4 class="sans-h4">
+  
+    
+      <a href="/publications/commentary/misinterpreting-obamacare-save-it">Misinterpreting Obamacare to Save It</a>
+      </h4>
+  
+
+      <p class="mega-authors">
+  
+    
+      <a href="/people/robert-levy" typeof="foaf:Person" property="foaf:name" rel="foaf:publications" html="1">Robert A. Levy</a>
+      </p>
+  
+
+      <div class="text-sans inline">
+  
+    
+      <p>Nothing supports the government’s contention that it deserves a do-over.</p>
+
+      </div>
+  
+      </div>
+  
+  
+  
+      <h4 class="section-h3 more-link">
+  <a href="/publications/archives/commentary">
+    More Commentary  </a>
+</h4>  
+  
+  
+</div>  </div>
+
+  
+  </div>
+<div class="panel-separator"></div><div class="panel-pane pane-views-panes pane-blog-blog-mega"  >
+  
+      
+  
+  <div class="pane-content">
+    <div class="view view-blog view-id-blog view-display-id-blog_mega view-dom-id-ad11e3b64eadab1e7dc3b0b178af3727">
+            <div class="view-header">
+      <p class="section-h3">Latest Blog Post</p>    </div>
+  
+  
+  
+      <div class="view-content">
+          <div class="blog-entry first last odd">
+      
+      <h4 class="sans-h4">
+  
+    
+      <a href="/blog/real-climate-terror">The Real Climate Terror</a>
+      </h4>
+  
+
+      <p class="mega-authors">
+  
+    
+      <a href="/people/patrick-michaels" typeof="foaf:Person" property="foaf:name" rel="foaf:publications" html="1">Patrick J. Michaels</a>
+      </p>
+  
+
+      <div class="text-sans inline">
+  
+    
+      <p>The Obama Administration is sticking to its talking points claiming climate change affects us more than terrorism&#8211;it might be valuable to compare and contrast the real life affects Americans endure from both of these threats.</p>
+
+      </div>
+  
+    </div>
+      </div>
+  
+  
+  
+      <h4 class="section-h3 more-link">
+  <a href="/blog">
+    More Blog Posts  </a>
+</h4>  
+  
+  
+</div>  </div>
+
+  
+  </div>
+</div>
+  </div>
+</div>
+  </div>
+</div>
+</li>
+</ul></div></li>
+<li class="expanded reverse-flyout level-1 mega-top-link"><a href="http://www.cato.org/store/">Store</a><div class="item-list"><ul class="expanded reverse-flyout level-1 mega-top-link"><li class="first last"><div id="block-panels-mini-store-megamenu-layout" class="block block-panels-mini two-col-7030">
+
+      
+  <div class="content">
+    <div class="panel-display panel-2col clearfix" id="mini-panel-store_megamenu_layout">
+  <div class="panel-panel panel-col-first">
+    <div class="inside"><div class="panel-pane pane-block pane-menu-block-3 pane-menu-block "  >
+  
+      
+  
+  <div class="pane-content">
+    <div class="menu-block-wrapper menu-block-3 menu-name-main-menu parent-mlid-478 menu-level-1">
+  <ul class="menu"><li class="first leaf menu-mlid-9613 level-2"><a href="http://store.cato.org/books">Books</a></li>
+<li class="leaf menu-mlid-9616 level-2"><a href="http://store.cato.org/subscribe">Subscriptions</a></li>
+<li class="leaf menu-mlid-9619 level-2"><a href="http://store.cato.org/catalog/merchandise">Merchandise</a></li>
+<li class="leaf menu-mlid-9620 level-2"><a href="http://ocs.landsend.com/cd/frontdoor?store_name=Cato&amp;store_type=3" target="_blank">Lands&#039; End Apparel</a></li>
+<li class="last leaf menu-mlid-9625 level-2"><a href="http://store.cato.org/cart">My Cart</a></li>
+</ul></div>
+  </div>
+
+  
+  </div>
+</div>
+  </div>
+
+  <div class="panel-panel panel-col-last">
+    <div class="inside"><div class="panel-pane pane-views-panes pane-books-book-mega"  >
+  
+      
+  
+  <div class="pane-content">
+    <div class="view view-books view-id-books view-display-id-book_mega view-dom-id-b0e9476ab8eee3317a1170f0a9fe5b12">
+            <div class="view-header">
+      <p class="section-h3">Featured Book</p>    </div>
+  
+  
+  
+      <div class="view-content">
+          <article class="pub-books first last odd">
+      
+      <div class="featured-book">
+  
+    
+      <a href="http://store.cato.org/books/libertarian-mind"><picture >
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source srcset="http://object.cato.org/sites/cato.org/files/styles/resp__img__megabooks__default/public/books/libertarian-mind-cover.jpg?itok=pgAcZnPG 1x, http://object.cato.org/sites/cato.org/files/styles/resp__img__megabooks__default-15x/public/books/libertarian-mind-cover.jpg?itok=uTOYoPrh 1.5x, http://object.cato.org/sites/cato.org/files/styles/resp__img__megabooks__default-2x/public/books/libertarian-mind-cover.jpg?itok=MGYIfLKF 2x" media="(min-width: 0px)" />
+<!--[if IE 9]></video><![endif]-->
+<img srcset="http://object.cato.org/sites/cato.org/files/styles/resp__img__megabooks__default-2x/public/books/libertarian-mind-cover.jpg?itok=MGYIfLKF 220w" alt="" title="" />
+</picture></a>
+      </div>
+  
+
+      <h4 class="sans-h4">
+  
+    
+      <a href="http://store.cato.org/books/libertarian-mind">The Libertarian Mind: A Manifesto for Freedom</a>
+      </h4>
+  
+
+      <p class="mega-authors">
+  
+    
+      <a href="/people/david-boaz" typeof="foaf:Person" property="foaf:name" rel="foaf:publications" html="1">David Boaz</a>
+      </p>
+  
+
+      <div class="text-sans">
+  
+    
+      <p>Two long wars, chronic deficits, the financial crisis, the costly drug war, the growth of executive power under Presidents Bush and Obama, and the revelations about NSA abuses, have  given rise to a growing libertarian movement in our country – with a greater focus on individual liberty and less government power.   David Boaz’s newly released <em>The Libertarian Mind</em> is a comprehensive guide to the history, philosophy, and growth of the liberation movement, with incisive analyses of today’s most pressing issues and policies.  </p>
+
+      </div>
+  
+    </article>
+      </div>
+  
+  
+  
+  
+  
+  
+</div>  </div>
+
+  
+  </div>
+</div>
+  </div>
+</div>
+  </div>
+</div>
+</li>
+</ul></div></li>
+<li class="expanded reverse-flyout level-1 mega-top-link last"><a href="/support">Support</a><div class="item-list"><ul class="expanded reverse-flyout level-1 mega-top-link"><li class="first last"><div id="block-panels-mini-support-megamenu-layout" class="block block-panels-mini two-col-7030">
+
+      
+  <div class="content">
+    <div class="panel-display panel-2col clearfix" id="mini-panel-support_megamenu_layout">
+  <div class="panel-panel panel-col-first">
+    <div class="inside"><div class="panel-pane pane-block pane-menu-block-4 pane-menu-block "  >
+  
+      
+  
+  <div class="pane-content">
+    <div class="menu-block-wrapper menu-block-4 menu-name-main-menu parent-mlid-8030 menu-level-1">
+  <ul class="menu"><li class="first leaf menu-mlid-9639 level-2"><a href="/support/gift-planning">Other Ways to Give</a></li>
+<li class="leaf menu-mlid-9638 level-2"><a href="/support/matchinggifts">Double Your Donation</a></li>
+<li class="leaf menu-mlid-9698 level-2"><a href="/support/levels-of-benefits">Benefits of Cato Sponsorship</a></li>
+<li class="leaf menu-mlid-9637 level-2"><a href="https://secure.cato.org/support/renew.html">Renew</a></li>
+<li class="last leaf menu-mlid-9636 level-2"><a href="https://securessl.cato.org/support/donate">Donate Now</a></li>
+</ul></div>
+  </div>
+
+  
+  </div>
+</div>
+  </div>
+
+  <div class="panel-panel panel-col-last">
+    <div class="inside"><div class="panel-pane pane-custom pane-1"  >
+  
+      
+  
+  <div class="pane-content">
+    <p class="section-h3">The Impact of the Cato Institute</p>
+
+<div class="featured-book"><a href="https://secure.cato.org/support/donate.html" title="Donate Now"><img src="http://object.cato.org/sites/cato.org/files/images/of-special-note/eagle_sm.jpg" /></a></div>
+
+<p class="text-sans">For over 30 years, the Cato Institute has worked to change the climate of ideas. The cumulative effect of this effort is real impact today. <a href="http://www.cato.org/support/impact">Here&#8217;s how</a> Cato puts <a href="https://secure.cato.org/support/donate.html" title="Donate Now">Sponsors’ contributions</a> to work.</p>  </div>
+
+  
+  </div>
+</div>
+  </div>
+</div>
+  </div>
+</div>
+</li>
+</ul></div></li>
+</ul></div>  </div>
+</div>
+<nav id="block-menu-menu-submenu" class="block block-menu nav-sub">
+  <div class="content">
+    <ul class="menu"><li class="first leaf level-1"><a href="/about">About Cato</a></li>
+<li class="leaf level-1"><a href="/blog">Blog</a></li>
+<li class="leaf level-1"><a href="/people/policy-scholars">Our Experts</a></li>
+<li class="leaf level-1"><a href="/for-media">For Media</a></li>
+<li class="leaf level-1"><a href="http://www.facebook.com/CatoInstitute" rel="me" target="_blank"><i class="fa fa-facebook-square"></i>Facebook</a></li>
+<li class="last leaf level-1"><a href="http://twitter.com/catoinstitute" rel="me" target="_blank"><i class="fa fa-twitter"></i>Twitter</a></li>
+</ul>  </div>
+</nav><div id="block-block-57" class="block block-block hdr-search">
+
+      
+  <div class="content">
+    <form class="search-form" action="http://find.cato.org/search" method="get" id="search-block-form" accept-charset="UTF-8" target="_self"><div><div class="container-inline">
+      <h2 class="element-invisible">Search form</h2>
+    <div class="form-item form-type-searchfield form-item-search-block-form">
+  <label class="element-invisible" for="edit-search-block-form--2">Search this site </label>
+ <input title="Enter the terms you wish to search for." class="custom-search-box form-text form-search" placeholder="Search" type="search" id="edit-search-block-form--2" name="q" value="" size="15" maxlength="128">
+</div>
+<div class="form-actions form-wrapper" id="edit-actions"><input type="submit" id="edit-submit" name="op" value="Search" class="form-submit"></div>
+<input type="hidden" name="client" value="default_frontend">
+         <input type="hidden" name="output" value="xml_no_dtd">
+         <input type="hidden" name="proxystylesheet" value="default_frontend">
+         <input type="hidden" name="sort" value="date:D:L:d1">
+         <input type="hidden" name="entsp" value="a__cato_policy_drew0115">
+         <input type="hidden" name="wc" value="200">
+         <input type="hidden" name="wc_mc" value="1">
+         <input type="hidden" name="oe" value="UTF-8"><input type="hidden" name="ie" value="UTF-8">
+         <input type="hidden" name="ud" value="1">
+         <input type="hidden" name="exclude_apps" value="1"><input type="hidden" name="site" value="default_collection">
+</div>
+</div></form>  </div>
+</div>
+  </div>
+        <!--googleon: index-->
+
+  </div>
+</header> <!-- /#header -->
+
+<div class="wrapper">
+  <div id="content" role="main">
+
+        <!--googleoff: index-->  <div class="region region-prescript">
+    <div id="block-block-18" class="block block-block">
+
+      
+  <div class="content">
+    <hgroup id="sub-nav-trigger" class="page-head">
+  <h1 class="section-h1 section-title">Gun Control</h1>
+  <div class="arrow-down"></div>
+    <ul class="section-nav">
+        <li><a href="/rss/research/gun-control">RSS</a></li>
+    </ul>
+</hgroup>  </div>
+</div>
+  </div>
+<!--googleon: index-->
+    
+    <section id="page-area">
+      <a id="main-content"></a>
+                              <div class="tabs"></div>                          <div class="region region-content">
+    <div id="block-system-main" class="block block-system">
+
+      
+  <div class="content">
+    <div class="topic-detail-section ui-block-1">
+  
+  <div class="text">
+    <article id="taxonomy-term-53" class="taxonomy-term vocabulary-topics">
+
+  
+  <div class="content">
+    <div class="taxonomy-term-description">
+<p>For decades, the Second Amendment was consigned to constitutional exile, all but erased from constitutional law textbooks and effectively banished from the nation’s courts. But no more. Recent developments in the law and in political culture have begun the process of returning the amendment to its proper place in our constitutional pantheon. Congress now has a historic opportunity, not simply to stave off new gun-control proposals, but to begin restoring Americans’ right to keep and bear arms.</p>
+<p><a href="http://www.cato.org/guns-and-self-defense">View Cato&#8217;s Interactive Google Map on Guns and Self Defense</a></p>
+</div>  </div>
+
+</article>  </div>
+</div>  </div>
+</div>
+  </div>
+            <!--googleoff: index-->
+                      <aside class="region region-sidebar-second">
+    <div id="block-views-ra-featured-topic-cur" class="block block-views ui-block-2">
+
+      <h3 class="section-h3">Featured</h3>
+    
+  <div class="content">
+    <div class="view view-ra-featured view-id-ra_featured view-display-id-topic_cur view-dom-id-fdb13fcda1cb84386ced52d0c5acb7c4">
+        
+  
+  
+      <div class="view-empty">
+      <div class="view view-ra-featured view-id-ra_featured view-display-id-topic_recent view-dom-id-c97c74dac2382fe58c4e33ccffd1fac1">
+        
+  
+  
+      <div class="view-content">
+          <article class="side-article">
+      
+      <h4 class="sans-h4">
+  
+    
+      <a href="/publications/commentary/joe-plumber-said-dead-kids-dont-trump-constitutional-rights-could-he-be">Joe the Plumber Said ‘Your Dead Kids Don&#8217;t Trump My Constitutional Rights.’ Could He Be Right?</a>
+      </h4>
+  
+
+      <div class="byline">
+  
+    
+      <a href="/people/robert-levy" typeof="foaf:Person" property="foaf:name" rel="foaf:publications" html="1">Robert A. Levy</a> in Washington Post
+      </div>
+  
+
+      <div class="text-sans">
+  
+    
+      He incited near universal furor. But is there a kernel of truth to that claim?
+      </div>
+  
+    </article>
+      <article class="side-article">
+      
+      <h4 class="sans-h4">
+  
+    
+      <a href="/publications/commentary/guns-supreme-court-second-amendment-privilege-not-right">Guns and Supreme Court: Is Second Amendment a Privilege, Not a Right?</a>
+      </h4>
+  
+
+      <div class="byline">
+  
+    
+      <a href="/people/trevor-burrus" typeof="foaf:Person" property="foaf:name" rel="foaf:publications" html="1">Trevor Burrus</a> in Fox News (Online)
+      </div>
+  
+
+      <div class="text-sans">
+  
+    
+      Eventually, the Court will have decide if it was serious when it held that the Second Amendment protects an individual’s right to keep and bear arms.
+      </div>
+  
+    </article>
+      </div>
+  
+  
+  
+  
+  
+  
+</div>    </div>
+  
+  
+  
+  
+  
+  
+</div>  </div>
+</div>
+  </aside>
+                      <section class="region region-postscript">
+    <div id="block-listingblocks-listingblocks-topic" class="block block-listingblocks clearfix">
+
+      
+  <div class="content">
+    <h3 class="section-heading">More on Gun Control</h3><div class="experts-more"><div class="experts-more-block"><h3 class="page-h2">Commentary</h3><div class="view view-publications view-id-publications view-display-id-oped_topic_block view-dom-id-dd52184f0a2449859fade8b62ef9f9e0">
+        
+  
+  
+      <div class="view-content">
+            
+      <p class="text-large experts-more-h">
+  
+    
+      <a href="/publications/commentary/joe-plumber-said-dead-kids-dont-trump-constitutional-rights-could-he-be">Joe the Plumber Said ‘Your Dead Kids Don&#8217;t Trump My Constitutional Rights.’ Could He Be Right?</a>
+      </p>
+  
+
+      <p class="text-sans">
+  
+    
+      By Robert A. Levy. Washington Post. <span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="2014-06-13T14:10:00-04:00">June 13, 2014</span>.
+      </p>
+  
+        
+      <p class="text-large experts-more-h">
+  
+    
+      <a href="/publications/commentary/guns-supreme-court-second-amendment-privilege-not-right">Guns and Supreme Court: Is Second Amendment a Privilege, Not a Right?</a>
+      </p>
+  
+
+      <p class="text-sans">
+  
+    
+      By Trevor Burrus. Fox News (Online). <span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="2014-05-13T15:06:00-04:00">May 13, 2014</span>.
+      </p>
+  
+        
+      <p class="text-large experts-more-h">
+  
+    
+      <a href="/publications/commentary/second-amendment-case-supreme-court-must-take">The Second Amendment Case the Supreme Court Must Take</a>
+      </p>
+  
+
+      <p class="text-sans">
+  
+    
+      By Ilya Shapiro. The Blaze. <span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="2014-02-21T11:48:00-05:00">February 21, 2014</span>.
+      </p>
+  
+      </div>
+  
+  
+  
+      <h4 class="section-h3 more-link">
+  <a href="/research/53/commentary">
+    More Commentary  </a>
+</h4>  
+  
+  
+</div></div><div class="experts-more-block"><h3 class="page-h2">Cato Studies</h3><div class="view view-publications view-id-publications view-display-id-studies_t_block view-dom-id-d1242336b7ada66ed8c3f279155bdbe7">
+        
+  
+  
+      <div class="view-content">
+            
+      <p class="text-large experts-more-h">
+  
+    
+      <a href="/publications/white-paper/tough-targets-when-criminals-face-armed-resistance-citizens">Tough Targets: When Criminals Face Armed Resistance from Citizens</a>
+      </p>
+  
+
+      <p class="text-sans">
+  
+    
+      By Clayton E. Cramer and David Burnett. White Paper. <span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="2012-02-02T00:00:00-05:00">February 2, 2012</span>.
+      </p>
+  
+        
+      <p class="text-large experts-more-h">
+  
+    
+      <a href="/publications/policy-analysis/there-goes-neighborhood-bushashcroft-plan-help-localities-fight-gun-crime">There Goes the Neighborhood: The Bush-Ashcroft Plan to “Help” Localities Fight Gun Crime</a>
+      </p>
+  
+
+      <p class="text-sans">
+  
+    
+      By Gene Healy. Policy Analysis No. 440. <span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="2002-05-28T00:00:00-04:00">May 28, 2002</span>.
+      </p>
+  
+        
+      <p class="text-large experts-more-h">
+  
+    
+      <a href="/publications/policy-analysis/pistol-whipped-baseless-lawsuits-foolish-laws">Pistol Whipped: Baseless Lawsuits, Foolish Laws</a>
+      </p>
+  
+
+      <p class="text-sans">
+  
+    
+      By Robert A. Levy. Policy Analysis No. 400. <span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="2001-05-09T00:00:00-04:00">May 9, 2001</span>.
+      </p>
+  
+      </div>
+  
+  
+  
+      <h4 class="section-h3 more-link">
+  <a href="/research/53/studies">
+    More Cato Studies  </a>
+</h4>  
+  
+  
+</div></div><div class="experts-more-block"><h3 class="page-h2">Articles</h3><div class="view view-articles view-id-articles view-display-id-topic_block view-dom-id-a35b57f44ab82e32b7789c3d374e8440">
+        
+  
+  
+      <div class="view-content">
+            
+      <p class="text-large experts-more-h">
+  
+    
+      <a href="/articles/bloomberg-rules">Bloomberg Rules</a>
+      </p>
+  
+
+  
+    
+      <p class="text-sans">
+  
+
+  
+    
+      David B. Kopel.
+  
+
+  
+    
+      America&#039;s First Freedom.
+  
+
+  
+    
+      
+January 2014.
+  
+
+  
+    
+      </p>
+  
+        
+      <p class="text-large experts-more-h">
+  
+    
+      <a href="/articles/more-friends-second-amendment-walk-through-amicus-briefs-mcdonald-v-city-chicago">More Friends of the Second Amendment: A Walk through the Amicus Briefs in McDonald v. City of Chicago</a>
+      </p>
+  
+
+  
+    
+      <p class="text-sans">
+  
+
+  
+    
+      Ilya Shapiro.
+  
+
+  
+    
+      Journal on Firearms &amp; Public Policy.
+  
+
+  
+    
+      Vol. 5.
+  
+
+  
+    
+      No. 22.
+  
+
+  
+    
+      
+Fall 2010.
+  
+
+  
+    
+      </p>
+  
+        
+      <p class="text-large experts-more-h">
+  
+    
+      <a href="/articles/keeping-pandoras-box-sealed-privileges-or-immunities-constitution-2020-properly-extending">Keeping Pandora&#8217;s Box Sealed: Privileges or Immunities, The Constitution in 2020, and Properly Extending the Right to Keep and Bear Arms to the States</a>
+      </p>
+  
+
+  
+    
+      <p class="text-sans">
+  
+
+  
+    
+      Ilya Shapiro.
+  
+
+  
+    
+      The Georgetown Journal of Law &amp; Public Policy.
+  
+
+  
+    
+      Vol. 8.
+  
+
+  
+    
+      No. 1.
+  
+
+  
+    
+      
+Winter 2010.
+  
+
+  
+    
+      </p>
+  
+      </div>
+  
+  
+  
+      <h4 class="section-h3 more-link">
+  <a href="/research/53/articles">
+    More Articles  </a>
+</h4>  
+  
+  
+</div></div><div class="experts-more-block"><h3 class="page-h2">Public Filings</h3><div class="view view-publications view-id-publications view-display-id-test_topic_block view-dom-id-71873616c54063cebdf21ac4edb26cc6">
+        
+  
+  
+      <div class="view-content">
+            
+      <p class="text-large experts-more-h">
+  
+    
+      <a href="/publications/legal-briefs/drake-v-jerejian">Drake v. Jerejian</a>
+      </p>
+  
+
+      <p class="text-sans">
+  
+    
+      By Ilya Shapiro, Trevor Burrus, and Julio Colomba. Legal Briefs. <span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="2014-02-12T15:08:00-05:00">February 12, 2014</span>.
+      </p>
+  
+        
+      <p class="text-large experts-more-h">
+  
+    
+      <a href="/publications/legal-briefs/woollard-v-gallagher">Woollard v. Gallagher</a>
+      </p>
+  
+
+      <p class="text-sans">
+  
+    
+      By Ilya Shapiro. Legal Briefs. <span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="2013-08-12T09:32:00-04:00">August 12, 2013</span>.
+      </p>
+  
+        
+      <p class="text-large experts-more-h">
+  
+    
+      <a href="/publications/legal-briefs/kachalsky-v-cacace">Kachalsky v. Cacace</a>
+      </p>
+  
+
+      <p class="text-sans">
+  
+    
+      By Ilya Shapiro. Legal Briefs. <span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="2013-02-11T14:30:00-05:00">February 11, 2013</span>.
+      </p>
+  
+      </div>
+  
+  
+  
+      <h4 class="section-h3 more-link">
+  <a href="/research/53/public-filings">
+    More Public Filings  </a>
+</h4>  
+  
+  
+</div></div><div class="experts-more-block"><h3 class="page-h2">Cato Reviews & Journals</h3><div class="view view-reviews-journals view-id-reviews_journals view-display-id-topic_block view-dom-id-25f70dbc85aeb342f6d5f0ee5be18a9a">
+        
+  
+  
+      <div class="view-content">
+            
+      <p class="text-large experts-more-h">
+  
+    
+      <a href="/regulation/fall-2013/insurance-gun-control">Insurance as Gun Control?</a>
+      </p>
+  
+
+  
+    
+      <p class="text-sans">
+  
+
+  
+    
+      Stephen G. Gilles and Nelson Lund.
+  
+
+  
+    
+      Regulation.
+  
+
+  
+    
+      
+Fall 2013.
+  
+
+  
+    
+      </p>
+  
+        
+      <p class="text-large experts-more-h">
+  
+    
+      <a href="/publications/catos-letter/our-core-second-amendment-rights">Our Core Second Amendment Rights</a>
+      </p>
+  
+
+  
+    
+      <p class="text-sans">
+  
+
+  
+    
+      Robert A. Levy.
+  
+
+  
+    
+      Cato&#039;s Letter.
+  
+
+  
+    
+      
+Summer 2013.
+  
+
+  
+    
+      </p>
+  
+        
+      <p class="text-large experts-more-h">
+  
+    
+      <a href="/policy-report/mayjune-2013/truth-about-gun-control">The Truth about Gun Control</a>
+      </p>
+  
+
+  
+    
+      <p class="text-sans">
+  
+
+  
+    
+      Policy Report.
+  
+
+  
+    
+      
+May/June 2013.
+  
+
+  
+    
+      </p>
+  
+      </div>
+  
+  
+  
+      <h4 class="section-h3 more-link">
+  <a href="/research/53/reviews">
+    More Reviews &amp; Journals  </a>
+</h4>  
+  
+  
+</div></div><div class="experts-more-block"><h3 class="page-h2">Events</h3><div class="view view-events view-id-events view-display-id-topic_block view-dom-id-befa721871547b05b26b0e8352598a30">
+        
+  
+  
+      <div class="view-content">
+            
+      <p class="text-large experts-more-h">
+  
+    
+      <a href="/events/blue-tent-sky-how-lefts-war-guns-cost-me-son-freedom"><em>The Blue Tent Sky: How the Left’s War on Guns Cost Me My Son and My Freedom</em></a>
+      </p>
+  
+
+      <p class="text-sans">
+  
+    
+      Featuring Walter Olson and Tim Lynch. <span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="2014-12-11T12:00:00-05:00">December 11, 2014</span>. Book Forum.
+      </p>
+  
+        
+      <p class="text-large experts-more-h">
+  
+    
+      <a href="/events/engaging-courts-guns-gays-lying-politicians">Engaging the Courts: Guns, Gays, and Lying Politicians</a>
+      </p>
+  
+
+      <p class="text-sans">
+  
+    
+      Featuring Ilya Shapiro and Caleb O. Brown. <span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="2014-03-20T14:00:00-04:00">March 20, 2014</span>. Sponsor E-Briefing.
+      </p>
+  
+        
+      <p class="text-large experts-more-h">
+  
+    
+      <a href="/events/brink-will-obama-push-us-over-edge"><em>At the Brink: Will Obama Push Us Over the Edge?</em></a>
+      </p>
+  
+
+      <p class="text-sans">
+  
+    
+      Featuring John R. Lott, Jr. and David Boaz. <span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="2013-04-19T12:00:00-04:00">April 19, 2013</span>. Book Forum.
+      </p>
+  
+      </div>
+  
+  
+  
+      <h4 class="section-h3 more-link">
+  <a href="/research/53/events">
+    More Events  </a>
+</h4>  
+  
+  
+</div></div></div>  </div>
+</div>
+<div id="block-views-books-topic-block" class="block block-views section books-section clearfix">
+
+      <h3 class="section-h3">Books</h3>
+    
+  <div class="content">
+    <div class="view view-books view-id-books view-display-id-topic_block books-listing view-dom-id-cf03d88c63fda9c3833bccb4648eda94">
+        
+  
+  
+      <div class="view-content">
+          <article class="books first odd">
+      
+      <div class="featured-book">
+  
+    
+      <a href="http://store.cato.org/books/truth-about-gun-control"><picture >
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source srcset="http://object.cato.org/sites/cato.org/files/styles/resp__img__pub-books-default/public/books/kopelcover_bookstorephoto_0.jpg?itok=KruoE9Qj 1x, http://object.cato.org/sites/cato.org/files/styles/resp__img__pub-books-15x/public/books/kopelcover_bookstorephoto_0.jpg?itok=mj0ZMbyp 1.5x, http://object.cato.org/sites/cato.org/files/styles/resp__img__pub-books-2x/public/books/kopelcover_bookstorephoto_0.jpg?itok=y7l7pGOn 2x" media="(min-width: 0px)" />
+<!--[if IE 9]></video><![endif]-->
+<img srcset="http://object.cato.org/sites/cato.org/files/styles/resp__img__pub-books-2x/public/books/kopelcover_bookstorephoto_0.jpg?itok=y7l7pGOn 120w" alt="" title="" />
+</picture></a>
+      </div>
+  
+
+      <h4 class="sans-h4">
+  
+    
+      <a href="http://store.cato.org/books/truth-about-gun-control">The Truth About Gun Control</a>
+      </h4>
+  
+
+      <div class="byline">
+  
+    
+      <a href="/people/david-kopel" typeof="foaf:Person" property="foaf:name" rel="foaf:publications" html="1">David B. Kopel</a>
+      </div>
+  
+
+      <div class="text-sans">
+  
+    
+      <span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="2013-03-26T11:09:00-04:00">March 2013</span>
+      </div>
+  
+    </article>
+      <article class="books even">
+      
+      <div class="featured-book">
+  
+    
+      <a href="http://www.cato.org/store/books/gun-control-trial-inside-supreme-court-battle-over-second-amendment-hardback"><picture >
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source srcset="http://object.cato.org/sites/cato.org/files/styles/resp__img__pub-books-default/public/books/guncontrolontrial.jpg?itok=yOSO66P0 1x, http://object.cato.org/sites/cato.org/files/styles/resp__img__pub-books-15x/public/books/guncontrolontrial.jpg?itok=sDtxfuc6 1.5x, http://object.cato.org/sites/cato.org/files/styles/resp__img__pub-books-2x/public/books/guncontrolontrial.jpg?itok=UA3ACwH0 2x" media="(min-width: 0px)" />
+<!--[if IE 9]></video><![endif]-->
+<img srcset="http://object.cato.org/sites/cato.org/files/styles/resp__img__pub-books-2x/public/books/guncontrolontrial.jpg?itok=UA3ACwH0 120w" alt="" title="" />
+</picture></a>
+      </div>
+  
+
+      <h4 class="sans-h4">
+  
+    
+      <a href="http://www.cato.org/store/books/gun-control-trial-inside-supreme-court-battle-over-second-amendment-hardback">Gun Control On Trial: Inside the Supreme Court Battle over the Second Amendment</a>
+      </h4>
+  
+
+      <div class="byline">
+  
+    
+      Brian Doherty
+      </div>
+  
+
+      <div class="text-sans">
+  
+    
+      <span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="2008-11-03T23:00:00-05:00">November 2008</span>
+      </div>
+  
+    </article>
+      <article class="books last odd">
+      
+      <div class="featured-book">
+  
+    
+      <a href="http://www.cato.org/store/books/shakedown-how-corporations-government-trial-lawyers-abuse-judicial-process-hardback"><picture >
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source srcset="http://object.cato.org/sites/cato.org/files/styles/resp__img__pub-books-default/public/books/shakedown.jpg?itok=UXmhdz68 1x, http://object.cato.org/sites/cato.org/files/styles/resp__img__pub-books-15x/public/books/shakedown.jpg?itok=Xjrq8kIc 1.5x, http://object.cato.org/sites/cato.org/files/styles/resp__img__pub-books-2x/public/books/shakedown.jpg?itok=dnfePJ7o 2x" media="(min-width: 0px)" />
+<!--[if IE 9]></video><![endif]-->
+<img srcset="http://object.cato.org/sites/cato.org/files/styles/resp__img__pub-books-2x/public/books/shakedown.jpg?itok=dnfePJ7o 120w" alt="" title="" />
+</picture></a>
+      </div>
+  
+
+      <h4 class="sans-h4">
+  
+    
+      <a href="http://www.cato.org/store/books/shakedown-how-corporations-government-trial-lawyers-abuse-judicial-process-hardback">Shakedown: How Corporations, Government, and Trial Lawyers Abuse the Judicial Process</a>
+      </h4>
+  
+
+      <div class="byline">
+  
+    
+      <a href="/people/robert-levy" typeof="foaf:Person" property="foaf:name" rel="foaf:publications" html="1">Robert A. Levy</a>
+      </div>
+  
+
+      <div class="text-sans">
+  
+    
+      <span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="2004-06-27T00:00:00-04:00">June 2004</span>
+      </div>
+  
+    </article>
+      </div>
+  
+  
+  
+  
+  
+  
+</div>  </div>
+</div>
+<div id="block-block-32" class="block block-block section video-section clearfix">
+
+      <h3 class="section-h3">Multimedia</h3>
+    
+  <div class="content">
+    <div class="cp_tile "><div class="view view-multimedia view-id-multimedia view-display-id-topic_block_list multimedia-list view-dom-id-3c5cc7259fd3337c0989e94da4807975">
+        
+  
+      <div class="attachment attachment-before">
+      <div class="view view-multimedia view-id-multimedia view-display-id-topic_player multimedia-player">
+        
+  
+  
+      <div class="view-content">
+            
+      <div class="embed-container">
+  
+    
+      <iframe src="http://www.cato.org/longtail-iframe/node/56382/field_longtail_player/0" width="640" height="360" frameborder="0" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>
+      </div>
+  
+
+      <h2 class="page-h2">
+  
+    
+      <a href="/multimedia/cato-audio/brian-aitken-blue-tent-sky">Brian Aitken on <em>The Blue Tent Sky</em></a>
+      </h2>
+  
+
+      <p class="text-sans">
+  
+    
+      <span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="2015-02-02T15:35:00-05:00">February 2, 2015</span>
+      </p>
+  
+      </div>
+  
+  
+  
+  
+  
+  
+</div>    </div>
+  
+      <div class="view-content">
+        <ul class="media-playlist">
+    <li>
+      
+      <div class="media-thumb">
+  
+    
+      <a href="/multimedia/events/blue-tent-sky-how-lefts-war-guns-cost-me-son-freedom"><picture  title="The Blue Tent Sky: How the Left’s War on Guns Cost Me My Son and My Freedom">
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source srcset="http://object.cato.org/sites/cato.org/files/styles/resp__img__multimedia-sides/public/multimedia/2014/cbf-12-11-14.jpg?itok=bmA-FXc- 1x, http://object.cato.org/sites/cato.org/files/styles/resp__img__multimedia-sides-15x/public/multimedia/2014/cbf-12-11-14.jpg?itok=0-7fGlVj 1.5x, http://object.cato.org/sites/cato.org/files/styles/resp__img__multimedia-sides-2x/public/multimedia/2014/cbf-12-11-14.jpg?itok=clYqzJMc 2x" media="(min-width: 0px)" />
+<!--[if IE 9]></video><![endif]-->
+<img srcset="http://object.cato.org/sites/cato.org/files/styles/Array/public/multimedia/2014/cbf-12-11-14.jpg?itok=R6DdE8AN 1280w" alt="The Blue Tent Sky: How the Left’s War on Guns Cost Me My Son and My Freedom" title="The Blue Tent Sky: How the Left’s War on Guns Cost Me My Son and My Freedom" />
+</picture></a>
+      </div>
+  
+
+      <h4 class="sans-h4">
+  
+    
+      <a href="/multimedia/events/blue-tent-sky-how-lefts-war-guns-cost-me-son-freedom"><em>The Blue Tent Sky: How the Left’s War on Guns Cost Me My Son and My Freedom</em></a>
+      </h4>
+  
+
+      <p class="text-sans">
+  
+    
+      <span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="2014-12-11T12:00:00-05:00">December 11, 2014</span>
+      </p>
+  
+    </li>
+      <li>
+      
+      <div class="media-thumb">
+  
+    
+      <a href="/multimedia/daily-podcast/hemp-guns-national-security"><picture  title="Hemp, Guns, and National Security">
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source srcset="http://object.cato.org/sites/cato.org/files/styles/resp__img__multimedia-sides/public/multimedia/podcast/base_daily_podcast2.jpg?itok=IfLwmPUj 1x, http://object.cato.org/sites/cato.org/files/styles/resp__img__multimedia-sides-15x/public/multimedia/podcast/base_daily_podcast2.jpg?itok=CTIHUOy6 1.5x, http://object.cato.org/sites/cato.org/files/styles/resp__img__multimedia-sides-2x/public/multimedia/podcast/base_daily_podcast2.jpg?itok=Amr30J9b 2x" media="(min-width: 0px)" />
+<!--[if IE 9]></video><![endif]-->
+<img srcset="http://object.cato.org/sites/cato.org/files/styles/Array/public/multimedia/podcast/base_daily_podcast2.jpg?itok=DHb_DgIa 1280w" alt="Hemp, Guns, and National Security" title="Hemp, Guns, and National Security" />
+</picture></a>
+      </div>
+  
+
+      <h4 class="sans-h4">
+  
+    
+      <a href="/multimedia/daily-podcast/hemp-guns-national-security">Hemp, Guns, and National Security</a>
+      </h4>
+  
+
+      <p class="byline">
+  
+    
+      Rep. Thomas Massie (R-KY)
+      </p>
+  
+
+      <p class="text-sans">
+  
+    
+      <span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="2014-07-31T17:09:00-04:00">July 31, 2014</span>
+      </p>
+  
+    </li>
+      <li>
+      
+      <div class="media-thumb">
+  
+    
+      <a href="/multimedia/daily-podcast/second-amendment-applies-dc"><picture  title="The Second Amendment Applies in D.C.">
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source srcset="http://object.cato.org/sites/cato.org/files/styles/resp__img__multimedia-sides/public/multimedia/podcast/base_daily_podcast2.jpg?itok=IfLwmPUj 1x, http://object.cato.org/sites/cato.org/files/styles/resp__img__multimedia-sides-15x/public/multimedia/podcast/base_daily_podcast2.jpg?itok=CTIHUOy6 1.5x, http://object.cato.org/sites/cato.org/files/styles/resp__img__multimedia-sides-2x/public/multimedia/podcast/base_daily_podcast2.jpg?itok=Amr30J9b 2x" media="(min-width: 0px)" />
+<!--[if IE 9]></video><![endif]-->
+<img srcset="http://object.cato.org/sites/cato.org/files/styles/Array/public/multimedia/podcast/base_daily_podcast2.jpg?itok=DHb_DgIa 1280w" alt="The Second Amendment Applies in D.C." title="The Second Amendment Applies in D.C." />
+</picture></a>
+      </div>
+  
+
+      <h4 class="sans-h4">
+  
+    
+      <a href="/multimedia/daily-podcast/second-amendment-applies-dc">The Second Amendment Applies in D.C.</a>
+      </h4>
+  
+
+      <p class="byline">
+  
+    
+      Alan Gura
+      </p>
+  
+
+      <p class="text-sans">
+  
+    
+      <span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="2014-07-28T00:23:00-04:00">July 28, 2014</span>
+      </p>
+  
+    </li>
+      <li>
+      
+      <div class="media-thumb">
+  
+    
+      <a href="/multimedia/media-highlights-radio/david-b-kopel-discusses-unintended-consequences-new-jerseys-smart"><picture  title="David B. Kopel discusses the unintended consequences of New Jersey&amp;#039;s Smart Gun law on NPR&amp;#039;s All Things Considered">
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source srcset="http://object.cato.org/sites/cato.org/files/styles/resp__img__multimedia-sides/public/multimedia/radio-highlight/base_radio_highlight2.jpg?itok=jvB5oV6S 1x, http://object.cato.org/sites/cato.org/files/styles/resp__img__multimedia-sides-15x/public/multimedia/radio-highlight/base_radio_highlight2.jpg?itok=iSRzENsB 1.5x, http://object.cato.org/sites/cato.org/files/styles/resp__img__multimedia-sides-2x/public/multimedia/radio-highlight/base_radio_highlight2.jpg?itok=Exv5c7mp 2x" media="(min-width: 0px)" />
+<!--[if IE 9]></video><![endif]-->
+<img srcset="http://object.cato.org/sites/cato.org/files/styles/Array/public/multimedia/radio-highlight/base_radio_highlight2.jpg?itok=xjt_vI0x 1280w" alt="David B. Kopel discusses the unintended consequences of New Jersey&amp;#039;s Smart Gun law on NPR&amp;#039;s All Things Considered" title="David B. Kopel discusses the unintended consequences of New Jersey&amp;#039;s Smart Gun law on NPR&amp;#039;s All Things Considered" />
+</picture></a>
+      </div>
+  
+
+      <h4 class="sans-h4">
+  
+    
+      <a href="/multimedia/media-highlights-radio/david-b-kopel-discusses-unintended-consequences-new-jerseys-smart">David B. Kopel discusses the unintended consequences of New Jersey&#8217;s Smart Gun law on NPR&#8217;s <em>All Things Considered</em></a>
+      </h4>
+  
+
+      <p class="text-sans">
+  
+    
+      <span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="2014-06-24T12:53:00-04:00">June 24, 2014</span>
+      </p>
+  
+    </li>
+    </ul>
+    </div>
+  
+  
+  
+      <h4 class="section-h3 more-link">
+  <a href="/research/53/multimedia">
+    More Multimedia  </a>
+</h4>  
+  
+  
+</div></div>  </div>
+</div>
+  </section>
+            <!--googleon: index-->
+    </section>
+    <!-- /#content -->
+
+  </div>
+</div> <!-- /#main -->
+
+<!--googleoff: index-->
+<footer class="main-footer">
+  <div class="wrapper">
+      <aside class="region region-footer-fourth col-1">
+    <div id="block-block-27" class="block block-block ftr-signup">
+
+      <h3 class="section-h3">Sign Up</h3>
+    
+  <div class="content">
+        <p class="ftr-txt">Receive periodic updates on Cato research, events, and publications.</p>
+	      <!-- Begin MailChimp Signup Form -->
+	      
+	      
+	      <div id="mc_embed_signup">
+	      <form action="http://cato.us1.list-manage.com/subscribe/post?u=98c97f42691d5de57bc944822&amp;id=395878584c" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form"class="ftr-signup-form form-basic" target="_blank" novalidate>
+	      
+	      
+	      <div class="mc-field-group">
+	      
+	      	<input type="email" value="" name="EMAIL" placeholder="Email" class="text-input ftr-text-input" id="mce-EMAIL">
+	      </div>
+	      
+	      <div id="mce-responses" class="clear">
+	      		<div class="response" id="mce-error-response" style="display:none"></div>
+	      		<div class="response" id="mce-success-response" style="display:none"></div>
+	      	</div>
+	      
+	      
+	      <div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="submit-input ftr-submit-input"></div>
+	      
+	      <div class="mc-field-group input-group">
+	      
+	      <input type="hidden" value="512" name="group[214][512]" id="mce-group[214]-214-0">
+	      
+	      <input type="hidden" value="128" name="group[214][128]" id="mce-group[214]-214-8">
+	      
+	      
+	      </div>
+	      
+	      
+	      
+	      <div id="mce-responses" class="clear">
+	      		<div class="response" id="mce-error-response" style="display:none"></div>
+	      		<div class="response" id="mce-success-response" style="display:none"></div>
+	      	</div>	
+	      </form>
+	      </div>
+	      
+	      <!--End mc_embed_signup-->
+	      
+<p class="ftr-txt"><a href="/ecommunity?utm_source=mailchimp-signup&utm_medium=banner&utm_campaign=ecommunity-mailchimp-signup" target="_blank">See our full list of email newsletters</a></p>  </div>
+</div>
+  </aside>
+      <aside class="region region-footer-third col-2">
+    <div id="block-menu-menu-also-from-cato" class="block block-menu ftr-list">
+
+      <h3 class="section-h3">Also from Cato</h3>
+    
+  <div class="content">
+    <ul class="menu"><li class="first leaf level-1"><a href="/students" rel="me">Student Programs</a></li>
+<li class="leaf level-1"><a href="http://www.downsizinggovernment.org" rel="me" target="_blank">DownsizingGovernment.org</a></li>
+<li class="leaf level-1"><a href="http://www.libertarianism.org" rel="me" target="_blank">Libertarianism.org</a></li>
+<li class="leaf level-1"><a href="http://humanprogress.org/" rel="me" target="_blank">HumanProgress.org</a></li>
+<li class="leaf level-1"><a href="http://www.cato-unbound.org" rel="me" target="_blank">Cato Unbound</a></li>
+<li class="leaf level-1"><a href="http://www.policemisconduct.net" rel="me" target="_blank">PoliceMisconduct.net</a></li>
+<li class="leaf level-1"><a href="http://overlawyered.com/" rel="me" target="_blank">Overlawyered</a></li>
+<li class="last leaf level-1"><a href="http://www.elcato.org" rel="me" target="_blank">ElCato.org</a></li>
+</ul>  </div>
+</div>
+  </aside>
+      <aside class="region region-footer-second col-3">
+    <div id="block-menu-menu-social-media" class="block block-menu ftr-list">
+
+      <h3 class="section-h3">Social Media</h3>
+    
+  <div class="content">
+    <ul class="menu"><li class="first leaf level-1"><a href="http://www.facebook.com/CatoInstitute" rel="me" class="link-facebook" target="_blank"><i class="fa fa-facebook-square fa-fw"></i> Facebook</a></li>
+<li class="leaf level-1"><a href="http://twitter.com/catoinstitute" rel="me" class="link-twitter" target="_blank"><i class="fa fa-twitter fa-fw"></i> Twitter</a></li>
+<li class="leaf level-1"><a href="https://plus.google.com/+TheCatoInstitute" rel="me publisher" class="link-googleplus" target="_blank"><i class="fa fa-google-plus fa-fw"></i> Google+</a></li>
+<li class="leaf level-1"><a href="http://www.youtube.com/catoinstitutevideo" rel="me" class="link-youtube" target="_blank"><i class="fa fa-youtube-play fa-fw"></i> YouTube</a></li>
+<li class="leaf level-1"><a href="https://www.linkedin.com/company/cato-institute" rel="me" class="link-linkedin" target="_blank"><i class="fa fa-linkedin fa-fw"></i> LinkedIn</a></li>
+<li class="leaf level-1"><a href="http://instagram.com/catoinstitute" rel="me" class="link-instagram" target="_blank"><i class="fa fa-instagram fa-fw"></i> Instagram</a></li>
+<li class="leaf level-1"><a href="http://catoinstitute.tumblr.com" rel="me" class="link-tumblr" target="_blank"><i class="fa fa-tumblr fa-fw"></i> Tumblr</a></li>
+<li class="last leaf level-1"><a href="http://www.cato.org/ecommunity?utm_source=RSS-social-media&amp;utm_medium=banner&amp;utm_campaign=ecommunity-RSS-social-media" class="link-rss"><i class="fa fa-rss fa-fw"></i> RSS</a></li>
+</ul>  </div>
+</div>
+  </aside>
+      <aside class="region region-footer-first col-4">
+    <div id="block-block-1" class="block block-block ftr-info">
+
+      
+  <div class="content">
+    <a href="/" class="ftr-logo"><img src="http://object.cato.org/sites/cato.org/files/cato-logo_0.png" /></a>
+<p class="ftr-address">Cato Institute<br/>
+1000 Massachusetts Ave, NW<br/>
+Washington, DC 20001-5403</p>
+<ul class="ftr-phone">
+  <li>Phone (202) 842 0200</li>
+</ul>
+<p class="ftr-txt"><a href="/contact-us">Contact Us</a></p>  </div>
+</div>
+  </aside>
+  </div>
+</footer> <!-- /#footer -->
+<!--googleon: index-->
+<script src="http://object.cato.org/sites/cato.org/files/js/js_6TAnF117heNLUe_NSA6QrMWPUlMbDthN85wxrI4UFUM.js"></script>
+<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script>
+window.jQuery || document.write("<script src='/sites/all/modules/jquery_update/replace/jquery/1.7/jquery.min.js'>\x3C/script>")
+</script>
+<script src="http://object.cato.org/sites/cato.org/files/js/js_N30OxhcyF8pKKPHJbNdUN7IZi_RTf05aSDWMS2jOx6I.js"></script>
+<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.min.js"></script>
+<script>
+window.jQuery.ui || document.write("<script src='/sites/all/modules/jquery_update/replace/ui/ui/minified/jquery-ui.min.js'>\x3C/script>")
+</script>
+<script src="http://object.cato.org/sites/cato.org/files/js/js_luds0PUhWM9yF8tcrTirEdCGae8UKVKAaGYXTd6GSOc.js"></script>
+<script src="http://object.cato.org/sites/cato.org/files/js/js_B7hRF0p1h03I_PkS2FGiEPjBVfTa_tDrAu8EV1K06N0.js"></script>
+<script>
+document.createElement( "picture" );
+</script>
+<script src="http://object.cato.org/sites/cato.org/files/js/js_L8IoHj_5yQUFF_lWuwBJKmXeedmA5mxp5R63Am3T71k.js"></script>
+<script>
+(function(i,s,o,g,r,a,m){i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,"script","//www.google-analytics.com/analytics.js","ga");ga("create", "UA-1677831-1", "auto");ga("send", "pageview");
+</script>
+<script src="http://object.cato.org/sites/cato.org/files/js/js_ljvPWnGznsM5G4154J6TP8A0rb3osGLZON_b2nykmjY.js"></script>
+<script src="http://object.cato.org/sites/cato.org/files/js/js_k4kfp9fqTKxbp2bKT_186kFR0ttB3I_nq5YJTH2LGVc.js"></script>
+<script>
+jQuery.extend(Drupal.settings, {"basePath":"\/","pathPrefix":"","ajaxPageState":{"theme":"cato","theme_token":"i2qtu-8v0crgJgjjoSTT3-W4r_onigtIGh67CO_-_zM","js":{"sites\/all\/modules\/picture\/picturefill2\/picturefill.js":1,"sites\/all\/modules\/picture\/picture.js":1,"http:\/\/code.jquery.com\/jquery-1.7.1.min.js":1,"0":1,"misc\/jquery.once.js":1,"misc\/drupal.js":1,"http:\/\/code.jquery.com\/ui\/1.10.2\/jquery-ui.min.js":1,"1":1,"sites\/all\/libraries\/scrollTo\/jquery.scrollTo-min.js":1,"sites\/all\/libraries\/smooth-scroll\/jquery.localscroll.min.js":1,"sites\/all\/modules\/apachesolr_sort\/apachesolr_sort.js":1,"sites\/all\/modules\/spamspan\/spamspan.js":1,"sites\/all\/modules\/caption_filter\/js\/caption-filter.js":1,"2":1,"sites\/all\/modules\/custom_search\/js\/custom_search.js":1,"sites\/all\/modules\/google_analytics\/googleanalytics.js":1,"3":1,"sites\/all\/themes\/cato\/_js\/libs\/modernizr-2.0.6.min.js":1,"sites\/all\/themes\/cato\/_js\/libs\/jquery.sticky.js":1,"sites\/all\/themes\/cato\/_js\/libs\/jquery.fixed-scroll.js":1,"sites\/all\/themes\/cato\/_js\/libs\/wilto-carousel.js":1,"sites\/all\/themes\/cato\/_js\/libs\/jquery.masonry.min.js":1,"sites\/all\/themes\/cato\/_js\/libs\/jquery.imagesloaded.min.js":1,"sites\/all\/themes\/cato\/_js\/libs\/jquery.hoverIntent.minified.js":1,"sites\/all\/themes\/cato\/_js\/libs\/jquery.getUrlVar.js":1,"sites\/all\/themes\/cato\/_js\/script.js":1,"sites\/all\/themes\/cato\/_js\/smoothScroll.js":1,"sites\/all\/themes\/cato\/_js\/dialog.js":1},"css":{"modules\/system\/system.base.css":1,"modules\/system\/system.messages.css":1,"misc\/ui\/jquery.ui.core.css":1,"misc\/ui\/jquery.ui.theme.css":1,"misc\/ui\/jquery.ui.button.css":1,"misc\/ui\/jquery.ui.resizable.css":1,"misc\/ui\/jquery.ui.dialog.css":1,"sites\/all\/modules\/date\/date_api\/date.css":1,"sites\/all\/modules\/date\/date_popup\/themes\/datepicker.1.7.css":1,"sites\/all\/modules\/date\/date_repeat_field\/date_repeat_field.css":1,"modules\/field\/theme\/field.css":1,"modules\/node\/node.css":1,"sites\/all\/modules\/picture\/picture_wysiwyg.css":1,"modules\/user\/user.css":1,"sites\/all\/modules\/calendar\/css\/calendar_multiday.css":1,"sites\/all\/modules\/views\/css\/views.css":1,"sites\/all\/modules\/caption_filter\/caption-filter.css":1,"http:\/\/netdna.bootstrapcdn.com\/font-awesome\/4.1.0\/css\/font-awesome.min.css":1,"sites\/all\/modules\/ctools\/css\/ctools.css":1,"sites\/all\/modules\/custompage\/custompage.css":1,"sites\/all\/modules\/oembed\/oembed.base.css":1,"sites\/all\/modules\/oembed\/oembed.theme.css":1,"sites\/all\/modules\/panels\/css\/panels.css":1,"sites\/all\/modules\/cato_institute\/responsivevideo\/responsivevideo.css":1,"sites\/all\/modules\/typogrify\/typogrify.css":1,"sites\/all\/modules\/wysiwyg_linebreaks\/wysiwyg_linebreaks.css":1,"modules\/taxonomy\/taxonomy.css":1,"sites\/all\/themes\/cato\/styles\/stylesheets\/screen.css":1}},"custom_search":{"form_target":"_self","solr":1},"googleanalytics":{"trackOutbound":1,"trackMailto":1,"trackDownload":1,"trackDownloadExtensions":"7z|aac|arc|arj|asf|asx|avi|bin|csv|doc|exe|flv|gif|gz|gzip|hqx|jar|jpe?g|js|mp(2|3|4|e?g)|mov(ie)?|msi|msp|pdf|phps|png|ppt|qtm?|ra(m|r)?|sea|sit|tar|tgz|torrent|txt|wav|wma|wmv|wpd|xls|xml|z|zip|epub|mobi"}});
+</script>
+</body>
+</html>

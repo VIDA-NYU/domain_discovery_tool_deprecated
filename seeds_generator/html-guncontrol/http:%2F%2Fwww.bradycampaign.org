@@ -1,0 +1,912 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7]><html class="lt-ie9 lt-ie8 lt-ie7" lang="en" dir="ltr"><![endif]-->
+<!--[if IE 7]><html class="lt-ie9 lt-ie8" lang="en" dir="ltr"><![endif]-->
+<!--[if IE 8]><html class="lt-ie9" lang="en" dir="ltr"><![endif]-->
+<!--[if gt IE 8]><!--><html lang="en" dir="ltr" prefix="fb: http://www.facebook.com/2008/fbml content: http://purl.org/rss/1.0/modules/content/ dc: http://purl.org/dc/terms/ foaf: http://xmlns.com/foaf/0.1/ og: http://ogp.me/ns# rdfs: http://www.w3.org/2000/01/rdf-schema# sioc: http://rdfs.org/sioc/ns# sioct: http://rdfs.org/sioc/types# skos: http://www.w3.org/2004/02/skos/core# xsd: http://www.w3.org/2001/XMLSchema#"><!--<![endif]-->
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta http-equiv="cleartype" content="on" />
+<meta property="og:image" content="http://www.bradycampaign.org/sites/all/themes/brady/images/1200x630_logo.jpg" />
+<meta name="copyright" content="Brady Campaign to Prevent Gun Violence" />
+<link rel="shortlink" href="http://www.bradycampaign.org/" />
+<link rel="shortcut icon" href="http://www.bradycampaign.org/sites/all/themes/brady/favicon.ico" type="image/vnd.microsoft.icon" />
+<link rel="canonical" href="http://www.bradycampaign.org/" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<meta name="MobileOptimized" content="width" />
+<meta name="HandheldFriendly" content="true" />
+<title>Brady Campaign to Prevent Gun Violence | Millions marching to end gun violence</title>
+<link type="text/css" rel="stylesheet" href="http://www.bradycampaign.org/sites/default/files/css/css_pnvYuEe1Rb5gXg1-nNw_kyDkEV-5VB9Xoq89GxJYUKE.css" media="all" />
+<link type="text/css" rel="stylesheet" href="http://www.bradycampaign.org/sites/all/modules/contrib/popup/popup.css?njkamn" media="all" />
+<link type="text/css" rel="stylesheet" href="http://www.bradycampaign.org/sites/default/files/css/css_xC7EAl7s73Nbpd-qvdnFWu5CgdrIx3lFcYqoruHWh5c.css" media="all" />
+<link type="text/css" rel="stylesheet" href="http://www.bradycampaign.org/sites/default/files/css/css_C7MuBq26Y2Vp0NaH8cxKhsmrMiNeERX7I7AWcAruDA4.css" media="screen" />
+<link type="text/css" rel="stylesheet" href="http://www.bradycampaign.org/sites/default/files/css/css_JJuNdH_wAETa3ZkaBsYBVkHdXSa3nkJ0UAWaJmlW6cs.css" media="only screen" />
+<link type="text/css" rel="stylesheet" href="http://www.bradycampaign.org/sites/default/files/css/css_47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU.css" media="screen" />
+<link type="text/css" rel="stylesheet" href="http://www.bradycampaign.org/sites/default/files/css/css_QKKYjbsnLzqJtTDKS9-JW6s4xXLm7IbF_cMnMIaw_H8.css" media="all" />
+<link type="text/css" rel="stylesheet" href="http://www.bradycampaign.org/sites/default/files/css/css_eeYZZgtqfJaLlf9HLZrLc3ATtU8B9asmvGWgh49xKQk.css" media="only screen" />
+<link type="text/css" rel="stylesheet" href="http://www.bradycampaign.org/sites/default/files/css/css_47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU.css" media="screen" />
+
+<!--[if lt IE 9]>
+<link type="text/css" rel="stylesheet" href="http://www.bradycampaign.org/sites/default/files/css/css_dkj97e8JevdChuzz0oJ6QQKe-M8YEueXfkQvjG69wSw.css" media="screen" />
+<![endif]-->
+
+
+<link type="text/css" rel="stylesheet" href="/sites/all/themes/brady/css/jquery.qtip.css">
+<link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,400,600,700|Oswald:400,300' rel='stylesheet' type='text/css'>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="/sites/all/themes/brady/scripts/jquery.qtip.js"></script>
+  <script src="/sites/all/themes/brady/scripts/jquery.hashable.js"></script>
+  <link rel="stylesheet" type="text/css" href="/chaptermap/map-style.css" />
+  <script src="/chaptermap/map-config.js" type="text/javascript"></script>
+  <script src="/chaptermap/map-interact.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    $(function(){
+      addEvent('map_1');
+      addEvent('map_2');
+      addEvent('map_3');
+      addEvent('map_4');
+      addEvent('map_5');
+      addEvent('map_6');
+      addEvent('map_7');
+      addEvent('map_8');
+      addEvent('map_9');
+      addEvent('map_10');
+      addEvent('map_11');
+      addEvent('map_12');
+      addEvent('map_13');
+      addEvent('map_14');
+      addEvent('map_15');
+      addEvent('map_16');
+      addEvent('map_17');
+      addEvent('map_18');
+      addEvent('map_19');
+      addEvent('map_20');
+      addEvent('map_21');
+      addEvent('map_22');
+      addEvent('map_23');
+      addEvent('map_24');
+      addEvent('map_25');
+      addEvent('map_26');
+      addEvent('map_27');
+      addEvent('map_28');
+      addEvent('map_29');
+      addEvent('map_30');
+      addEvent('map_31');
+      addEvent('map_32');
+      addEvent('map_33');
+      addEvent('map_34');
+      addEvent('map_35');
+      addEvent('map_36');
+      addEvent('map_37');
+      addEvent('map_38');
+      addEvent('map_39');
+      addEvent('map_40');
+      addEvent('map_41');
+      addEvent('map_42');
+      addEvent('map_43');
+      addEvent('map_44');
+      addEvent('map_45');
+      addEvent('map_46');
+      addEvent('map_47');
+      addEvent('map_48');
+      addEvent('map_49');
+      addEvent('map_50');
+      addEvent('map_51');
+      addEvent('map_56');
+    })
+  </script>
+  <script>
+    var $jq = jQuery.noConflict();
+    
+    
+    
+    
+  $jq(function(){
+    
+    $jq("#signupform").submit(function(e){
+      e.preventDefault();
+      
+      var firstname = $jq("#firstname").val();
+      var lastname = $jq("#lastname").val();
+      var email = $jq("#emailaddress").val();
+      var zipcode = $jq("#zipcode").val();
+      $jq.post( "/bsd/bds-connect.php", { firstname: firstname, lastname: lastname, email: email, zipcode: zipcode })
+        .done(function( data ) {
+
+          if(data.length){
+            alert("There was a problem with your submission! Please complete the full form to sign up.");
+            window.location = 'http://actions.bradycampaign.org/page/s/brady-sign-up';
+          } else {
+            alert("Thank you for signing up to stay informed!");
+            var firstname = $jq("#firstname").val("");
+            var lastname = $jq("#lastname").val("");
+            var email = $jq("#emailaddress").val("");
+            var zipcode = $jq("#zipcode").val("");
+          }
+        });     
+    }); 
+  });
+  </script>
+  
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script>window.jQuery || document.write("<script src='/sites/all/modules/contrib/jquery_update/replace/jquery/1.5/jquery.min.js'>\x3C/script>")</script>
+<script src="http://www.bradycampaign.org/misc/jquery.once.js?v=1.2"></script>
+<script src="http://www.bradycampaign.org/misc/drupal.js?njkamn"></script>
+<script src="http://www.bradycampaign.org/sites/all/modules/contrib/google_analytics_reports/google_analytics_reports/google_analytics_reports.js?njkamn"></script>
+<script src="http://www.bradycampaign.org/sites/all/modules/contrib/media_colorbox/media_colorbox.js?njkamn"></script>
+<script src="http://www.bradycampaign.org/sites/all/modules/contrib/spamspan/spamspan.js?njkamn"></script>
+<script src="http://www.bradycampaign.org/sites/all/libraries/colorbox/jquery.colorbox-min.js?njkamn"></script>
+<script src="http://www.bradycampaign.org/sites/all/modules/contrib/colorbox/js/colorbox.js?njkamn"></script>
+<script src="http://www.bradycampaign.org/sites/all/modules/contrib/colorbox/styles/default/colorbox_style.js?njkamn"></script>
+<script src="http://www.bradycampaign.org/sites/all/modules/contrib/iframe/iframe.js?njkamn"></script>
+<script src="http://www.bradycampaign.org/sites/all/modules/contrib/pane/pane.js?njkamn"></script>
+<script src="http://www.bradycampaign.org/sites/all/modules/contrib/popup/popup.js?njkamn"></script>
+<script src="http://www.bradycampaign.org/sites/all/libraries/flexslider/jquery.flexslider-min.js?njkamn"></script>
+<script src="http://www.bradycampaign.org/sites/all/modules/contrib/field_group/field_group.js?njkamn"></script>
+<script src="http://www.bradycampaign.org/sites/all/modules/contrib/google_analytics/googleanalytics.js?njkamn"></script>
+<script>(function(i,s,o,g,r,a,m){i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,"script","//www.google-analytics.com/analytics.js","ga");ga("create", "UA-2542421-1", {"cookieDomain":".bradycampaign.org"});ga("set", "anonymizeIp", true);ga("send", "pageview");</script>
+<script src="http://www.bradycampaign.org/sites/all/libraries/superfish/jquery.hoverIntent.minified.js?njkamn"></script>
+<script src="http://www.bradycampaign.org/sites/all/libraries/superfish/sftouchscreen.js?njkamn"></script>
+<script src="http://www.bradycampaign.org/sites/all/libraries/superfish/sfsmallscreen.js?njkamn"></script>
+<script src="http://www.bradycampaign.org/sites/all/libraries/superfish/jquery.bgiframe.min.js?njkamn"></script>
+<script src="http://www.bradycampaign.org/sites/all/libraries/superfish/superfish.js?njkamn"></script>
+<script src="http://www.bradycampaign.org/sites/all/libraries/superfish/supersubs.js?njkamn"></script>
+<script src="http://www.bradycampaign.org/sites/all/modules/contrib/superfish/superfish.js?njkamn"></script>
+<script src="http://www.bradycampaign.org/sites/all/themes/brady/scripts/brady.js?njkamn"></script>
+<script src="http://www.bradycampaign.org/sites/all/themes/brady/scripts/jquery.placeholder.min.js?njkamn"></script>
+<script src="http://www.bradycampaign.org/sites/all/themes/adaptivetheme/at_core/scripts/scalefix.js?njkamn"></script>
+<script src="http://www.bradycampaign.org/sites/all/themes/adaptivetheme/at_core/scripts/matchMedia.js?njkamn"></script>
+<script src="http://www.bradycampaign.org/sites/all/themes/adaptivetheme/at_core/scripts/matchMedia.addListener.js?njkamn"></script>
+<script src="http://www.bradycampaign.org/sites/all/themes/adaptivetheme/at_core/scripts/menu-toggle.js?njkamn"></script>
+<script>jQuery.extend(Drupal.settings, {"basePath":"\/","pathPrefix":"","ajaxPageState":{"theme":"brady","theme_token":"cUxoTq8U76mKrHjMapmHSWImXub8VY5lwJL3Y0mmoh0","js":{"sites\/all\/modules\/contrib\/flexslider\/assets\/js\/flexslider.load.js":1,"https:\/\/ajax.googleapis.com\/ajax\/libs\/jquery\/1.5.2\/jquery.min.js":1,"0":1,"misc\/jquery.once.js":1,"misc\/drupal.js":1,"sites\/all\/modules\/contrib\/google_analytics_reports\/google_analytics_reports\/google_analytics_reports.js":1,"sites\/all\/modules\/contrib\/media_colorbox\/media_colorbox.js":1,"sites\/all\/modules\/contrib\/spamspan\/spamspan.js":1,"sites\/all\/libraries\/colorbox\/jquery.colorbox-min.js":1,"sites\/all\/modules\/contrib\/colorbox\/js\/colorbox.js":1,"sites\/all\/modules\/contrib\/colorbox\/styles\/default\/colorbox_style.js":1,"sites\/all\/modules\/contrib\/iframe\/iframe.js":1,"sites\/all\/modules\/contrib\/pane\/pane.js":1,"sites\/all\/modules\/contrib\/popup\/popup.js":1,"sites\/all\/libraries\/flexslider\/jquery.flexslider-min.js":1,"sites\/all\/modules\/contrib\/field_group\/field_group.js":1,"sites\/all\/modules\/contrib\/google_analytics\/googleanalytics.js":1,"1":1,"sites\/all\/libraries\/superfish\/jquery.hoverIntent.minified.js":1,"sites\/all\/libraries\/superfish\/sftouchscreen.js":1,"sites\/all\/libraries\/superfish\/sfsmallscreen.js":1,"sites\/all\/libraries\/superfish\/jquery.bgiframe.min.js":1,"sites\/all\/libraries\/superfish\/superfish.js":1,"sites\/all\/libraries\/superfish\/supersubs.js":1,"sites\/all\/modules\/contrib\/superfish\/superfish.js":1,"sites\/all\/themes\/brady\/scripts\/brady.js":1,"sites\/all\/themes\/brady\/scripts\/jquery.placeholder.min.js":1,"sites\/all\/themes\/adaptivetheme\/at_core\/scripts\/scalefix.js":1,"sites\/all\/themes\/adaptivetheme\/at_core\/scripts\/matchMedia.js":1,"sites\/all\/themes\/adaptivetheme\/at_core\/scripts\/matchMedia.addListener.js":1,"sites\/all\/themes\/adaptivetheme\/at_core\/scripts\/menu-toggle.js":1},"css":{"modules\/system\/system.base.css":1,"modules\/system\/system.menus.css":1,"modules\/system\/system.messages.css":1,"modules\/system\/system.theme.css":1,"sites\/all\/modules\/contrib\/calendar\/css\/calendar_multiday.css":1,"sites\/all\/modules\/contrib\/date\/date_api\/date.css":1,"sites\/all\/modules\/contrib\/date\/date_popup\/themes\/datepicker.1.7.css":1,"modules\/field\/theme\/field.css":1,"sites\/all\/modules\/contrib\/google_analytics_reports\/google_analytics_reports\/google_analytics_reports.css":1,"modules\/node\/node.css":1,"modules\/search\/search.css":1,"modules\/user\/user.css":1,"sites\/all\/modules\/contrib\/views\/css\/views.css":1,"sites\/all\/modules\/contrib\/colorbox\/styles\/default\/colorbox_style.css":1,"sites\/all\/modules\/contrib\/ctools\/css\/ctools.css":1,"sites\/all\/modules\/contrib\/library\/library.css":1,"sites\/all\/modules\/contrib\/panels\/css\/panels.css":1,"sites\/all\/modules\/contrib\/popup\/popup.css":1,"sites\/all\/modules\/contrib\/flexslider\/assets\/css\/flexslider_img.css":1,"sites\/all\/modules\/contrib\/field_group\/field_group.css":1,"sites\/all\/libraries\/flexslider\/flexslider.css":1,"sites\/all\/libraries\/superfish\/css\/superfish.css":1,"sites\/all\/themes\/adaptivetheme\/at_core\/css\/at.layout.css":1,"sites\/all\/themes\/brady\/css\/global.base.css":1,"sites\/all\/themes\/brady\/css\/global.styles.css":1,"public:\/\/adaptivetheme\/brady_files\/brady.responsive.layout.css":1,"public:\/\/adaptivetheme\/brady_files\/brady.fonts.css":1,"public:\/\/adaptivetheme\/brady_files\/brady.menutoggle.css":1,"public:\/\/adaptivetheme\/brady_files\/brady.responsive.styles.css":1,"public:\/\/adaptivetheme\/brady_files\/brady.custom.css":1,"public:\/\/adaptivetheme\/brady_files\/brady.lt-ie9.layout.css":1}},"colorbox":{"opacity":"0.85","current":"{current} of {total}","previous":"\u00ab Prev","next":"Next \u00bb","close":"Close","maxWidth":"98%","maxHeight":"98%","fixed":true,"mobiledetect":true,"mobiledevicewidth":"480px"},"googleAnalyticsReportsAjaxUrl":"\/google-analytics-reports\/ajax","popup":{"effects":{"show":{"default":"this.body.show();","fade":"\n        if (this.opacity){\n          this.body.fadeTo(\u0027medium\u0027,this.opacity);\n        }else{\n          this.body.fadeIn(\u0027medium\u0027);\n        }","slide-down":"this.body.slideDown(\u0027medium\u0027)","slide-down-fade":"\n        this.body.animate(\n          {\n            height:\u0027show\u0027,\n            opacity:(this.opacity ? this.opacity : \u0027show\u0027)\n          }, \u0027medium\u0027\n        );"},"hide":{"default":"this.body.hide();","fade":"this.body.fadeOut(\u0027medium\u0027);","slide-down":"this.body.slideUp(\u0027medium\u0027);","slide-down-fade":"\n        this.body.animate(\n          {\n            height:\u0027hide\u0027,\n            opacity:\u0027hide\u0027\n          }, \u0027medium\u0027\n        );"}},"linger":250,"delay":0},"field_group":{"div":"full"},"flexslider":{"optionsets":{"latest_story":{"namespace":"flex-","selector":".slides \u003E li","easing":"swing","direction":"horizontal","reverse":false,"smoothHeight":false,"startAt":0,"animationSpeed":600,"initDelay":0,"useCSS":true,"touch":true,"video":false,"keyboard":true,"multipleKeyboard":false,"mousewheel":0,"controlsContainer":".flex-control-nav-container","sync":"","asNavFor":"","itemWidth":0,"itemMargin":0,"minItems":0,"maxItems":0,"move":0,"animation":"fade","slideshow":true,"slideshowSpeed":"7000","directionNav":true,"controlNav":"1","prevText":"","nextText":"","pausePlay":false,"pauseText":"Pause","playText":"Play","randomize":false,"thumbCaptions":false,"thumbCaptionsBoth":false,"animationLoop":true,"pauseOnAction":true,"pauseOnHover":false,"manualControls":""}},"instances":{"flexslider-1":"latest_story","flexslider-2":"latest_story"}},"googleanalytics":{"trackOutbound":1,"trackMailto":1,"trackDownload":1,"trackDownloadExtensions":"7z|aac|arc|arj|asf|asx|avi|bin|csv|doc|exe|flv|gif|gz|gzip|hqx|jar|jpe?g|js|mp(2|3|4|e?g)|mov(ie)?|msi|msp|pdf|phps|png|ppt|qtm?|ra(m|r)?|sea|sit|tar|tgz|torrent|txt|wav|wma|wmv|wpd|xls|xml|z|zip","trackDomainMode":"1"},"superfish":{"1":{"id":"1","sf":{"delay":"100","animation":{"opacity":"show"},"speed":"\u0027fast\u0027","autoArrows":false,"dropShadows":false,"disableHI":false},"plugins":{"touchscreen":{"mode":"useragent_custom","useragent":"iphone|android|ipad"},"smallscreen":{"mode":"window_width","addSelected":false,"menuClasses":false,"hyperlinkClasses":false,"title":"Main menu"},"supposition":false,"bgiframe":true,"supersubs":{"minWidth":"12","maxWidth":"27","extraWidth":1}}}},"adaptivetheme":{"brady":{"layout_settings":{"bigscreen":"three-col-grail","tablet_landscape":"three-col-grail","tablet_portrait":"one-col-vert","smalltouch_landscape":"one-col-vert","smalltouch_portrait":"one-col-stack"},"media_query_settings":{"bigscreen":"only screen and (min-width:981px)","tablet_landscape":"only screen and (min-width:769px) and (max-width:980px)","tablet_portrait":"only screen and (min-width:481px) and (max-width:768px)","smalltouch_landscape":"only screen and (min-width:321px) and (max-width:480px)","smalltouch_portrait":"only screen and (max-width:320px)"},"menu_toggle_settings":{"menu_toggle_tablet_portrait":"true","menu_toggle_tablet_landscape":"false"}}}});</script>
+<!--[if lt IE 9]>
+<script src="http://www.bradycampaign.org/sites/all/themes/adaptivetheme/at_core/scripts/html5.js?njkamn"></script>
+<![endif]-->
+
+
+  
+  
+</head>
+<body class="html front not-logged-in no-sidebars page-homepage site-name-hidden atr-7.x-3.x page-panels">
+
+  <!-- Google Tag Manager -->
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-HGT2"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-HGT2');</script>
+  <!-- End Google Tag Manager -->
+  <div id="skip-link" class="nocontent">
+    <a href="#main-content" class="element-invisible element-focusable">Skip to main content</a>
+  </div>
+    
+  
+<div id="whole-wrapper">
+<div id="page-wrapper">
+  <div id="page" class="page at-mt">
+
+    
+    <div id="header-wrapper">
+      <div class="container clearfix">
+        <header id="header" class="clearfix" role="banner">
+
+                      <!-- start: Branding -->
+            <div id="branding" class="branding-elements clearfix">
+
+                              <div id="site-logo">
+                  <div class="region region-logo"><div class="region-inner clearfix"><div id="block-blockify-blockify-logo" class="block block-blockify no-title" ><div class="block-inner clearfix">  
+  
+  <div class="block-content content"><a href="/" id="logo" rel="home" title="Return to the Brady Campaign to Prevent Gun Violence home page" class="active"><img typeof="foaf:Image" class="image-style-none" src="http://www.bradycampaign.org/sites/all/themes/brady/logo.png" alt="Brady Campaign to Prevent Gun Violence logo" /></a></div>
+  </div></div></div></div>                </div>
+              
+                        	    <div class="region region-branding"><div class="region-inner clearfix"><div id="block-blockify-blockify-site-slogan" class="block block-blockify no-title" ><div class="block-inner clearfix">  
+  
+  <div class="block-content content"><span class="site-slogan">Millions marching to end gun violence</span></div>
+  </div></div></div></div>                        
+                              <!-- start: Site name and Slogan hgroup -->
+                <hgroup class="element-invisible" id="name-and-slogan">
+
+                                      <h1 class="element-invisible" id="site-name"><a href="/" title="Home page" class="active">Brady Campaign to Prevent Gun Violence</a></h1>
+                  
+                  
+                </hgroup><!-- /end #name-and-slogan -->
+                
+              
+
+            </div><!-- /end #branding -->
+          		  
+		            	<div class="region region-header"><div class="region-inner clearfix"><div id="block-search-form" class="block block-search no-title"  role="search"><div class="block-inner clearfix">  
+  
+  <div class="block-content content"><form action="/" method="post" id="search-block-form" accept-charset="UTF-8"><div><div class="container-inline">
+      <h2 class="element-invisible">Search form</h2>
+    <div class="form-item form-type-textfield form-item-search-block-form">
+  <label class="element-invisible" for="edit-search-block-form--2">Search </label>
+ <input title="Enter the terms you wish to search for." placeholder="Search" type="search" id="edit-search-block-form--2" name="search_block_form" value="" size="15" maxlength="128" class="form-text" />
+</div>
+<div class="form-actions form-wrapper" id="edit-actions"><input type="submit" id="edit-submit--5" name="op" value="Search" class="form-submit" /></div><input type="hidden" name="form_build_id" value="form-oTQGci2PtfwBcZAdtj8Ck98bPTiptbynl7ovcPbRWd0" />
+<input type="hidden" name="form_id" value="search_block_form" />
+</div>
+</div></form></div>
+  </div></div><nav id="block-menu-block-2" class="block block-menu-block no-title"  role="navigation"><div class="block-inner clearfix">  
+  
+  <div class="menu-block-wrapper menu-block-2 menu-name-menu-utility-navigation parent-mlid-0 menu-level-1">
+  <ul class="menu clearfix"><li class="first leaf has-children menu-mlid-756 menu-depth-1 menu-item-756"><a href="/about-brady">About</a></li><li class="leaf menu-mlid-2948 menu-depth-1 menu-item-2948"><a href="/press-room">Press Room</a></li><li class="leaf menu-mlid-2602 menu-depth-1 menu-item-2602"><a href="/blog">Blog</a></li><li class="leaf menu-mlid-2778 menu-depth-1 menu-item-2778"><a href="/chapters">Chapters</a></li><li class="leaf menu-mlid-2598 menu-depth-1 menu-item-2598"><a href="/contact">Contact</a></li><li class="last leaf menu-mlid-2601 menu-depth-1 menu-item-2601"><a href="http://www.bradycampaign.org/brady-careers">Careers</a></li></ul></div>
+
+  </div></nav></div></div>                  </header>
+      </div>
+    </div>
+    
+    
+     <!-- <div id="header-region-wrapper">
+        <div class="container clearfix">
+        </div>
+      </div> -->
+    
+          <div id="nav-wrapper">
+        <div class="container clearfix">
+          <div id="menu-bar" class="nav clearfix"><nav id="block-superfish-1" class="block block-superfish menu-wrapper menu-bar-wrapper clearfix at-menu-toggle" >  
+      <h2 class="element-invisible block-title">Main Menu</h2>
+  
+  <ul id="superfish-1" class="menu sf-menu sf-main-menu sf-horizontal sf-style-none sf-total-items-5 sf-parent-items-3 sf-single-items-2"><li id="menu-2453-1" class="first odd sf-item-1 sf-depth-1 sf-total-children-4 sf-parent-children-0 sf-single-children-4 menuparent"><a href="/gun-violence" class="sf-depth-1 menuparent">Gun Violence</a><ul><li id="menu-1904-1" class="first odd sf-item-1 sf-depth-2 sf-no-children"><a href="/gun-violence/topics" class="sf-depth-2">Topics</a></li><li id="menu-2893-1" class="middle even sf-item-2 sf-depth-2 sf-no-children"><a href="/about-gun-violence" class="sf-depth-2">About Gun Violence</a></li><li id="menu-2525-1" class="middle odd sf-item-3 sf-depth-2 sf-no-children"><a href="/gun-violence/victim-stories" class="sf-depth-2">Victim Stories</a></li><li id="menu-2848-1" class="last even sf-item-4 sf-depth-2 sf-no-children"><a href="http://www.bradycampaign.org/2013-state-scorecard" class="sf-depth-2">State Scorecard</a></li></ul></li><li id="menu-1182-1" class="middle even sf-item-2 sf-depth-1 sf-total-children-3 sf-parent-children-0 sf-single-children-3 menuparent"><a href="/our-work" class="sf-depth-1 menuparent">Our Work</a><ul><li id="menu-2794-1" class="first odd sf-item-1 sf-depth-2 sf-no-children"><a href="/our-work/changing-culture" class="sf-depth-2">Changing Culture</a></li><li id="menu-2795-1" class="middle even sf-item-2 sf-depth-2 sf-no-children"><a href="/our-work/changing-laws" class="sf-depth-2">Changing Laws</a></li><li id="menu-1183-1" class="last odd sf-item-3 sf-depth-2 sf-no-children"><a href="/our-work/changing-the-gun-industry" class="sf-depth-2">Changing the Gun Industry</a></li></ul></li><li id="menu-2880-1" class="middle odd sf-item-3 sf-depth-1 sf-total-children-3 sf-parent-children-0 sf-single-children-3 menuparent"><a href="/our-impact" class="sf-depth-1 menuparent">Our Impact</a><ul><li id="menu-2932-1" class="first odd sf-item-1 sf-depth-2 sf-no-children"><a href="/our-impact/campaigns" class="sf-depth-2">Campaigns</a></li><li id="menu-2512-1" class="middle even sf-item-2 sf-depth-2 sf-no-children"><a href="/our-impact/success-stories" class="sf-depth-2">Success Stories</a></li><li id="menu-2919-1" class="last odd sf-item-3 sf-depth-2 sf-no-children"><a href="/our-impact/resources" class="sf-depth-2">Resources</a></li></ul></li><li id="menu-2796-1" class="middle even sf-item-4 sf-depth-1 sf-no-children"><a href="/take-action" class="sf-depth-1">Take Action</a></li><li id="menu-2686-1" class="last odd sf-item-5 sf-depth-1 sf-no-children"><a href="https://www.bradycampaign.org/keep-the-momentum-going-in-2015" class="donate sf-depth-1">Donate</a></li></ul>
+  </nav></div>        </div>
+      </div>
+    
+    
+
+          <div id="breadcrumb-wrapper">
+        <div class="container clearfix">
+          Home        </div>
+      </div>
+    
+    
+    
+    <div id="content-wrapper">
+      <div class="container">
+        <div id="columns">
+          <div class="columns-inner clearfix">
+
+            
+            <div id="content-column">
+              <div class="content-inner">
+
+                
+                <div id="main-content">
+
+                  
+                  
+                                      <div id="content">
+                      <div id="block-system-main" class="block block-system no-title" >  
+  
+  <div class="brady-homepage at-panel panel-display clearfix" >
+      <div class="region region-homepage-feature region-conditional-stack">
+      <div class="region-inner clearfix">
+        <div class="panel-pane pane-pane pane-homepage-hero no-title block"   class="panel-pane pane-pane pane-homepage-hero no-title block">
+  
+      
+  
+  <div class="pane-content">
+    <div class="view view-slideshow view-id-slideshow view-display-id-default view-dom-id-97a7eaef305bac5d6710fc22bc65ba20">
+        
+  
+  
+      <div class="view-content">
+      <div  id="flexslider-1" class="flexslider">
+  <ul class="slides"><li><div class="field field-name-field-slide-image"><img typeof="foaf:Image" class="image-style-slideshow" src="http://www.bradycampaign.org/sites/default/files/styles/slideshow/public/slides/SG-Victory_0.jpg?itok=EPM1QviD" width="940" height="445" /></div><div id="node_slide_full_group_slide_content"class = "group-slide-content field-group-div"><div class="field field-name-title"><h2>Surgeon General Victory</h2></div><div class="field field-name-field-slide-caption">Great news! The Senate has officially confirmed Dr. Vivek Murthy as the next U.S. Surgeon General!</div><div class="field field-name-field-kicker"><a href="http://www.bradycampaign.org/press-room/dr-murthy%E2%80%99s-confirmation-as-surgeon-general-win-for-nation-loss-for-nra">Read more</a></div></div></li>
+<li><div class="field field-name-field-slide-image"><img typeof="foaf:Image" class="image-style-slideshow" src="http://www.bradycampaign.org/sites/default/files/styles/slideshow/public/slides/14-for-14-slide.png?itok=g2S3APkh" width="940" height="445" /></div><div id="node_slide_full_group_slide_content"class = "group-slide-content field-group-div"><div class="field field-name-title"><h2>14 Victories for 2014</h2></div><div class="field field-name-field-slide-caption"> <p>2014 may have been the Brady Center's most successful year yet!</p> </div><div class="field field-name-field-kicker"><a href="http://www.bradycampaign.org/14-brady-center-victories-for-2014">Read about our victories</a></div></div></li>
+<li><div class="field field-name-field-slide-image"><img typeof="foaf:Image" class="image-style-slideshow" src="http://www.bradycampaign.org/sites/default/files/styles/slideshow/public/slides/ASK-conversations.jpg?itok=gJBRxrDr" width="940" height="445" /></div><div id="node_slide_full_group_slide_content"class = "group-slide-content field-group-div"><div class="field field-name-title"><h2>The question that could save your child’s life.</h2></div><div class="field field-name-field-slide-caption"><p>19 million parents are already ASKing!</p></div><div class="field field-name-field-kicker"><a href="http://www.bradycampaign.org/our-impact/campaigns/asking-saves-kids">Find out why</a></div></div></li>
+</ul></div>
+    </div>
+  
+  
+  
+  
+  
+  
+</div>  </div>
+
+  
+  </div>
+      </div>
+    </div>
+        <div class="region region-homepage-join-americans region-conditional-stack">
+      <div class="region-inner clearfix">
+        <div class="panel-pane pane-pane pane-homepage-join-us-header no-title block"   class="panel-pane pane-pane pane-homepage-join-us-header no-title block">
+  
+      
+  
+  <div class="pane-content">
+     <h3 class="pane-title block-title">Make a Difference</h3>   </div>
+
+  
+  </div>
+<div class="panel-separator"></div><div class="panel-pane pane-pane pane-homepage-add-my-name block"   class="panel-pane pane-pane pane-homepage-add-my-name block">
+  
+        <h3 class="pane-title block-title"><a href="http://actions.bradycampaign.org/page/s/brady-sign-up" target="_blank">Add Your Name</a></h3>
+    
+  
+  <div class="pane-content">
+     <p>Sign the petition to demand Brady background checks on all gun sales!</p> <form action="http://actions.bradycampaign.org/page/s/brady-sign-up" method="post" id="brady-homepage-add-my-name" accept-charset="UTF-8"><div><div class="form-item form-type-textfield form-item-email">
+  <input placeholder="Email" type="text" id="edit-email" name="email" value="" size="60" maxlength="128" class="form-text" />
+</div>
+<div class="form-item form-type-textfield form-item-zip">
+  <input placeholder="Zip" type="text" id="edit-zip" name="zip" value="" size="60" maxlength="128" class="form-text" />
+</div>
+<input type="submit" id="edit-submit" name="op" value="Submit" class="form-submit" /><input type="hidden" name="form_build_id" value="form-YTvgoRt-tdx4oJDID87STFl2pFAhnF9om0doLtXU65E" />
+<input type="hidden" name="form_id" value="brady_homepage_add_my_name" />
+</div></form>  </div>
+
+  
+  </div>
+<div class="panel-separator"></div><div class="panel-pane pane-pane pane-homepage-call-congress call-congress-pane block"  id="call-congress-pane"  class="panel-pane pane-pane pane-homepage-call-congress call-congress-pane block">
+  
+        <h3 class="pane-title block-title"><a href="http://actions.bradycampaign.org/page/s/text-message-sign-up" target="_blank">Call Congress</a></h3>
+    
+  
+  <div class="pane-content">
+     <p>We'll text you the number so you can tell them to support expanding background checks.</p> <form action="http://actions.bradycampaign.org/page/s/text-message-sign-up" method="post" id="brady-homepage-call-congress-form" accept-charset="UTF-8"><div><div class="form-item form-type-textfield form-item-phone">
+  <input placeholder="Cell Number" type="text" id="edit-phone" name="phone" value="" size="60" maxlength="128" class="form-text" />
+</div>
+<div class="form-item form-type-textfield form-item-zip">
+  <input placeholder="Zip" type="text" id="edit-zip--2" name="zip" value="" size="60" maxlength="128" class="form-text" />
+</div>
+<input type="submit" id="edit-submit--2" name="op" value="Submit" class="form-submit" /><input type="hidden" name="form_build_id" value="form-S50Z8V-2pw4A9VtAgg2Vk_97tqp3fUUDJznLHlaKeyg" />
+<input type="hidden" name="form_id" value="brady_homepage_call_congress_form" />
+</div></form>  </div>
+
+  
+  </div>
+<div class="panel-separator"></div><div class="panel-pane pane-pane pane-homepage-donate block"   class="panel-pane pane-pane pane-homepage-donate block">
+  
+        <h3 class="pane-title block-title"><a href="https://secure.bradycampaign.org/page/contribute/brady-campaign-donations" target="_blank">Donate</a></h3>
+    
+  
+  <div class="pane-content">
+     <p>Support our work and save lives.</p> <form action="https://secure.bradycampaign.org/page/contribute/brady-campaign-donations" method="post" id="brady-homepage-donate" accept-charset="UTF-8"><div><div class="form-item form-type-textfield form-item-email">
+  <input placeholder="Email" type="text" id="edit-email--2" name="email" value="" size="60" maxlength="128" class="form-text" />
+</div>
+<div class="form-item form-type-textfield form-item-zip">
+  <input placeholder="Zip" type="text" id="edit-zip--3" name="zip" value="" size="60" maxlength="128" class="form-text" />
+</div>
+<input type="submit" id="edit-submit--3" name="op" value="Submit" class="form-submit" /><input type="hidden" name="form_build_id" value="form-E-_57AM5PNVuuqd1pHxy6iPKuBILbDP58ONkW7nM0b4" />
+<input type="hidden" name="form_id" value="brady_homepage_donate" />
+</div></form>  </div>
+
+  
+  </div>
+      </div>
+    </div>
+        <div class="region region-homepage-updates region-conditional-stack">
+      <div class="region-inner clearfix">
+        <div class="panel-pane pane-pane pane-homepage-important-update block"   class="panel-pane pane-pane pane-homepage-important-update block">
+  
+        <h3 class="pane-title block-title"><a href="http://www.bradycampaign.org/14-brady-center-victories-for-2014" target="_blank">14 Brady Center victories for 2014</a></h3>
+    
+  
+  <div class="pane-content">
+     <p><img alt="" class="media-image image-style-none" height="85" style="line-height: 1.5em; float: left;" width="143" typeof="foaf:Image" src="http://www.bradycampaign.org/sites/default/files/14-victories-latest.jpg" />2014 may have been the most successful year yet for the Brady Center's Legal Action Project. Help us celebrate 14 victories for 2014 and make 2015 even better! <a target="_blank" rel="nofollow" href="http://www.bradycampaign.org/14-brady-center-victories-for-2014"><strong>Read about our victories</strong></a>.</p>   </div>
+
+  
+  </div>
+<div class="panel-separator"></div><div class="panel-pane pane-pane pane-homepage-follow-us block"   class="panel-pane pane-pane pane-homepage-follow-us block">
+  
+        <h3 class="pane-title block-title"><a href="/follow-us">Follow Us</a></h3>
+    
+  
+  <div class="pane-content">
+    <div class="item-list"><ul><li class="even first"><a href="https://www.facebook.com/bradycampaign" class="facebook-follow-link">Facebook</a></li><li class="odd"><a href="http://www.bradycampaign.org/blog/rss.xml" class="rss-follow-link">RSS Feed</a></li><li class="even"><a href="https://twitter.com/bradybuzz" class="twitter-follow-link">Twitter</a></li><li class="odd"><a href="http://youtube.com/user/BradyCampaign" class="youtube-follow-link">YouTube</a></li><li class="even last"><a href="http://instagram.com/bradybuzz" class="instagram-follow-link">Instagram</a></li></ul></div>  </div>
+
+  
+  </div>
+      </div>
+    </div>
+        <div class="region region-homepage-make-difference region-conditional-stack">
+      <div class="region-inner clearfix">
+        <div class="panel-pane pane-pane pane-homepage-make-a-difference-heade no-title block"   class="panel-pane pane-pane pane-homepage-make-a-difference-heade no-title block">
+  
+      
+  
+  <div class="pane-content">
+     <h3 class="pane-title block-title">Change Starts Here</h3>   </div>
+
+  
+  </div>
+        <div class="region-homepage-make-difference-children">
+          <div class="region region-homepage-make-difference-first">
+            <div class="region-inner clearfix">
+              <div class="panel-pane pane-pane pane-homepage-make-a-difference-left no-title block"   class="panel-pane pane-pane pane-homepage-make-a-difference-left no-title block">
+  
+      
+  
+  <div class="pane-content">
+    <article
+	class="node node-slide contextual-links-region article even node-homepage view-mode-homepage"
+	about="/slides/changing-culture" typeof="sioc:Item foaf:Document"
+	role="article">
+
+		<div class="field field-name-field-slide-image">
+	    <a href="/our-impact/campaigns/asking-saves-kids"><img typeof="foaf:Image" class="image-style-large" src="http://www.bradycampaign.org/sites/default/files/styles/large/public/slides/ask-logo3.jpg?itok=mRRPPLAj" alt="" /></a>	</div>
+		<div class="field field-name-title">
+		<h2><a href="/our-work/changing-culture" class="public-health-safety">Changing Culture</a></h2>
+	</div>
+	<div class="field field-name-field-slide-caption">
+		<p>Educating the public about the risks of guns in the home</p>	</div>
+</article>  </div>
+
+  
+  </div>
+            </div>
+          </div>
+          <div class="region region-homepage-make-difference-second">
+            <div class="region-inner clearfix">
+              <div class="panel-pane pane-pane pane-homepage-make-a-difference-middl no-title block"   class="panel-pane pane-pane pane-homepage-make-a-difference-middl no-title block">
+  
+      
+  
+  <div class="pane-content">
+    <article
+	class="node node-slide contextual-links-region article even node-homepage view-mode-homepage"
+	about="/slides/changing-culture" typeof="sioc:Item foaf:Document"
+	role="article">
+
+		<div class="field field-name-field-slide-image">
+	    <a href="/our-impact/campaigns/finish-the-job"><img typeof="foaf:Image" class="image-style-large" src="http://www.bradycampaign.org/sites/default/files/styles/large/public/slides/finish-the-job.jpg?itok=_VPoIyK2" alt="" /></a>	</div>
+		<div class="field field-name-title">
+		<h2><a href="/our-work/changing-laws" class="policy">Changing Laws</a></h2>
+	</div>
+	<div class="field field-name-field-slide-caption">
+		<p>Holding elected officials accountable, making this the safer nation we all want</p>	</div>
+</article>  </div>
+
+  
+  </div>
+            </div>
+          </div>
+          <div class="region region-homepage-make-difference-third">
+            <div class="region-inner clearfix">
+              <div class="panel-pane pane-pane pane-homepage-make-a-difference-right no-title block"   class="panel-pane pane-pane pane-homepage-make-a-difference-right no-title block">
+  
+      
+  
+  <div class="pane-content">
+    <article
+	class="node node-slide contextual-links-region article even node-homepage view-mode-homepage"
+	about="/slides/changing-culture" typeof="sioc:Item foaf:Document"
+	role="article">
+
+		<div class="field field-name-field-slide-image">
+	    <a href="/our-impact/campaigns/stop-bad-apple-gun-dealers"><img typeof="foaf:Image" class="image-style-large" src="http://www.bradycampaign.org/sites/default/files/styles/large/public/slides/bad-apple-homepage.jpg?itok=93Lr59B6" alt="" /></a>	</div>
+		<div class="field field-name-title">
+		<h2><a href="/our-work/changing-the-gun-industry" class="legal-action-project">Changing the Gun Industry</a></h2>
+	</div>
+	<div class="field field-name-field-slide-caption">
+		<p>Holding gun manufacturers and sellers accountable in the courts</p>	</div>
+</article>  </div>
+
+  
+  </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+        <div class="region region-homepage-latest-stories region-conditional-stack">
+      <div class="region-inner clearfix">
+        <div class="panel-pane pane-pane pane-homepage-latest-stories-header no-title block"   class="panel-pane pane-pane pane-homepage-latest-stories-header no-title block">
+  
+      
+  
+  <div class="pane-content">
+     <h3 class="pane-title block-title">Latest Stories</h3>   </div>
+
+  
+  </div>
+<div class="panel-separator"></div><div class="panel-pane pane-pane pane-homepage-latest-stories no-title block"   class="panel-pane pane-pane pane-homepage-latest-stories no-title block">
+  
+      
+  
+  <div class="pane-content">
+    <div class="view view-latest-stories view-id-latest_stories view-display-id-panel_pane_1 view-dom-id-e99e5133bc679e347297ad1f2220b56e">
+        
+  
+  
+      <div class="view-content">
+      <div  id="flexslider-2" class="flexslider">
+  <ul class="slides"><li><div class="field field-name-field-success-story-media"><img typeof="foaf:Image" class="image-style-latest-stories" src="http://www.bradycampaign.org/sites/default/files/styles/latest_stories/public/success_stories/WA-594-Victory-success.png?itok=8RgGUneQ" width="455" height="250" alt="" /></div><div class="field field-name-title"><h2><a href="/our-impact/success-stories/victory-in-washington">Victory in Washington!</a></h2></div><div class="field field-name-body"> It’s really not possible to overstate the importance of this victory in Washington State. Voters in the Evergreen State overwhelmingly passed Initiative 594 to expand background checks to all gun sales, including online and at gun shows. With a decisive 60 percent of voters supporting I-594, it turns out that it’s a lot harder for the corporate gun lobby to bully voters than it is to bully politicians. </div><div class="field field-name-node-link"><a href="/our-impact/success-stories/victory-in-washington">Learn More</a></div></li>
+<li><div class="field field-name-field-success-story-media"><img typeof="foaf:Image" class="image-style-latest-stories" src="http://www.bradycampaign.org/sites/default/files/styles/latest_stories/public/success_stories/AB-1014-success.jpg?itok=2EAnGmHk" width="455" height="250" alt="" /></div><div class="field field-name-title"><h2><a href="/our-impact/success-stories/governor-brown-signs-ab-1014">Governor Brown Signs AB 1014</a></h2></div><div class="field field-name-body"> <p>AB 1014 <span style="font-family: arial, sans-serif; line-height: normal;">(Skinner) </span><span style="line-height: 1.538em;">advances the Brady Campaign’s core mission of reducing firearm injury and death by keeping firearms out of dangerous hands. The law establishes a process for law enforcement or immediate family members to obtain a Gun Violence Restraining Order from a court in order to temporarily limit an individual’s access to firearms when there are warning signs or indications that the person is at risk for violence.</span></p></div><div class="field field-name-node-link"><a href="/our-impact/success-stories/governor-brown-signs-ab-1014">Learn More</a></div></li>
+<li><div class="field field-name-field-success-story-media"><img typeof="foaf:Image" class="image-style-latest-stories" src="http://www.bradycampaign.org/sites/default/files/styles/latest_stories/public/resources/brady-video-poster.jpg?itok=yABvTAlD" width="455" height="250" alt="" /></div><div class="field field-name-title"><h2><a href="/our-impact/success-stories/jim-bear-brady-in-action">Jim &quot;Bear&quot; Brady in Action</a></h2></div><div class="field field-name-body"> <p>Jim Brady turned tragedy into action when he dedicated his life to preventing the kind of senseless gun violence he survived. Jim and Sarah, his wife, were tenacious and fearless in their fight to prevent dangerous people from having easy access to guns. Thanks to Jim and Sarah's hard work, an estimated 2 million gun sales to criminals, domestic abusers and other dangerous people have been blocked. As a result, countless lives have been saved.</p></div><div class="field field-name-node-link"><a href="/our-impact/success-stories/jim-bear-brady-in-action">Learn More</a></div></li>
+</ul></div>
+    </div>
+  
+  
+  
+  
+  
+  
+</div>  </div>
+
+  
+  </div>
+      </div>
+    </div>
+    <div class="region region-updates">
+    <div class="panel-pane pane-pane pane-homepage-updates-header no-title block"   class="panel-pane pane-pane pane-homepage-updates-header no-title block">
+  
+      
+  
+  <div class="pane-content">
+     <h2>Updates from Brady</h2>   </div>
+
+  
+  </div>
+    <div class="region region-homepage-updates-first">
+      <div class="region-inner clearfix">
+        <div class="panel-pane pane-views-panes pane-updates-latest-blog-panel-pane-1 block"   class="panel-pane pane-views-panes pane-updates-latest-blog-panel-pane-1 block">
+  
+        <h3 class="pane-title block-title">Latest Blog</h3>
+    
+  
+  <div class="pane-content">
+    <div class="view view-updates-latest-blog view-id-updates_latest_blog view-display-id-panel_pane_1 view-dom-id-a3680ddb27ec23e701246df60768406f">
+        
+  
+  
+      <div class="view-content">
+        <div class="views-row views-row-1 views-row-odd views-row-first views-row-last">
+    <article class="node node-blog-post node-promoted article odd node-homepage view-mode-homepage" about="/blog/doing-more-to-prevent-gun-violence-after-a-violent-january-in-minnesota" typeof="sioc:Item foaf:Document" role="article">
+      <header><div class="field field-name-post-date">February 06, 2015</div><div class="field field-name-content-type">Blog post</div></header>
+  
+  <div class="field field-name-title"><h2><a href="/blog/doing-more-to-prevent-gun-violence-after-a-violent-january-in-minnesota">Doing More to Prevent Gun Violence after a Violent January in Minnesota  </a></h2></div><div class="field field-name-field-blog-featured-media"><a href="http://www.bradycampaign.org/blog/doing-more-to-prevent-gun-violence-after-a-violent-january-in-minnesota"><img typeof="foaf:Image" class="image-style-thumbnail" src="http://www.bradycampaign.org/sites/default/files/styles/thumbnail/public/resources/60-per-cent-crime-guns_0.png?itok=yu5ffHE2" width="100" height="57" alt="" /></a></div><div class="field field-name-field-blog-short-description">An insightful op-ed by Joan Peterson, co-president of the Northland chapter of the Brady Campaign and a member of the Brady Campaign Board of Trustees, shines a light on the recent, tragic gun violence in Minnesota.</div>
+  </article>
+  </div>
+    </div>
+  
+  
+  
+      
+<div class="more-link">
+  <a href="/blog">
+    Read the Blog  </a>
+</div>
+  
+  
+  
+</div>  </div>
+
+  
+  </div>
+      </div>
+    </div>
+    <div class="region region-homepage-updates-second">
+      <div class="region-inner clearfix">
+        <div class="panel-pane pane-pane pane-homepage-featured-content block"   class="panel-pane pane-pane pane-homepage-featured-content block">
+  
+        <h3 class="pane-title block-title">Featured Content</h3>
+    
+  
+  <div class="pane-content">
+    <article class="node node-resource node-promoted article even node-featured-content view-mode-featured_content" about="/our-impact/resources/gun-laws-for-dummies" typeof="sioc:Item foaf:Document" role="article">
+      <header><div class="field field-name-post-date">July 22, 2014</div><div class="field field-name-content-type">Resource</div><div class="field field-name-field-topic"><a href="/gun-violence/topics/background-checks">Background Checks</a></div></header>
+  
+  <div class="field field-name-title"><h2><a href="/our-impact/resources/gun-laws-for-dummies">Gun Laws for Dummies</a></h2></div><div class="field field-name-field-resource-featured-media"><div class="media-youtube-video media-youtube-1">
+  <iframe class="media-youtube-player" width="300" height="169" title="kfO5gYOqNfI" src="//www.youtube.com/embed/kfO5gYOqNfI?wmode=opaque" frameborder="0" allowfullscreen>Video of kfO5gYOqNfI</iframe>
+</div>
+</div><div class="field field-name-field-resource-short-description"> <p>This film explains how Brady background checks work and the need to extend the checks to all gun purchases.</p> </div>
+  </article>
+<div class="more-link"><a href="http://actions.bradycampaign.org/page/s/finish-the-job-petition" class="featured-content-link">Sign the petition</a></div>  </div>
+
+  
+  </div>
+      </div>
+    </div>
+    <div class="region region-homepage-updates-third">
+      <div class="region-inner clearfix">
+        <div class="panel-pane pane-views-panes pane-in-the-news-panel-pane-1 block"   class="panel-pane pane-views-panes pane-in-the-news-panel-pane-1 block">
+  
+        <h3 class="pane-title block-title">Brady Campaign News</h3>
+    
+  
+  <div class="pane-content">
+    <div class="view view-in-the-news view-id-in_the_news view-display-id-panel_pane_1 view-dom-id-b4415d12c0ce9aff481b43c43bea98c2">
+        
+  
+  
+      <div class="view-content">
+        <div class="views-row views-row-1 views-row-odd views-row-first">
+    <article class="node node-in-the-news node-promoted article odd node-homepage view-mode-homepage" about="/press-room/report-reveals-extraordinary-risks-to-children-of-access-to-guns-in-the-home" typeof="sioc:Item foaf:Document" role="article">
+      <header><div class="field field-name-post-date">February 09, 2015</div><div class="field field-name-content-type">In the news</div></header>
+  
+  <div class="field field-name-title"><h2><a href="/press-room/report-reveals-extraordinary-risks-to-children-of-access-to-guns-in-the-home">Report Reveals Extraordinary Risks to Children of Access to Guns in the Home </a></h2></div><div class="field field-name-body"> New data highlights devastating impact of unsafe access to guns, from suicide to preventable accidents </div>
+  </article>
+  </div>
+  <div class="views-row views-row-2 views-row-even views-row-last">
+    <article class="node node-in-the-news node-promoted article even node-homepage view-mode-homepage" about="/press-room/albuquerque-toddler-shoots-both-parents" typeof="sioc:Item foaf:Document" role="article">
+      <header><div class="field field-name-post-date">February 01, 2015</div><div class="field field-name-content-type">In the news</div></header>
+  
+  <div class="field field-name-title"><h2><a href="/press-room/albuquerque-toddler-shoots-both-parents">Albuquerque Toddler Shoots Both Parents</a></h2></div><div class="field field-name-body"> Our prayers are with the Albuquerque family whose toddler wounded both parents in a motel room on January 31 with a single shot from a handgun. </div>
+  </article>
+  </div>
+    </div>
+  
+  
+  
+      
+<div class="more-link">
+  <a href="/press-room">
+    More News  </a>
+</div>
+  
+  
+  
+</div>  </div>
+
+  
+  </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  </div>                    </div>
+                  
+                  
+                  
+                </div>
+
+                
+              </div>
+            </div>
+
+                        
+          </div>
+        </div>
+      </div>
+    </div>
+
+    	
+
+  </div>
+</div>
+  </div> <!-- end whole wapper -->
+          <div id="footer-wrapper">
+        <div class="container clearfix">
+          <footer id="footer" class="clearfix" role="contentinfo">
+            <div class="region region-footer"><div class="region-inner clearfix"><div class = ""><div id="block-pane-footer-add-your-name" class="block block-pane no-title" ><div class="block-inner clearfix">  
+  
+  <div class="block-content content">  <form action="http://actions.bradycampaign.org/page/s/brady-sign-up" method="post" id="brady-homepage-add-my-name--2" accept-charset="UTF-8"><div><div class="form-item form-type-textfield form-item-email">
+  <input placeholder="Email" type="text" id="edit-email--3" name="email" value="" size="60" maxlength="128" class="form-text" />
+</div>
+<div class="form-item form-type-textfield form-item-zip">
+  <input placeholder="Zip" type="text" id="edit-zip--4" name="zip" value="" size="60" maxlength="128" class="form-text" />
+</div>
+<input type="submit" id="edit-submit--4" name="op" value="Get Updates" class="form-submit" /><input type="hidden" name="form_build_id" value="form-jsdgRpUfVBHD8YG_VEaK5GH8bD6lwR4-TcM04fS4Sow" />
+<input type="hidden" name="form_id" value="brady_homepage_add_my_name" />
+</div></form></div>
+  </div></div></div><div class = ""><div id="block-pane-footer-copyright" class="block block-pane no-title" ><div class="block-inner clearfix">  
+  
+  <div class="block-content content"> <p>All information © 2015 Brady Campaign to Prevent Gun Violence</p> </div>
+  </div></div></div><nav id="block-menu-menu-footer-menu" class="block block-menu no-title"  role="navigation"><div class="block-inner clearfix">  
+  
+  <div class="block-content content"><ul class="menu clearfix"><li class="first leaf menu-depth-1 menu-item-529"><a href="http://actions.bradycampaign.org/page/s/brady-sign-up" title="">Sign Me Up</a></li><li class="leaf menu-depth-1 menu-item-530"><a href="/privacy-policy">Privacy Policy</a></li><li class="last leaf menu-depth-1 menu-item-531"><a href="/contact">Contact</a></li></ul></div>
+  </div></nav></div></div>          </footer>
+        </div>
+      </div>
+      <script src="http://www.bradycampaign.org/sites/all/modules/contrib/flexslider/assets/js/flexslider.load.js?njkamn"></script>
+  <script type="text/javascript">
+    var disH = $jq(window).height();
+    var disW = $jq(window).width();
+    var disHC = disH / 2;
+    var disWC = disW / 2;
+
+    function isiPhone(){
+    return (
+        (navigator.platform.indexOf("iPhone") != -1) ||
+        (navigator.platform.indexOf("iPod") != -1)
+    );
+}
+ if(isiPhone()){
+        disHC = 500;
+       disWC = 512;
+    }
+    var jqUpdateSize = function() {
+      if(isiPhone()){
+       $jq('.black-overlay').css({ width : "1024px",height : "2000px",});
+    } else { 
+      disH = $jq( window ).height();
+      disW = $jq(window).width();
+      disHC = disH / 2;
+      disWC = disW / 2;
+      $jq('.black-overlay').css({ width : disW + "px",height : disH + "px",}); }
+    };
+
+    $jq(document).ready(jqUpdateSize);
+    $jq(window).resize(jqUpdateSize);     // When the browser changes size
+
+  if($jq(".group-image-caption").length > 0){
+    
+  } else {
+          $jq("#block-views-chapter-news-block").addClass("chapter-no-cover");
+          $jq(".node-chapter").css("float","right");
+  };
+        $jq('.state-container').each(function() {
+         $jq(this).qtip({
+                show: 'click',
+                hide: 'unfocus',
+             content: {
+                text: $jq(this).find('.state-group')},
+                position: {
+                  adjust: {
+                      y: 6,
+                      x: 0
+                  },
+                  my: 'top left',  // Position my top left...
+                  at: 'top center', // at the bottom right of...
+                  target: $jq(this) // my target
+                },
+                style: {
+                  tip: {
+                      corner: 'left top',
+                      mimic: 'left center'
+                  },
+                  classes: 'qtip-bootstrap qtip-shadow',
+                 },
+         });
+     });
+
+var modalUp = function() {
+};
+
+  $jq('.block-1st-img').qtip({
+                show: 'click',
+                hide: 'unfocus',
+                events: {
+                          show: function(event, api) {
+                            $jq('.black-overlay').addClass('visible');
+                            
+                          },
+                          hide: function(event, api) {
+                            $jq('.black-overlay').removeClass('visible');
+                          },
+                      },
+             content: {
+                text: $jq('.block-1st')},
+                position: {
+                  my: 'center',  // Position my top left...
+                  at: 'center', // at the bottom right of...
+                  target: [disWC, disHC] // my target
+                },
+                style: {
+                  tip: {
+                      corner: 'bottomMiddle',
+                      mimic: 'center bottom',
+                      width: 1,
+                        height: 1
+                  },
+                  classes: 'qtip-bootstrap qtip-shadow',
+                 },
+         });
+  $jq('.block-2nd-img').qtip({
+                show: 'click',
+                hide: 'unfocus',
+                events: {
+                          show: function(event, api) {
+                            $jq('.black-overlay').addClass('visible');
+                            
+                          },
+                          hide: function(event, api) {
+                            $jq('.black-overlay').removeClass('visible');
+                          },
+                      },
+             content: {
+                text: $jq('.block-2nd')},
+                position: {
+                  my: 'center',  // Position my top left...
+                  at: 'center', // at the bottom right of...
+                  target: [disWC, disHC] // my target
+                },
+                style: {
+                  tip: {
+                      corner: 'bottomMiddle',
+                      mimic: 'center bottom',
+                      width: 1,
+                        height: 1
+                  },
+                  classes: 'qtip-bootstrap qtip-shadow',
+                 },
+         });
+  $jq('.block-3rd-img').qtip({
+                show: 'click',
+                hide: 'unfocus',
+                events: {
+                          show: function(event, api) {
+                            $jq('.black-overlay').addClass('visible');
+                              modalUp();
+                          },
+                          hide: function(event, api) {
+                            $jq('.black-overlay').removeClass('visible');
+                          },
+                      },
+             content: {
+                text: $jq('.block-3rd')},
+                position: {
+                  my: 'center',  // Position my top left...
+                  at: 'center', // at the bottom right of...
+                  target: [disWC, disHC] // my target
+                },
+                style: {
+                  tip: {
+                      corner: 'bottomMiddle',
+                      mimic: 'center bottom',
+                       width: 1,
+                        height: 1
+                  },
+                  classes: 'qtip-bootstrap qtip-shadow',
+                 },
+         });
+
+if( $jq('.page-node-413').length ){
+  $jq('.page-node-413').prepend( '<div class="black-overlay"></div>' );
+};
+
+$jq( ".block-1st-x" ).click(function() {
+  $jq('.block-1st-img').qtip("hide");
+  $jq('#block-block-5').qtip("hide");
+});
+$jq( ".block-2nd-x" ).click(function() {
+  $jq('.block-2nd-img').qtip("hide");
+});
+$jq( ".block-3rd-x" ).click(function() {
+  $jq('.block-3rd-img').qtip("hide");
+});
+$jq(document).ready(function () {
+    if(window.location.href.indexOf("modalup") > -1) {
+       $jq('#block-block-5').qtip({
+                show:
+                      {
+                      effect: { length: 500 },
+                      ready: true // Show when ready (page load)
+                      },
+                hide: 'unfocus',
+                events: {
+                          show: function(event, api) {
+                            $jq('.black-overlay').addClass('visible');
+                            
+                          },
+                          hide: function(event, api) {
+                            $jq('.black-overlay').removeClass('visible');
+                          },
+                      },
+             content: {
+                text: $jq('.block-1st')},
+                position: {
+                  my: 'center',  // Position my top left...
+                  at: 'center', // at the bottom right of...
+                  target: [disWC, disHC] // my target
+                },
+                style: {
+                  tip: {
+                      corner: 'bottomMiddle',
+                      mimic: 'center bottom',
+                      width: 1,
+                        height: 1
+                  },
+                  classes: 'qtip-bootstrap qtip-shadow',
+                 },
+         });
+    }
+    	
+    
+
+});
+
+
+		  $jq('.menu-name-menu-utility-navigation ul li').each(function(){
+		  $jq(this).clone().removeClass('leaf').addClass('mobile-clone').appendTo('#superfish-1');
+
+});
+
+        </script>
+</body>
+</html>

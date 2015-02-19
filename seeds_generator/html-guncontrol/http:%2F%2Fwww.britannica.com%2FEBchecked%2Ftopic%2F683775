@@ -1,0 +1,1001 @@
+<!doctype html>
+
+<!--[if IE 7]><html data-ytrk-page="TOPIC PAGINATED LARGE" class="no-js  lt-ie10 lt-ie9 lt-ie8 ie7" lang="en"><![endif]-->
+<!--[if IE 8]><html data-ytrk-page="TOPIC PAGINATED LARGE" class="no-js  lt-ie10 lt-ie9 ie8" lang="en"><![endif]-->
+<!--[if IE 9]><html data-ytrk-page="TOPIC PAGINATED LARGE" class="no-js  lt-ie10 ie9" lang="en"><![endif]-->
+<!--[if gt IE 9]><!--><html data-ytrk-page="TOPIC PAGINATED LARGE" class="no-js " lang="en"><!--<![endif]-->
+
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# ">
+
+
+    <!--[if lte IE 9 ]>
+    <script type="text/javascript" src="/resources/js/polyfills.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript">
+        Mendel = {};
+        $UI = {};
+        (function() {
+            var html = document.getElementsByTagName('html')[0];
+            html.className = html.className.replace( 'no-js', '');
+        })();
+    </script>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="description" content="Politics, legislation, and enforcement of measures intended to restrict access to, the possession of, or the use of arms, particularly firearms. Gun control is one of the most..." /><meta name="keywords" content="gun control, encyclopedia, encyclopaedia, britannica, article" /><meta name="canonical" content="http://www.britannica.com/EBchecked/topic/683775/gun-control" />
+        <link rel="canonical" href="http://www.britannica.com/EBchecked/topic/683775/gun-control" />
+    <meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:site" content="@britannica" />
+<meta name="twitter:title" content="gun control" />
+<meta name="twitter:description" content="Politics, legislation, and enforcement of measures intended to restrict access to, the possession of, or the use of arms, particularly firearms. Gun control is one of the most..." />
+<meta name="twitter:image:src" content="http://media-1.web.britannica.com/eb-media/89/172989-004-4635F3DF.jpg" />
+<meta name="twitter:url" content="http://www.britannica.com/EBchecked/topic/683775/gun-control" />
+
+<meta property="og:type"  content="article"/>
+<meta property="og:title" content="gun control"/>
+<meta property="og:description" content="Politics, legislation, and enforcement of measures intended to restrict access to, the possession of, or the use of arms, particularly firearms. Gun control is one of the most..."/>
+<meta property="og:site_name" content="Encyclopedia Britannica" />
+<meta property="og:url" content="http://www.britannica.com/EBchecked/topic/683775/gun-control"/>
+<meta property="og:image" content="http://media-1.web.britannica.com/eb-media/89/172989-004-4635F3DF.jpg" />
+<meta property="og:image:type" content="image/jpg" />
+<script type="text/javascript">
+Mendel.openGraph = {
+    type: 'article',
+    title: 'gun control',
+    description: 'Politics, legislation, and enforcement of measures intended to restrict access to, the possession of, or the use of arms, particularly firearms. Gun control is one of the most...',
+    siteName: 'Encyclopedia Britannica',
+    url: 'http://www.britannica.com/EBchecked/topic/683775/gun-control',
+    image: 'http://media-1.web.britannica.com/eb-media/89/172989-004-4635F3DF.jpg',
+    imageType: 'image/jpg'
+    
+};
+</script>
+
+<title>gun control | Encyclopedia Britannica</title>
+
+    <link href="//fonts.googleapis.com/css?family=Coustard|Asap:400,700|Open+Sans:400,700,800" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" type="text/css" href="/resources/css/libs/reset.css" />
+    <link rel="stylesheet" type="text/css" href="/resources/css/min-mendel.css?v=2.25.65" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
+
+    <script type="text/javascript">
+	Mendel.config = {
+        page: 'Topic',
+        testVersion: 'B',
+		server: 'http://www.britannica.com',
+        mediaServer: "http://media.web.britannica.com",
+		currentUrl: 'http://www.britannica.com/EBchecked/topic/683775/gun-control',
+        sharedUrl: 'http://www.britannica.com/EBchecked/topic/683775/gun-control',
+        userType: 'BOL',
+        userInfo: { statId: '301360'
+                    ,userId: ''
+                    ,currency: 'USD'
+                    ,country: 'US'
+                    ,bcomId: '3491083755728521645'
+	                ,mvst: {"SMALL_ADDTNL_RESOURCES":"NO","RR_PROMO":"RR_2","INDEX_VERSION":"INDEX_2","SM_TEMPLATE_LINKS":"NO","GIST_VERSION":"GIST_2","QUIZ_RESULTS_ADS":"NO"}
+                    ,provider: 'NONE'
+                    ,preferences: {}
+        },
+        isLoggedInAsUser: false,
+        hasAds: true,
+		hasVideoAds: true,
+        
+        adapTvId: 'nj232',
+        
+        n0ticeReturnUrl: 'http://projects.britannica.com/signin/return',
+        
+        logGoogleGPT: false,
+        isMobile: false,
+        isTablet: false,
+        isPhone: false,
+        analytics: [
+            
+            { type: 'google', id: 'UA-6636134-11', logClickAction: true, logPageLoad: true, logFakePageLoad: true },
+            { type: 'eb', logClickAction: false, logPageLoad: false, logFakePageLoad: true }
+            
+        ],
+        logAnalytics: false,
+        includeGigya: true,
+        gigyaProviders: 'facebook,twitter,googleplus,linkedin,yahoo'
+        ,topicUrl: '/EBchecked/topic/683775/gun-control'
+        ,topicContentType: 'ARTICLE'
+        ,freeTopicReason: 'PREMIUM_INST_USER'
+        ,channel: 'HISTORY_AND_SOCIETY'
+        ,topicId: 683775
+        ,topicTitle: 'gun control'
+	    ,topicAkw: 'history society,social sciences,sports recreation,tourism'
+        ,isIndexEntry: false
+        ,template: 'LARGE'
+        ,hasToc: true
+        ,pageNumber: 1
+    };
+
+    </script>
+
+    <script type="text/javascript" src="//pixel.quantserve.com/seg/p-fePJXh17dNmkk.js"></script>
+    <script type="text/javascript">
+    Mendel._quantsegs = null;
+    Mendel._getQsegs = function() {
+        if ( Mendel._quantsegs != null ) { return Mendel._quantsegs; }
+        var cn = '__qseg';
+        var c=document.cookie;if(!c)return '';
+        var i=c.indexOf(cn+"=");if(-1==i)return '';
+        var len=i+cn.length+1;
+        var end=c.indexOf(";", len);
+        var value = c.substring(len,end<0?c.length:end);
+        var quantSegs = [];
+        var _qsegs = value.split('|');
+        for (i=0;i < _qsegs.length;i++) { var qArr=_qsegs[i].split("_"); if (qArr.length>1) { quantSegs.push( qArr[1] ); } }
+        Mendel._quantsegs = quantSegs.join(',');
+        return Mendel._quantsegs;
+    }
+    </script><script type="text/javascript" src="//c.amazon-adsystem.com/aax2/amzn_ads.js"></script>
+<script type="text/javascript">
+   	try { amznads.getAds('3022'); }
+    catch(e) { /*ignore*/}
+</script>
+<script type="text/javascript">
+         (function() {
+           var src = '//www.googletagservices.com/tag/js/gpt.js';
+           document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+         })();
+        </script>
+	    <script src="http://js.indexww.com/ht/bri2.js"></script>
+	    <script type="text/javascript">
+         (function() {
+            var src = '//ox-d.merriamwebster.servedbyopenx.com/w/1.0/jstag?nc=34444486-EB';
+            document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+         })();
+        </script>
+    <script type="text/javascript">
+    try { amznads.setTargetingForGPTAsync('amznslots'); }
+    catch(e) { /*ignore*/}
+</script>
+<script type="text/javascript">
+    var googletagSlots = [];
+    googletag.cmd.push(function() {
+        
+                    googletagSlots.push(
+                        googletag.defineSlot('/34444486/EB_B/ARTICLES_FREE', [300,250],'div-gpt-ad-afb2fb6f-3e19-4e7f-a9b3-aa3db677d176')
+                             .setTargeting('POS',['TOP'])
+                             .addService(googletag.pubads())
+                    );
+                
+                    googletagSlots.push(
+                        googletag.defineSlot('/34444486/EB_B/ARTICLES_FREE', [300,250],'div-gpt-ad-e487ba5f-7327-4e8a-a3a7-df093dd0db0c')
+                             .setTargeting('POS',['BOT'])
+                             .addService(googletag.pubads())
+                    );
+                
+                    googletagSlots.push(
+                        googletag.defineSlot('/34444486/EB_B/ARTICLES_FREE', [300,250],'div-gpt-ad-7ec094e2-879f-4c86-83f3-c284c6048378')
+                             .setTargeting('POS',['BOT2'])
+                             .addService(googletag.pubads())
+                    );
+                
+                    googletagSlots.push(
+                        googletag.defineSlot('/34444486/EB_B/ARTICLES_FREE', [728,90],'div-gpt-ad-544f7f64-07c4-4aa9-b1f4-14c6ddc86289')
+                             .setTargeting('POS',['BOT'])
+                             .addService(googletag.pubads())
+                    );
+                
+
+        googletag.pubads().setTargeting('dc_ref',['http://www.britannica.com/EBchecked/topic/683775/gun-control']);
+        if ( this.Mendel && this.Mendel._getQsegs ) { googletag.pubads().setTargeting('QSEGS',[ Mendel._getQsegs() ]); }
+        googletag.pubads().setTargeting('ARTICLE',['683775']);googletag.pubads().setTargeting('CAT',['history society,social sciences,sports recreation,tourism']);googletag.pubads().setTargeting('PAGE',[2]);
+        googletag.pubads().enableSingleRequest();
+        googletag.pubads().enableAsyncRendering();
+        googletag.enableServices();
+  });
+</script><script type="text/javascript">
+        window._taboola = window._taboola || [];
+        _taboola.push({article:'auto'});
+        !function (e, f, u) { e.async = 1; e.src = u; f.parentNode.insertBefore(e, f);
+        }(document.createElement('script'),document.getElementsByTagName('script')[0], '//cdn.taboola.com/libtrc/merriamwebster-ebcom/loader.js');
+    </script><!--[if lte IE 8]>
+    <script type="text/javascript">
+        ( function() {
+            var tags = [ 'header', 'footer', 'aside', 'nav', 'section', 'article', 'figure', 'figcaption', 'time' ];
+            for ( var i = 0; i < tags.length; document.createElement( tags[i++] ) );
+        })();
+    </script>
+    <![endif]-->
+
+</head>
+
+<body ng-app class="topicPage topic-page-large user-BOL md-desktop font-sans has-footer-ad no-toolbar leg-b">
+
+    <div class="md-page-wrapper">
+
+        <header class="font-sans-ui">
+
+    <div class="header-content">
+
+        <div class="header-title">
+
+            <h4>
+	            <a class="logo-homepage" href="/"><img src="/resources/images/header/eb-logo-header.png" alt="Encyclopedia Britannica" /></a>
+                <a class="header-thistle" href="/"></a>
+            </h4>
+            <nav class="header-nav">
+    <ul>
+        <li><a data-ytrk="127" href="http://help.eb.com/premium2/index.htm" target="_blank">Help</a></li>
+        <li><a data-ytrk="27" href="http://info.eb.com" target="_blank">School & Library Products</a></li>
+        <li>
+                <a data-ytrk="25" href="http://store.britannica.com" target="_blank">SHOP</a>
+            </li>
+        </ul>
+</nav>
+
+
+<div class="header-login ">
+                <div class="header-login-links">
+                    <span data-ytrk="262" class="md-header-join-link">JOIN</span><span data-ytrk="17" class="login-link" >LOGIN</span>
+                        </div>
+                </div>
+
+        </div>
+    </div>
+
+</header>
+
+<div id="header-global-nav" data-position-fixed="0">
+
+    <div class="header-global-nav-content">
+
+        <ul id="header-global-nav-buttons" data-title="navigation" >
+            <li><a data-ytrk="/439" href="/popular-topics/browse" data-content-url="/globalnav/ajax/popular-topics">Popular Topics</a></li>
+            <li><a data-ytrk="/440" href="/quiz/browse" data-content-url="/globalnav/ajax/quizzes">quizzes</a></li>
+            <li><a data-ytrk="/441" href="/gallery/browse" data-content-url="/globalnav/ajax/galleries">galleries</a></li>
+            <li><a data-ytrk="/442" href="/list/browse" data-content-url="/globalnav/ajax/lists">lists</a></li>
+            <li><a data-ytrk="303" href="http://projects.britannica.com" target="_blank">projects</a></li>
+            </ul>
+
+        <div class="search-form">
+            <form method="get" action="/search" id="searchCriteria" class="">
+    <div class="search-box">
+        <input name="query" type="text" id="header-query" placeholder="Search Britannica..." class="query font-sans"  maxlength="200" />
+        <button data-ytrk="21" type="submit" class="search-submit" value=""><i class="fa fa-search"></i></button>
+    </div>
+</form>
+</div>
+
+    </div>
+
+    <a href="http://academic.eb.com" class="md-go-to-school">
+        You have reached Britannica's public Web site. Click here for ad-free access to your Britannica School or Library account.</a>
+</div>
+
+<div id="content" class="md-content">
+
+            <div class="md-page-h1-wrapper">
+
+                <h1><span>Gun control</span></h1>
+        <div class="md-navigator hide-on-edit">
+    <div class="fa fa-bars fa-fw fa-2x" data-ytrk="586"></div>
+    <ul class="md-navigator-dropdown font-sans">
+        <li>
+                <strong>Article</strong>
+                    </li>
+        <li>
+                <a data-ytrk="/295" href="/topic/683775/websites" >Web sites</a>
+                    </li>
+        <li>
+                <a data-ytrk="/294" href="/topic/683775/bibliography" >Bibliography</a>
+                    </li>
+        <li>
+                <a data-ytrk="/211" href="/topic/683775/year-in-review" >Year in Review</a>
+                    </li>
+        <li>
+                <a data-ytrk="/292" href="/topic/683775/contributors" rel="nofollow">Contributors</a>
+                    </li>
+        </ul>
+</div><div class="subheading hide-on-edit">
+                <span>Written by: <a href="/bps/user-profile/7822641/patrick-j-charles" data-ytrk="/212">Patrick J. Charles</a></span>
+<ul class="md-toolbar ">
+
+	<li class="comments" title="Comments" data-ytrk="587">
+		<a href="#didnt-know">
+            <span class="fa-stack">
+            <i class="fa fa-comment fa-stack-2x"></i>
+            <strong class="comments-text fa-stack-1x fa-inverse"></strong>
+            </span>
+            </a>
+	</li>
+
+	<li class="share" title="Share" data-ytrk="113">
+        <span class="fa-stack">
+            <i class="fa fa-share-alt fa-stack-2x"></i>
+        </span>
+        </li>
+
+    <li class="t-email" title="Email" data-ytrk="112">
+        <span class="fa-stack">
+            <i class="fa fa-envelope fa-stack-2x"></i>
+        </span>
+        </li>
+
+    <li class="t-print" title="Print" data-ytrk="111">
+            <a href="/print/topic/683775" target="_blank">
+            <span class="fa-stack">
+                <i class="fa fa-print fa-stack-2x"></i>
+            </span>
+                </a>
+        </li>
+    <li class="t-cite" title="Cite" data-ytrk="117">
+        <span class="fa-stack">
+            <i class="fa fa-square-o fa-stack-2x"></i>
+            <i class="fa fa-quote-right fa-stack-1x"></i>
+        </span>
+        </li>
+
+	<li class="last-modified" data-ytrk="/588">
+            <a href="/topic/683775/history">Last Updated <time>9-17-2013</time></a>
+        </li>
+    </ul>
+</div>
+        <ul class="md-topic-title-links">
+    <li>
+        <span id="md-topic-title-link-read">Read</span></li>
+    <li>
+        <a class="md-topic-title-link-edit" href="#" rel="nofollow" data-ytrk="263">Edit</a>
+    </li>
+    <li>
+        <a id="md-topic-title-link-history" data-ytrk="/291" href="/topic/683775/history" rel="nofollow">View History</a></li>
+    <li>
+        <a id="md-topic-title-link-feedback" href="/topic/683775/feedback" data-ytrk="/267" rel="nofollow">Feedback</a></li>
+</ul></div>
+
+            <div id="edit-toolbar-placeholder"></div><div class="md-content-wrapper  topic-content">
+                <article class="content-body font-sans-ui" vocab="http://schema.org" resource="http://semantic.britannica.com/accepted_headword/core/683775/gun-control" typeof="Article">
+            <meta property="url" href="/EBchecked/topic/683775/gun-control" />
+            <meta property="owl:sameAs" href="http://dbpedia.org/page/Gun_control" /><meta property="name" content="gun control" />
+            <div id="long-toc" class="md-toc hide-on-edit fancy-scrollbar" data-position-fixed="50" data-unfix=".pagination-toolbar">
+                    <div class="title font-sans">Table of Contents</div>
+                    <div class="topic-toc-tree">
+                        <ul class="toc-ul"><li class="lv1" data-section="683775main" data-toc="683775main"><a href="/EBchecked/topic/683775/gun-control" data-ytrk="131">Introduction</a></li><li class="lv1" data-section="683775main" data-toc="289769"><a href="/EBchecked/topic/683775/gun-control#toc289769" data-ytrk="131">International considerations</a></li><li class="lv1" data-section="683775main" data-toc="289770"><a href="/EBchecked/topic/683775/gun-control#toc289770" data-ytrk="131">Historical origins of gun control</a></li><li class="lv1" data-section="289771" data-toc="289771"><a href="/EBchecked/topic/683775/gun-control/289771/Gun-control-in-the-United-States" data-ytrk="/131">Gun control in the United States</a></li></ul></div>
+                </div>
+<section id="toc683775main" class="eb-topic-section" data-level="intro" print-toc="toc-683775main-683775main">
+ <p>
+  <!--[START-FIRST-PARAGRAPH]--><b><span class="srTitle">gun control</span></b><b>,</b>&nbsp;politics, legislation, and enforcement of measures intended to restrict access to, the possession of, or the use of arms, particularly firearms. Gun control is one of the most controversial and emotional issues in many countries, with the debate often centring on whether regulations on an individual’s right to arms are an undue restriction on liberty and whether there is a correlation between guns and crime. Proponents of gun-control legislation assert that the strict enforcement of gun-control laws saves lives and reduces crime. By contrast, opponents of gun control assert that minimal restrictions on guns ensure that individuals have adequate means for self-defense and that a wider distribution of firearms results in safer communities.</p>
+ <div id="md-media-strip-loaded" class="wait hide-on-edit"></div>
+</section>
+<!--[END-FIRST-SECTION]-->
+<section class="eb-topic-section" data-level="1" id="toc289769" print-toc="toc-683775main-289769">
+ <h2 class="h2"><span>International considerations</span></h2>
+ <p>Gun control is an issue throughout the world, with each country having the sovereign authority to regulate firearms within its borders. The vast majority of industrialized countries have strict gun-control regulations. For example, <a name="ref1081528" id="ref1081528"></a><a data-ytrk="/548" href="/EBchecked/topic/300531/Japan"><span property="about" href="http://semantic.britannica.com/accepted_headword/core/300531/Japan">Japan</span></a> places restrictions on the possession and use of all firearms except in limited instances (e.g., hunting, athletic events, and research). <a name="ref1081529" id="ref1081529"></a><a data-ytrk="/548" href="/EBchecked/topic/91513/Canada"><span property="about" href="http://semantic.britannica.com/accepted_headword/core/91513/Canada">Canada</span></a> permits the possession and use of firearms for competitions and target practice, but it forbids the possession of handguns unless an individual can show that a <a data-ytrk="/548" href="/EBchecked/topic/254199/handgun"><span property="about" href="http://semantic.britannica.com/accepted_headword/core/254199/handgun">handgun</span></a> is needed for self-defense. The <a name="ref1081530" id="ref1081530"></a><a data-ytrk="/548" href="/EBchecked/topic/615557/United-Kingdom"><span property="about" href="http://semantic.britannica.com/accepted_headword/core/615557/United-Kingdom">United Kingdom</span></a> has banned handguns altogether and limits the possession of firearms to activities such as hunting, target shooting, pest control, and slaughtering. Meanwhile, <a name="ref1081531" id="ref1081531"></a><a data-ytrk="/548" href="/EBchecked/topic/231186/Germany"><span property="about" href="http://semantic.britannica.com/accepted_headword/core/231186/Germany">Germany</span></a> permits the ownership of certain firearms so long as an individual meets the requirements for a firearms ownership license, which include that the applicant be age 18 or older and have expert knowledge in the handling of firearms and have the necessity to possess such firearms.</p>
+</section>
+<section class="eb-topic-section" data-level="1" id="toc289770" print-toc="toc-683775main-289770">
+ <h2 class="h2"><span>Historical origins of <a data-ytrk="/548" href="/EBchecked/topic/249356/gun"><span property="about" href="http://semantic.britannica.com/accepted_headword/core/249356/gun">gun</span></a> control</span></h2>
+ <p>If gun control is defined as placing legal restrictions on arms to protect civil society, its origins can be traced back to <a name="ref1081535" id="ref1081535"></a><a data-ytrk="/548" href="/EBchecked/topic/507905/ancient-Rome"><span property="about" href="http://semantic.britannica.com/accepted_headword/core/507905/ancient-Rome">ancient Rome</span></a>. In Rome arms were seen as the means to maintain standing armies. To prevent these armies from undermining and overthrowing civil authority, <a data-ytrk="/548" href="/EBchecked/topic/507759/Roman-law"><span property="about" href="http://semantic.britannica.com/accepted_headword/core/507759/Roman-law">Roman law</span></a> forbade military arms from crossing the <a data-ytrk="/548" href="/EBchecked/topic/511950/Rubicon"><span property="about" href="http://semantic.britannica.com/accepted_headword/core/511950/Rubicon">Rubicon</span></a>. This law would remain in effect until <a data-ytrk="/548" href="/EBchecked/topic/88114/Julius-Caesar"><span property="about" href="http://semantic.britannica.com/accepted_headword/core/88114/Julius-Caesar">Julius Caesar</span></a> violated it when he maintained a standing army to assume power as emperor of Rome, a historical event that was etched as the beginning of the decline of the Roman Empire. In fact, this historical event is of such significance that both the English <a data-ytrk="/548" href="/EBchecked/topic/503538/Bill-of-Rights"><span property="about" href="http://semantic.britannica.com/accepted_headword/core/503538/Bill-of-Rights">Bill of Rights</span></a> (formally An Act Declaring the Rights and Liberties of the Subject and Settling the Succession of the Crown; 1689) and the <a data-ytrk="/548" href="/EBchecked/topic/134197/Constitution-of-the-United-States-of-America"><span property="about" href="http://semantic.britannica.com/accepted_headword/core/134197/Constitution-of-the-United-States-of-America">U.S. Constitution</span></a> (1789) include provisions that prevent the maintenance of standing armies during times of peace without the consent of the legislative branch.</p>
+ <p>In <a name="ref1081536" id="ref1081536"></a><a data-ytrk="/548" href="/EBchecked/topic/700965/England"><span property="about" href="http://semantic.britannica.com/accepted_headword/core/700965/England">England</span></a> arms were always controlled by <a data-ytrk="/548" href="/EBchecked/topic/444244/Parliament"><span property="about" href="http://semantic.britannica.com/accepted_headword/core/444244/Parliament">Parliament</span></a> and the crown according to socioeconomic status. As English reformer and MP <a name="ref1081537" id="ref1081537"></a>John Sadler wrote in 1649 in his pamphlet titled “<q>The Rights of the Kingdom,</q>” “Men ought indeed have Arms, and them to keep in Readiness for Defence of the King and Kingdom,” but Parliament defined which men were to “provide and bear arms, how, and when, and where.” It should be emphasized that arms were primarily seen as tools for the common defense of the realm. Even for this purpose, however, arms were strictly regulated by the government to ensure that they were readily available for the common defense and were out of the hands of dangerous persons. For example, during the reign of <a name="ref1081538" id="ref1081538"></a><a data-ytrk="/548" href="/EBchecked/topic/261947/Henry-VIII"><span property="about" href="http://semantic.britannica.com/accepted_headword/core/261947/Henry-VIII">Henry VIII</span></a> (1509–47), restrictions were placed on “weapons” and “defensive armour” being brought to any town, church, market, or other congregation except upon the <a data-ytrk="/548" href="/EBchecked/topic/274775/hue-and-cry"><span property="about" href="http://semantic.britannica.com/accepted_headword/core/274775/hue-and-cry">hue and cry</span></a> (a practice whereby criminals were pursued with cries and sounds of alarm). Henry VIII had enacted other gun-control laws, including restrictions on the length of guns, on who was qualified to possess guns, and on when and where they may be fired.</p>
+ <p>Gun restrictions in <a data-ytrk="/548" href="/EBchecked/topic/700965/England"><span property="about" href="http://semantic.britannica.com/accepted_headword/core/700965/England">England</span></a> were rarely the subject of parliamentary debate. However, from the mid-17th to the late 18th century, members of Parliament periodically proposed laws that would remove gun restrictions and allow English householders to have and maintain guns for the defense of the realm. For instance, during the convention in 1689 that drafted the English Declaration of Rights, Thomas Erle, who had served as a general and was a member of Parliament, proposed that “every substantial householder in any town or city should be provided of a good musket in case of invasion.” In 1693 a similar proposal was made to allow every Protestant to keep a musket “for the security of the government.” Such proposals failed, however, because they would “arm the mob” and thus were considered “not very safe for any government.”</p>
+ <p>Naturally, the safety of the government was not the only reason restrictions on guns were imposed in England. Gun-control restrictions sometimes supported the hunting of game or the access of hunters to game preserves, as well as to prevent crime and murders. In the 1750s the Scottish philosopher and historian <a name="ref1081539" id="ref1081539"></a><a data-ytrk="/548" href="/EBchecked/topic/204623/Adam-Ferguson"><span property="about" href="http://semantic.britannica.com/accepted_headword/core/204623/Adam-Ferguson">Adam Ferguson</span></a> opposed such restrictions as preventing the establishment of a national <a data-ytrk="/548" href="/EBchecked/topic/382443/militia"><span property="about" href="http://semantic.britannica.com/accepted_headword/core/382443/militia">militia</span></a> because, although a “few domestic inconveniences” would occur, this should not “deter us from the necessary Steps” in arming the people for “our own Defence, against a foreign Enemy.” The English writer and MP Soame Jenyns also justified the removal of gun restrictions to further the establishment of a national militia. Although “Accidents [such as murder] may sometimes happen,” it did not matter, he argued, because “every man” in the militia will “beget three Children before he kills one Man.”</p>
+ <p>In the end, neither of these arguments affected the well-established gun restrictions in England. In fact, when mid-18th century militia reform was finally adopted, <a data-ytrk="/548" href="/EBchecked/topic/230004/George-II"><span property="about" href="http://semantic.britannica.com/accepted_headword/core/230004/George-II">George II</span></a> (1727–60) ensured that all militia arms were kept by local lord lieutenants and only distributed during times of militia muster and training. This was a practice that dated to the 1550s, during the reign of <a data-ytrk="/548" href="/EBchecked/topic/367515/Mary-I"><span property="about" href="http://semantic.britannica.com/accepted_headword/core/367515/Mary-I">Mary I</span></a>, when the law required that all guns and arms in cities, boroughs, towns, parishes, and hamlets were to be kept by local government officials and in places of safekeeping.</p>
+</section><div id="md-media-strip-load">
+                <div id="md-media-strip" class="md-media-strip font-sans-ui">
+
+        <ul id="md-media-strip-tabs" class="ui-tabs md-media-strip-tabs nav nav-tabs font-sans">
+
+            <li id="md-media-strip-tab-IMAGE" class="has-carousel"><a data-ytrk="87" href="#md-media-strip-tab-IMAGE-content">Images</a></li>
+                    <li id="md-media-strip-tab-quizzes" class="green has-carousel" >
+                    <a data-ytrk="177" href="#md-media-strip-tab-quizzes-content">quizzes</a>
+                </li>
+
+                <li id="md-media-strip-tab-lists" class="green has-carousel">
+                    <a data-ytrk="178" href="#md-media-strip-tab-lists-content">Lists</a>
+                </li>
+
+            </ul>
+
+            <div class="ui-tabs-content">
+
+            <div id="md-media-strip-tab-IMAGE-content" class="md-medis-strip-media-content" rel="/ajax/topic/683775/images/US"></div>
+            <div id="md-media-strip-tab-VIDEO-content"  class="md-medis-strip-media-content" rel="/ajax/topic/683775/videos"></div>
+            <div id="md-media-strip-tab-AUDIO-content"  class="md-medis-strip-media-content" rel="/ajax/topic/683775/audios"></div>
+            <div id="md-media-strip-tab-INTERACTIVE-content"  class="md-medis-strip-media-content" rel="/ajax/topic/683775/interactives"></div>
+            <div id="md-media-strip-tab-quizzes-content" rel="/ajax/topic/683775/quizzes"></div>
+                <div id="md-media-strip-tab-lists-content" rel="/ajax/topic/683775/lists"></div>
+            </div>
+    </div>
+
+</div>
+
+	        <noscript>
+	<ul>
+	<li>
+			<a href="/EBchecked/media/186203/A-Rhode-Island-State-Police-officer-exhibits-the-high-capacity?topicId=683775">
+				<img src="http://media-2.web.britannica.com/eb-media/89/172989-004-4635F3DF.jpg"  />
+				<span>A Rhode Island State Police officer exhibits the high-capacity magazines of an AR-15 semiautomatic assault weapon while testifying before the Rhode Island House Judiciary Committee in Providence on May 1, 2013. The committee was reviewing proposed legislation that would ban the sale of such weapons.</span></a>
+		</li>
+	<li>
+			<a href="/EBchecked/media/186205/On-June-27-2013-days-before-legislation-prohibiting-the-sale?topicId=683775">
+				<img src="http://media-3.web.britannica.com/eb-media/88/172988-004-5954D5E2.jpg"  />
+				<span>On June 27, 2013, days before legislation prohibiting the sale of high-capacity magazines took effect in Colorado, a gun dealer in Aurora displays some of the firearms affected by the new law.</span></a>
+		</li>
+	</ul>
+</noscript>
+</article>
+
+        <div class="hide-on-edit">
+
+            <div id="topic-pagination" class="pagination hide-on-edit">
+
+    <ul>
+        
+        <li class="active"><span>1</span></li><li><a data-ytrk="/75" href="/EBchecked/topic/683775/gun-control/289771/Gun-control-in-the-United-States" title="Gun control in the United States">2</a></li></ul>
+
+    <a class="pagination-next-button" data-ytrk="/130" href="/EBchecked/topic/683775/gun-control/289771/Gun-control-in-the-United-States" title="Gun control in the United States">
+                Next Page
+                <span class="pagination-button-arrow"></span>
+            </a>
+        </div>
+<ul class="md-toolbar pagination-toolbar">
+
+	<li class="comments" title="Comments" data-ytrk="587">
+		<a href="#didnt-know">
+            <span class="fa-stack">
+            <i class="fa fa-comment fa-stack-2x"></i>
+            <strong class="comments-text fa-stack-1x fa-inverse"></strong>
+            </span>
+            <span class="label">Comments</span></a>
+	</li>
+
+	<li class="share" title="Share" data-ytrk="113">
+        <span class="fa-stack">
+            <i class="fa fa-share-alt fa-stack-2x"></i>
+        </span>
+        <span class="label">Share</span></li>
+
+    <li class="t-email" title="Email" data-ytrk="112">
+        <span class="fa-stack">
+            <i class="fa fa-envelope fa-stack-2x"></i>
+        </span>
+        <span class="label">Email</span></li>
+
+    <li class="t-print" title="Print" data-ytrk="111">
+            <a href="/print/topic/683775" target="_blank">
+            <span class="fa-stack">
+                <i class="fa fa-print fa-stack-2x"></i>
+            </span>
+                <span class="label">Print</span></a>
+        </li>
+    <li class="t-cite" title="Cite" data-ytrk="117">
+        <span class="fa-stack">
+            <i class="fa fa-square-o fa-stack-2x"></i>
+            <i class="fa fa-quote-right fa-stack-1x"></i>
+        </span>
+        <span class="label">Cite</span></li>
+
+	<li class="last-modified" data-ytrk="/588">
+            <a href="/topic/683775/history">Last Updated <time>9-17-2013</time></a>
+        </li>
+    </ul>
+<div class="read-more hide-on-edit">
+        <h3 class="md-extra-content-title">You may also be interested in...</h3>
+        <ul class="row font-sans-ui">
+            <li class="col-lg-3 col-md-4 col-sm-6" data-ytrk="/584"><a href="/EBchecked/topic/11305/AK-47" title="AK-47">AK-47</a></li>
+            <li class="col-lg-3 col-md-4 col-sm-6" data-ytrk="/584"><a href="/EBchecked/topic/353341/M16-rifle" title="M16 rifle">M16 rifle</a></li>
+            <li class="col-lg-3 col-md-4 col-sm-6" data-ytrk="/584"><a href="/EBchecked/topic/621126/Uzi-submachine-gun" title="Uzi submachine gun">Uzi submachine gun</a></li>
+            <li class="col-lg-3 col-md-4 col-sm-6" data-ytrk="/584"><a href="/EBchecked/topic/225581/Garand-rifle" title="Garand rifle">Garand rifle</a></li>
+            <li class="col-lg-3 col-md-4 col-sm-6" data-ytrk="/584"><a href="/EBchecked/topic/334620/Lee-Enfield-rifle" title="Lee-Enfield rifle">Lee-Enfield rifle</a></li>
+            <li class="col-lg-3 col-md-4 col-sm-6" data-ytrk="/584"><a href="/EBchecked/topic/393135/mortar" title="mortar">mortar</a></li>
+            <li class="col-lg-3 col-md-4 col-sm-6" data-ytrk="/584"><a href="/EBchecked/topic/541881/shotgun" title="shotgun">shotgun</a></li>
+            <li class="col-lg-3 col-md-4 col-sm-6" data-ytrk="/584"><a href="/EBchecked/topic/593032/Thompson-submachine-gun" title="Thompson submachine gun">Thompson submachine gun</a></li>
+            <li class="col-lg-3 col-md-4 col-sm-6" data-ytrk="/584"><a href="/EBchecked/topic/500671/revolver" title="revolver">revolver</a></li>
+            <li class="col-lg-3 col-md-4 col-sm-6" data-ytrk="/584"><a href="/EBchecked/topic/39165/assault-rifle" title="assault rifle">assault rifle</a></li>
+            <li class="col-lg-3 col-md-4 col-sm-6" data-ytrk="/584"><a href="/EBchecked/topic/89466/calibre" title="calibre">calibre</a></li>
+            <li class="col-lg-3 col-md-4 col-sm-6" data-ytrk="/584"><a href="/EBchecked/topic/633427/Vulcan-automatic-cannon" title="Vulcan automatic cannon">Vulcan automatic cannon</a></li>
+            </ul>
+    </div>
+<h3 class="md-extra-content-title">Keep exploring</h3>
+<ul class="md-high-engagement font-sans-ui">
+    <li>
+            <a data-ytrk="/250" href="/quiz/256/history-of-warfare">
+                <img src="http://media-3.web.britannica.com/eb-media/26/171126-118-4DBC0E0A.jpg"/>
+                <br/>History of Warfare</a>
+        </li>
+    <li>
+            <a data-ytrk="/250" href="/quiz/273/weapons-and-warfare-">
+                <img src="http://media-1.web.britannica.com/eb-media/47/135147-118-90190149.jpg"/>
+                <br/>Weapons and Warfare </a>
+        </li>
+    <li>
+            <a data-ytrk="/250" href="/quiz/170/technological-ingenuity">
+                <img src="http://media-2.web.britannica.com/eb-media/87/167287-118-CBDD028E.jpg"/>
+                <br/>Technological Ingenuity</a>
+        </li>
+    <li>
+            <a data-ytrk="/251" href="/list/12/10-failed-doomsday-predictions">
+                <img src="http://media-3.web.britannica.com/eb-media/74/166274-118-6A182511.jpg"/>
+                <br/>10 Failed Doomsday Predictions</a>
+        </li>
+    </ul><div class="toc-watch" data-position-fixed=".eb-topic-section" data-unfix="#topic-pagination">Gun control&nbsp;<span class="current-section"></span><a href="#" class="pull-right" data-scroll="0">Table of Contents <i class="fa fa-chevron-up"></i></a></div>
+            </div>
+
+        <div class="md-fb-comments hide-on-edit">
+         <div id="didnt-know" class="md-extra-content-title">
+             What made you want to look up gun control?
+         </div>
+         <div id="gigya-comments"></div>
+     </div>
+ <div id="taboola-below-article-thumbnails" class="hide-on-edit"></div>
+    <script type="text/javascript">
+        window._taboola = window._taboola || [];
+        _taboola.push({
+            mode: 'organic-thumbs-1r',
+            container: 'taboola-below-article-thumbnails',
+            placement: 'LARGE Below Article Thumbnails',
+            target_type: 'mix'
+        });
+    </script>
+
+    <form method="POST" id="md-email-dialog" class="ui-hidden">
+    <label for="md-email-dialog-form-to">To</label><input class="span6" type="text" name="to" data-validation="email" required="true" id="md-email-dialog-form-to" />
+    <label for="md-email-dialog-form-from">From</label><input class="span6" type="text" name="from" data-validation="email" required="true" id="md-email-dialog-form-from" />
+    <label for="md-email-dialog-form-subject">Subject</label><input class="span6" type="text" name="subject" id="md-email-dialog-form-subject"  />
+    <label for="md-email-dialog-form-comments">Comments</label><textarea class="span6" name="comments" id="md-email-dialog-form-comments" maxlength="900" ></textarea>
+    <div class="md-email-dialog-form-msg">(Please limit to 900 characters)</div>
+    <input type="hidden" name="url" id="md-email-dialog-url" />
+    <input type="hidden" name="title" id="md-email-dialog-title" />
+    <input type="submit" value="Send"/><button>Cancel</button>
+</form></div>
+
+            <aside class="md-sidebar "><div class="hide-on-edit  md-rr-test">
+	        <div class="google-ad-iframe">
+		        <div class="sliding-box-300x50">
+		        <a href="https://safe1.britannica.com/registrations/signup.do?partnerCode=EBOK_300x50_B" class="sidebar-in-house-upsell"><img src="http://safe.britannica.com/safeimages/EBOK_300x200B.jpg"/></a>
+	            </div>
+	            </div>
+	        <div id="adaptvDiv" class="md-video-player-wrapper ui-hide-on-modal" style="width: 300px; height: 250px;" data-media-info="{'id':171039,'renditionPaths':['http:\/\/video-3.web.britannica.com\/eb-media\/39\/171039-115-ED56278B.mp4','http:\/\/video-1.web.britannica.com\/eb-media\/39\/171039-114-61E41460.flv'],'width':300,'height':250,'poster':'http:\/\/video-2.web.britannica.com\/eb-media\/39\/171039-116-06A81730.jpg','posterWidth':300,'posterHeight':250}">
+    <div class="md-video-player-container"></div>
+    <div class="md-video-player-poster">
+        <img src="http://video-2.web.britannica.com/eb-media/39/171039-116-06A81730.jpg" />
+        <div class="md-video-player-loading"></div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<div id="div-gpt-ad-afb2fb6f-3e19-4e7f-a9b3-aa3db677d176" class="google-ad-iframe ui-hide-on-modal ">
+    <script type="text/javascript">googletag.cmd.push(function() { googletag.display('div-gpt-ad-afb2fb6f-3e19-4e7f-a9b3-aa3db677d176'); });</script>
+</div>
+
+
+<div class="google-ad-iframe">
+<div class="sliding-box-300x50">
+    <a href="http://projects.britannica.com" target="_blank" data-ytrk="306" >
+        <img src="http://media-2.web.britannica.com/eb-media/mendel/projects-promo/default_small.png" />
+    </a>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div id="div-gpt-ad-e487ba5f-7327-4e8a-a3a7-df093dd0db0c" class="google-ad-iframe ui-hide-on-modal ">
+    <script type="text/javascript">googletag.cmd.push(function() { googletag.display('div-gpt-ad-e487ba5f-7327-4e8a-a3a7-df093dd0db0c'); });</script>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+
+
+<div class="md-sidebar-box font-sans sidebar-quiz-box">
+
+    <div class="md-sidebar-box-title font-sans-ui">
+        <span>Britannica Quizzes</span>
+    </div>
+
+    <div class="md-sidebar-box-content md-sidebar-box-content-list">
+        
+
+
+
+
+
+
+
+
+
+
+
+<ul>
+    
+        
+            
+            
+        
+        <li class="font-sans-ui">
+            <a data-ytrk="/438" href="/quiz/13000/name-that-thing"  alt="" >
+                
+                    
+                    <img src="http://media-1.web.britannica.com/eb-media/96/178196-118-49DC431A.jpg" />
+                
+                <span class="md-sidebar-list-item-title">Name That Thing</span>
+            </a>
+        </li>
+    
+        
+            
+            
+        
+        <li class="font-sans-ui">
+            <a data-ytrk="/438" href="/quiz/11000/true-or-false"  alt="" >
+                
+                    
+                    <img src="http://media-3.web.britannica.com/eb-media/95/178195-118-019518C4.jpg" />
+                
+                <span class="md-sidebar-list-item-title">True or False</span>
+            </a>
+        </li>
+    
+        
+            
+            
+        
+        <li class="last font-sans-ui">
+            <a data-ytrk="/438" href="/quiz/10000/vocabulary-quiz"  alt="" >
+                
+                    
+                    <img src="http://media-3.web.britannica.com/eb-media/94/178194-118-7A636614.jpg" />
+                
+                <span class="md-sidebar-list-item-title">Vocabulary Quiz</span>
+            </a>
+        </li>
+    
+</ul>
+        
+             <a data-ytrk="/85" href="/quiz/browse" data-title="Britannica Quizzes" class="md-sidebar-list-all">See More...</a>
+         
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<div id="div-gpt-ad-7ec094e2-879f-4c86-83f3-c284c6048378" class="google-ad-iframe ui-hide-on-modal ">
+    <script type="text/javascript">googletag.cmd.push(function() { googletag.display('div-gpt-ad-7ec094e2-879f-4c86-83f3-c284c6048378'); });</script>
+</div>
+
+
+</div></aside>
+            <div class="md-page-wrapper-bottom hide-on-edit"></div>
+
+        </div>
+
+    </div>
+
+    <footer id="md-footer" class="footer-wrapper hide-on-edit">
+
+    <div class="footer-ad">
+            
+
+
+
+
+
+
+
+
+<div id="div-gpt-ad-544f7f64-07c4-4aa9-b1f4-14c6ddc86289" class="google-ad-iframe ui-hide-on-modal ">
+    <script type="text/javascript">googletag.cmd.push(function() { googletag.display('div-gpt-ad-544f7f64-07c4-4aa9-b1f4-14c6ddc86289'); });</script>
+</div>
+
+
+</div>
+    <div class="footer-bck">
+        <ul class="md-footer-slim">
+            <li><a data-ytrk="59" href="http://corporate.britannica.com" target="_blank">About Us</a></li>
+            <li><a data-ytrk="129" href="http://corporate.britannica.com/privacy.html" target="_blank" rel="nofollow">About Our Ads</a></li>
+            <li><a data-ytrk="37" href="http://corporate.britannica.com/contact/consumer/" target="_blank" rel="nofollow">Contact Us</a></li>
+            <li><a data-ytrk="60" href="http://corporate.britannica.com/privacy.html" target="_blank" rel="nofollow">Privacy Policy</a></li>
+            <li><a data-ytrk="61" href="http://corporate.britannica.com/termsofuse.html" target="_blank" rel="nofollow">Terms of Use</a></li>
+        </ul>
+        &copy;2015 Encyclop&aelig;dia Britannica, Inc.
+    </div>
+
+</footer><form method="POST" action="/print/topic/683775" id="md-print-dialog" title="Create printer friendly version" class="ui-hidden" target="_blank">
+    <div class="md-print-desc font-sans">Please select the sections you want to print<div class="btn small" id="md-print-dialog-all">Select All</div></div>
+    <div id="md-print-dialog-toc">
+        <input type="checkbox" id="md-toc-print-toc" name="section[]" value="toc"/><label for="md-toc-print-toc" class="ui-form-label-right">Table of contents</label>
+    </div>
+    <input type="submit" value="Print" id="md-print-dialog-submit" disabled="disabled"/><button>Cancel</button>
+</form>
+<div id="md-citations" class="md-overlay-citations ui-hidden" title="Citations">
+
+    <dl>
+        <dt>MLA style:</dt>
+        <dd>"gun control".&nbsp;<em>Encyclop&aelig;dia Britannica. Encyclop&aelig;dia Britannica Online.</em><br/>Encyclop&aelig;dia Britannica Inc., 2015. Web. 12 Feb. 2015<br/>&lt;<span class="citation-url">http://www.britannica.com/EBchecked/topic/683775/gun-control</span>&gt;.</dd>
+        <dt>APA style:</dt>
+        <dd>gun control.&nbsp;(2015). In <em>Encyclop&aelig;dia Britannica</em>. Retrieved from <span class="citation-url">http://www.britannica.com/EBchecked/topic/683775/gun-control</span></dd>
+        <dt>Harvard style:</dt>
+        <dd>gun control.&nbsp;2015. <em>Encyclop&aelig;dia Britannica Online</em>. Retrieved 12 February, 2015, from <span class="citation-url">http://www.britannica.com/EBchecked/topic/683775/gun-control</span></dd>
+        <dt>Chicago Manual of Style:</dt>
+        <dd><em>Encyclop&aelig;dia Britannica Online</em>, s. v. "gun control", accessed February 12, 2015, <span class="citation-url">http://www.britannica.com/EBchecked/topic/683775/gun-control</span>.</dd>
+    </dl>
+
+    <p class="md-citations-warning">
+        While every effort has been made to follow citation style rules, there may be some discrepancies.<br/>
+        Please refer to the appropriate style manual or other sources if you have any questions.
+    </p>
+
+</div>
+<div id="md-edit-divs">
+
+<div id="md-edit-toolbar" data-position-fixed="50" class="ui-hidden">
+
+    <ul id="md-edit-toolbar-tabs" class="ui-tabs">
+        <li id="md-edit-edit-tab"><a href="#md-edit-toolbar-edit" data-ytrk="282" class="font-serif-ui">Update</a><span class="md-edit-toolbar-tab-arrow"></span></li>
+        <li id="md-edit-link-tab"><a href="#md-edit-toolbar-link" data-ytrk="283" class="font-serif-ui">Link</a><span class="md-edit-toolbar-tab-arrow"></span></li>
+    </ul>
+
+    <div class="ui-tabs-content">
+
+        <div id="md-edit-toolbar-edit">
+
+            Click anywhere inside the article to add text or insert superscripts, subscripts, and special characters.<br/>
+            You can also highlight a section and use the tools in this bar to modify existing content:
+
+            <div class="md-edit-toolbar-styles">
+                <ul>
+                    <li><button id="edit-bold" title="Bold" data-ui-editor-action="bold"></button></li>
+                    <li><button id="edit-italic" title="Italic" data-ui-editor-action="italic"></button></li>
+                    <li><button id="edit-sup" title="Superscript" data-ui-editor-action="superscript"></button></li>
+                    <li><button id="edit-sub" title="Subscript" data-ui-editor-action="subscript"></button></li>
+                    <li><button id="edit-ul" title="Bulleted List" data-ui-editor-action="insertunorderedlist"></button></li>
+                    <li><button id="edit-ol" title="Ordered List" data-ui-editor-action="insertorderedlist"></button></li>
+                    <li><button id="edit-special-char" title="Insert Special Character" data-ui-editor-action="special-characters"></button></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div id="md-edit-toolbar-link">
+
+            Add links to related Britannica articles!<br/>
+            
+                    You can double-click any word or highlight a word or phrase in the text below and then select an article from the search box.<br/>
+                    Or, simply highlight a word or phrase in the article, then enter the article name or term you'd like to link to in the search box below, and select from the list of results.
+                <div class="md-toolbar-link-form-container">
+                <form method="get" action="/search" id="md-edit-toolbar-link-form" class="">
+    <div class="search-box">
+        <input name="query" type="text" id="md-edit-toolbar-link-query" placeholder="Search Britannica..." class="md-edit-toolbar-link-query"  maxlength="200" />
+        <button data-ytrk="" type="submit" class="search-submit" value=""><i class="fa fa-search"></i></button>
+    </div>
+</form>
+<div class="md-edit-toolbar-link-note">
+                    <b>Note:</b> we do not allow links to external resources in editor.<br/>
+                    Please click the <a href="/topic/683775/websites"><strong>Web sites</strong></a> link for this article to add citations for<br />
+                    external Web sites.
+                </div>
+           </div>
+
+        </div>
+    </div>
+
+    <div class="md-edit-help">
+       <strong>Editing Tools:</strong>
+       <ul>
+           <li><a href="#" id="md-edit-help-toc" data-ytrk="281">Table of Contents</a></li><li><a href="#" id="md-edit-help-tips" data-ytrk="280">Tips for Editing</a></li>
+       </ul>
+    </div>
+
+</div>
+
+<div id="md-edit-submission-toolbar" class="ui-hidden">
+    <div class="md-edit-submission-toolbar-container">
+        <div class="md-edit-submission-toolbar-buttons">
+            <button class="btn font-serif-ui" id="md-edit-cancel" data-ytrk="284">Leave Edit Mode</button>
+            <button class="btn btn-primary font-serif-ui" id="md-edit-submit" data-ytrk="285">Submit</button>
+        </div>
+    </div>
+</div>
+
+<div id="md-edit-editing-tips" title="Tips for Editing" class="md-edit-help-box ui-hidden">
+    We welcome suggested improvements to any of our articles.<br/>
+    You can make it easier for us to review and, hopefully, publish your contribution by keeping a few points in mind:<br/>
+    <ol>
+        <li>Encyclopaedia Britannica articles are written in a neutral, objective tone for a general audience.</li>
+        <li>You may find it helpful to search within the site to see how similar or related subjects are covered.</li>
+        <li>Any text you add should be original, not copied from other sources.</li>
+        <li>At the bottom of the article, feel free to list any sources that support your changes, so that we can fully understand their context. (Internet URLs are best.)</li>
+    </ol>
+    Your contribution may be further edited by our staff, and its publication is subject to our final approval. Unfortunately, our editorial approach may not be able to accommodate all contributions.
+</div>
+
+<div id="md-edit-toc-placeholder"></div>
+
+</div><div id="md-media-overlay" class="ui-hidden">
+
+    <span data-ytrk="607" class="md-media-overlay-close fa-stack" title="Close">
+        <i class="fa fa-stack-2x fa-circle-o"></i>
+        <i class="fa fa-stack-1x fa-times"></i>
+    </span>
+    <div class="md-media-overlay-title">
+        <div class="subtitle">MEDIA FOR:</div>
+        <div class="maintitle">gun control</div>
+    </div>
+
+    <div class="md-media-overlay-content-container">
+
+		<div class="md-media-overlay-content"></div>
+
+        <div class="md-media-overlay-toolbar">
+            <a id="md-media-overlay-toolbar-print" data-ytrk="96" href="#" target="_blank" title="Print" rel="nofollow">
+                <i class="fa fa-fw fa-print"></i>
+            </a>
+            <span id="md-media-overlay-toolbar-citations" data-ytrk="605" title="Citation">
+                <i class="fa fa-fw fa-quote-right"></i>
+            </span>
+            <span id="md-media-overlay-toolbar-email" data-ytrk="604" title="Email">
+                <i class="fa fa-fw fa-envelope"></i>
+            </span>
+        </div>
+
+		<div id="md-media-overlay-citations" class="md-media-overlay-box ui-hidden font-sans-ui">
+		    <div class="md-media-overlay-citations-menu">
+			    <div id="md-media-overlay-citations-close" class="md-media-overlay-box-close"><i class="fa fa-stack-1x fa-times"></i></div>
+			    <em>Citation</em>
+                <ul class="md-media-overlay-citations-select">
+                    <li data-value="mla">MLA</li>
+                    <li data-value="apa">APA</li>
+                    <li data-value="harvard">Harvard</li>
+                    <li data-value="chicago">Chicago</li>
+                </ul>
+                </div>
+			<div id="md-media-overlay-citations-text"></div>
+		</div>
+
+		<div id="md-media-overlay-email" class="md-media-overlay-box ui-hidden font-sans-ui">
+			<em>Email</em>
+			<div id="md-media-overlay-email-close" class="md-media-overlay-box-close"><i class="fa fa-stack-1x fa-times"></i></div>
+			<form id="md-media-overlay-email-form">
+				<input type="hidden" name="topic_title" value="gun control" />
+				<input type="hidden" name="topic_url" value="http://www.britannica.com/EBchecked/topic/683775/gun-control" />
+				<input type="hidden" name="assembly_id" id="md-media-overlay-email-assembly-id" />
+				<label for="md-media-overlay-email-to">To:</label>
+				<input type="text" id="md-media-overlay-email-to" name="to" placeholder="Enter an email address" required="true" data-validation="email" />
+				<label for="md-media-overlay-email-from">From:</label>
+				<input type="text" id="md-media-overlay-email-from" name="from" placeholder="Enter an email address" required="true" data-validation="email" />
+				<label for="md-media-overlay-email-comment">Comment:</label>
+				<textarea id="md-media-overlay-email-comment" name="comment" placeholder="Add a comment"></textarea>
+				<input type="submit" value="SEND" />
+			</form>
+		</div>
+
+		<div id="md-media-overlay-submit-email" class="md-media-overlay-box ui-hidden font-sans-ui">
+			<div class="md-media-overlay-submit-email-ok ui-hidden">You have successfully emailed this.</div>
+			<div class="md-media-overlay-submit-email-error">Error when sending the email. Try again later.</div>
+			<input type="button" value="OK" class="btn btn-primary" />
+		</div>
+
+	</div>
+
+	<div class="md-vertical-media-strip ui-hidden"></div>
+
+	<div id="md-media-overlay-ad" class="ui-hidden">
+	        <iframe id="media-overlay-ad-iframe" frameborder="0" marginheight="0" marginwidth="0" scrolling="no" width="160" height="600"></iframe>
+	    </div>
+	</div><div id="loginbox-dialog" class="ui-hidden">
+    <div id="loginbox-dialog-iframe-container"></div>
+    <div class="loginbox-continue-container">
+        <p>Or click <strong>Continue</strong> to submit anonymously:</p>
+        <div class="btn loginbox-btn" id="loginbox-continue">Continue</div>
+    </div>
+</div><!--[if lt IE 9]>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('<script src="/resources/js/libs/jquery-1.11.2.min.js"><\/script>');</script>
+<![endif]-->
+<!--[if gte IE 9]><!-->
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('<script src="/resources/js/libs/jquery-2.1.3.min.js"><\/script>');</script>
+<!--<![endif]--><script type="text/javascript" src="http://cdn.gigya.com/js/socialize.js?apiKey=3_QkFp1fFi8gwTK97KWaFi_v2eOF3cwcvUA9vC26R9gFKQjRikRuijZ1eOnERznNEN">
+            {
+                siteName: 'britannica.com (Production - Consumer)',
+                enabledProviders: 'facebook,twitter,googleplus,linkedin,yahoo',
+                connectWithoutLoginBehavior: "alwaysLogin"
+            }
+        </script>
+        <script type="text/javascript" src="http://cdn.gigya.com/js/gigyaGAIntegration.js"></script>
+    <script src="/resources/js/min-mendel.js?v=2.25.65"></script>
+
+    <script type="text/javascript" src="/resources/files/jwplayer6/jwplayer.js"></script>
+<script type="text/javascript">jwplayer.key='OdjJyYN49OngMGhZzqouyjgt5MnrwNm7fDOTBVeyHVU=';</script>
+<script type="text/javascript">
+        window._taboola = window._taboola || [];
+        _taboola.push({flush: true});
+    </script><script type="text/javascript">
+        $( function() {
+            Mendel.Page.init();
+            if ($.isDefined(Mendel.TopicPage)) { Mendel.TopicPage.init(); }
+        });
+
+    </script>
+
+    <!--[if lt IE 8 ]>
+    	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+    	<script type="text/javascript">window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
+    <![endif]-->
+
+    <script type="text/javascript" >
+        var _qevents = _qevents || [];
+        _qevents.push( { qacct:"p-fePJXh17dNmkk"} );
+    </script>
+    <script type="text/javascript" src="//edge.quantserve.com/quant.js"></script>
+    <noscript>
+        <div style="display: none;"><img src="//pixel.quantserve.com/pixel/p-fePJXh17dNmkk.gif" height="1" width="1" alt="Quantcast"/></div>
+    </noscript><script type="text/javascript">
+        var _gaq = _gaq || [];
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+<script type="text/javascript">
+        function CE_READY() {
+            CE2.set( 1, 'BOL' );
+            CE2.set( 2, 'B' );
+            CE2.set( 3, 'TOPIC PAGINATED LARGE' );
+            
+        }
+    </script>
+    <script type="text/javascript">
+        setTimeout(function(){
+            var a=document.createElement("script");
+            var b=document.getElementsByTagName("script")[0];
+            a.src=document.location.protocol+"//dnn506yrbagrg.cloudfront.net/pages/scripts/0011/3876.js?"+Math.floor(new Date().getTime()/3600000);
+            a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)
+        }, 1);
+    </script>
+<script src="http://www.britannica.com/webstats/mendelstats.js?v=1"></script>
+    <script>
+        
+        var EBStat={accountId:301360,host:'www.britannica.com',domain:'www.britannica.com'};
+        try{writeStat(null,{accountId:301360,hostnameOverride:'www.britannica.com',domain:'www.britannica.com',json:''});}
+        catch(err){}
+    </script>
+</body>
+</html>

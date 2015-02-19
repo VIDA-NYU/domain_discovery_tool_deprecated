@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html class="ie ie6" lang="en-US"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie ie7" lang="en-US"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie ie8" lang="en-US"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie ie9" lang="en-US"> <![endif]-->
+<!--[if gt IE 9]><!--><html lang="en-US"><!--<![endif]-->
+<head profile="http://gmpg.org/xfn/11">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Gun Control | Pew Research Center</title>
+<meta name="date" content="20150109">
+<meta name="viewport" content="width=device-width">
+<link href="http://www.pewresearch.org/wp-content/themes/pewresearch/img/favicon.png" rel="shortcut icon" type="image/x-icon"/>
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://www.pewresearch.org/wp-content/themes/pewresearch/img/touch-icons/apple-touch-icon-144x144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://www.pewresearch.org/wp-content/themes/pewresearch/img/touch-icons/apple-touch-icon-114x114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://www.pewresearch.org/wp-content/themes/pewresearch/img/touch-icons/apple-touch-icon-72x72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="http://www.pewresearch.org/wp-content/themes/pewresearch/img/touch-icons/apple-touch-icon-precomposed.png">
+	<script type="text/javascript">
+	//Typekit
+	(function() {
+		var config = {
+		  kitId: 'xos5dbo',
+		  scriptTimeout: 3000
+		};
+		var h=document.getElementsByTagName("html")[0];h.className+=" wf-loading";var t=setTimeout(function(){h.className=h.className.replace(/(\s|^)wf-loading(\s|$)/g," ");h.className+=" wf-inactive"},config.scriptTimeout);var tk=document.createElement("script"),d=false;tk.src='//use.typekit.net/'+config.kitId+'.js';tk.type="text/javascript";tk.async="true";tk.onload=tk.onreadystatechange=function(){var a=this.readyState;if(d||a&&a!="complete"&&a!="loaded")return;d=true;clearTimeout(t);try{Typekit.load(config)}catch(b){}};var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(tk,s)
+	})();
+	</script>
+	<script type="text/javascript">
+	//Chartbeat
+	var _sf_startpt=(new Date()).getTime(); 
+	</script>
+<meta name="theme-color" content="#231f20">
+	
+<link rel="alternate" type="application/rss+xml" title="Pew Research Center RSS Feed" href="http://www.pewresearch.org/feed/">
+
+<!-- All in One SEO Pack 2.2.4.2 by Michael Torbert of Semper Fi Web Design[513,531] -->
+<meta name="description" itemprop="description" content="Surveys have found a shift in gun policy attitudes over time. Here's a look at how public opinion on the subject is measured." />
+<link rel='next' href='http://www.pewresearch.org/topics/gun-control/page/2/' />
+
+<link rel="canonical" href="http://www.pewresearch.org/topics/gun-control/" />
+<!-- /all in one seo pack -->
+<link rel='stylesheet' id='pewresearch-css'  href='http://www.pewresearch.org/wp-content/themes/pewresearch/css/2015-02-10_10:05/pewresearch.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='archive-css'  href='http://www.pewresearch.org/wp-content/themes/pewresearch/css/2015-02-10_10:05/archive.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='print-css'  href='http://www.pewresearch.org/wp-content/themes/pewresearch/css/2015-02-10_10:05/print.min.css' type='text/css' media='print' />
+<!-- This site uses the Google Analytics by Yoast plugin v5.3 - Universal enabled - https://yoast.com/wordpress/plugins/google-analytics/ -->
+<script type="text/javascript">
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','__gaTracker');
+
+	__gaTracker('create', 'UA-1905197-1', 'auto');
+	__gaTracker('set', 'forceSSL', true);
+	__gaTracker('send','pageview');
+	__gaTracker('create', 'UA-1905197-8', 'auto', {'name': 'allprc'});
+	__gaTracker('allprc.send', 'pageview');
+
+</script>
+<!-- / Google Analytics by Yoast -->
+<script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js'></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.pewresearch.org/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.pewresearch.org/wp-includes/wlwmanifest.xml" /> 
+<meta name="generator" content="WordPress 4.1" />
+<link rel='https://github.com/WP-API/WP-API' href='http://www.pewresearch.org/wp-json' />
+<!--[if lt IE 9]><script src="http://www.pewresearch.org/wp-content/plugins/pew-scripts/js/html5shiv-printshiv.min.js"></script><![endif]-->
+<link rel="alternate" type="application/rss+xml" title="Pew Research Center Gun Control RSS Feed" href="http://www.pewresearch.org/topics/gun-control/feed/">
+			<link rel="alternate" type="application/rss+xml" title="Pew Research Center Fact Tank RSS Feed" href="http://www.pewresearch.org/fact-tank/feed/">
+		<link rel="next" href="http://www.pewresearch.org/topics/gun-control/page/2/" /><style type="text/css">.broken_link, a.broken_link {
+	text-decoration: line-through;
+}</style></head>
+<!--googleoff: index-->
+<body class="archive tax-topics term-gun-control term-28649 no-js">
+	
+		<a id="top" href="#content">Skip to Content</a>
+	<div id="tagline">
+		<div class="holder">
+			<p>Numbers, Facts and Trends Shaping Your World</p>
+			<form action="http://www.pewresearch.org/" role="search">
+				<input type="search" name="s" id="s" placeholder="Search" value="">
+				<input type="image" alt="Search" class="submit" src="http://www.pewresearch.org/wp-content/lib/img/magnify.png">
+			</form>
+			<p class="social-media"><a href="http://www.pewresearch.org/about/">About</a> | <a href="http://www.pewresearch.org/follow-us/">Follow Us</a></p>
+		</div>
+	</div>
+	
+	<div id="header" role="banner">
+		<div class="holder">
+			<div class="logo">
+				<a href="http://www.pewresearch.org/" class="pewresearch"><img src="http://www.pewresearch.org/wp-content/lib/img/pew-research-center.svg" onerror="this.src='http://www.pewresearch.org/wp-content/lib/img/pew-research-center.png'" alt="Pew Research Center"></a>
+				<p class="project pewresearch"></p>
+				<a class="open-menu" href="">Menu</a><a class="open-projects" href="">Research Areas</a>
+			</div>
+            <div id="nav" role="navigation" class="holder">
+				<ul class="project-wide">		<li class="home active"><a href="http://www.pewresearch.org/"><img src="http://www.pewresearch.org/wp-content/lib/img/home-icon.png" alt=""> <span>Home</span></a></li>
+				<li class="two-line"><a href="http://www.people-press.org">U.S. Politics</a></li>
+				<li class=""><a href="http://www.journalism.org">Media &amp; News</a></li>
+				<li class=""><a href="http://www.pewsocialtrends.org">Social Trends</a></li>
+				<li class=""><a href="http://www.pewforum.org">Religion</a></li>
+				<li class=""><a href="http://www.pewinternet.org">Internet &amp; Tech</a></li>
+				<li class=""><a href="http://www.pewhispanic.org">Hispanics</a></li>
+				<li class=""><a href="http://www.pewglobal.org">Global</a></li>
+		</ul><ul class="site-wide menu-items-7"><li id="menu-item-266690" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-266690"><a href="http://www.pewresearch.org/category/publications/">Publications</a></li>
+<li id="menu-item-32015" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-32015"><a href="http://www.pewresearch.org/topics/">Topics</a></li>
+<li id="menu-item-26089" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-26089"><a href="http://www.pewresearch.org/data/">Data</a></li>
+<li id="menu-item-266971" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-266971"><a href="http://www.pewresearch.org/packages/about-our-research-methods/">Methods</a></li>
+<li id="menu-item-252839" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-252839"><a href="http://www.pewresearch.org/category/interactives/">Interactives</a></li>
+<li id="menu-item-247560" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-247560"><a href="http://www.pewresearch.org/fact-tank/">Fact Tank</a></li>
+<li id="menu-item-266626" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-266626"><a href="http://www.pewresearch.org/about/experts/">Experts</a></li>
+</ul>            </div>
+		</div>
+	</div>
+		
+	<div class="holder"><div id="banner">
+    <h1>Gun Control</h1>
+    	    	<p class="pagerss">Follow the RSS feed for this page:<a href="http://www.pewresearch.org/topics/gun-control/feed/"><img src="http://www.pewresearch.org/wp-content/themes/pewresearch/img/social-rss.png"/></a></p>
+		
+	</div>
+
+<div id="content" role="main" class="content">
+
+
+
+
+		<a href="http://www.pewresearch.org/fact-tank/2015/01/09/a-public-opinion-trend-that-matters-priorities-for-gun-policy/" class="post">
+				<div class="meta">	<span class="project right-seperator u-s-politics">Fact Tank</span>
+		<span>Jan. 9, 2015</span>
+</div>
+		<h2>A public opinion trend that matters: Priorities for gun policy</h2>
+		<p>Surveys have found a shift in gun policy attitudes over time. Here&#8217;s a look at how public opinion on the subject is measured.</p>
+		
+			</a>
+			
+
+		<a href="http://www.people-press.org/2014/12/10/growing-public-support-for-gun-rights/" class="post">
+				<div class="meta">	<span class="project right-seperator u-s-politics">U.S. Politics</span>
+		<span>Dec. 10, 2014</span>
+</div>
+		<h2>Growing Public Support for Gun Rights</h2>
+		<p>Support for gun rights has edged up from earlier this year, and marks a shift in attitudes since shortly after the Newtown school shootings. For the first time in our surveys, there is more support for gun rights than gun control.</p>
+		
+			</a>
+			
+
+		<a href="http://www.pewresearch.org/fact-tank/2014/07/15/the-demographics-and-politics-of-gun-owning-households/" class="post">
+				<div class="meta">	<span class="project right-seperator u-s-politics">Fact Tank</span>
+		<span>Jul. 15, 2014</span>
+</div>
+		<h2>The demographics and politics of gun-owning households</h2>
+		<p>Americans with young children in their home are just as likely as other adults to have a gun in their household.</p>
+		
+			</a>
+			
+
+		<a href="http://www.pewresearch.org/fact-tank/2014/04/24/5-facts-about-the-nra-and-guns-in-america/" class="post">
+				<div class="meta">	<span class="project right-seperator u-s-politics">Fact Tank</span>
+		<span>Apr. 24, 2014</span>
+</div>
+		<h2>5 facts about the NRA and guns in America</h2>
+		<p>#5: 37% of adults reported having a gun in their household in 2013.</p>
+		
+			</a>
+			
+
+		<a href="http://www.pewresearch.org/fact-tank/2013/12/31/as-2014-brings-new-state-laws-a-look-at-public-opinion-on-the-issues/" class="post">
+				<div class="meta">	<span class="project right-seperator ">Fact Tank</span>
+		<span>Dec. 31, 2013</span>
+</div>
+		<h2>As 2014 brings new state laws, a look at public opinion on the issues</h2>
+		<p>Every new year means adding thousands of new state laws to the books. This year&#8217;s wide range includes everything from tanning bed age limits (Illinois), to a new ban on selling shark fins (Delaware). While most new laws represent incremental change, sometimes state laws can also signal broader movement on a public policy issue or [&hellip;]</p>
+		
+			</a>
+			
+
+		<a href="http://www.pewresearch.org/fact-tank/2013/12/13/chart-of-the-week-most-new-gun-laws-since-newtown-ease-restrictions/" class="post">
+				<div class="meta">	<span class="project right-seperator u-s-politics">Fact Tank</span>
+		<span>Dec. 13, 2013</span>
+</div>
+		<h2>Chart of the Week: Most new gun laws since Newtown ease restrictions</h2>
+		<p>In the year since the Newtown school shootings, most new state gun laws have loosened rather than tightened restrictions.</p>
+		
+			</a>
+			
+
+		<a href="http://www.pewresearch.org/fact-tank/2013/12/12/a-year-after-newtown-little-change-in-public-opinion-on-guns/" class="post">
+				<div class="meta">	<span class="project right-seperator u-s-politics">Fact Tank</span>
+		<span>Dec. 12, 2013</span>
+</div>
+		<h2>A year after Newtown, little change in public opinion on guns</h2>
+		<p>After the horrific shootings at an elementary school in Newtown, Conn., a year ago claiming the lives of 20 children and six adults, there was a sense in the country – especially among gun-control supporters &#8212; that the tragedy would be different from similar ones in the past and push the nation to action. But ultimately, a sustained change in public opinion did not materialize, and a bill to tighten gun laws died in the Senate.</p>
+		
+			</a>
+			
+
+		<a href="http://www.pewresearch.org/fact-tank/2013/09/11/colorado-recall-points-to-greater-intensity-among-gun-rights-supporters/" class="post">
+				<div class="meta">	<span class="project right-seperator u-s-politics">Fact Tank</span>
+		<span>Sep. 11, 2013</span>
+</div>
+		<h2>Colorado recall points to greater intensity among gun-rights supporters</h2>
+		<p>Supporters of gun-rights tend to feel more strongly about their position, and more willing to act on it politically, than backers of gun-control legislation.</p>
+		
+			</a>
+			
+
+		<a href="http://www.pewresearch.org/fact-tank/2013/07/26/about-four-in-ten-americans-live-in-a-household-where-there-is-a-gun/" class="post">
+				<div class="meta">	<span class="project right-seperator ">Fact Tank</span>
+		<span>Jul. 26, 2013</span>
+</div>
+		<h2>About four-in-ten Americans live in a household where there is a gun</h2>
+		<p>About four-in-ten Americans report having a gun in their household, either their own or someone else’s.</p>
+		
+			</a>
+			
+
+		<a href="http://www.pewresearch.org/fact-tank/2013/07/22/the-publics-predictions-on-immigration-gun-control-bills-this-year/" class="post">
+				<div class="meta">	<span class="project right-seperator u-s-politics">Fact Tank</span>
+		<span>Jul. 22, 2013</span>
+</div>
+		<h2>The public’s predictions on immigration, gun control bills this year</h2>
+		<p>There’s a pretty good chance that immigration legislation will become law this year. The prospects for enacting a gun control bill are not nearly as promising, according to the American public.</p>
+		
+			</a>
+			
+
+
+	<div id="pagination">
+		<h2 class="hidden" id="pagination-label">Pagination</h2>
+				
+		
+					<a href="http://www.pewresearch.org/topics/gun-control/page/2/" class="next" rel="next">Next Page <span class="arrow" aria-hidden="true">&rarr;</span></a>
+				
+		
+					<a class="prev disabled"><span class="arrow" aria-hidden="true">&larr;</span> Prev Page</a>
+			
+				<ol start="1"  aria-labelledby="pagination-label">
+								<li class="active"><a><span class="hidden">You are reading page</span> 1</a></li>
+												<li><a href="http://www.pewresearch.org/topics/gun-control/page/2/" rel="next"><span class="hidden">Page</span> 2</a></li>
+												<li><a href="http://www.pewresearch.org/topics/gun-control/page/3/" ><span class="hidden">Page</span> 3</a></li>
+												<li><a href="http://www.pewresearch.org/topics/gun-control/page/4/" ><span class="hidden">Page</span> 4</a></li>
+									</ol>
+			</div>
+	</div>
+
+<div id="sidebar" role="complementary">
+  <div class="widget">
+	<h2 class="header">Other Topics</h2>
+	<div class="inner filter archive-filter">
+	
+		
+				<h3>Filter by Year</h3>
+		<ul class="years grid-filter">
+						<li class="first"><a href="http://www.pewresearch.org/topics/gun-control/2015/">2015</a></li>
+							<li class=""><a href="http://www.pewresearch.org/topics/gun-control/2014/">2014</a></li>
+							<li class=""><a href="http://www.pewresearch.org/topics/gun-control/2013/">2013</a></li>
+							<li class=""><a href="http://www.pewresearch.org/topics/gun-control/2012/">2012</a></li>
+							<li class=""><a href="http://www.pewresearch.org/topics/gun-control/2011/">2011</a></li>
+							<li class=""><a href="http://www.pewresearch.org/topics/gun-control/2010/">2010</a></li>
+							<li class=""><a href="http://www.pewresearch.org/topics/gun-control/2009/">2009</a></li>
+							<li class=""><a href="http://www.pewresearch.org/topics/gun-control/2008/">2008</a></li>
+							<li class=""><a href="http://www.pewresearch.org/topics/gun-control/2007/">2007</a></li>
+					</ul>
+				
+			
+			<h3>Related Topics</h3>
+			<ul>
+							<li><a href="http://www.pewresearch.org/topics/political-attitudes-and-values/">Political Attitudes and Values</a></li>
+							<li><a href="http://www.pewresearch.org/topics/social-values/">Social Values</a></li>
+						</ul>
+			
+	</div>
+</div></div>
+<!--googleoff: index-->
+</div>
+
+<div id="footer" role="contentinfo">
+	<div class="holder">
+		<div class="contact vcard">
+			<p> <img class="fn org organization-name" src="http://www.pewresearch.org/wp-content/lib/img/PRC-Logo-footer.png" alt="Pew Research Center"> <span class="adr"> <span class="street-address">1615 L Street, NW, Suite 700</span> <span class="locality">Washington</span>, <span class="region">DC</span> <span class="postal-code">20036</span> </span>
+			<a href="tel:+12024194300" class="tel"> <span class="value">202.419.4300</span> | <span class="type">Main</span></a>
+			<a href="tel:+12024194349" class="tel"> <span class="value">202.419.4349</span> | <span class="type">Fax</span></a>
+			<a href="tel:+12024194372" class="tel"> <span class="value">202.419.4372</span> | <span class="type">Media Inquiries</span></a>
+			</p>
+		</div>
+		<div class="links">
+			<div class="projects">
+				<h2>Research Areas</h2>
+				<ul>
+					<li><a href="http://www.people-press.org/">U.S. Politics &amp; Policy</a></li>
+					<li><a href="http://www.journalism.org/">Journalism &amp; Media</a></li>
+					<li><a href="http://www.pewinternet.org/">Internet, Science &amp; Tech</a></li>
+					<li><a href="http://www.pewforum.org/">Religion &amp; Public Life</a></li>
+					<li><a href="http://www.pewhispanic.org/">Hispanic Trends</a></li>
+					<li><a href="http://www.pewglobal.org/">Global Attitudes &amp; Trends</a></li>
+					<li><a href="http://www.pewsocialtrends.org/">Social &amp; Demographic Trends</a></li>
+				</ul>
+			</div>
+			<div class="follow-prc">
+				<h2><a href="http://www.pewresearch.org/follow-pew-research-center/">Follow Us</a></h2>
+				<ul>
+					<li><a href="http://www.pewresearch.org/follow-pew-research-center/" class="email"><span>Email Newsletters</span></a></li>
+					<li><a href="https://www.facebook.com/pewresearch" class="facebook"><span>Facebook</span></a></li>
+					<li><a href="https://twitter.com/pewresearch" class="twitter"><span>Twitter</span></a></li>
+					<li><a href="http://pewresearch.tumblr.com/" class="tumblr"><span>Tumblr</span></a></li>
+					<li><a href="http://www.youtube.com/user/PewResearchCenter/featured" class="youtube"><span>YouTube</span></a></li>
+					<li><a href="https://plus.google.com/+pewresearch" class="google-plus" rel="publisher"><span>Google+</span></a></li>
+					<li><a href="http://www.pewresearch.org/feed/" class="rss" title="Really Simple Syndication"><span>RSS</span></a></li>
+				</ul>
+			</div>
+		</div>
+		<p class="about"><strong><a href="http://www.pewresearch.org/about/">About Pew Research Center</a></strong> Pew Research Center is a nonpartisan fact tank that informs the public about the issues, attitudes and trends shaping America and the world. It conducts public opinion polling, demographic research, media content analysis and other empirical social science research. Pew Research Center does not take policy positions. It is a subsidiary of <a href="http://www.pewtrusts.org/">The Pew Charitable Trusts</a>.</p>
+	</div>
+</div>
+<div id="fine-print" class="holder">
+	<ul>
+		<li class="first">Copyright 2015 Pew Research Center</li>
+		<li><a href="http://www.pewresearch.org/about/">About</a></li>
+		<li><a href="http://www.pewresearch.org/terms-and-conditions/">Terms &amp; Conditions</a></li>
+		<li><a href="http://www.pewresearch.org/privacy-policy/">Privacy Policy</a></li>
+		<li><a href="http://www.pewresearch.org/about/use-policy/">Reprints, Permissions &amp; Use Policy</a></li>
+		<li><a href="http://www.pewresearch.org/contact-form/">Feedback</a></li>
+		<li><a href="http://www.pewresearch.org/about/careers/">Careers</a></li>
+	</ul>
+</div>
+<script type="application/ld+json">{"@context":"http:\/\/schema.org","@type":"NewsArticle","articleSection":"Fact Tank","headline":"Gun Control","url":"http:\/\/www.pewresearch.org\/topics\/gun-control\/","thumbnailUrl":"","dateCreated":"2015-01-09T18:33:46+00:00","keywords":[],"creator":[]}</script>
+<div id="parsely-root" style="display: none">
+  <span id="parsely-cfg" data-parsely-site="pewresearch.org"></span>
+</div>
+<script>
+    (function(s, p, d) {
+      var h=d.location.protocol, i=p+"-"+s,
+          e=d.getElementById(i), r=d.getElementById(p+"-root"),
+          u=h==="https:"?"d1z2jf7jlzjs58.cloudfront.net"
+          :"static."+p+".com";
+      if (e) return;
+      e = d.createElement(s); e.id = i; e.async = true;
+      e.src = h+"//"+u+"/p.js"; r.appendChild(e);
+    })("script", "parsely", document);
+</script>
+<script type='text/javascript' src='http://www.pewresearch.org/wp-content/plugins/pew-scripts/js/2014-07-17_3:33/pew-infinite-scroll.min.js'></script>
+<script type='text/javascript' src='http://www.pewresearch.org/wp-content/plugins/pew-scripts/js/2014-12-01_10:21/pew-global.min.js'></script>
+<!-- Cached by CDN, Generated: 2015-02-10 5:28:00 pm EST -->
+
+<script type="text/javascript">
+
+//ChartBeat
+var servername = window.location.hostname.replace("www.","");
+var _sf_async_config={uid:2308,domain:servername};
+(function(){
+  function loadChartbeat() {
+    window._sf_endpt=(new Date()).getTime();
+    var e = document.createElement('script');
+    e.setAttribute('language', 'javascript');
+    e.setAttribute('type', 'text/javascript');
+    e.setAttribute('src',
+       (("https:" == document.location.protocol) ? "https://s3.amazonaws.com/" : "http://") +
+       "static.chartbeat.com/js/chartbeat.js");
+    document.body.appendChild(e);
+  }
+  var oldonload = window.onload;
+  window.onload = (typeof window.onload != 'function') ?
+     loadChartbeat : function() { oldonload(); loadChartbeat(); };
+})();
+
+//CrazyEgg
+setTimeout(function(){var a=document.createElement("script");
+var b=document.getElementsByTagName('script')[0];
+a.src=document.location.protocol+"//dnn506yrbagrg.cloudfront.net/pages/scripts/0011/2177.js?"+Math.floor(new Date().getTime()/3600000);
+a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
+</script>
+</body></html>

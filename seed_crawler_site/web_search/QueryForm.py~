@@ -1,9 +1,0 @@
-from django import forms
-
-class QueryForm(forms.Form):
-    #query_terms = forms.CharField(label='Enter Query Terms', max_length=1000)
-    query_terms = forms.CharField(label='Enter Query Terms', max_length=1000,widget=forms.TextInput(attrs={'size': '100'}))
-    
-    def show_urls(self):
-        CHOICES = (('1', 'First',), ('2', 'Second',))
-        choice_field = forms.ChoiceField(widget=forms.RadioSelect, choices=CHOICES)

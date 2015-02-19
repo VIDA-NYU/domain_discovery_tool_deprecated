@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en-US" prefix="og: http://ogp.me/ns#">
+<head profile="http://dublincore.org/documents/dcq-html/">
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Gun Control | TheBlaze.com</title>
+	<meta http-equiv="imagetoolbar" content="no" />
+	<meta name="viewport" content="width=device-width" />
+    <meta name="description" content="TheBlaze is a news, information and opinion site brought to you by a dedicated team of writers, journalists & video producers. Our goal is to post, report and analyze stories of interest on a wide range of topics from politics and culture to faith and family." />
+	<meta name="keywords" content="news, information, opinions, blog, stories, faith, finance, education, technology, economy, media, politics, government, finance, security, intelligence, slideshows, videos, polls, america" />
+	<meta property="og:site_name" content="The Blaze"/>
+	<meta property="fb:admins" content="139001247" />
+	<meta property="fb:admins" content="5502240" />
+	<meta property="fb:admins" content="33000130" />
+	<meta property="fb:admins" content="517831498" />
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:site" content="@theblaze">
+	<meta property="twitter:account_id" content="1512944287" />
+	<link rel="shortcut icon" href="/favicon.ico" />
+	<!-- Chrome for Android: -->
+	<link rel="icon" sizes="192x192" href="touch-icon-192x192.png">
+	<!-- iPhone 6 Plus with @3× display: -->
+	<link rel="apple-touch-icon-precomposed" sizes="180x180" href="apple-touch-icon-180x180-precomposed.png">
+	<!-- iPad with @2× display running iOS ≥ 7: -->
+	<link rel="apple-touch-icon-precomposed" sizes="152x152" href="apple-touch-icon-152x152-precomposed.png">
+	<!-- iPad with @2× display running iOS ≤ 6: -->
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="apple-touch-icon-144x144-precomposed.png">
+	<!-- iPhone with @2× display running iOS ≥ 7: -->
+	<link rel="apple-touch-icon-precomposed" sizes="120x120" href="apple-touch-icon-120x120-precomposed.png">
+	<!-- iPhone with @2× display running iOS ≤ 6: -->
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114x114-precomposed.png">
+	<!-- iPad mini and the first- and second-generation iPad (@1× display) on iOS ≥ 7: -->
+	<link rel="apple-touch-icon-precomposed" sizes="76x76" href="apple-touch-icon-76x76-precomposed.png">
+	<!-- iPad mini and the first- and second-generation iPad (@1× display) on iOS ≤ 6: -->
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="apple-touch-icon-72x72-precomposed.png">
+	<!-- Non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
+	<link rel="apple-touch-icon-precomposed" href="apple-touch-icon-precomposed.png"><!-- 57×57px -->
+	<!--[if lte IE 8]>
+  		<link rel="stylesheet" type="text/css" href="http://www.theblaze.com/wp-content/themes/TheBlaze/css/base.css" />
+  		<link rel="stylesheet" type="text/css" href="http://www.theblaze.com/wp-content/themes/TheBlaze/css/reset.css" />
+  		<link rel="stylesheet" type="text/css" href="http://www.theblaze.com/wp-content/themes/TheBlaze/style.css" />
+	<![endif]-->
+<!-- NEWSROOM SCRIPT -->
+<script>
+window._newsroom = window._newsroom || [];
+!function (e, f, u) {
+e.async = 1;
+e.src = u;
+f.parentNode.insertBefore(e, f);
+}(document.createElement('script'),
+document.getElementsByTagName('script')[0], '//c2.taboola.com/nrrw/theblaze/newsroom.js');
+</script>
+
+<!-- END NEWSROOM SCRIPT -->
+	<script type="text/javascript">
+        var tblz_do_rwd = true;
+	    window.TBZ = window.TBZ || {};
+        window.TBZ.page_params = { "zone": "Stories",  "tags" : []};
+	
+		// Google Analytics
+		var _gaq = _gaq || [];
+		_gaq.push(["_setAccount", "UA-18102353-1"]);
+		_gaq.push(["_setDomainName", ".theblaze.com"]);
+		</script>
+
+		<script type="text/javascript">
+		// Criteo (remarketing company)
+		var crtg_nid="2045";
+		var crtg_cookiename="cto_blaze";
+		var crtg_varname="crtg_content";
+		function crtg_getCookie(c_name){ var i,x,y,ARRCookies=document.cookie.split(";");for(i=0;i<ARRCookies.length;i++){x=ARRCookies[i].substr(0,ARRCookies[i].indexOf("="));y=ARRCookies[i].substr(ARRCookies[i].indexOf("=")+1);x=x.replace(/^\s+|\s+$/g,"");if(x==c_name){return unescape(y);}}return'';}
+		var crtg_content = crtg_getCookie(crtg_cookiename);var crtg_rnd=Math.floor(Math.random()*99999999999);
+		var crtg_url=location.protocol+'//rtax.criteo.com/delivery/rta/rta.js?netId='+escape(crtg_nid);crtg_url+='&cookieName='+escape(crtg_cookiename);crtg_url+='&rnd='+crtg_rnd;crtg_url+='&varName=' + escape(crtg_varname);
+		var crtg_script=document.createElement('script');crtg_script.type='text/javascript';crtg_script.src=crtg_url;crtg_script.async=true;
+		if(document.getElementsByTagName("head").length>0)document.getElementsByTagName("head")[0].appendChild(crtg_script);else if(document.getElementsByTagName("body").length>0)document.getElementsByTagName("body")[0].appendChild(crtg_script);
+		// Quantcast
+		var _qevents = _qevents || [];
+		  (function() {
+		   var elem = document.createElement('script');
+		   elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + 
+		              ".quantserve.com/quant.js";
+		   elem.async = true;
+		   elem.type = "text/javascript";
+		   var scpt = document.getElementsByTagName('script')[0];
+		   scpt.parentNode.insertBefore(elem, scpt);  
+		  })();
+	</script>
+	<script type="text/javascript" src="//native.sharethrough.com/assets/tag.js" async></script>
+	<link rel="alternate" type="application/rss+xml" title="The Blaze Stories RSS" href="/stories/feed/" />
+	<link rel="alternate" type="application/rss+xml" title="The Blaze Blog RSS" href="/feed/" />
+	<script>var roadblock_cookie_name = 'theblaze_roadblock_newsletter';</script><link rel='stylesheet' id='print-css'  href='http://www.theblaze.com/wp-content/themes/TheBlaze/css/print.css?ver=2734' type='text/css' media='print' />
+<link rel='stylesheet' id='base-css'  href='http://www.theblaze.com/wp-content/themes/TheBlaze/css/base.css?ver=2747' type='text/css' media='screen' />
+<link rel='stylesheet' id='reset-css'  href='http://www.theblaze.com/wp-content/themes/TheBlaze/css/reset.css?ver=2747' type='text/css' media='screen and (max-width: 570px)' />
+<link rel='stylesheet' id='style-css'  href='http://www.theblaze.com/wp-content/themes/TheBlaze/style.css?ver=2747' type='text/css' media='screen and (min-width: 570px)' />
+<link rel='stylesheet' id='mobile-css'  href='http://www.theblaze.com/wp-content/themes/TheBlaze/css/mobile.css?ver=2747' type='text/css' media='screen and (max-width: 570px)' />
+<link rel='stylesheet' id='dashicons-css'  href='http://www.theblaze.com/wp-includes/css/dashicons.min.css?ver=3.8.1' type='text/css' media='all' />
+<link rel='stylesheet' id='thickbox-css'  href='http://www.theblaze.com/wp-includes/js/thickbox/thickbox.css?ver=20131201' type='text/css' media='all' />
+<link rel='stylesheet' id='blackbirdpie-css-css'  href='http://www.theblaze.com/wp-content/plugins/twitter-blackbird-pie/css/blackbirdpie.css?ver=20110416' type='text/css' media='all' />
+<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js?ver=3.8.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var the_ajax_sailthruapi = {"ajaxurl_sailthruapi":"http:\/\/www.theblaze.com\/wp-admin\/admin-ajax.php"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://www.theblaze.com/wp-content/plugins/theblaze-sailthruapi/js/sailthru.js?ver=3.8.1'></script>
+<script type='text/javascript' src='http://code.jquery.com/jquery-migrate-1.2.1.js?ver=3.8.1'></script>
+<script type='text/javascript' src='http://www.theblaze.com/wp-content/themes/TheBlaze/js/modernizr.js?ver=215'></script>
+<script type='text/javascript' src='http://www.theblaze.com/wp-content/themes/TheBlaze/js/jquery.plugins.min.js?ver=216'></script>
+<script type='text/javascript' src='http://www.theblaze.com/wp-content/themes/TheBlaze/js/sharetools.js?ver=215'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var thickboxL10n = {"next":"Next >","prev":"< Prev","image":"Image","of":"of","close":"Close","noiframes":"This feature requires inline frames. You have iframes disabled or your browser does not support them.","loadingAnimation":"http:\/\/www.theblaze.com\/wp-includes\/js\/thickbox\/loadingAnimation.gif"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://www.theblaze.com/wp-includes/js/thickbox/thickbox.js?ver=3.1-20121105'></script>
+<script type='text/javascript' src='http://www.theblaze.com/wp-content/themes/TheBlaze/js/application.js?ver=216'></script>
+<script type='text/javascript' src='http://www.theblaze.com/wp-content/themes/TheBlaze/js/cycle2.js?ver=215'></script>
+<script type='text/javascript' src='http://www.theblaze.com/wp-content/themes/TheBlaze/js/navigation.js?ver=3.8.1'></script>
+<script type='text/javascript' src='http://www.theblaze.com/wp-content/themes/TheBlaze/js/digDeeper.js?ver=3.8.1'></script>
+<script type='text/javascript' src='http://www.theblaze.com/wp-content/themes/TheBlaze/js/scrpads.js?ver=453'></script>
+<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js?ver=18'></script>
+<script type='text/javascript' src='http://www.theblaze.com/wp-content/themes/TheBlaze/js/handlebars-v1.3.0.js?ver=3.8.1'></script>
+<script type='text/javascript' src='http://www.theblaze.com/wp-content/themes/TheBlaze/js/handlebarsHelpers.js?ver=1'></script>
+<script type='text/javascript' src='http://www.theblaze.com/wp-content/themes/TheBlaze/js/handlebarsTemplates.js?ver=11'></script>
+<script type='text/javascript' src='http://www.theblaze.com/comments/comments.js?ver=12'></script>
+<script type='text/javascript' src='http://www.theblaze.com/wp-content/plugins/twitter-blackbird-pie/js/blackbirdpie.js?ver=20110404'></script>
+<script type='text/javascript' src='http://www.theblaze.com/wp-includes/js/tw-sack.min.js?ver=1.6.1'></script>
+<script type="text/javascript">jQuery(document).ready(function($) {jQuery.blzads.mobile_interstitial_redirect()});</script><!-- BEGIN ADSUPPLY -->
+<script data-cfasync='false' type='text/javascript'> /*280*/ (function(s, o, l, v, e, d) {
+    if (s[o] == null && s[l + e]) {
+        s[o] = "loading";
+        s[l + e](d, l = function() {
+            s[o] = "complete";
+            s[v + e](d, l, !1)
+        }, !1)
+    }
+})(document, "readyState", "add", "remove", "EventListener", "DOMContentLoaded");
+(function() {
+    var s = document.createElement("script");
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = "http://cdn.engine.4dsply.com/Scripts/infinity.js.aspx?guid=a358b16a-963e-4783-a52e-d3430fa453e0";
+    s.id = "infinity";
+    s.setAttribute("data-guid", "a358b16a-963e-4783-a52e-d3430fa453e0");
+    s.setAttribute("data-version", "async");
+    var e = document.getElementsByTagName("script")[0];
+    e.parentNode.insertBefore(s, e)
+})();
+(function() {
+    var calc = function() {
+        if (typeof g367CB268B1094004A3689751E7AC568F == "undefined" || !g367CB268B1094004A3689751E7AC568F.Core) {
+            var domain = "dpsrexor.com";
+            var file = "po.dr";
+            (function() {
+                var s = document.createElement("script");
+                s.type = "text/javascript";
+                s.async = true;
+                s.src = "http://" + domain + "/" + file + "?" + "id=a358b16a-963e-4783-a52e-d3430fa453e0" + "&" + "sre=654385";
+                s.id = "infinity";
+                s.setAttribute("data-guid", "a358b16a-963e-4783-a52e-d3430fa453e0");
+                s.setAttribute("data-version", "async");
+                var e = document.getElementsByTagName("script")[0];
+                e.parentNode.insertBefore(s, e)
+            })()
+        }
+    };
+    var addEvent = function(element, event, fn) {
+        if (element.addEventListener) element.addEventListener(event, fn, false);
+        else if (element.attachEvent) element.attachEvent("on" + event, fn)
+    };
+    addEvent(window, "load", calc)
+})();</script>
+<!-- END ADSUPPLY -->
+<meta name="msapplication-config" content="/publish/_livetile/ieconfig.xml" />
+<meta name="application-name" content="TheBlaze.com" />
+
+<meta name="sailthru.guid" content="theblazecom/923662" />
+<meta name="sailthru.tags" content="gun-control, gun-rights, us, video, watch, author-zach-noble, site-theblazecom" />
+        <meta property="og:type" content="website"/>
+    <script type="text/javascript" src="http://launch.newsinc.com/js/embed.js" id="_nw2e-js"></script>
+    <script type="text/javascript">
+        //<![CDATA[
+            var cacheBusting = "20141102";
+        // ]]>
+    </script>
+    <script type="text/javascript" src="/wp-content/themes/TheBlaze/js/require.js?_=20141102"  data-main="/wp-content/themes/TheBlaze/js/blz-main.js?_=20141102" ></script>
+	<script>
+		// Use local if needed:
+		window.jQuery || document.write("<script src='http://www.theblaze.com/wp-includes/js/jquery/jquery.js?ver=1.7.2'>\x3C/script>");
+	</script>
+
+<script type="text/javascript">
+	window._taboola = window._taboola || [];
+	_taboola.push({article:'auto'});
+	!function (e, f, u) {
+		e.async = 1;
+		e.src = u;
+		f.parentNode.insertBefore(e, f);
+	}(document.createElement('script'), document.getElementsByTagName('script')[0], 'http://cdn.taboola.com/libtrc/theblaze/loader.js');
+</script>
+
+
+
+
+</head>
+
+
+<body id="Page" class="archive ">
+            <!-- Google Tag Manager -->
+        <noscript><iframe src="http://www.googletagmanager.com/ns.html?id=GTM-J24D"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'http://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-J24D');</script>
+        <!-- End Google Tag Manager -->
+    
+	<div id="fb-root"></div>
+    	<div id="wrapper">
+		<div id="ScreenShift_FullPage_235">
+			<script type="text/javascript">try { TBZ.blzDFPAds.registerAdPos('ScreenShift_FullPage_235','ScreenShift_FullPage_235');} catch(e){jQuery.tbzWarning('ScreenShift_FullPage_235 ' + e);}</script>
+		</div>
+
+		<div id="ScreenShift_PushDown_236">
+			<script type="text/javascript">try { TBZ.blzDFPAds.registerAdPos('ScreenShift_PushDown_236','ScreenShift_PushDown_236');} catch(e){jQuery.tbzWarning('ScreenShift_PushDown_236 ' + e);}</script>
+		</div>
+    <div id="container">
+		<div class="main-header clearfix">
+			<div class="main-logo left" itemscope itemtype="http://schema.org/Organization">
+				<meta itemprop="name" content="theblaze.com" />
+				<a href="http://www.theblaze.com" data-blz-tracker="internal;header-main-logo" itemprop="url"><img src="/wp-content/themes/TheBlaze/images/theblaze_logo_2x.png" width="235" height="50" alt="TheBlaze" title="TheBlaze" /></a>
+			</div>
+			<div class="mobile-logo left desktop-hide">
+				<a href="/" data-blz-tracker="internal;header-main-logo"><img src="/wp-content/themes/TheBlaze/images/theblaze_logo_mob_2x.png" width="102" height="21" alt="TheBlaze" title="TheBlaze" /></a>
+			</div>
+			<div class="menu-container clearfix">
+				<ul class="mobile-header desktop-hide">
+					<li class="mobile-nav-wrapper"><a id="mobile-nav" class="mobile-nav" href="javascript:;"></a></li>
+				</ul>
+				<ul class="menu-primary-nav clearfix">
+					<li class="menu-primary-list menu-drop">
+						<a class="menu-primary-link" href="/stories/" data-blz-tracker="internal;main-navigation" >Stories<span class="drop-arrow"></span></a>
+						<div class="menu-secondary-container" id="cat-stories"></div>
+					</li>
+
+					<li class="menu-primary-list menu-drop">
+						<a class="menu-primary-link" href="/tv/" data-blz-tracker="internal;main-navigation" >TheBlaze TV<span class="drop-arrow"></span></a>
+						<div class="menu-secondary-container" id="cat-videos"></div>
+					</li>
+
+					<li class="menu-primary-list menu-drop">
+						<a class="menu-primary-link" href="http://player.listenlive.co/29591" target="_blank" data-blz-tracker="external;main-navigation" >Radio<span class="drop-arrow"></span><span class="drop-headphones"></span></a>
+						<div class="menu-secondary-container" id="cat-radio"></div>
+					</li>
+						
+					<li class="menu-primary-list menu-drop">
+						<a class="menu-primary-link" href="/tv/" data-blz-tracker="external;main-navigation" >Subscribe<span class="drop-arrow"></span></a>
+						<div class="menu-secondary-container" id="cat-subscribe"></div>
+					</li>
+
+					<li class="menu-primary-list menu-drop">
+						<a class="menu-primary-link" href="/blog/" data-blz-tracker="internal;main-navigation" >Blog<span class="drop-arrow"></span></a>
+						<div class="menu-secondary-container category-blog" id="cat-blog"></div>
+					</li>
+
+					<li class="menu-primary-list menu-drop">
+						<a class="menu-primary-link" href="/contributions/" data-blz-tracker="internal;main-navigation" >Contributors<span class="drop-arrow"></span></a>
+						<div class="menu-secondary-container" id="cat-contrib"></div>
+					</li>
+
+					<li class="menu-primary-list menu-drop">
+						<a class="menu-primary-link" href="/books/" data-blz-tracker="internal;main-navigation" >Books<span class="drop-arrow"></span></a>
+						<div class="menu-secondary-container" id="cat-book"></div>
+					</li>
+
+					<li class="menu-primary-list menu-drop">
+						<a class="menu-primary-link" href="/shop/" data-blz-tracker="internal;main-navigation" >Shop<span class="drop-arrow"></span></a>
+						<div class="menu-secondary-container" id="cat-shop"></div>
+					</li>
+				</ul>
+				<ul class="menu-primary-util">
+					<li class="menu-primary-list menu-search-list">
+						<a class="menu-primary-link menu-search" href="javascript:;"></a>
+                        <div class="menu-search-container">
+                            <div class="encontainer">
+                            <div class="menu-search-close mobile-hide">X</div>
+                            <form id="header-search-form" class="menu-search-form" method="get" action="http://www.theblaze.com">
+                                <input type="text" id="s" name="s" placeholder="Search TheBlaze" />
+                                <button class="menu-search-button button" type="submit"></button>
+                            </form>
+                            </div>
+                       </div>
+					</li>
+
+					<li class="menu-primary-list menu-login-list menu-drop">
+						<a class="menu-primary-link menu-login-link" href="javascript:;"></a>
+						<div class="menu-secondary-container" id="logincontroller">
+							<div id="not_logged_in">
+								<a class="button login-button" href="/tv/">Sign up for Theblaze TV</a>
+								<a class="button login-button" href="/user/?action=register">Sign up to comment</a>
+								<a class="button login-button" href="https://secure.video.theblaze.com/enterworkflow.do?flowId=registration.migrate&amp;forwardUrl=/schedule/index.jsp&amp;platform=WEB">Sign in to TheBlaze TV</a>
+								<a class="button login-button" href="http://www.theblaze.com/user/">Sign in to comment</a>
+							</div>
+							<div id="logged_in">
+								<a class="button login-button" href="/user/">User Profile</a>
+								<a class="button login-button" href="/user/?action=logout">Log Out</a>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+
+			<div class="main-sub-header clearfix">
+				<div class="left">
+					<ul class="main-hottopics left">
+						<li><h3 class="hottopics-title">Hot Topics:</h3></li>
+<li><a href="http://www.theblaze.com/news/isis/" class="trckhotpcslnks" data-blz-tracker="internal;hot-topics" >Islamic State</a></li><li><a href="http://www.theblaze.com/news/barack-obama/" class="trckhotpcslnks" data-blz-tracker="internal;hot-topics" >Barack Obama</a></li><li><a href="http://www.theblaze.com/news/american-sniper/" class="trckhotpcslnks" data-blz-tracker="internal;hot-topics" >'American Sniper'</a></li><li><a href="http://www.theblaze.com/news/scott-walker/" class="trckhotpcslnks" data-blz-tracker="internal;hot-topics" >Scott Walker</a></li><li><a href="http://www.theblaze.com/news/theblaze-tv/" class="trckhotpcslnks" data-blz-tracker="internal;hot-topics" >TheBlaze TV</a></li>					</ul>
+				</div>
+				<div class="main-sub-social right">
+					<ul>
+						<li><a href="https://www.facebook.com/theblaze" class="facebook-large-icon" onclick="_gat._getTrackerByName()._trackEvent('Site Features', 'Facebook', 'Site Share Buttons');"></a><span class="social-arrow-large"></span><span class="social-number-large">1.6M</span></li>
+						<li><a href="https://twitter.com/intent/user?screen_name=theblaze" class="twitter-large-icon" onclick="_gat._getTrackerByName()._trackEvent('Site Features', 'Twitter', 'Site Share Buttons');"></a><span class="social-arrow-large"></span><span class="social-number-large">350.4K</span></li>
+						<li><a href="https://plus.google.com/+theblaze" target="_blank" class="google-large-icon" onclick="_gat._getTrackerByName()._trackEvent('Site Features', 'Google+', 'Site Share Buttons');"></a><span class="social-arrow-large"></span><span class="social-number-large">29.8K</span></li>
+						<li><a href="https://www.linkedin.com/company/the-blaze" target="_blank" class="linkedin-large-icon" onclick="_gat._getTrackerByName()._trackEvent('Site Features', 'Linkedin', 'Site Share Buttons');"></a><span class="social-arrow-large"></span><span class="social-number-large">9.5K</span></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+                    <div id="ad-minibar">
+                <div class="ad" id="sliver_980x27" data-cb-ad-id="sliver_980x27"></div>
+                <script type="text/javascript">
+                    try {
+                        TBZ.blzDFPAds.registerAdPos('sliver_980x27', 'Minibar_980x27_109');
+                    }catch(e) {
+                        jQuery.tbzWarning('sliver_980x27 ' + e);
+                    }
+                </script>
+            </div>
+        <div id="ad-billboard"><div class="ad" id="billboard_970x250" data-cb-ad-id="billboard_970x250"><script type="text/javascript">
+                        try{
+                            TBZ.blzDFPAds.registerAdPos('billboard_970x250','Billboard_970x90-970x250_170',{minimize:true});
+                        }catch(e){jQuery.tbzWarning('Billboard_970x90-970x250_170 ' + e);}
+                    </script></div></div>        <div id="content">
+	        <div class="callouts">
+            	<div id="breaking_callout" class="breaking inactive"></div>
+            	<div id="secondary_callout" class="secondary inactive"></div>
+        	</div>
+			<div class="column-row">
+				<div class="sixteen columns stories-sort tag-page">					
+					
+					<div class="stories-list">
+						<ul class="tag-page-title">
+							<li>
+								<h1 class="stories-title tag-page-title">Gun Control</h1>
+							</li>
+						</ul>
+                        <div class="related-topics-title">
+                            <hr><span>Related Topics</span>
+                        </div>
+                        <ul class="related-topics-list">
+                        	<li><a href="http://www.theblaze.com/news/second-amendment/">Second Amendment</a></li>
+                        	<li><a href="http://www.theblaze.com/news/nra/">NRA</a></li>
+                        	<li><a href="http://www.theblaze.com/news/ct-school-shooting/">CT School Shooting</a></li>
+                        	<li><a href="http://www.theblaze.com/news/2a/">2nd Amend.</a></li>
+                        	<li><a href="http://www.theblaze.com/news/piers-morgan/">Piers Morgan</a></li>
+                        </ul>
+					</div>
+										<div id="topics-featured" class="mobile-hide"> 
+												<div class="featuredtopic">
+							<div class="featuredtopic-image" style="background: url(http://www.theblaze.com/wp-content/uploads/2015/02/Screen-Shot-2015-02-02-at-1.42.45-PM-269x220.jpg) no-repeat bottom">
+							</div>
+							<div class="featuredtopic-title">
+								<a href="http://www.theblaze.com/stories/2015/02/02/anti-gun-group-knew-part-of-her-tragic-story-and-called-to-see-if-shed-help-support-gun-control-listen-to-how-wrong-they-were/">She Got a Call From an Anti-Gun Group That Thought She Would Support Them — She &hellip;</a>
+							</div>
+						</div>
+												<div class="featuredtopic">
+							<div class="featuredtopic-image" style="background: url(http://www.theblaze.com/wp-content/uploads/2015/01/david-gregory-300x167.jpg) no-repeat bottom">
+							</div>
+							<div class="featuredtopic-title">
+								<a href="http://www.theblaze.com/stories/2015/01/23/doc-d-c-police-wanted-to-arrest-nbc-host-after-ammo-magazine-incident/">Doc: D.C. Police Wanted to Arrest NBC Host After Ammo Magazine Incident</a>
+							</div>
+						</div>
+												<div class="featuredtopic">
+							<div class="featuredtopic-image" style="background: url(http://www.theblaze.com/wp-content/uploads/2015/01/Screen-Shot-2015-01-16-at-10.05.32-AM-300x212.png) no-repeat bottom">
+							</div>
+							<div class="featuredtopic-title">
+								<a href="http://www.theblaze.com/stories/2015/01/16/gop-governor-pleases-the-new-york-times-irks-the-nra/">GOP Governor Pleases the New York Times, Irks the NRA</a>
+							</div>
+						</div>
+											</div>
+					<div class="clearfix topics-featured-clearfix"></div>
+									</div>
+			</div>
+			<div class="column-row">
+				<div class="two-thirds column">
+			
+					<ul>
+						<li class="story blog-post">
+							<a class="title" href="http://www.theblaze.com/stories/2015/02/02/anti-gun-group-knew-part-of-her-tragic-story-and-called-to-see-if-shed-help-support-gun-control-listen-to-how-wrong-they-were/"><h5>She Got a Call From an Anti-Gun Group That Thought She Would Support Them — She Hit Record to Capture Their Reaction When She Said &#8216;No&#8217;</h5><div class="posted-date">Posted February 2, 2015 at 2:23 pm by Zach Noble</div></a>
+							<p>&#8220;The only thing that would have saved her was a gun.&#8221;</p>
+							<a class="hot-story" href="http://www.theblaze.com/stories/2015/02/02/anti-gun-group-knew-part-of-her-tragic-story-and-called-to-see-if-shed-help-support-gun-control-listen-to-how-wrong-they-were/">198&nbsp;Comments&nbsp;&raquo;</a>						</li>
+						<li class="story blog-post">
+							<a class="title" href="http://www.theblaze.com/stories/2015/01/23/doc-d-c-police-wanted-to-arrest-nbc-host-after-ammo-magazine-incident/"><h5>Doc: D.C. Police Wanted to Arrest NBC Host After Ammo Magazine Incident</h5><div class="posted-date">Posted January 23, 2015 at 11:01 am by Dave Urbanski</div></a>
+							<p>&ldquo;&#8230;there is probable cause that the offense of possessing a &lsquo;high-capacity&rsquo; magazine was committed in the District of Columbia.&#8221;</p>
+							<a href="http://www.theblaze.com/stories/2015/01/23/doc-d-c-police-wanted-to-arrest-nbc-host-after-ammo-magazine-incident/">Read&nbsp;More&nbsp;&raquo;</a>						</li>
+						<li class="story blog-post">
+							<a class="title" href="http://www.theblaze.com/stories/2015/01/16/gop-governor-pleases-the-new-york-times-irks-the-nra/"><h5>GOP Governor Pleases the New York Times, Irks the NRA</h5><div class="posted-date">Posted January 16, 2015 at 12:19 pm by Fred Lucas</div></a>
+														<a href="http://www.theblaze.com/stories/2015/01/16/gop-governor-pleases-the-new-york-times-irks-the-nra/">Read&nbsp;More&nbsp;&raquo;</a>						</li>
+						<li class="story blog-post">
+							<a class="title" href="http://www.theblaze.com/blog/2015/01/15/dems-want-to-make-it-harder-for-people-to-make-their-own-guns-at-home/"><h5>Dems want to make it harder for people to make their own guns at home</h5><div class="posted-date">Posted January 15, 2015 at 11:48 am by Pete Kasperowicz</div></a>
+														<a href="http://www.theblaze.com/blog/2015/01/15/dems-want-to-make-it-harder-for-people-to-make-their-own-guns-at-home/">Read&nbsp;More&nbsp;&raquo;</a>						</li>
+						<li class="story blog-post">
+							<a class="title" href="http://www.theblaze.com/stories/2015/01/15/taken-star-liam-neeson-goes-on-unhinged-rant-about-firearms-says-u-s-has-too-many-fing-guns/"><h5>‘Taken’ Star Liam Neeson Goes On Unhinged Rant About Firearms — Here&#8217;s What He Said</h5><div class="posted-date">Posted January 15, 2015 at 1:55 am by Oliver Darcy</div></a>
+							<p>&#8220;I think it&rsquo;s a f***ing disgrace.&#8221;</p>
+							<a class="hot-story" href="http://www.theblaze.com/stories/2015/01/15/taken-star-liam-neeson-goes-on-unhinged-rant-about-firearms-says-u-s-has-too-many-fing-guns/">493&nbsp;Comments&nbsp;&raquo;</a>						</li>
+						<li class="story blog-post">
+							<a class="title" href="http://www.theblaze.com/stories/2015/01/11/france-considers-deploying-army-to-protect-jewish-sites-while-european-jews-seek-gun-permits/"><h5>France Considers Deploying Army to Protect Jewish Sites While European Jews Seek Gun Permits</h5><div class="posted-date">Posted January 11, 2015 at 10:14 am by Sharona Schwartz</div></a>
+							<p>To ease gun permits and offer self-defense training for Jews.</p>
+							<a href="http://www.theblaze.com/stories/2015/01/11/france-considers-deploying-army-to-protect-jewish-sites-while-european-jews-seek-gun-permits/">Read&nbsp;More&nbsp;&raquo;</a>						</li>
+						<li class="story blog-post">
+							<a class="title" href="http://www.theblaze.com/stories/2014/12/22/the-new-gun-control-ad-that-has-some-absolutely-baffled-so-let-me-get-this-straight/"><h5>The New Gun Control Ad That Has Some Absolutely Baffled: &#8216;So Let Me Get This Straight&#8230;&#8217;</h5><div class="posted-date">Posted December 22, 2014 at 12:34 pm by Jon Street</div></a>
+							<p>&#8220;Unbelievable.&#8221;</p>
+							<a class="hot-story" href="http://www.theblaze.com/stories/2014/12/22/the-new-gun-control-ad-that-has-some-absolutely-baffled-so-let-me-get-this-straight/">386&nbsp;Comments&nbsp;&raquo;</a>						</li>
+						<li class="story blog-post">
+							<a class="title" href="http://www.theblaze.com/stories/2014/12/15/governor-pushing-for-more-gun-control-in-virginia/"><h5>Governor Pushing for More Gun Control in Virginia</h5><div class="posted-date">Posted December 15, 2014 at 4:38 pm by Fred Lucas</div></a>
+														<a href="http://www.theblaze.com/stories/2014/12/15/governor-pushing-for-more-gun-control-in-virginia/">Read&nbsp;More&nbsp;&raquo;</a>						</li>
+						<li class="story blog-post">
+							<a class="title" href="http://www.theblaze.com/stories/2014/12/15/newtown-families-file-suit-against-ar-15-manufacturer-and-seller/"><h5>Newtown Families File Suit Against AR-15 Manufacturer and Seller</h5><div class="posted-date">Posted December 15, 2014 at 10:00 am by Associated Press</div></a>
+							<p>&#8220;These companies assume no responsibility for marketing and selling a product to the general population who are not trained to use it nor even understand the power of it.&#8221;</p>
+							<a class="hot-story" href="http://www.theblaze.com/stories/2014/12/15/newtown-families-file-suit-against-ar-15-manufacturer-and-seller/">272&nbsp;Comments&nbsp;&raquo;</a>						</li>
+						<li class="story blog-post">
+							<a class="title" href="http://www.theblaze.com/stories/2014/12/11/obama-anti-gun-surgeon-general-could-get-confirmation-vote/"><h5>Obama&#8217;s Anti-Gun Surgeon General Nominee Could Get Confirmation Vote</h5><div class="posted-date">Posted December 11, 2014 at 12:12 pm by Fred Lucas</div></a>
+														<a href="http://www.theblaze.com/stories/2014/12/11/obama-anti-gun-surgeon-general-could-get-confirmation-vote/">Read&nbsp;More&nbsp;&raquo;</a>						</li>
+						<li class="story blog-post">
+							<a class="title" href="http://www.theblaze.com/stories/2014/12/11/two-years-after-newtown-americans-views-on-gun-rights-isnt-what-anti-gun-activists-will-want-to-see/"><h5>Two Years After Newtown, Americans&#8217; Views on Gun Rights Isn&#8217;t What Anti-Gun Activists Will Want to See</h5><div class="posted-date">Posted December 11, 2014 at 10:06 am by Fred Lucas</div></a>
+														<a href="http://www.theblaze.com/stories/2014/12/11/two-years-after-newtown-americans-views-on-gun-rights-isnt-what-anti-gun-activists-will-want-to-see/">Read&nbsp;More&nbsp;&raquo;</a>						</li>
+						<li class="story blog-post">
+							<a class="title" href="http://www.theblaze.com/stories/2014/12/04/nra-endorsed-incoming-gop-governor-will-keep-states-sweeping-gun-control-law/"><h5>NRA-Endorsed Incoming GOP Governor Will Keep State&#8217;s Sweeping Gun Control Law</h5><div class="posted-date">Posted December 4, 2014 at 1:57 pm by Fred Lucas</div></a>
+														<a class="hot-story" href="http://www.theblaze.com/stories/2014/12/04/nra-endorsed-incoming-gop-governor-will-keep-states-sweeping-gun-control-law/">191&nbsp;Comments&nbsp;&raquo;</a>						</li>
+						<li class="story blog-post">
+							<a class="title" href="http://www.theblaze.com/stories/2014/12/04/lawmaker-aims-to-prevent-punishments-for-students-who-wield-gun-shaped-pop-tart-snacks-and-hes-not-a-republican/"><h5>Lawmaker Aims to Prevent Punishments for Students Who Wield &#8216;Gun-Shaped Pop-Tart Snacks&#8217; — and He&#8217;s Not a Republican</h5><div class="posted-date">Posted December 4, 2014 at 10:35 am by Dave Urbanski</div></a>
+							<p>&#8220;That sort of overly harsh punishment for behavior that really poses no threat to other students is exactly the type of school discipline we&#8217;d like to see reformed.&#8221;</p>
+							<a href="http://www.theblaze.com/stories/2014/12/04/lawmaker-aims-to-prevent-punishments-for-students-who-wield-gun-shaped-pop-tart-snacks-and-hes-not-a-republican/">Read&nbsp;More&nbsp;&raquo;</a>						</li>
+						<li class="story blog-post">
+							<a class="title" href="http://www.theblaze.com/stories/2014/11/25/michael-bloombergs-advice-for-what-to-tell-pro-gun-relatives-over-thanksgiving-dinner/"><h5>Michael Bloomberg’s Advice for What to Tell Pro-Gun Relatives Over Thanksgiving Dinner</h5><div class="posted-date">Posted November 25, 2014 at 2:58 pm by Fred Lucas</div></a>
+							<p>&#8220;You can help set the record straight on some of the most common myths about guns.&rdquo;</p>
+							<a class="hot-story" href="http://www.theblaze.com/stories/2014/11/25/michael-bloombergs-advice-for-what-to-tell-pro-gun-relatives-over-thanksgiving-dinner/">238&nbsp;Comments&nbsp;&raquo;</a>						</li>
+						<li class="story blog-post">
+							<a class="title" href="http://www.theblaze.com/stories/2014/11/22/facing-new-gun-background-check-law-small-museums-world-war-ii-exhibit-scores-big-victory/"><h5>Facing New Gun Background Check Law, Small Museum&#8217;s World War II Exhibit Scores Big Victory</h5><div class="posted-date">Posted November 22, 2014 at 7:35 pm by Dave Urbanski</div></a>
+							<p>&#8220;We&#8217;re just one of the little guys, helping another little guy.&#8221;</p>
+							<a href="http://www.theblaze.com/stories/2014/11/22/facing-new-gun-background-check-law-small-museums-world-war-ii-exhibit-scores-big-victory/">Read&nbsp;More&nbsp;&raquo;</a>						</li>
+						<li class="story blog-post">
+							<a class="title" href="http://www.theblaze.com/stories/2014/11/20/10-year-old-boy-used-finger-as-imaginary-ray-gun-in-school-cafeteria-and-made-laser-sounds-want-to-guess-how-that-ended-up/"><h5>10-Year-Old Boy Caught With Threatening Weapon at School. Wait Until You See the Weapon.</h5><div class="posted-date">Posted November 20, 2014 at 11:49 am by Dave Urbanski</div></a>
+							<p>&ldquo;It&rsquo;s just the same way you can&#8217;t yell fire in a crowded movie theater.&#8221;</p>
+							<a class="hot-story" href="http://www.theblaze.com/stories/2014/11/20/10-year-old-boy-used-finger-as-imaginary-ray-gun-in-school-cafeteria-and-made-laser-sounds-want-to-guess-how-that-ended-up/">292&nbsp;Comments&nbsp;&raquo;</a>						</li>
+						<li class="story blog-post">
+							<a class="title" href="http://www.theblaze.com/stories/2014/11/20/jay-leno-cancels-gig-at-pro-gun-event-after-pressure-from-gun-control-activists/"><h5>Jay Leno Cancels Gig at Pro-Gun Event After Pressure From Gun-Control Activists (UPDATE: Leno Reportedly Received Money for Gig in August)</h5><div class="posted-date">Posted November 20, 2014 at 10:28 am by Dave Urbanski</div></a>
+							<p>Leno&#8217;s walk-back from the event occurred just hours after a&nbsp;Today Show&nbsp;segment aired showing him <a href="../stories/2014/11/20/jay-leno-cancels-gig-at-pro-gun-event-after-pressure-from-gun-control-activists/">surprising a wounded soldier</a> with a brand-new muscle car.</p>
+							<a href="http://www.theblaze.com/stories/2014/11/20/jay-leno-cancels-gig-at-pro-gun-event-after-pressure-from-gun-control-activists/">Read&nbsp;More&nbsp;&raquo;</a>						</li>
+						<li class="story blog-post">
+							<a class="title" href="http://www.theblaze.com/stories/2014/11/14/christmas-eve-to-deliver-u-n-gun-control-treaty-and-it-has-some-pro-firearm-advocates-in-the-u-s-worried/"><h5>Christmas Eve to Deliver U.N. Gun Control Treaty — and It Has Some Pro-Firearm Advocates in the U.S. &#8216;Worried&#8217;</h5><div class="posted-date">Posted November 14, 2014 at 3:06 am by Fred Lucas</div></a>
+							<p>&#8220;This treaty is a very real threat.&rdquo;</p>
+							<a class="hot-story" href="http://www.theblaze.com/stories/2014/11/14/christmas-eve-to-deliver-u-n-gun-control-treaty-and-it-has-some-pro-firearm-advocates-in-the-u-s-worried/">212&nbsp;Comments&nbsp;&raquo;</a>						</li>
+						<li class="story blog-post">
+							<a class="title" href="http://www.theblaze.com/stories/2014/11/12/cities-aiming-to-overturn-states-pro-gun-law/"><h5>Cities Aiming to Overturn State’s Pro-Gun Law</h5><div class="posted-date">Posted November 12, 2014 at 9:00 pm by Fred Lucas</div></a>
+														<a href="http://www.theblaze.com/stories/2014/11/12/cities-aiming-to-overturn-states-pro-gun-law/">Read&nbsp;More&nbsp;&raquo;</a>						</li>
+						<li class="story blog-post">
+							<a class="title" href="http://www.theblaze.com/stories/2014/11/06/this-building-block-could-make-homemade-firearms-even-more-practical/"><h5>This &#8216;Building Block&#8217; Could Make Homemade Firearms Even More Practical</h5><div class="posted-date">Posted November 6, 2014 at 11:25 pm by Jon Street</div></a>
+							<p>&#8220;A building block for the future of 3D-printed firearms&#8230;&#8221;&nbsp;</p>
+							<a href="http://www.theblaze.com/stories/2014/11/06/this-building-block-could-make-homemade-firearms-even-more-practical/">Read&nbsp;More&nbsp;&raquo;</a>						</li>
+						<li class="story blog-post">
+							<a class="title" href="http://www.theblaze.com/stories/2014/11/06/gun-stores-ar-15-ad-featured-popular-christmas-character-until-hollywood-caught-wind-of-it/"><h5>Gun Store&#8217;s AR-15 Ad Featured Popular Christmas Character — Until Hollywood Caught Wind of It</h5><div class="posted-date">Posted November 6, 2014 at 12:12 pm by Dave Urbanski</div></a>
+							<p>&#8220;Son a Nutcracker That&#8217;s a Good Deal!!!&#8221;</p>
+							<a href="http://www.theblaze.com/stories/2014/11/06/gun-stores-ar-15-ad-featured-popular-christmas-character-until-hollywood-caught-wind-of-it/">Read&nbsp;More&nbsp;&raquo;</a>						</li>
+						<li class="story blog-post">
+							<a class="title" href="http://www.theblaze.com/stories/2014/11/05/taxes-guns-prison-sentences-keeping-your-doctor-and-other-substantive-ballot-results-you-may-not-have-heard-about-from-tuesday/"><h5>Taxes, Guns, Prison Sentences, Keeping Your Doctor and Other Substantive Ballot Results You May not Have Heard About from Tuesday</h5><div class="posted-date">Posted November 5, 2014 at 3:00 pm by Fred Lucas</div></a>
+														<a href="http://www.theblaze.com/stories/2014/11/05/taxes-guns-prison-sentences-keeping-your-doctor-and-other-substantive-ballot-results-you-may-not-have-heard-about-from-tuesday/">Read&nbsp;More&nbsp;&raquo;</a>						</li>
+						<li class="story blog-post">
+							<a class="title" href="http://www.theblaze.com/stories/2014/11/05/this-guy-was-arrested-in-alabama-for-carrying-his-gun-at-a-poling-place-and-hes-not-sorry-i-was-not-going-to-surrender-a-right/"><h5>This Guy Was Arrested in Alabama for Carrying His Gun at a Polling Place, and He&#8217;s Not Sorry: &#8216;I Was Not Going to Surrender a Right&#8217;</h5><div class="posted-date">Posted November 5, 2014 at 11:20 am by Dave Urbanski</div></a>
+							<p>&#8220;I threatened no one. I did not obstruct anyone. I did not intimidate anyone. I did not coerce anyone. I did not interfere with anyone&#8217;s right to vote.&#8221;</p>
+							<a class="hot-story" href="http://www.theblaze.com/stories/2014/11/05/this-guy-was-arrested-in-alabama-for-carrying-his-gun-at-a-poling-place-and-hes-not-sorry-i-was-not-going-to-surrender-a-right/">177&nbsp;Comments&nbsp;&raquo;</a>						</li>
+						<li class="story blog-post">
+							<a class="title" href="http://www.theblaze.com/blog/2014/10/29/a-prominent-democrat-governors-new-book-sales-are-proving-abysmal/"><h5>A prominent Democrat governor&#8217;s new book sales are proving abysmal</h5><div class="posted-date">Posted October 29, 2014 at 2:18 pm by Benjamin Weingarten</div></a>
+							<p>Despite joking about Ebola patients reading his book, the New York governor&#8217;s book sales are no laughing matter.</p>
+							<a href="http://www.theblaze.com/blog/2014/10/29/a-prominent-democrat-governors-new-book-sales-are-proving-abysmal/">Read&nbsp;More&nbsp;&raquo;</a>						</li>
+						<li class="story blog-post">
+							<a class="title" href="http://www.theblaze.com/stories/2014/10/29/endangered-governor-takes-big-gun-action-in-lead-up-to-election/"><h5>Endangered Governor Takes Big Gun Action in Lead up to Election</h5><div class="posted-date">Posted October 29, 2014 at 1:20 pm by Fred Lucas</div></a>
+														<a href="http://www.theblaze.com/stories/2014/10/29/endangered-governor-takes-big-gun-action-in-lead-up-to-election/">Read&nbsp;More&nbsp;&raquo;</a>						</li>
+					</ul>
+
+					<div id="nav-below" class="navigation">
+						<div class="nav-next"><a href="http://www.theblaze.com/news/gun-control/page/2/" class="right red button">Older stories <span class="meta-nav">&rarr;</span></a></div>
+						<div class="nav-previous"></div>
+					</div>
+							</div>
+				<div class="one-third column">
+<script type="text/javascript">
+    if(jQuery.blzBrowserFuncs.isRWDPage()) {
+        document.write('<div id="ym_849228481409261063" class="ym"><scr'+'ipt type="text/javascript">(function (e,t) {if(t._ym===void 0) {t._ym="";var m=e.createElement("scr'+'ipt");m.type="text/javascript",m.async=!0,m.src="//static.yieldmo.com/ym.m4.js",(e.getElementsByTagName("head")[0]||e.getElementsByTagName("body")[0]).appendChild(m)}else{t._ym instanceof String||void 0===t._ym.chkPls||t._ym.chkPls()}})(document,window);</scr'+'ipt></div>');
+}
+</script><script type="text/javascript">
+    //<![CDATA[
+    if(!jQuery.blzBrowserFuncs.isRWDPage()) {
+        try{
+            document.write('<div class="ad" id="right-top_300x250" data-cb-ad-id="right-top_300x250"></div>');
+            TBZ.blzDFPAds.registerAdPos('right-top_300x250','Right-Top_300x250-300x600_101');
+        }catch(e) { jQuery.tbzWarning('right-top_300x250 ' + e); }
+    }else{
+        try{
+            document.write('<div class="ad" id="right-top_300x250" data-cb-ad-id="right-top_300x250"></div>');
+            TBZ.blzDFPAds.registerAdPos('right-top_300x250','Right-Top_300x250-300x600_101');
+        }catch(e) { jQuery.tbzWarning('right-top_300x250 ' + e); }
+    }
+    //]]>
+</script><script type="text/javascript">
+    if(!jQuery.blzBrowserFuncs.isRWDPage()) {
+        document.write('<iframe src="http://embed.newsinc.com/Thumbnail/iframe.html?wid=26715&type=slider" height="250" width="300" frameborder="no" scrolling="no" noresize marginwidth="0px" marginheight="0px"></iframe>');
+    }else{
+        document.write('<iframe src="http://embed.newsinc.com/Thumbnail/iframe.html?wid=26715&type=slider" height="250" width="300" frameborder="no" scrolling="no" noresize marginwidth="0px" marginheight="0px"></iframe>');
+    }
+</script><div id="300x250_Right_Rail_178" style="margin-top:20px"></div>
+<script type="text/javascript">try { TBZ.blzDFPAds.registerAdPos('300x250_Right_Rail_178','300x250_Right_Rail_178');} catch(e){jQuery.tbzWarning('300x250_Right_Rail_178  ' + e);}</script>			<div class="widget widget-container widget_top-headlines-widget" id="top-headlines-widget-3">
+			<div id="tblz_ps_widget">
+				<div class="tblz_ps_header_wrapper clearfix">
+					<a href="http://www.theblaze.com/"><img width="258" height="21" src="/widget/top-headlines/headline.png" /></a>
+				</div>
+				<ul class="tblz_ps_tabs_wrapper clearfix">
+					<li class="tblz_ps_tab_left"><div id="tblz_ps_tab_left" class="tblz_ps_tab_active"><a class="tblz_ps_tab_left" href="javascript:;"></a></div></li>
+					<li class="tblz_ps_tab_right"><div id="tblz_ps_tab_right"><a class="tblz_ps_tab_right" href="javascript:;"></a></div></li>
+				</ul>
+				<div class="tblz_ps_content">
+					<ul id="tblz_ps_tab_popular" class="tblz_ps_stories tblz_ps_stories_active" data-vr-zone="Popular Widget">
+						<li class="clearfix" data-vr-contentbox=""><a data-blz-tracker="internal;popsocial-widget" class="tblz_ps_thumbnail" title="Oprah Asked This Ex-Megachurch Pastor When Christianity Will Embrace Gay Relationships &mdash; and His Answer Seemed to Take Her By Surprise" href="http://www.theblaze.com/stories/2015/02/17/oprah-asked-this-ex-megachurch-pastor-when-christianity-will-embrace-gay-relationships-and-his-answer-seemed-to-take-her-by-surprise/"><img width="70" height="50" src="http://www.theblaze.com/wp-content/uploads/2015/02/pastor-70x50.jpg" class="attachment-post-thumbnail wp-post-image" alt="Oprah Asked This Ex-Megachurch Pastor When Christianity Will Embrace Gay Relationships &mdash; and His Answer Seemed to Take Her By Surprise" title="Oprah Asked This Ex-Megachurch Pastor When Christianity Will Embrace Gay Relationships &mdash; and His Answer Seemed to Take Her By Surprise" /></a><span class="tblz_ps_title"><a data-blz-tracker="internal;popsocial-widget" class="tblz_ps_title" title="Oprah Asked This Ex-Megachurch Pastor When Christianity Will Embrace Gay Relationships &mdash; and His Answer Seemed to Take Her By Surprise" href="http://www.theblaze.com/stories/2015/02/17/oprah-asked-this-ex-megachurch-pastor-when-christianity-will-embrace-gay-relationships-and-his-answer-seemed-to-take-her-by-surprise/">Oprah Asked This Ex-Megachurch Pastor When Christianity Will Embrace Gay Relationships — and His Answer Seemed to Take Her By Surprise</a></span> <a data-blz-tracker="internal;popsocial-widget" class="hot-story" href="http://www.theblaze.com/stories/2015/02/17/oprah-asked-this-ex-megachurch-pastor-when-christianity-will-embrace-gay-relationships-and-his-answer-seemed-to-take-her-by-surprise/#comments">696 Comments</a></li>
+<li class="clearfix" data-vr-contentbox=""><a data-blz-tracker="internal;popsocial-widget" class="tblz_ps_thumbnail" title="Atheist Richard Dawkins Mocks God as &#039;Lazy&#039; and &#039;Unnecessary&#039; in Comedy Cameo &mdash; but One Christian Leader Isn&#039;t Having Any of It" href="http://www.theblaze.com/stories/2015/02/17/atheist-richard-dawkins-mocks-god-as-lazy-and-unnecessary-in-comedy-cameo-but-one-christian-leader-isnt-having-any-of-it/"><img width="70" height="50" src="http://www.theblaze.com/wp-content/uploads/2015/01/Richard-Dawkins-70x50.jpg" class="attachment-post-thumbnail wp-post-image" alt="Atheist Richard Dawkins Mocks God as &#039;Lazy&#039; and &#039;Unnecessary&#039; in Comedy Cameo &mdash; but One Christian Leader Isn&#039;t Having Any of It" title="Atheist Richard Dawkins Mocks God as &#039;Lazy&#039; and &#039;Unnecessary&#039; in Comedy Cameo &mdash; but One Christian Leader Isn&#039;t Having Any of It" /></a><span class="tblz_ps_title"><a data-blz-tracker="internal;popsocial-widget" class="tblz_ps_title" title="Atheist Richard Dawkins Mocks God as &#039;Lazy&#039; and &#039;Unnecessary&#039; in Comedy Cameo &mdash; but One Christian Leader Isn&#039;t Having Any of It" href="http://www.theblaze.com/stories/2015/02/17/atheist-richard-dawkins-mocks-god-as-lazy-and-unnecessary-in-comedy-cameo-but-one-christian-leader-isnt-having-any-of-it/">Atheist Richard Dawkins Mocks God as 'Lazy' and 'Unnecessary' in Comedy Cameo — but One Christian Leader Isn't Having Any of It</a></span> <a data-blz-tracker="internal;popsocial-widget" class="hot-story" href="http://www.theblaze.com/stories/2015/02/17/atheist-richard-dawkins-mocks-god-as-lazy-and-unnecessary-in-comedy-cameo-but-one-christian-leader-isnt-having-any-of-it/#comments">660 Comments</a></li>
+<li class="clearfix" data-vr-contentbox=""><a data-blz-tracker="internal;popsocial-widget" class="tblz_ps_thumbnail" title="Obama Admin. Spokeswoman Says This Is the Key to Defeating Islamic State &mdash; and It&rsquo;s Not &lsquo;Killing Them&rsquo;" href="http://www.theblaze.com/stories/2015/02/16/obama-admin-spokeswoman-says-u-s-cant-defeat-islamic-state-by-killing-them/"><img width="70" height="50" src="http://www.theblaze.com/wp-content/uploads/2015/02/Screen-Shot-2015-02-16-at-9.51.32-PM-70x50.jpg" class="attachment-post-thumbnail wp-post-image" alt="Obama Admin. Spokeswoman Says This Is the Key to Defeating Islamic State &mdash; and It&rsquo;s Not &lsquo;Killing Them&rsquo;" title="Obama Admin. Spokeswoman Says This Is the Key to Defeating Islamic State &mdash; and It&rsquo;s Not &lsquo;Killing Them&rsquo;" /></a><span class="tblz_ps_title"><a data-blz-tracker="internal;popsocial-widget" class="tblz_ps_title" title="Obama Admin. Spokeswoman Says This Is the Key to Defeating Islamic State &mdash; and It&rsquo;s Not &lsquo;Killing Them&rsquo;" href="http://www.theblaze.com/stories/2015/02/16/obama-admin-spokeswoman-says-u-s-cant-defeat-islamic-state-by-killing-them/">Obama Admin. Spokeswoman Says This Is the Key to Defeating Islamic State — and It’s Not ‘Killing Them’</a></span> <a data-blz-tracker="internal;popsocial-widget" class="hot-story" href="http://www.theblaze.com/stories/2015/02/16/obama-admin-spokeswoman-says-u-s-cant-defeat-islamic-state-by-killing-them/#comments">508 Comments</a></li>
+<li class="clearfix" data-vr-contentbox=""><a data-blz-tracker="internal;popsocial-widget" class="tblz_ps_thumbnail" title="&#039;Terrorized&#039;: Teenage Girls Storm Into California Grocery and Start Wrecking Things -- Wait Until You Hear Their Motive" href="http://www.theblaze.com/stories/2015/02/17/terrorized-teenage-girls-storm-into-california-grocery-and-start-wrecking-things-wait-until-you-hear-their-motive/"><img width="70" height="50" src="http://www.theblaze.com/wp-content/uploads/2015/02/Screen-Shot-2015-02-17-at-7.19.38-AM-70x50.jpg" class="attachment-post-thumbnail wp-post-image" alt="&#039;Terrorized&#039;: Teenage Girls Storm Into California Grocery and Start Wrecking Things -- Wait Until You Hear Their Motive" title="&#039;Terrorized&#039;: Teenage Girls Storm Into California Grocery and Start Wrecking Things -- Wait Until You Hear Their Motive" /></a><span class="tblz_ps_title"><a data-blz-tracker="internal;popsocial-widget" class="tblz_ps_title" title="&#039;Terrorized&#039;: Teenage Girls Storm Into California Grocery and Start Wrecking Things -- Wait Until You Hear Their Motive" href="http://www.theblaze.com/stories/2015/02/17/terrorized-teenage-girls-storm-into-california-grocery-and-start-wrecking-things-wait-until-you-hear-their-motive/">'Terrorized': Teenage Girls Storm Into California Grocery and Start Wrecking Things -- Wait Until You Hear Their Motive</a></span> <a data-blz-tracker="internal;popsocial-widget" class="hot-story" href="http://www.theblaze.com/stories/2015/02/17/terrorized-teenage-girls-storm-into-california-grocery-and-start-wrecking-things-wait-until-you-hear-their-motive/#comments">394 Comments</a></li>
+<li class="clearfix" data-vr-contentbox=""><a data-blz-tracker="internal;popsocial-widget" class="tblz_ps_thumbnail" title="&#039;Protest Mob&#039; Descends Upon Gov. Scott Walker&#039;s Personal Home &mdash; but Guess Who&#039;s Apparently Living There" href="http://www.theblaze.com/stories/2015/02/16/protest-mob-descends-upon-gov-scott-walkers-personal-home-but-guess-whos-apparently-living-there/"><img width="70" height="50" src="http://www.theblaze.com/wp-content/uploads/2015/02/Screen-Shot-2015-02-16-at-7.43.27-PM-70x50.jpg" class="attachment-post-thumbnail wp-post-image" alt="&#039;Protest Mob&#039; Descends Upon Gov. Scott Walker&#039;s Personal Home &mdash; but Guess Who&#039;s Apparently Living There" title="&#039;Protest Mob&#039; Descends Upon Gov. Scott Walker&#039;s Personal Home &mdash; but Guess Who&#039;s Apparently Living There" /></a><span class="tblz_ps_title"><a data-blz-tracker="internal;popsocial-widget" class="tblz_ps_title" title="&#039;Protest Mob&#039; Descends Upon Gov. Scott Walker&#039;s Personal Home &mdash; but Guess Who&#039;s Apparently Living There" href="http://www.theblaze.com/stories/2015/02/16/protest-mob-descends-upon-gov-scott-walkers-personal-home-but-guess-whos-apparently-living-there/">'Protest Mob' Descends Upon Gov. Scott Walker's Personal Home — but Guess Who's Apparently Living There</a></span> <a data-blz-tracker="internal;popsocial-widget" class="hot-story" href="http://www.theblaze.com/stories/2015/02/16/protest-mob-descends-upon-gov-scott-walkers-personal-home-but-guess-whos-apparently-living-there/#comments">385 Comments</a></li>
+
+					</ul>
+					<ul id="tblz_ps_tab_social" class="tblz_ps_stories" data-vr-zone="Popular Widget">
+						<li class="clearfix" data-vr-contentbox=""><a data-blz-tracker="internal;popsocial-widget" class="tblz_ps_thumbnail" title="Texas Gov. Greg Abbott: &#039;Federal Judge Just Granted My Request to Halt Obama&#039;s Executive Amnesty Order Nationwide&#039;" href="http://www.theblaze.com/stories/2015/02/16/texas-gov-greg-abbott-federal-judge-just-granted-my-request-to-halt-obamas-executive-amnesty-order-nationwide/"><img width="70" height="50" src="http://www.theblaze.com/wp-content/uploads/2014/11/b5c61ae3e5638ee15eb3fe76ebc54f85-70x50.jpeg" class="attachment-post-thumbnail wp-post-image" alt="Texas Gov. Greg Abbott: &#039;Federal Judge Just Granted My Request to Halt Obama&#039;s Executive Amnesty Order Nationwide&#039;" title="Texas Gov. Greg Abbott: &#039;Federal Judge Just Granted My Request to Halt Obama&#039;s Executive Amnesty Order Nationwide&#039;" /></a><span class="tblz_ps_title"><a data-blz-tracker="internal;popsocial-widget" class="tblz_ps_title" title="Texas Gov. Greg Abbott: &#039;Federal Judge Just Granted My Request to Halt Obama&#039;s Executive Amnesty Order Nationwide&#039;" href="http://www.theblaze.com/stories/2015/02/16/texas-gov-greg-abbott-federal-judge-just-granted-my-request-to-halt-obamas-executive-amnesty-order-nationwide/">Texas Gov. Greg Abbott: 'Federal Judge Just Granted My Request to Halt Obama's Executive Amnesty Order Nationwide'</a></span> <a data-blz-tracker="internal;popsocial-widget" class="hot-story" href="http://www.theblaze.com/stories/2015/02/16/texas-gov-greg-abbott-federal-judge-just-granted-my-request-to-halt-obamas-executive-amnesty-order-nationwide/">34.4K Shares</a></li>
+<li class="clearfix" data-vr-contentbox=""><a data-blz-tracker="internal;popsocial-widget" class="tblz_ps_thumbnail" title="Mom Was &#039;Scared&#039; When Son Told Her to &#039;Stop the Car&#039; &mdash; Moments Later, She &#039;Started to Cry&#039;" href="http://www.theblaze.com/stories/2015/02/18/mom-was-scared-when-son-told-her-to-stop-the-car-moments-later-she-started-to-cry/"><img width="70" height="50" src="http://www.theblaze.com/wp-content/uploads/2015/02/Screen-Shot-2015-02-18-at-3.43.43-PM-70x50.jpg" class="attachment-post-thumbnail wp-post-image" alt="Mom Was &#039;Scared&#039; When Son Told Her to &#039;Stop the Car&#039; &mdash; Moments Later, She &#039;Started to Cry&#039;" title="Mom Was &#039;Scared&#039; When Son Told Her to &#039;Stop the Car&#039; &mdash; Moments Later, She &#039;Started to Cry&#039;" /></a><span class="tblz_ps_title"><a data-blz-tracker="internal;popsocial-widget" class="tblz_ps_title" title="Mom Was &#039;Scared&#039; When Son Told Her to &#039;Stop the Car&#039; &mdash; Moments Later, She &#039;Started to Cry&#039;" href="http://www.theblaze.com/stories/2015/02/18/mom-was-scared-when-son-told-her-to-stop-the-car-moments-later-she-started-to-cry/">Mom Was 'Scared' When Son Told Her to 'Stop the Car' — Moments Later, She 'Started to Cry'</a></span> <a data-blz-tracker="internal;popsocial-widget" class="hot-story" href="http://www.theblaze.com/stories/2015/02/18/mom-was-scared-when-son-told-her-to-stop-the-car-moments-later-she-started-to-cry/">32.5K Shares</a></li>
+<li class="clearfix" data-vr-contentbox=""><a data-blz-tracker="internal;popsocial-widget" class="tblz_ps_thumbnail" title="Glenn Beck&#039;s Chilling Warning: World War III Is Coming and &#039;Nobody Will Recognize It Yet&#039;" href="http://www.theblaze.com/stories/2015/02/16/glenn-becks-chilling-warning-world-war-iii-is-coming-and-nobody-will-recognize-it-yet/"><img width="70" height="50" src="http://www.theblaze.com/wp-content/uploads/2015/02/Glenn-Beck1-70x50.jpg" class="attachment-post-thumbnail wp-post-image" alt="Glenn Beck&#039;s Chilling Warning: World War III Is Coming and &#039;Nobody Will Recognize It Yet&#039;" title="Glenn Beck&#039;s Chilling Warning: World War III Is Coming and &#039;Nobody Will Recognize It Yet&#039;" /></a><span class="tblz_ps_title"><a data-blz-tracker="internal;popsocial-widget" class="tblz_ps_title" title="Glenn Beck&#039;s Chilling Warning: World War III Is Coming and &#039;Nobody Will Recognize It Yet&#039;" href="http://www.theblaze.com/stories/2015/02/16/glenn-becks-chilling-warning-world-war-iii-is-coming-and-nobody-will-recognize-it-yet/">Glenn Beck's Chilling Warning: World War III Is Coming and 'Nobody Will Recognize It Yet'</a></span> <a data-blz-tracker="internal;popsocial-widget" class="hot-story" href="http://www.theblaze.com/stories/2015/02/16/glenn-becks-chilling-warning-world-war-iii-is-coming-and-nobody-will-recognize-it-yet/">29K Shares</a></li>
+<li class="clearfix" data-vr-contentbox=""><a data-blz-tracker="internal;popsocial-widget" class="tblz_ps_thumbnail" title="Oprah Asked This Ex-Megachurch Pastor When Christianity Will Embrace Gay Relationships &mdash; and His Answer Seemed to Take Her By Surprise" href="http://www.theblaze.com/stories/2015/02/17/oprah-asked-this-ex-megachurch-pastor-when-christianity-will-embrace-gay-relationships-and-his-answer-seemed-to-take-her-by-surprise/"><img width="70" height="50" src="http://www.theblaze.com/wp-content/uploads/2015/02/pastor-70x50.jpg" class="attachment-post-thumbnail wp-post-image" alt="Oprah Asked This Ex-Megachurch Pastor When Christianity Will Embrace Gay Relationships &mdash; and His Answer Seemed to Take Her By Surprise" title="Oprah Asked This Ex-Megachurch Pastor When Christianity Will Embrace Gay Relationships &mdash; and His Answer Seemed to Take Her By Surprise" /></a><span class="tblz_ps_title"><a data-blz-tracker="internal;popsocial-widget" class="tblz_ps_title" title="Oprah Asked This Ex-Megachurch Pastor When Christianity Will Embrace Gay Relationships &mdash; and His Answer Seemed to Take Her By Surprise" href="http://www.theblaze.com/stories/2015/02/17/oprah-asked-this-ex-megachurch-pastor-when-christianity-will-embrace-gay-relationships-and-his-answer-seemed-to-take-her-by-surprise/">Oprah Asked This Ex-Megachurch Pastor When Christianity Will Embrace Gay Relationships — and His Answer Seemed to Take Her By Surprise</a></span> <a data-blz-tracker="internal;popsocial-widget" class="hot-story" href="http://www.theblaze.com/stories/2015/02/17/oprah-asked-this-ex-megachurch-pastor-when-christianity-will-embrace-gay-relationships-and-his-answer-seemed-to-take-her-by-surprise/">19.1K Shares</a></li>
+<li class="clearfix" data-vr-contentbox=""><a data-blz-tracker="internal;popsocial-widget" class="tblz_ps_thumbnail" title="ADHD Definitely Doesn&#039;t Exist, But If It Did I Would Have It" href="http://www.theblaze.com/contributions/adhd-definitely-doesnt-exist-but-if-it-did-i-would-have-it/"><img width="70" height="50" src="http://www.theblaze.com/wp-content/uploads/2014/05/shutterstock_172724699-2-70x50.jpg" class="attachment-post-thumbnail wp-post-image" alt="ADHD Definitely Doesn&#039;t Exist, But If It Did I Would Have It" title="ADHD Definitely Doesn&#039;t Exist, But If It Did I Would Have It" /></a><span class="tblz_ps_title"><a data-blz-tracker="internal;popsocial-widget" class="tblz_ps_title" title="ADHD Definitely Doesn&#039;t Exist, But If It Did I Would Have It" href="http://www.theblaze.com/contributions/adhd-definitely-doesnt-exist-but-if-it-did-i-would-have-it/"><span class="red label contributions-tag">Commentary</span> ADHD Definitely Doesn't Exist, But If It Did I Would Have It</a></span> <a data-blz-tracker="internal;popsocial-widget" class="hot-story" href="http://www.theblaze.com/contributions/adhd-definitely-doesnt-exist-but-if-it-did-i-would-have-it/">18K Shares</a></li>
+
+					</ul>
+				</div>
+				<div class="tblz_ps_email_box">
+					<img class="tblz_ps_email_headline" width="260" height="17" src="/widget/top-headlines/email_headline.png" />
+					<form action="/widget/top-headlines/endpoint.php" method="post" id="tblz_widget_form_signup">
+						<input type="email" name="email" id="tblz_user_email" placeholder="Enter your email address" />
+						<input type="submit" class="red button right" value="Sign Up" />	
+					</form>
+					<a class="tblz_ps_embed_link" href="/widget/top-headlines/get-top-headlines-widget.php" target="_BLANK">Embed TheBlaze Headlines on Your Own Site!</a>
+				</div>
+			</div>
+					
+			<script>
+				jQuery(function() {
+					var tblz_ps_tab_social  = jQuery('#tblz_ps_tab_social');
+					var tblz_ps_tab_popular = jQuery('#tblz_ps_tab_popular');
+					var tblz_ps_tab_right   = jQuery('#tblz_ps_tab_right');
+					var tblz_ps_tab_left    = jQuery('#tblz_ps_tab_left');
+								
+				     tblz_ps_tab_right.click(function() {
+				     	tblz_ps_tab_social.css('display', 'block');
+					    tblz_ps_tab_popular.css('display', 'none');
+				     	tblz_ps_tab_right.addClass('tblz_ps_tab_active');
+						tblz_ps_tab_left.removeClass('tblz_ps_tab_active');
+						_gat._getTrackerByName()._trackEvent('Site Features', 'Social', 'PopSocial Widget');
+				     	return false;
+				     });
+	
+				     tblz_ps_tab_left.click(function() {
+						tblz_ps_tab_popular.css('display', 'block');
+						tblz_ps_tab_social.css('display', 'none');
+						tblz_ps_tab_left.addClass('tblz_ps_tab_active');
+						tblz_ps_tab_right.removeClass('tblz_ps_tab_active');
+						_gat._getTrackerByName()._trackEvent('Site Features', 'Popular', 'PopSocial Widget');
+						return false;
+				     });
+								
+					jQuery('#tblz_widget_form_signup').submit(function() {
+						jQuery.post(
+							jQuery('#tblz_widget_form_signup').attr('action'),
+							jQuery('#tblz_widget_form_signup').serialize(),
+							function(data) { alert(data); }
+						);
+						_gat._getTrackerByName()._trackEvent('Site Features', 'Sign Up', 'PopSocial Widget');
+						return false;
+					});
+				});
+			</script>
+
+			</div><div style="margin: 25px 0px;"  data-cb-ad-id="tvpromo-right_300x50"><a href="http://www.theblaze.com/tv/" id="realnews_box" onClick="GATrackLink(this, 'internal', 'sidebar'); return false;"><img src="http://www.theblaze.com/wp-content/themes/TheBlaze/images/blazetv-adx65.jpg" alt="Restoring Love" width="300" height="65" /></a></div><!-- faith_widget_full hit -->
+<div class="widget-closed vertical-widget-faith widget widget-container widget_vertical" id="blazeverticals-8"><h3><a href="/faith/" data-blz-tracker="internal;faith-vertical-widget-title">Faith</a></h3>	<div class="textwidget">
+		<ul class="posts">						<li class="clearfix">
+						<a title="Spray-Painted Islamic Phrase, Swastika and a Small Fire Were Discovered at a Christian Church in Florida — and Now Police Are Investigating" href="http://www.theblaze.com/stories/2015/02/19/allahu-akbar-police-discover-spray-painted-islamic-phrase-swastika-and-a-small-fire-at-a-christian-church-in-florida/" data-blz-tracker="internal;faith-vertical-widget-thumb"><img width="70" height="50" data-original="http://www.theblaze.com/wp-content/uploads/2015/02/allah-70x50.jpg" src="/wp-content/themes/TheBlaze/images/404.gif" /></a>					
+						<a class="title" title="Spray-Painted Islamic Phrase, Swastika and a Small Fire Were Discovered at a Christian Church in Florida — and Now Police Are Investigating" href="http://www.theblaze.com/stories/2015/02/19/allahu-akbar-police-discover-spray-painted-islamic-phrase-swastika-and-a-small-fire-at-a-christian-church-in-florida/"  data-blz-tracker="internal;faith-vertical-widget-headline">Spray-Painted Islamic Phrase, Swastika and a Small Fire Were Discovered at a Christian Church in Florida — and Now Police Are Investigating</a>
+						 <a title="Spray-Painted Islamic Phrase, Swastika and a Small Fire Were Discovered at a Christian Church in Florida — and Now Police Are Investigating" href="http://www.theblaze.com/stories/2015/02/19/allahu-akbar-police-discover-spray-painted-islamic-phrase-swastika-and-a-small-fire-at-a-christian-church-in-florida/" data-blz-tracker="internal;faith-vertical-widget-more">Read More</a>
+					</li>					<li class="clearfix">
+						<a title="Swedish Police Guarding Synagogues Directed to Carry Automatic Weapons" href="http://www.theblaze.com/stories/2015/02/19/swedish-police-guarding-synagogues-directed-to-carry-automatic-weapons/" data-blz-tracker="internal;faith-vertical-widget-thumb"><img width="70" height="50" data-original="http://www.theblaze.com/wp-content/uploads/2015/02/Copenhagen-Police-Synagogue-70x50.jpg" src="/wp-content/themes/TheBlaze/images/404.gif" /></a>					
+						<a class="title" title="Swedish Police Guarding Synagogues Directed to Carry Automatic Weapons" href="http://www.theblaze.com/stories/2015/02/19/swedish-police-guarding-synagogues-directed-to-carry-automatic-weapons/"  data-blz-tracker="internal;faith-vertical-widget-headline">Swedish Police Guarding Synagogues Directed to Carry Automatic Weapons</a>
+						 <a title="Swedish Police Guarding Synagogues Directed to Carry Automatic Weapons" href="http://www.theblaze.com/stories/2015/02/19/swedish-police-guarding-synagogues-directed-to-carry-automatic-weapons/" data-blz-tracker="internal;faith-vertical-widget-more">Read More</a>
+					</li>					<li class="clearfix">
+						<a title="Ex-Fire Chief Who Claims He Was Terminated Over His Biblical Views on Homosexuality Sues — and Delivers a Message About &#8216;Freedom&#8217;" href="http://www.theblaze.com/stories/2015/02/19/ex-atlanta-fire-chief-who-ignited-controversy-over-book-that-compared-homosexuality-to-perversion-and-bestiality-sues-the-city-of-atlanta-over-his-firing/" data-blz-tracker="internal;faith-vertical-widget-thumb"><img width="70" height="50" data-original="http://www.theblaze.com/wp-content/uploads/2015/02/cochran-70x50.jpg" src="/wp-content/themes/TheBlaze/images/404.gif" /></a>					
+						<a class="title" title="Ex-Fire Chief Who Claims He Was Terminated Over His Biblical Views on Homosexuality Sues — and Delivers a Message About &#8216;Freedom&#8217;" href="http://www.theblaze.com/stories/2015/02/19/ex-atlanta-fire-chief-who-ignited-controversy-over-book-that-compared-homosexuality-to-perversion-and-bestiality-sues-the-city-of-atlanta-over-his-firing/"  data-blz-tracker="internal;faith-vertical-widget-headline">Ex-Fire Chief Who Claims He Was Terminated Over His Biblical Views on Homosexuality Sues — and Delivers a Message About &#8216;Freedom&#8217;</a>
+						 <a title="Ex-Fire Chief Who Claims He Was Terminated Over His Biblical Views on Homosexuality Sues — and Delivers a Message About &#8216;Freedom&#8217;" href="http://www.theblaze.com/stories/2015/02/19/ex-atlanta-fire-chief-who-ignited-controversy-over-book-that-compared-homosexuality-to-perversion-and-bestiality-sues-the-city-of-atlanta-over-his-firing/" data-blz-tracker="internal;faith-vertical-widget-more">Read More</a>
+					</li>					<li class="clearfix">
+						<a title="Which States Attend Church the Most? New Map Has the Answer" href="http://www.theblaze.com/stories/2015/02/18/which-states-attend-church-the-most-new-map-has-the-answer/" data-blz-tracker="internal;faith-vertical-widget-thumb"><img width="70" height="50" data-original="http://www.theblaze.com/wp-content/uploads/2015/02/whv6ujwyukyb7q_r-y5vua-70x50.png" src="/wp-content/themes/TheBlaze/images/404.gif" /></a>					
+						<a class="title" title="Which States Attend Church the Most? New Map Has the Answer" href="http://www.theblaze.com/stories/2015/02/18/which-states-attend-church-the-most-new-map-has-the-answer/"  data-blz-tracker="internal;faith-vertical-widget-headline">Which States Attend Church the Most? New Map Has the Answer</a>
+						 <a title="Which States Attend Church the Most? New Map Has the Answer" href="http://www.theblaze.com/stories/2015/02/18/which-states-attend-church-the-most-new-map-has-the-answer/" data-blz-tracker="internal;faith-vertical-widget-more">Read More</a>
+					</li>					<li class="clearfix">
+						<a title="The Tragic Moment That Caused This Famed Christian Singer to &#8216;Question Everything&#8217;" href="http://www.theblaze.com/stories/2015/02/18/christian-singer-reveals-how-a-tragic-event-just-weeks-before-his-american-idol-audition-called-his-faith-into-question-and-how-he-triumphed-over-the-pain/" data-blz-tracker="internal;faith-vertical-widget-thumb"><img width="70" height="50" data-original="http://www.theblaze.com/wp-content/uploads/2015/02/danny-gokey-70x50.jpg" src="/wp-content/themes/TheBlaze/images/404.gif" /></a>					
+						<a class="title" title="The Tragic Moment That Caused This Famed Christian Singer to &#8216;Question Everything&#8217;" href="http://www.theblaze.com/stories/2015/02/18/christian-singer-reveals-how-a-tragic-event-just-weeks-before-his-american-idol-audition-called-his-faith-into-question-and-how-he-triumphed-over-the-pain/"  data-blz-tracker="internal;faith-vertical-widget-headline">The Tragic Moment That Caused This Famed Christian Singer to &#8216;Question Everything&#8217;</a>
+						 <a title="The Tragic Moment That Caused This Famed Christian Singer to &#8216;Question Everything&#8217;" href="http://www.theblaze.com/stories/2015/02/18/christian-singer-reveals-how-a-tragic-event-just-weeks-before-his-american-idol-audition-called-his-faith-into-question-and-how-he-triumphed-over-the-pain/" data-blz-tracker="internal;faith-vertical-widget-more">Read More</a>
+					</li>			</ul>
+	        </div>
+			</div><!-- business_widget_full hit -->
+<div class="widget-closed vertical-widget-business widget widget-container widget_vertical" id="blazeverticals-6"><h3><a href="/business/" data-blz-tracker="internal;business-vertical-widget-title">Business</a></h3>	<div class="textwidget">
+		<ul class="posts">						<li class="clearfix">
+						<a title="What Are Google&#8217;s Top Paid Jobs? New Ranking Reveals Impressive Numbers" href="http://www.theblaze.com/stories/2015/02/19/what-are-googles-top-paid-jobs-new-ranking-reveals-impressive-numbers/" data-blz-tracker="internal;business-vertical-widget-thumb"><img width="70" height="50" data-original="http://www.theblaze.com/wp-content/uploads/2014/02/600x3995-70x50.jpg" src="/wp-content/themes/TheBlaze/images/404.gif" /></a>					
+						<a class="title" title="What Are Google&#8217;s Top Paid Jobs? New Ranking Reveals Impressive Numbers" href="http://www.theblaze.com/stories/2015/02/19/what-are-googles-top-paid-jobs-new-ranking-reveals-impressive-numbers/"  data-blz-tracker="internal;business-vertical-widget-headline">What Are Google&#8217;s Top Paid Jobs? New Ranking Reveals Impressive Numbers</a>
+						 <a title="What Are Google&#8217;s Top Paid Jobs? New Ranking Reveals Impressive Numbers" href="http://www.theblaze.com/stories/2015/02/19/what-are-googles-top-paid-jobs-new-ranking-reveals-impressive-numbers/" data-blz-tracker="internal;business-vertical-widget-more">Read More</a>
+					</li>					<li class="clearfix">
+						<a title="Proposed Changes to Search Warrant Procedures Could Lead to ‘Government Hacking of Any Facility’" href="http://www.theblaze.com/stories/2015/02/19/proposed-changes-to-search-warrant-procedures-could-lead-to-government-hacking-of-any-facility/" data-blz-tracker="internal;business-vertical-widget-thumb"><img width="70" height="50" data-original="http://www.theblaze.com/wp-content/uploads/2015/02/shutterstock_147560015-70x50.jpg" src="/wp-content/themes/TheBlaze/images/404.gif" /></a>					
+						<a class="title" title="Proposed Changes to Search Warrant Procedures Could Lead to ‘Government Hacking of Any Facility’" href="http://www.theblaze.com/stories/2015/02/19/proposed-changes-to-search-warrant-procedures-could-lead-to-government-hacking-of-any-facility/"  data-blz-tracker="internal;business-vertical-widget-headline">Proposed Changes to Search Warrant Procedures Could Lead to ‘Government Hacking of Any Facility’</a>
+						 <a title="Proposed Changes to Search Warrant Procedures Could Lead to ‘Government Hacking of Any Facility’" href="http://www.theblaze.com/stories/2015/02/19/proposed-changes-to-search-warrant-procedures-could-lead-to-government-hacking-of-any-facility/" data-blz-tracker="internal;business-vertical-widget-more">Read More</a>
+					</li>					<li class="clearfix">
+						<a title="U.S. &#8216;Outdone&#8217; by Terrorists on Social Media Battlefield, Experts Say" href="http://www.theblaze.com/stories/2015/02/18/u-s-outdone-by-terrorists-on-social-media-battlefield-experts-say/" data-blz-tracker="internal;business-vertical-widget-thumb"><img width="70" height="50" data-original="http://www.theblaze.com/wp-content/uploads/2015/02/Screen-Shot-2015-02-18-at-5.46.05-PM-70x50.png" src="/wp-content/themes/TheBlaze/images/404.gif" /></a>					
+						<a class="title" title="U.S. &#8216;Outdone&#8217; by Terrorists on Social Media Battlefield, Experts Say" href="http://www.theblaze.com/stories/2015/02/18/u-s-outdone-by-terrorists-on-social-media-battlefield-experts-say/"  data-blz-tracker="internal;business-vertical-widget-headline">U.S. &#8216;Outdone&#8217; by Terrorists on Social Media Battlefield, Experts Say</a>
+						 <a title="U.S. &#8216;Outdone&#8217; by Terrorists on Social Media Battlefield, Experts Say" href="http://www.theblaze.com/stories/2015/02/18/u-s-outdone-by-terrorists-on-social-media-battlefield-experts-say/" data-blz-tracker="internal;business-vertical-widget-more">Read More</a>
+					</li>					<li class="clearfix">
+						<a title="Amazon Is Frustrated by the Government&#8217;s Failure to Launch on Drones" href="http://www.theblaze.com/stories/2015/02/18/amazon-is-frustrated-by-the-governments-failure-to-launch-on-drones/" data-blz-tracker="internal;business-vertical-widget-thumb"><img width="70" height="50" data-original="http://www.theblaze.com/wp-content/uploads/2015/02/drone2-70x50.jpg" src="/wp-content/themes/TheBlaze/images/404.gif" /></a>					
+						<a class="title" title="Amazon Is Frustrated by the Government&#8217;s Failure to Launch on Drones" href="http://www.theblaze.com/stories/2015/02/18/amazon-is-frustrated-by-the-governments-failure-to-launch-on-drones/"  data-blz-tracker="internal;business-vertical-widget-headline">Amazon Is Frustrated by the Government&#8217;s Failure to Launch on Drones</a>
+						 <a title="Amazon Is Frustrated by the Government&#8217;s Failure to Launch on Drones" href="http://www.theblaze.com/stories/2015/02/18/amazon-is-frustrated-by-the-governments-failure-to-launch-on-drones/" data-blz-tracker="internal;business-vertical-widget-more">Read More</a>
+					</li>					<li class="clearfix">
+						<a title="Nestle&#8217;s Making a Big Change to Some of Your Favorite Chocolates. Will You Be Able to Tell the Difference?" href="http://www.theblaze.com/stories/2015/02/18/nestles-making-a-big-change-to-some-of-your-favorite-chocolates-will-you-be-able-to-tell-the-difference/" data-blz-tracker="internal;business-vertical-widget-thumb"><img width="70" height="50" data-original="http://www.theblaze.com/wp-content/uploads/2015/02/shutterstock_250922092-70x50.jpg" src="/wp-content/themes/TheBlaze/images/404.gif" /></a>					
+						<a class="title" title="Nestle&#8217;s Making a Big Change to Some of Your Favorite Chocolates. Will You Be Able to Tell the Difference?" href="http://www.theblaze.com/stories/2015/02/18/nestles-making-a-big-change-to-some-of-your-favorite-chocolates-will-you-be-able-to-tell-the-difference/"  data-blz-tracker="internal;business-vertical-widget-headline">Nestle&#8217;s Making a Big Change to Some of Your Favorite Chocolates. Will You Be Able to Tell the Difference?</a>
+						 <a title="Nestle&#8217;s Making a Big Change to Some of Your Favorite Chocolates. Will You Be Able to Tell the Difference?" href="http://www.theblaze.com/stories/2015/02/18/nestles-making-a-big-change-to-some-of-your-favorite-chocolates-will-you-be-able-to-tell-the-difference/" data-blz-tracker="internal;business-vertical-widget-more">Read More</a>
+					</li>			</ul>
+	        </div>
+			</div><!-- technology_widget_full hit -->
+<div class="widget-closed vertical-widget-technology widget widget-container widget_vertical" id="blazeverticals-5"><h3><a href="/technology/" data-blz-tracker="internal;technology-vertical-widget-title">Technology</a></h3>	<div class="textwidget">
+		<ul class="posts">						<li class="clearfix">
+						<a title="What Are Google&#8217;s Top Paid Jobs? New Ranking Reveals Impressive Numbers" href="http://www.theblaze.com/stories/2015/02/19/what-are-googles-top-paid-jobs-new-ranking-reveals-impressive-numbers/" data-blz-tracker="internal;technology-vertical-widget-thumb"><img width="70" height="50" data-original="http://www.theblaze.com/wp-content/uploads/2014/02/600x3995-70x50.jpg" src="/wp-content/themes/TheBlaze/images/404.gif" /></a>					
+						<a class="title" title="What Are Google&#8217;s Top Paid Jobs? New Ranking Reveals Impressive Numbers" href="http://www.theblaze.com/stories/2015/02/19/what-are-googles-top-paid-jobs-new-ranking-reveals-impressive-numbers/"  data-blz-tracker="internal;technology-vertical-widget-headline">What Are Google&#8217;s Top Paid Jobs? New Ranking Reveals Impressive Numbers</a>
+						 <a title="What Are Google&#8217;s Top Paid Jobs? New Ranking Reveals Impressive Numbers" href="http://www.theblaze.com/stories/2015/02/19/what-are-googles-top-paid-jobs-new-ranking-reveals-impressive-numbers/" data-blz-tracker="internal;technology-vertical-widget-more">Read More</a>
+					</li>					<li class="clearfix">
+						<a title="Proposed Changes to Search Warrant Procedures Could Lead to ‘Government Hacking of Any Facility’" href="http://www.theblaze.com/stories/2015/02/19/proposed-changes-to-search-warrant-procedures-could-lead-to-government-hacking-of-any-facility/" data-blz-tracker="internal;technology-vertical-widget-thumb"><img width="70" height="50" data-original="http://www.theblaze.com/wp-content/uploads/2015/02/shutterstock_147560015-70x50.jpg" src="/wp-content/themes/TheBlaze/images/404.gif" /></a>					
+						<a class="title" title="Proposed Changes to Search Warrant Procedures Could Lead to ‘Government Hacking of Any Facility’" href="http://www.theblaze.com/stories/2015/02/19/proposed-changes-to-search-warrant-procedures-could-lead-to-government-hacking-of-any-facility/"  data-blz-tracker="internal;technology-vertical-widget-headline">Proposed Changes to Search Warrant Procedures Could Lead to ‘Government Hacking of Any Facility’</a>
+						 <a title="Proposed Changes to Search Warrant Procedures Could Lead to ‘Government Hacking of Any Facility’" href="http://www.theblaze.com/stories/2015/02/19/proposed-changes-to-search-warrant-procedures-could-lead-to-government-hacking-of-any-facility/" data-blz-tracker="internal;technology-vertical-widget-more">Read More</a>
+					</li>					<li class="clearfix">
+						<a title="Billionaire Mark Cuban Reveals Possible Move by Feds That Absolutely Terrifies Him" href="http://www.theblaze.com/stories/2015/02/18/billionaire-mark-cuban-reveals-possible-move-by-feds-that-absolutely-terrifies-him/" data-blz-tracker="internal;technology-vertical-widget-thumb"><img width="70" height="50" data-original="http://www.theblaze.com/wp-content/uploads/2015/02/68849104043c8d179516fa4057c68b34-70x50.jpeg" src="/wp-content/themes/TheBlaze/images/404.gif" /></a>					
+						<a class="title" title="Billionaire Mark Cuban Reveals Possible Move by Feds That Absolutely Terrifies Him" href="http://www.theblaze.com/stories/2015/02/18/billionaire-mark-cuban-reveals-possible-move-by-feds-that-absolutely-terrifies-him/"  data-blz-tracker="internal;technology-vertical-widget-headline">Billionaire Mark Cuban Reveals Possible Move by Feds That Absolutely Terrifies Him</a>
+						 <a class="hot-story" title="Billionaire Mark Cuban Reveals Possible Move by Feds That Absolutely Terrifies Him Comments" href="http://www.theblaze.com/stories/2015/02/18/billionaire-mark-cuban-reveals-possible-move-by-feds-that-absolutely-terrifies-him/#comments" data-blz-tracker="internal;technology-vertical-widget-comments">140 Comments</a>
+					</li>					<li class="clearfix">
+						<a title="Map Reveals America&#8217;s Quietest Spots" href="http://www.theblaze.com/stories/2015/02/18/map-reveals-americas-quietest-spots/" data-blz-tracker="internal;technology-vertical-widget-thumb"><img width="70" height="50" data-original="http://www.theblaze.com/wp-content/uploads/2015/02/sn-scivismap-70x50.jpg" src="/wp-content/themes/TheBlaze/images/404.gif" /></a>					
+						<a class="title" title="Map Reveals America&#8217;s Quietest Spots" href="http://www.theblaze.com/stories/2015/02/18/map-reveals-americas-quietest-spots/"  data-blz-tracker="internal;technology-vertical-widget-headline">Map Reveals America&#8217;s Quietest Spots</a>
+						 <a title="Map Reveals America&#8217;s Quietest Spots" href="http://www.theblaze.com/stories/2015/02/18/map-reveals-americas-quietest-spots/" data-blz-tracker="internal;technology-vertical-widget-more">Read More</a>
+					</li>					<li class="clearfix">
+						<a title="Watch This &#8216;Celestial Visitor&#8217; Turn Into a Massive Fireball Over Pennsylvania" href="http://www.theblaze.com/stories/2015/02/18/watch-this-celestial-visitor-turn-into-a-massive-fireball-over-pennsylvania/" data-blz-tracker="internal;technology-vertical-widget-thumb"><img width="70" height="50" data-original="http://www.theblaze.com/wp-content/uploads/2015/02/Screen-Shot-2015-02-18-at-2.56.42-PM-70x50.jpg" src="/wp-content/themes/TheBlaze/images/404.gif" /></a>					
+						<a class="title" title="Watch This &#8216;Celestial Visitor&#8217; Turn Into a Massive Fireball Over Pennsylvania" href="http://www.theblaze.com/stories/2015/02/18/watch-this-celestial-visitor-turn-into-a-massive-fireball-over-pennsylvania/"  data-blz-tracker="internal;technology-vertical-widget-headline">Watch This &#8216;Celestial Visitor&#8217; Turn Into a Massive Fireball Over Pennsylvania</a>
+						 <a title="Watch This &#8216;Celestial Visitor&#8217; Turn Into a Massive Fireball Over Pennsylvania" href="http://www.theblaze.com/stories/2015/02/18/watch-this-celestial-visitor-turn-into-a-massive-fireball-over-pennsylvania/" data-blz-tracker="internal;technology-vertical-widget-more">Read More</a>
+					</li>			</ul>
+	        </div>
+			</div>	<div class="blog-widget widget widget-closed widget-container" id="blogwidget">
+		<h3><a href="/blog">The Blog</a></h3>
+		<div class="textwidget">
+			<ul class="posts"><li class="clearfix"><a title="John McCain has a plan to fight the Islamic State that almost no one else is talking about" href=""><img width="70" height="50" data-original="http://www.theblaze.com/wp-content/uploads/2015/02/Screen-Shot-2015-02-19-at-8.43.12-AM-70x50.png" src="/wp-content/themes/TheBlaze/images/404.gif" /></a><a class="title" rel="bookmark" title="John McCain has a plan to fight the Islamic State that almost no one else is talking about" href="/blog/#post-931114">John McCain has a plan to fight the Islamic State that almost no one else is talking about</a></li><li class="clearfix"><a title="Letterman skewers our groping vice president: &#039;Top 10 things Joe Biden said at this moment&#039;" href=""><img width="70" height="50" data-original="http://www.theblaze.com/wp-content/uploads/2015/02/Joe-Biden1-70x50.jpg" src="/wp-content/themes/TheBlaze/images/404.gif" /></a><a class="title" rel="bookmark" title="Letterman skewers our groping vice president: &#039;Top 10 things Joe Biden said at this moment&#039;" href="/blog/#post-931021">Letterman skewers our groping vice president: &#039;Top 10 things Joe Biden said at this moment&#039;</a></li><li class="clearfix"><a title="&#039;They&#039;ll be killed&#039;: State tries to clarify spokeswoman&#039;s remarks on plan to fight Islamic State" href=""><img width="70" height="50" data-original="http://www.theblaze.com/wp-content/uploads/2015/02/Screen-Shot-2015-02-18-at-4.31.37-PM-70x50.png" src="/wp-content/themes/TheBlaze/images/404.gif" /></a><a class="title" rel="bookmark" title="&#039;They&#039;ll be killed&#039;: State tries to clarify spokeswoman&#039;s remarks on plan to fight Islamic State" href="/blog/#post-930873">&#039;They&#039;ll be killed&#039;: State tries to clarify spokeswoman&#039;s remarks on plan to fight Islamic State</a></li><li class="clearfix"><a class="title" rel="bookmark" title="&#039;For the Record&#039; season premiere: &#039;Unreliable&#039; on #SpyWeek" href="/blog/#post-930805">&#039;For the Record&#039; season premiere: &#039;Unreliable&#039; on #SpyWeek</a></li><li class="clearfix"><a title="Resets, fake red lines and hashtag campaigns: Jeb Bush dismisses Obama&#039;s foreign policy" href=""><img width="70" height="50" data-original="http://www.theblaze.com/wp-content/uploads/2015/02/Screen-Shot-2015-02-18-at-2.05.56-PM-70x50.png" src="/wp-content/themes/TheBlaze/images/404.gif" /></a><a class="title" rel="bookmark" title="Resets, fake red lines and hashtag campaigns: Jeb Bush dismisses Obama&#039;s foreign policy" href="/blog/#post-930758">Resets, fake red lines and hashtag campaigns: Jeb Bush dismisses Obama&#039;s foreign policy</a></li>			</ul>
+		</div>
+	</div><script type="text/javascript">
+    if(!jQuery.blzBrowserFuncs.isRWDPage()){
+            document.write('<iframe name="adblade_ad_iframe" width="300" height="400" frameborder="0" src="http://web.adblade.com/impsc.php?cid=4390-2803403832&output=html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no"></iframe>');
+    }
+</script><div class="widget wire-widget widget-closed widget-container" id="wirewidget"><h3><a href="http://www.theblaze.com/the-wire/">The Wire</a></h3>		<div class="textwidget">
+			<ul class="posts">	
+<li><a rel="nofollow" href="/the-wire/31347831/bio-urges-california-to-readopt-the-low-carbon-fuel-standard-with-changes/">BIO Urges California to Readopt the Low Carbon Fuel Standard, With Changes</a></li><li><a rel="nofollow" href="/the-wire/31347814/a123-sues-apple-for-poaching-staffers/">A123 sues Apple for poaching staffers</a></li><li><a rel="nofollow" href="/the-wire/31347759/kerry-fighting-extremism-requires-more-than-military-action/">Kerry: Fighting extremism requires more than military action</a></li><li><a rel="nofollow" href="/the-wire/31347519/freddie-mac-4q-profit-drops-sharply-plans-to-pay-dividend/">Freddie Mac 4Q profit drops sharply, plans to pay dividend</a></li><li><a rel="nofollow" href="/the-wire/31347747/fitch-port-issue-at-forefront-for-us-protein-restaurants/">Fitch: Port Issue at Forefront for US Protein &amp; Restaurants</a></li><li><a rel="nofollow" href="/the-wire/31347522/us-stock-market-opens-lower-as-oil-price-sags-near-50/">US stock market opens lower as oil price sags near $50</a></li><li><a rel="nofollow" href="/the-wire/31347531/german-nurse-expresses-regret-for-killing-up-to-30-patients/">German nurse expresses regret for killing up to 30 patients</a></li><li><a rel="nofollow" href="/the-wire/31347509/sailthru-to-present-on-mobile-and-cross-channel-email-integrations-at-marketingsherpa-email-summit-2015/">Sailthru to Present on Mobile and Cross-Channel Email Integrations at MarketingSherpa Email Summit 2015</a></li>			</ul>
+		</div>
+	    </div>
+<!-- begin ad tag -->
+<script>
+    if(!jQuery.blzBrowserFuncs.isRWDPage()) {
+        try{
+            document.write('<div class="ad" id="adszed-sidebar-sky"></div>');
+            TBZ.blzDFPAds.registerAdPos('adszed-sidebar-sky','Right-Skyscraper_160x600_191');
+        }catch(e){jQuery.tbzWarning('adszed-sidebar-sky ' + e);}
+    }else{
+        try{
+            document.write('<div class="ad" id="adszed-sidebar-sky"></div>');
+            TBZ.blzDFPAds.registerAdPos('adszed-sidebar-sky','Right-Skyscraper_160x600_191');
+        }catch(e){jQuery.tbzWarning('adszed-sidebar-sky ' + e);}
+}
+</script><div id="sticky"><div class="ad" id="sticky_300x250" data-cb-ad-id="sticky_300x250"></div>
+<script type="text/javascript">
+    //<![CDATA[
+    if(!jQuery.blzBrowserFuncs.isRWDPage()) {
+        try{
+            TBZ.blzDFPAds.registerAdPos('sticky_300x250','Right-Sticky_300x250_103');
+        }catch(e){jQuery.tbzWarning('sticky_300x250 ' + e);}
+    }else{
+        try{
+            TBZ.blzDFPAds.registerAdPos('sticky_300x250','Right-Sticky_300x250_103');
+        }catch(e){jQuery.tbzWarning('sticky_300x250 ' + e);}
+    }
+    //]]>
+</script><!-- END OF STICKY AD PLUGIN -->
+            <div class="ad" id="sticky-2_300x250" data-cb-ad-id="sticky-2_300x250"></div>
+            <script>
+            try{ TBZ.blzDFPAds.registerAdPos('sticky-2_300x250','Right-Sticky-2-200_104');
+            }catch(e){jQuery.tbzWarning('sticky-2_300x250 ' + e);}
+            </script></div></div>			</div>
+		
+				</div>
+		
+			
+		</div>
+		
+		<div id="footer_wrapper">
+			<div id="footer">
+				<div class="footer_rows clearfix" id="footer_row1">
+					<div class="columns"><h6>Sections</h6>
+<ul id="menu-footer-sections" class="menu"><li id="menu-item-329504" class="menu-item menu-item-type-post_type menu-item-object-page link"><a href="http://www.theblaze.com/stories/" onClick="GATrackLink(this, &#039;internal&#039;, &#039;footer-sections&#039;); return false;">The Stories</a><li id="menu-item-329505" class="menu-item menu-item-type-taxonomy menu-item-object-category link"><a href="http://www.theblaze.com/stories/category/business/" onClick="GATrackLink(this, &#039;internal&#039;, &#039;footer-sections&#039;); return false;">Business</a><li id="menu-item-329506" class="menu-item menu-item-type-taxonomy menu-item-object-category link"><a href="http://www.theblaze.com/stories/category/faith/" onClick="GATrackLink(this, &#039;internal&#039;, &#039;footer-sections&#039;); return false;">Faith</a><li id="menu-item-329507" class="menu-item menu-item-type-taxonomy menu-item-object-category link"><a href="http://www.theblaze.com/stories/category/technology/" onClick="GATrackLink(this, &#039;internal&#039;, &#039;footer-sections&#039;); return false;">Technology</a><li id="menu-item-329508" class="menu-item menu-item-type-post_type menu-item-object-page link"><a href="http://www.theblaze.com/contributions/" onClick="GATrackLink(this, &#039;internal&#039;, &#039;footer-sections&#039;); return false;">Contributions</a><li id="menu-item-329509" class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent link"><a href="http://www.theblaze.com/blog/" onClick="GATrackLink(this, &#039;internal&#039;, &#039;footer-sections&#039;); return false;">The Blog</a></ul>					</div>
+					<div class="columns"><h6>Hot Topics</h6>
+						<ul>
+<li><a href="http://www.theblaze.com/news/isis/" class="trckfooter" data-blz-tracker="internal;footer-hot-topics" >Islamic State</a></li><li><a href="http://www.theblaze.com/news/barack-obama/" class="trckfooter" data-blz-tracker="internal;footer-hot-topics" >Barack Obama</a></li><li><a href="http://www.theblaze.com/news/american-sniper/" class="trckfooter" data-blz-tracker="internal;footer-hot-topics" >'American Sniper'</a></li><li><a href="http://www.theblaze.com/news/scott-walker/" class="trckfooter" data-blz-tracker="internal;footer-hot-topics" >Scott Walker</a></li><li><a href="http://www.theblaze.com/news/theblaze-tv/" class="trckfooter" data-blz-tracker="internal;footer-hot-topics" >TheBlaze TV</a></li>						</ul>
+					</div>
+					<div class="columns"><h6>More from TheBlaze</h6>
+<ul id="menu-footer-more" class="menu"><li id="menu-item-402072" class="menu-item menu-item-type-custom menu-item-object-custom link"><a href="http://www.theblaze.com/tv" onClick="GATrackLink(this, &#039;internal&#039;, &#039;footer-more&#039;); return false;">TheBlaze TV</a><li id="menu-item-574803" class="menu-item menu-item-type-custom menu-item-object-custom link"><a href="http://blz.magserv.com/" onClick="GATrackLink(this, &#039;internal&#039;, &#039;footer-more&#039;); return false;">Magazine</a><li id="menu-item-410884" class="menu-item menu-item-type-post_type menu-item-object-page link"><a href="http://www.theblaze.com/radio/" onClick="GATrackLink(this, &#039;internal&#039;, &#039;footer-more&#039;); return false;">Radio</a><li id="menu-item-425947" class="menu-item menu-item-type-custom menu-item-object-custom link"><a href="http://www.markdown.com" onClick="GATrackLink(this, &#039;internal&#039;, &#039;footer-more&#039;); return false;">The Marketplace</a><li id="menu-item-329515" class="menu-item menu-item-type-post_type menu-item-object-page link"><a href="http://www.theblaze.com/books/" onClick="GATrackLink(this, &#039;internal&#039;, &#039;footer-more&#039;); return false;">Books</a><li id="menu-item-329516" class="menu-item menu-item-type-custom menu-item-object-custom link"><a href="http://theblaze.shop.musictoday.com/" onClick="GATrackLink(this, &#039;internal&#039;, &#039;footer-more&#039;); return false;">Store</a></ul>					</div>
+					<div class="columns last"><h6>About</h6>
+<ul id="menu-footer-about" class="menu"><li id="menu-item-329517" class="menu-item menu-item-type-post_type menu-item-object-page link"><a href="http://www.theblaze.com/about/" onClick="GATrackLink(this, &#039;internal&#039;, &#039;footer-more&#039;); return false;">About TheBlaze</a><li id="menu-item-329519" class="menu-item menu-item-type-post_type menu-item-object-page link"><a href="http://www.theblaze.com/jobs/" onClick="GATrackLink(this, &#039;internal&#039;, &#039;footer-more&#039;); return false;">Jobs</a><li id="menu-item-329520" class="menu-item menu-item-type-post_type menu-item-object-page link"><a href="http://www.theblaze.com/legal/" onClick="GATrackLink(this, &#039;internal&#039;, &#039;footer-more&#039;); return false;">Legal</a><li id="menu-item-844447" class="menu-item menu-item-type-custom menu-item-object-custom link"><a href="http://www.gettheblaze.com/affiliate/" onClick="GATrackLink(this, &#039;internal&#039;, &#039;footer-more&#039;); return false;">Become a TV Affiliate</a><li id="menu-item-702109" class="menu-item menu-item-type-post_type menu-item-object-page link"><a href="http://www.theblaze.com/advertise/" onClick="GATrackLink(this, &#039;internal&#039;, &#039;footer-more&#039;); return false;">Advertise With Us</a><li id="menu-item-761595" class="menu-item menu-item-type-post_type menu-item-object-page link"><a href="http://www.theblaze.com/contact-us/" onClick="GATrackLink(this, &#039;internal&#039;, &#039;footer-more&#039;); return false;">Contact Us</a><li id="menu-item-762248" class="menu-item menu-item-type-post_type menu-item-object-page link"><a href="http://www.theblaze.com/interns/" onClick="GATrackLink(this, &#039;internal&#039;, &#039;footer-more&#039;); return false;">TheBlaze Internship Program</a></ul>					</div>
+				</div>
+				<div class="footer_rows clearfix" id="footer_row2">
+                    <div id="tip_form" class="columns">
+                        	<p class="success" id="tip-submittion-success" style="display:none;margin-bottom:0.5em;">Thanks for the tip!</p>
+	<p class="info" id="tip-submittion-inprogress" style="display:none;margin-bottom:0.5em;"><img src="http://www.theblaze.com/wp-content/plugins/theblaze_tips/tipform-loading.gif" width="16" height="16" alt="Please Wait..." /> Submitting your tip... please wait!</p>
+	<div id="tipform" class="theblaze-tip">
+		<form class="theblaze-tipform" method="post" action="/wp-content/plugins/theblaze_tips/submit.php">
+			<h6 class="last">Have a Tip?</h6>
+			<p class="failure error" style="display:none;margin-bottom:0.5em;">There was a problem submitting your tip.<br />Please try again later.</p>
+			<span class="scoop"><textarea rows="10" cols="40" class="" name="scoop">Give us a Scoop!</textarea></span>
+			<div id="tips-text" style="display:none; color: #EEE; font-size: 12px; line-height: 13px;">Please help us fight spam. Follow the instructions below to prove that you're a real person.</div> 
+			<div id="tips-captcha"></div>
+			<input type="submit" class="submit red button" value="Submit">
+		</form>
+	</div>
+                    </div>
+    			</div>
+			</div>
+			<div class="clear"></div>
+			<div id="copyright">
+				<div class="logo-image"><a href="#wrapper"><img src="/wp-content/themes/TheBlaze/images/theblaze_logo_small_2x.png" width="194" height="40" alt="TheBlaze" title="TheBlaze" /></a></div>
+				<p class="muted">All information &copy; 2015 TheBlaze Inc</p>
+			</div>
+		</div>
+		
+		
+	</div>
+	<div id="ad_block_counter" style="display:none"></div>
+	
+<link rel='stylesheet' id='theblaze_auth_modal_css-css'  href='http://www.theblaze.com/wp-content/plugins/theblaze_auth_modal/css/theblaze_auth_modal.css?ver=3.8.1' type='text/css' media='all' />
+<script type='text/javascript'>
+/* <![CDATA[ */
+var wpAjax = {"noPerm":"You do not have permission to do that.","broken":"An unidentified error has occurred."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://www.theblaze.com/wp-includes/js/wp-ajax-response.min.js?ver=3.8.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var roadblock = {"ajax_url":"http:\/\/www.theblaze.com\/wp-admin\/admin-ajax.php"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://www.theblaze.com/wp-content/themes/TheBlaze/js/roadblock.js?ver=3'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var tblzAuthModalAjax = {"ajaxUrl":"http:\/\/www.theblaze.com\/wp-admin\/admin-ajax.php"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://www.theblaze.com/wp-content/plugins/theblaze_auth_modal/js/theblaze_auth_modal.js?ver=3.8.1'></script>
+<!-- Sailthru Horizon ASYNC -->
+<script type="text/javascript">
+    (function() {
+        function loadHorizon() {
+            var s = document.createElement('script');
+            s.type = 'text/javascript';
+            s.async = true;
+            s.src = location.protocol + '//ak.sail-horizon.com/horizon/v1.js';
+            var x = document.getElementsByTagName('script')[0];
+            x.parentNode.insertBefore(s, x);
+        }
+        loadHorizon();
+        var oldOnLoad = window.onload;
+        window.onload = function() {
+            if (typeof oldOnLoad === 'function') {
+                oldOnLoad();
+            }
+            try {
+                Sailthru.setup({"domain":"horizon.theblaze.com"});
+            }
+            catch(err) {
+            }
+        };
+    })();
+</script>
+<!--OMNITURE TRACKING BEGIN-->
+<script src="http://download.premiereradio.net/track/s_code.js" type="text/javascript"></script>
+<script type="text/javascript">
+try {
+	s.pageName="other:She Got a Call From an Anti-Gun Group That Thought She Would Support Them \u2014 She Hit Record to Capture Their Reaction When She Said &#8216;No&#8217;";
+	s.prop1="";
+	s.prop2="";
+	s.prop3="other:She Got a Call From an Anti-Gun Group That Thought She Would Support Them \u2014 She Hit Record to Capture Their Reaction When She Said &#8216;No&#8217;";
+	s.prop4="923662";
+	s.prop5="website";
+	s.prop6="TheBlaze";
+	s.prop8="NEWSTALK" ;
+	s.prop10="other";
+	s.prop35="guest";
+	<!--
+	/************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
+	var s_code=s.t();if(s_code)document.write(s_code)
+}
+catch(err){}
+//-->
+</script>
+<!--OMNITURE TRACKING END -->
+
+<!-- Start Quantcast tag -->
+<script type="text/javascript">
+    window._qevents = window._qevents || [];
+    _qevents.push( { qacct:"p-71oNGphxIE1Is"} );
+</script>
+<noscript>
+<div style="display: none;"><img src="//pixel.quantserve.com/pixel/p-71oNGphxIE1Is.gif" height="1" width="1" alt="Quantcast"/></div>
+</noscript>
+<!-- End Quantcast tag -->
+    <!-- Begin Google Analytics Code -->
+    <script type="text/javascript">
+        _gaq.push(["_setCustomVar",2,"post_type","story",3]);
+        _gaq.push(["_trackPageview"]);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        //Google Analytics Outbound link tracking
+    </script>
+    <!-- End Google Analytics Code -->
+<script type="text/javascript">
+var _sf_async_config={uid:12704,domain:"theblaze.com"};
+_sf_async_config.sections="editorial,Stories";
+
+(function(){
+  function loadChartbeat() {
+    window._sf_endpt=(new Date()).getTime();
+    var e = document.createElement('script');
+    e.setAttribute('language', 'javascript');
+    e.setAttribute('type', 'text/javascript');
+    e.setAttribute('src',
+       (("https:" == document.location.protocol) ? "https://s3.amazonaws.com/" : "http://") +
+       "static.chartbeat.com/js/chartbeat_pub.js");
+    document.body.appendChild(e);
+  }
+  var oldonload = window.onload;
+  window.onload = (typeof window.onload != 'function') ?
+     loadChartbeat : function() { oldonload(); loadChartbeat(); };
+})();
+
+(function(d) {
+	var e = d.createElement('script');
+	e.src = d.location.protocol + '//bounceexchange.com/tag/815/i.js';
+	e.async = true;
+	d.getElementsByTagName("head")[0].appendChild(e);
+}(document));
+</script>
+<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+<script>
+	window._taboola = window._taboola || [];
+	_taboola.push({flush:true});
+</script> 
+
+<!-- Begin comScore Tag -->
+<script>
+var _comscore = _comscore || [];
+_comscore.push({ c1: "2", c2: "6036262" });
+(function() {
+var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
+s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
+el.parentNode.insertBefore(s, el);
+})();
+</script>
+<noscript>
+<img src="http://b.scorecardresearch.com/p?c1=2&c2=6036262&c4=http%3A%2F%2Fwww.theblaze.com%2Fstories%2F2015%2F02%2F02%2Fanti-gun-group-knew-part-of-her-tragic-story-and-called-to-see-if-shed-help-support-gun-control-listen-to-how-wrong-they-were%2F" />
+</noscript>
+<!-- End comScore Tag -->
+<div id="back_to_top" style="display:none;"><a href="#wrapper"><img src="/wp-content/themes/TheBlaze/images/back-to-top-arrow.png" alt="Back to Top" /></a></div>
+<script>$(document).ready(function(){        
+    $('#header-search-form').submit(function(e) { // run the submit function, pin an event to it
+        var s = $( this ).find("#s"); // find the #s, which is the search input id
+        if (!s.val()) { // if s has no value, proceed
+            e.preventDefault(); // prevent the default submission
+            alert("Your search is empty!"); // alert that the search is empty
+            $('#s').focus(); // focus on the search input
+        }
+    });
+});</script>
+<div id="lm-overlay" style="display: none;"></div>
+<div id="lm-container" style="display: none;">
+    <h5 class="lm-headline">You must be logged in to do that</h5>
+    <div class="lm-tab-container">
+        <a class="lm-tab-sign-in left" href="javascript:;">Sign In</a>
+        <a class="lm-tab-sign-up lm-tab-active right" href="javascript:;">Sign Up</a>
+    </div>
+    <div id="lm-sign-in-container" class="lm-container" style="display:none;">
+        <div class="lm-input-group">
+            <input type="text" class="lm-textbox" id="lm-sign-in-username" placeholder="Username">
+            <div class="lm-error"></div>
+        </div>
+        <div class="lm-input-group">
+            <input type="password" class="lm-textbox" id="lm-sign-in-password" placeholder="Password">
+            <div class="lm-error"></div>
+        </div>
+        <div class="clearfix">
+            <a href="http://www.theblaze.com/user/?action=lostpassword&redirect_to=http://www.theblaze.com/stories/2015/02/02/anti-gun-group-knew-part-of-her-tragic-story-and-called-to-see-if-shed-help-support-gun-control-listen-to-how-wrong-they-were/" target="_blank" class="lm-forgot-pass right">Forgot your password?</a>
+        </div>
+        <button id="lm-sign-in-submit" class="lm-button">Sign In</button>
+        <button class="lm-button lm-cancel">Cancel</button>
+    </div>
+    <div id="lm-sign-up-container" class="lm-container">
+        <div class="lm-input-group">
+            <input type="text" class="lm-textbox" id="lm-sign-up-username" placeholder="Username">
+            <div class="lm-disclaimer">Displayed publicly on comments<br />Once chosen, this cannot be changed</div>
+            <div class="lm-error"></div>
+        </div>
+        <div class="lm-input-group">
+            <input type="password" class="lm-textbox" id="lm-sign-up-password" placeholder="Password">
+            <div class="lm-error"></div>
+        </div>
+        <div class="lm-input-group">
+            <input type="password" class="lm-textbox" id="lm-sign-up-password-confirm" placeholder="Confirm Password">
+            <div class="lm-error"></div>
+        </div>
+        <div class="lm-input-group">
+            <input type="text" class="lm-textbox" id="lm-sign-up-email" placeholder="Email">
+            <div class="lm-error"></div>
+        </div>
+        <div class="lm-input-group">
+            <input type="text" class="lm-textbox" id="lm-sign-up-zip" placeholder="Postal Code">
+            <div class="lm-error"></div>
+        </div>
+        <h6 class="lm-headline lm-email">Email subscriptions:</h6>
+        <input type="checkbox" id="lm-checkbox-firewire" class="lm-checkbox" checked="checked">
+        <label class="lm-checkbox-label" for="lm-checkbox-firewire">FireWire from TheBlaze</label>
+        <input type="checkbox" id="lm-checkbox-marketplace" class="lm-checkbox" checked="checked">
+        <label class="lm-checkbox-label" for="lm-checkbox-marketplace">TheBlaze Marketplace</label>
+        <input type="checkbox" id="lm-checkbox-gb" class="lm-checkbox" checked="checked">
+        <label class="lm-checkbox-label" for="lm-checkbox-gb">News and offers from Glenn Beck brands and sponsors</label>
+        <div class="lm-input-group lm-tou">
+            <input type="checkbox" id="lm-checkbox-terms" class="lm-checkbox">
+            <label class="lm-checkbox-label" for="lm-checkbox-terms">I agree to the <a href="/terms-of-use/" target="terms_of_use">Terms of Use</a></label>
+            <div class="lm-tou-error"></div>
+        </div>
+        <input id="lm-sign-up-src" type="hidden" value="theblaze-modalform">
+        <button id="lm-sign-up-submit" class="lm-button">Sign Up</button>
+        <button class="lm-button lm-cancel">Cancel</button>
+    </div>
+</div>
+
+
+
+
+
+</body>
+</html>

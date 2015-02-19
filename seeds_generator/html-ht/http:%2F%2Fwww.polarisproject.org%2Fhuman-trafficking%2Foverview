@@ -1,0 +1,594 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" dir="ltr">
+<head>
+
+  <base href="http://www.polarisproject.org/human-trafficking/overview" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="Polaris, trafficking, human trafficking, sex trafficking, modern slavery, child slavery, human trafficing, child trafficking, modern day slavery, slavery today, trafficking persons, human smuggling, human trafficking us, human traficking, human trafficking statistics, trafficking human beings, human trafficking united states, human trafficking victims, about human trafficking, Stop human trafficking, labor trafficking, human trafficking jobs, domestic trafficking, trafficking hotline, human trafficking charity, human trafficking hotline, human trafficking facts, anti trafficking" />
+  <meta name="title" content="Human Trafficking" />
+  <meta name="author" content="Administrator" />
+  <meta name="description" content=" @import 'http://www. polarisproject. org/modules/mod_sbxss/tmpl/sbxss/css/template_css. php?" />
+  <title>Human Trafficking | Polaris | Combating Human Trafficking and Modern-day Slavery</title>
+  <link href="/templates/polaris/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" href="http://www.polarisproject.org/plugins/system/jceutilities/css/jceutilities-200.css" type="text/css" />
+  <link rel="stylesheet" href="http://www.polarisproject.org/plugins/system/jceutilities/tmpl/standard/css/style.css" type="text/css" />
+  <script type="text/javascript" src="http://www.polarisproject.org/plugins/system/jceutilities/js/embed.js"></script>
+  <script type="text/javascript" src="http://www.polarisproject.org/plugins/system/jceutilities/js/jquery-126.js"></script>
+  <script type="text/javascript" src="http://www.polarisproject.org/plugins/system/jceutilities/js/jceutilities-200.js"></script>
+  <script type="text/javascript" src="/media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="/media/system/js/caption.js"></script>
+  <script type="text/javascript" src="http://www.polarisproject.org/modules/mod_sbxss/tmpl/sbxss/js/class.noobSlide.js"></script>
+  <script type="text/javascript">
+	var jcexhtmlembed=1;jQuery(document).ready(function(){jceutilities({'popup':{'legacy':0,'convert':0,'resize':1,'icons':1,'overlay':1,'overlayopacity':0.8,'overlaycolor':"#000000",'fadespeed':500,'scalespeed':500,'template':"standard",'templatecustom':"",'templatepath':"plugins/system/jceutilities/tmpl"},'tootlip':{'classname':"tooltip",'opacity':1,'speed':150,'position':"br",'offsets':"{'x': 16, 'y': 16}"},'imgpath':"plugins/system/jceutilities/img",'pngfix':0,'wmode':0});});	function toggleBtn() {
+		var playBtn = document.getElementById('sbxss-navbtn-play');
+		var stopBtn = document.getElementById('sbxss-navbtn-pause');
+		playBtn.style.display = (playBtn.style.display != 'none' ? 'none' : 'block' );
+		stopBtn.style.display = (stopBtn.style.display != 'none' ? 'none' : 'block' );
+	}
+
+	window.addEvent('domready',function(){
+		var sbxss = new noobSlide({
+			box: $('sbxss-slide-cntr3'),
+			slide: '.sbxss-slide-wrap',
+			transition: 'fade',
+			autoPlay: true,
+			duration: 700,
+			interval: 5000,
+			width:    300,
+			height:   260,
+			nav: $('sbxss-controls'),
+			handles: '.sbxss-page',
+			onWalk: function(currentItem,currentHandle){
+				this.handles.removeClass('sbxss-pageActive');
+				currentHandle.addClass('sbxss-pageActive');
+			},
+			buttons: {
+				next: $('sbxss-navbtn-next'),
+				play: $('sbxss-navbtn-play'),
+				stop: $('sbxss-navbtn-pause'),
+				previous: $('sbxss-navbtn-prev')
+			}
+		});
+	});	JXLang={INVALID_NAME_TXT:"Comments_Comment_Name_Invalid",INVALID_EMAIL_TXT:"Comments_Comment_Email_Invalid",INVALID_BODY_TXT:"Comments_Comment_Body_Invalid",BOLD:"Comments_Bold",ITALIC:"Comments_Italic",UNDERLINE:"Comments_Underline",STRIKETHROUGH:"Comments_Strikethrough",QUOTE:"Comments_Quote",IMAGE:"Comments_Image",ENTER_IMAGE:"Comments_Enter_Image",ENTER_LINK:"Comments_Enter_Link",LINK:"Comments_Link",LINK_TEXT:"Comments_Link_Text",ENTER_LANG:"Comments_Enter_Lang",CODE:"Comments_Code"};
+  </script>
+
+
+<!-- Load Mootools and other System js -->
+
+
+<!-- Load Stylesheets -->
+<link rel="stylesheet" href="http://www.polarisproject.org/templates/system/css/reset.css" type="text/css" />
+<link rel="stylesheet" href="http://www.polarisproject.org/templates/system/css/soapbox.css" type="text/css" />
+<link rel="stylesheet" href="http://www.polarisproject.org/templates/system/css/soapboxTypography.css" type="text/css" />
+<link rel="stylesheet" href="http://www.polarisproject.org/templates/polaris/css/style.css" type="text/css" />
+<link rel="stylesheet" href="http://www.polarisproject.org/templates/polaris/css/typography.css" type="text/css" />
+
+<!--[if IE 7]>
+	<link href="http://www.polarisproject.org/templates/polaris/css/ie7.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+
+<!--Load Favicon -->
+<link href="http://www.polarisproject.org/templates/polaris/favicon.ico" rel="icon"/>
+<link href="http://www.polarisproject.org/templates/polaris/favicon.ico" rel="shortcut icon"/>
+<link href="http://www.polarisproject.org/templates/polaris/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+<!--Load SBX Scripts -->
+<script language="javascript" type="text/javascript" src="http://www.polarisproject.org/templates/system/js/sbx.script.js"></script>
+
+
+
+
+<!-- Get root and 2nd level menu id to change to red theme -->
+
+
+<!-- The NHTRC RED MENU active -->
+<!-- Human Trafficking RED MENU active -->
+<style>
+.menu-hmR li.item270			{ background: url(http://www.polarisproject.org/templates/polaris/images/hm-arrowRed.png) no-repeat center 40px; }
+.menu-hmR li.item270 a			{ font-weight: bold; }
+</style>
+<!-- Report a Tip RED MENU active -->
+<!-- Access Training RED MENU active -->
+<!-- Resources RED MENU active -->
+<!-- Map RED MENU active -->
+<!-- Get Involved RED MENU active -->
+<!-- Contact RED MENU active -->
+
+
+
+
+<!-- Load SBX IE6 -->
+<!--[if lte IE 6]>
+<link href="http://www.polarisproject.org/templates/polaris/css/ie6.php" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+var siteurl = 'http://www.polarisproject.org/';
+window.addEvent ('load', makeTransBG);
+function makeTransBG() {
+makeTransBg($$('img'));
+}
+</script>
+<![endif]-->
+
+
+
+<script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(
+	['_setAccount', 'UA-4610897-1'],
+	['_setSessionCookieTimeout', '3600000'],
+	['_setDomain', 'auto'],
+	['_setCustomVar', 1, 'User Type', 'Anonymous', 2],
+	['_setCustomVar', 2, 'Username', 'Anonymous', 2],
+	['_trackPageview']
+);
+
+(function() {
+	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+
+window.addEvent('domready', function() {
+	if (_gaq) {
+	$$('a').each(function(el) {
+		el.addEvent('click', function() {
+				var port = -1 == el.host.lastIndexOf(":") ? el.host.length : el.host.lastIndexOf(":");
+				var host = el.host.slice(0, port)
+				if (el.protocol == 'mailto:') {
+					var label = (el.title) ? el.title : el.href.replace(/mailto:/i, '');
+					_gaq.push(['_trackEvent', 'Email', 'Contact', label]);
+				} else if (host != document.location.host) {
+					var label = (el.title) ? el.title : el.href;
+					_gaq.push(['_trackEvent', 'External', 'Exit', label]);
+				}
+
+				var ext   = el.pathname.substr(el.pathname.lastIndexOf(".")+1, el.pathname.length);
+				var label = (el.title) ? el.title : el.pathname.replace(/^\//,'');
+				if (ext.match(/(bmp|csv|doc|epg|gif|ico|jpg|odg|odp|ods|odt|pdf|png|ppt|swf|txt|xcf|zip|gz|tar|exe)/i)) {
+					_gaq.push(['_trackEvent', 'Download', ext, label]);
+				}
+			}.bind(this));
+		});
+	}
+});
+
+window.addEvent('domready', function() {
+	if(_gaq) {
+		$$('a.modal').each(function(el) {
+			el.addEvent('click', function() {
+				var label = (el.title) ? el.title : el.pathname;
+				_gaq.push(['_trackEvent', 'Pop-Up', 'View', label]);
+			}.bind(this));
+		});
+	}
+});
+</script>
+</head>
+
+<body id="bd" class="ff-georgia bg-fr  mm31 ms54 mss mc54 nhtrc">
+<a name="Top" id="Top"></a>
+
+<div id="sbx-wrapper" class="fs5">
+
+	<div id="sidebar">
+		<div id="sidebar2">
+			<div id="sidebar3"><a id="exit" href="http://www.google.com"><span>Quick Exit</span></a> <a id="help" href="/what-we-do/national-human-trafficking-hotline/398-get-help"><span>Get Help</span></a></div>
+		</div>
+	</div>
+
+	<!-- !BEGIN: HEADER -->
+	<div id="sbx-headerwrap">
+		<div id="sbx-header" class="clearfix">
+			<a id="logo" href="/index.php" title="Home"><span>Polaris Project</span></a>
+			<a id="hotlineLink" href="http://traffickingresourcecenter.org/" /><img id="hotline" src="http://www.polarisproject.org/templates/polaris/images/HotlineWidget.jpg" alt="Trafficking Hotline" /></a>
+				<div class="sbxMod sbxModTable-gm mod-global-1 mod-global-first mod-global-last" id="Mod48">
+				<div class="sbxMod-content"><ul class="menu-gm" ><li class=" item168  first-item  "  ><a href="http://act.polarisproject.org/p/salsa/web/common/public/signup?signup_page_KEY=8055" class="mainlevel-gm" id="menulink_1-gm" title="Sign Up"><span>Sign Up</span></a></li><li class=" item169    "  ><a href="/blog" class="mainlevel-gm" id="menulink_2-gm" title="Blog"><span>Blog</span></a></li><li class=" item170    "  ><a href="/search" class="mainlevel-gm" id="menulink_3-gm" title="Search"><span>Search</span></a></li><li class=" item171   last-item "  ><a href="https://org2.salsalabs.com/o/5417/profile/" class="mainlevel-gm" id="menulink_4-gm" title="Login"><span>Login</span></a></li></ul></div>
+	</div>
+	
+		</div>
+		<div id="sbx-mainnav" class="clearfix">
+				<div class="sbxMod sbxModTable-mm mod-hornav-1 mod-hornav-first mod-hornav-last" id="Mod32">
+				<div class="sbxMod-content"><script type="text/javascript" language="JavaScript" src="/templates/system/js/ja.cssmenu.js"></script> <ul class="menuhorz clearfix" id="ja-cssmenu" ><li class=" havechild item4  first-item  " > <a id="menu4" class="menu-item4" href="/about-us/overview" title="About"  > <span class="menu-title">About</span> </a> <ul  ><li class=" havesubchild item244  first-item  " > <a id="menu244" class="menu-item244" href="/about-us/overview" title="Overview"  > <span class="menu-title">Overview</span> </a>  </li><li class=" havesubchild item12    " > <a id="menu12" class="menu-item12" href="/about-us/our-team/staff" title="Our Team"  > <span class="menu-title">Our Team</span> </a>  </li><li class=" havesubchild item13    " > <a id="menu13" class="menu-item13" href="/about-us/careers" title="Careers"  > <span class="menu-title">Careers</span> </a>  </li><li class=" havesubchild item38    " > <a id="menu38" class="menu-item38" href="/about-us/fellowship-program" title="Fellowship Program"  > <span class="menu-title">Fellowship Program</span> </a>  </li><li class=" havesubchild item14    " > <a id="menu14" class="menu-item14" href="/about-us/supporters/supporters" title="Supporters"  > <span class="menu-title">Supporters</span> </a>  </li><li class=" havesubchild item15    " > <a id="menu15" class="menu-item15" href="/about-us/financial-information" title="Financial Information"  > <span class="menu-title">Financial Information</span> </a>  </li><li class=" havesubchild item354    " > <a id="menu354" class="menu-item354" href="/about-us/successes" title="Successes"  > <span class="menu-title">Successes</span> </a>  </li><li class=" item16   last-item " > <a id="menu16" class="menu-item16" href="/about-us/contact-us" title="Contact Us"  > <span class="menu-title">Contact Us</span> </a>  </li></ul> </li><li class=" havechild item5    " > <a id="menu5" class="menu-item5" href="/what-we-do" title="What We Do"  > <span class="menu-title">What We Do</span> </a> <ul  ><li class=" item341  first-item  " > <a id="menu341" class="menu-item341" href="/what-we-do" title="Overview"  > <span class="menu-title">Overview</span> </a>  </li><li class=" havesubchild item33    " > <a id="menu33" class="menu-item33" href="/what-we-do/national-human-trafficking-hotline/the-nhtrc/overview" title="NHTRC & BeFree Hotlines"  > <span class="menu-title">NHTRC & BeFree Hotlines</span> </a>  </li><li class=" havesubchild item34    " > <a id="menu34" class="menu-item34" href="/what-we-do/policy-advocacy" title="Policy Advocacy"  > <span class="menu-title">Policy Advocacy</span> </a>  </li><li class=" havesubchild item35    " > <a id="menu35" class="menu-item35" href="/what-we-do/client-services" title="Client Services"  > <span class="menu-title">Client Services</span> </a>  </li><li class=" havesubchild item36    " > <a id="menu36" class="menu-item36" href="/what-we-do/advisory-services" title="Advisory Services"  > <span class="menu-title">Advisory Services</span> </a>  </li><li class=" item401    " > <a id="menu401" class="menu-item401" href="/what-we-do/global-programs" title="Global Programs"  > <span class="menu-title">Global Programs</span> </a>  </li><li class=" item546   last-item " > <a id="menu546" class="menu-item546" href="/what-we-do/data-analysis-program" title="Data Analysis Program"  > <span class="menu-title">Data Analysis Program</span> </a>  </li></ul> </li><li class=" havechild active item31    " > <a id="menu31" class="menu-item31 active" href="/human-trafficking/overview" title="Human Trafficking"  > <span class="menu-title">Human Trafficking</span> </a> <ul  ><li class=" havesubchild active item54  first-item  " > <a id="menu54" class="menu-item54 active" href="/human-trafficking/overview" title="Overview"  > <span class="menu-title">Overview</span> </a>  </li><li class=" item55    " > <a id="menu55" class="menu-item55" href="/human-trafficking/sex-trafficking-in-the-us" title="Sex Trafficking in the U.S."  > <span class="menu-title">Sex Trafficking in the U.S.</span> </a>  </li><li class=" item56    " > <a id="menu56" class="menu-item56" href="/human-trafficking/labor-trafficking-in-the-us" title="Labor Trafficking in the U.S."  > <span class="menu-title">Labor Trafficking in the U.S.</span> </a>  </li><li class=" item57    " > <a id="menu57" class="menu-item57" href="/human-trafficking/recognizing-the-signs" title="Recognizing the Signs"  > <span class="menu-title">Recognizing the Signs</span> </a>  </li><li class=" item58   last-item " > <a id="menu58" class="menu-item58" href="/human-trafficking/international-trafficking" title="International Trafficking"  > <span class="menu-title">International Trafficking</span> </a>  </li></ul> </li><li class=" havechild item6    " > <a id="menu6" class="menu-item6" href="http://www.polarisproject.org/take-action/action-center" title="Take Action"  > <span class="menu-title">Take Action</span> </a> <ul  ><li class=" item441  first-item  " > <a id="menu441" class="menu-item441" href="http://hq.salsalabs.com/o/5417/p/dia/action3/common/public/index.sjs?action_KEY=19073" title="Call on Congress Today"  > <span class="menu-title">Call on Congress Today</span> </a>  </li><li class=" havesubchild item413    " > <a id="menu413" class="menu-item413" href="/take-action/action-center" title="Action Center"  > <span class="menu-title">Action Center</span> </a>  </li><li class=" havesubchild item124    " > <a id="menu124" class="menu-item124" href="/take-action/raise-awareness" title="Raise Awareness"  > <span class="menu-title">Raise Awareness</span> </a>  </li><li class=" item127    " > <a id="menu127" class="menu-item127" href="/what-we-do/national-human-trafficking-hotline/report-a-tip" title="Report Human Trafficking"  > <span class="menu-title">Report Human Trafficking</span> </a>  </li><li class=" havesubchild item125    " > <a id="menu125" class="menu-item125" href="/take-action/fundraise" title="Fundraise"  > <span class="menu-title">Fundraise</span> </a>  </li><li class=" item496   last-item " > <a id="menu496" class="menu-item496" href="/take-action/365-days" title="365 Days"  > <span class="menu-title">365 Days</span> </a>  </li></ul> </li><li class=" havechild item7    " > <a id="menu7" class="menu-item7" href="/media-center/news-and-press/press-releases" title="Media"  > <span class="menu-title">Media</span> </a> <ul  ><li class=" item317  first-item  " > <a id="menu317" class="menu-item317" href="/media-center/news-and-press/press-releases" title="Press Releases"  > <span class="menu-title">Press Releases</span> </a>  </li><li class=" item143    " > <a id="menu143" class="menu-item143" href="/media-center/polaris-project-in-the-news" title="Polaris in the News"  > <span class="menu-title">Polaris in the News</span> </a>  </li><li class=" havesubchild item140    " > <a id="menu140" class="menu-item140" href="/media-center/news-and-press" title="Media Kit"  > <span class="menu-title">Media Kit</span> </a>  </li><li class=" item243   last-item " > <a id="menu243" class="menu-item243" href="/blog" title="Blog"  > <span class="menu-title">Blog</span> </a>  </li></ul> </li><li class=" item534    " > <a id="menu534" class="menu-item534" href="http://traffickingresourcecenter.org" title="NHTRC"  > <span class="menu-title">NHTRC</span> </a>  </li><li class=" havechild item8   last-item " > <a id="menu8" class="menu-item8" href="https://org2.salsalabs.com/o/5417/donate_page/north-star2015" title="Give"  > <span class="menu-title">Give</span> </a> <ul  ><li class=" item408  first-item  " > <a id="menu408" class="menu-item408" href="/give/director-of-development" title="Director of Development"  > <span class="menu-title">Director of Development</span> </a>  </li><li class=" item405   last-item " > <a id="menu405" class="menu-item405" href="/give/we-apologize" title="We Apologize"  > <span class="menu-title">We Apologize</span> </a>  </li></ul> </li></ul></div>
+	</div>
+	
+		</div>
+	</div>
+	<!-- !END: HEADER -->
+
+	<!-- !BEGIN: BODY -->
+	<div id="sbx-containerwrap-fr" class="sbx-cw">
+		<div id="sbx-containerwrap2">
+			
+			<div id="sbx-container">
+				
+									<div id="topnav" class="clearfix"></div>
+								
+								<div id="sbx-pathway">
+					
+				</div>
+							
+				<div id="sbx-container2" class="clearfix">
+				
+								
+					<div id="sbx-leftCol">
+						<div id="sbx-leftCol-inner">	<div class="sbxMod sbxModTable-sm mod-left-1 mod-left-first mod-left-last" id="Mod77">
+				<div class="sbxMod-content"><ul class="menu" ><li class="parent  active item31  first-item last-item "  ><a href="/human-trafficking/overview" class="mainlevel_active" id="menulink_1" title="Human Trafficking"><span>Human Trafficking</span></a><ul  ><li class="parent  active item54  first-item  " id="current" ><a href="/human-trafficking/overview" class="sublevel_current" id="menulink_1_1" title="Overview"><span>Overview</span></a><ul  ><li class=" item538  first-item  "  ><a href="/human-trafficking/overview/befree-texting-stats" class="sublevel" id="menulink_1_1_1" title="BeFree Texting Statistics"><span>BeFree Texting Statistics</span></a></li><li class=" item547   last-item "  ><a href="http://www.polarisproject.org/2014statistics" class="sublevel" id="menulink_1_1_2" title="2014 Statistics"><span>2014 Statistics</span></a></li></ul></li><li class=" item55    "  ><a href="/human-trafficking/sex-trafficking-in-the-us" class="sublevel" id="menulink_1_2" title="Sex Trafficking in the U.S."><span>Sex Trafficking in the U.S.</span></a></li><li class=" item56    "  ><a href="/human-trafficking/labor-trafficking-in-the-us" class="sublevel" id="menulink_1_3" title="Labor Trafficking in the U.S."><span>Labor Trafficking in the U.S.</span></a></li><li class=" item57    "  ><a href="/human-trafficking/recognizing-the-signs" class="sublevel" id="menulink_1_4" title="Recognizing the Signs"><span>Recognizing the Signs</span></a></li><li class=" item58   last-item "  ><a href="/human-trafficking/international-trafficking" class="sublevel" id="menulink_1_5" title="International Trafficking"><span>International Trafficking</span></a></li></ul></li></ul></div>
+	</div>
+	</div>
+						<div class="clear">&nbsp;</div>
+					</div>
+					
+					<div id="sbx-mainbody-fr">
+						<div id="sbx-content">
+							
+							
+					
+								<div class="sbxMod sbxModTable-addThis mod-user1-1 mod-user1-first mod-user1-last" id="Mod61">
+				<div class="sbxMod-content"><!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style "><a class="addthis_button_compact" href="http://www.addthis.com/bookmark.php?v=250&amp;username=xa-4cff9b36503ccbe1">Share</a></div>
+<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=xa-4d2b5bc40f9f250f"></script>
+<!-- AddThis Button END --></div>
+	</div>
+	
+							
+								
+							
+
+<div id="page" class="com_content contentArticle article-layDefault ">
+
+	
+		<div class="article-title clearfix">
+	     	     <h2 class="contentheading chBtns-text">
+	     		     		     		Human Trafficking	     		     </h2>
+	     	     	     <div class="buttonheading bhBtns-text">
+	     		     			     			<span class="btnEmail"><a href="/component/mailto/?tmpl=component&amp;link=aHR0cDovL3d3dy5wb2xhcmlzcHJvamVjdC5vcmcvaHVtYW4tdHJhZmZpY2tpbmcvb3ZlcnZpZXc%3D" title="E-mail" onclick="window.open(this.href,'win2','width=400,height=300,menubar=yes,resizable=yes'); return false;">E-mail</a></span>
+	     		
+	     			     			<span class="btnPrint"><a href="/human-trafficking/overview?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow">Print</a></span>
+	     		
+	     			     		     </div>
+	     
+	</div>
+	
+	<div class="page-content">
+
+		
+		
+		
+		<div class="article-content">
+						<hr />
+<p>	<div class="sbxMod sbxModTable-intSBXSS right mod-- mod--last" id="Mod132">
+				<div class="sbxMod-content"><style>@import "http://www.polarisproject.org/modules/mod_sbxss/tmpl/sbxss/css/template_css.php?w=300&h=260&sw=";</style>
+<div class="sbx-mod">
+	<div class="mod mod-sbxss">
+
+		<div id="sbxss" class="sbxss sbxss-default">
+			<div id="sbxss-cntr" class="sbxss-cntr">
+
+				<div id="sbxss-slide-cntr" class="sbxss-slide-cntr">
+					<div id="sbxss-slide-cntr2" class="sbxss-slide-cntr2">
+						<div id="sbxss-slide-cntr3" class="sbxss-slide-cntr3">
+
+														<div id="sbxss-slide-1" class="sbxss-slide-wrap ">
+								<div class="sbxss-slide">
+                                                                        									<a  href="/component/content/" class="sbxss-img">
+										<span style="background: url('/storage/images/slides/pimparm300.jpg') no-repeat;">
+											<img src="/storage/images/slides/pimparm300.jpg" />
+										</span>
+									</a>
+
+																		<div class="sbxss-content-wrap contentposBL" >
+										<div class="sbxss-content">
+																																	<h3>Pimps use violence and coercion to commercially sexually exploit young women and girls.</h3>
+																																											</div>
+									</div>
+									
+								</div>
+							</div>
+														<div id="sbxss-slide-2" class="sbxss-slide-wrap ">
+								<div class="sbxss-slide">
+                                                                        									<a  href="/component/content/" class="sbxss-img">
+										<span style="background: url('/storage/images/slides/applepicker_400.jpg') no-repeat;">
+											<img src="/storage/images/slides/applepicker_400.jpg" />
+										</span>
+									</a>
+
+																		<div class="sbxss-content-wrap contentposBL" >
+										<div class="sbxss-content">
+																																	<h3>Individuals may be forced to work in highly exploitative conditions with little to no pay.</h3>
+																																											</div>
+									</div>
+									
+								</div>
+							</div>
+														<div id="sbxss-slide-3" class="sbxss-slide-wrap ">
+								<div class="sbxss-slide">
+                                                                        									<a  href="/component/content/" class="sbxss-img">
+										<span style="background: url('/storage/images/slides/cold on street.png') no-repeat;">
+											<img src="/storage/images/slides/cold on street.png" />
+										</span>
+									</a>
+
+																		<div class="sbxss-content-wrap contentposBL" >
+										<div class="sbxss-content">
+																																	<h3>Individuals are forced to prostitute on the streets and in hotels in order to meet nightly quotas and turn money over to their traffickers.</h3>
+																																											</div>
+									</div>
+									
+								</div>
+							</div>
+														<div id="sbxss-slide-4" class="sbxss-slide-wrap ">
+								<div class="sbxss-slide">
+                                                                        									<a  href="/component/content/" class="sbxss-img">
+										<span style="background: url('/storage/images/slides/AM-1-trucks.jpg') no-repeat;">
+											<img src="/storage/images/slides/AM-1-trucks.jpg" />
+										</span>
+									</a>
+
+																		<div class="sbxss-content-wrap contentposBL" >
+										<div class="sbxss-content">
+																																	<h3>Young girls are forced to sell sex by knocking on cab doors at truck stops.</h3>
+																																											</div>
+									</div>
+									
+								</div>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+
+				<div id="sbxss-controls" class="sbxss-controls sbxss-ctrlDEF clearfix" style="display:none">
+
+				
+				     <div class="sbxss-pagination" style="display:none">
+				     	<ul class="paging">
+				     						     		<li class="sbxss-pagebtn">
+				     			<a class="sbxss-page sbxss-pageActive" href="javascript:void(0);" title="pimp arm 300 HT">
+                                    				     				    <span>1</span>
+                                    				     			</a>
+				     		</li>
+				     						     		<li class="sbxss-pagebtn">
+				     			<a class="sbxss-page sbxss-pageOff" href="javascript:void(0);" title="apple picker 300 HT">
+                                    				     				    <span>2</span>
+                                    				     			</a>
+				     		</li>
+				     						     		<li class="sbxss-pagebtn">
+				     			<a class="sbxss-page sbxss-pageOff" href="javascript:void(0);" title="cold on street ST">
+                                    				     				    <span>3</span>
+                                    				     			</a>
+				     		</li>
+				     						     		<li class="sbxss-pagebtn">
+				     			<a class="sbxss-page sbxss-pageOff" href="javascript:void(0);" title="truck stop 300 HT">
+                                    				     				    <span>4</span>
+                                    				     			</a>
+				     		</li>
+				     						     	</ul>
+				     </div>
+				     <div class="sbxss-navigation" style="display:none">
+				     	<ul class="nav">
+				     		<li id="sbxss-navbtn-liPrev" class="sbxss-navbtn sbxss-navbtn-liPrev"><a title="Previous" href="javascript:void(0);" id="sbxss-navbtn-prev" class="sbxss-nav sbxss-navbtn-prev"><span>«</span></a></li>
+				     		<li id="sbxss-navbtn-liPlay" class="sbxss-navbtn sbxss-navbtn-liPlay" style="display:none"><a title="Play Slide" href="javascript:void(0);" id="sbxss-navbtn-play" class="sbxss-nav sbxss-navbtn-playPause sbxss-navbtn-play" style="display:none" onClick="toggleBtn();"><span>Play</span></a></li>
+				     		<li id="sbxss-navbtn-liPause" class="sbxss-navbtn sbxss-navbtn-liPause" style="display:none"><a title="Pause Slide" href="javascript:void(0);" id="sbxss-navbtn-pause" class="sbxss-nav sbxss-navbtn-playPause sbxss-navbtn-pause" style="display:" onClick="toggleBtn();"><span>Pause</span></a></li>
+				     		<li id="sbxss-navbtn-liNext" class="sbxss-navbtn sbxss-navbtn-liNext"><a title="Next" href="javascript:void(0);" id="sbxss-navbtn-next" class="sbxss-nav sbxss-navbtn-next"><span>»</span></a></li>
+				     	</ul>
+				     </div>
+
+				
+				</div>
+
+				<div class="clear"></div>
+
+			</div>
+		</div>
+
+	</div>
+</div>
+</div>
+	</div>
+	</p>
+<p><strong>Human trafficking is a form of modern slavery where people profit from the control and exploitation of others.</strong></p>
+<p>Although slavery is commonly thought to be a thing of the past, human trafficking still exists today throughout the United States and globally when traffickers use force, fraud, or coercion to control other people for the purpose of engaging in commercial sex or forcing them to provide labor services against their will. Traffickers use violence, threats, deception, debt bondage, and other manipulative tactics to trap victims in horrific situations every day in America. All trafficking victims share one essential experience – the loss of freedom.</p>
+<p>In the United States, sex trafficking commonly occurs in online escort services, residential brothels, brothels disguised as massage businesses or spas, and in street prostitution. Labor trafficking has been found in domestic servitude situations, as well as sales crews, large farms, restaurants, carnivals, and more.</p>
+<p>There are two primary factors driving the spread of human trafficking: high profits and low risk. Like drug and arms trafficking, human trafficking is a market-driven criminal industry that is based on the principles of supply and demand. Every year, traffickers generate billions of dollars in profits by victimizing millions of people around the world, including here in the United States.</p>
+<p>Learn more about human trafficking at&nbsp;<a href="http://www.traffickingresourcecenter.org">www.traffickingresourcecenter.org</a>.</p>
+<hr />
+<h4>Key statistics</h4>
+<ul>
+<li>The International Labor Organization estimates that there are&nbsp;<a href="http://www.ilo.org/global/about-the-ilo/newsroom/news/WCMS_182109/lang--en/index.htm" target="_blank">20.9 million victims of human trafficking globally</a>, including 5.5 million children. 55% are women and girls.</li>
+<li>In 2013, the&nbsp;<a href="http://www.traffickingresourcecenter.org/" target="_blank">National Human Trafficking Resource Center</a>&nbsp;hotline, operated by Polaris, received multiple reports of human trafficking cases in all 50 states and D.C.&nbsp;<a href="http://www.traffickingresourcecenter.org/material-type/statistics" target="_blank">Find more hotline statistics here</a>.</li>
+<li>The International Labor Organization estimates that forced labor and human trafficking is a&nbsp;<a href="http://www.ilo.org/global/about-the-ilo/newsroom/news/WCMS_243201/lang--en/index.htm" target="_blank">$150 billion industry worldwide</a>.</li>
+<li>There is no official estimate of the total number of human trafficking victims in the U.S. With 100,000 children estimated to be in the sex trade in the United States each year, it is clear that the total number of victims nationally reaches into the hundreds of thousands when estimates of both adults and minors and sex trafficking and labor trafficking are aggregated.[MF2]</li>
+<li>The number of human trafficking cases that Polaris learns about increases every year. <a href="/2014statistics">Read our 2014 statistics report here</a>.</li>
+</ul>
+<hr />
+<h4>THE VICTIMS</h4>
+<p>Victims are frequently lured by false promises of a lucrative job, stability, education, or a loving relationship. In the U.S., victims can be men or women, adults or children, foreign nationals or U.S. citizens. While they share the trait of vulnerability, victims have diverse ethnic and socio-economic backgrounds, varied levels of education, and may be documented or undocumented.</p>
+<p>As defined under U.S. law, victims of human trafficking can be divided into three populations:</p>
+<ol>
+<li>Children under age 18 induced into commercial sex.</li>
+<li>Adults aged 18 or over induced into commercial sex through force, fraud, or coercion.</li>
+<li>Children and adults induced to perform labor or services through force, fraud, or coercion.</li>
+</ol>
+<p>While human trafficking spans all demographics, there are some circumstances or vulnerabilities that lead to a higher susceptibility to victimization and human trafficking. Runaway and homeless youth, victims of domestic violence, sexual assault, war or conflict, or social discrimination are frequently targeted by traffickers. Foreign nationals who have paid large recruitment and travel fees to labor recruiters, often become highly indebted to the recruiters and traffickers. Traffickers control and manipulate these individuals by leveraging the non-portability of many work visas as well as the victims’ lack of familiarity with surroundings, laws and rights, language fluency, and cultural understanding.</p>
+<p>Victims face many challenges in accessing help. Their traffickers may confiscate their identification and money. They may not speak English. They may not know where they are, because they have been moved frequently. They are often not allowed to communicate with family or friends. And they may have trouble trusting others, due to their traffickers’ manipulation and control tactics.</p>
+<hr />
+<h4>THE TRAFFICKERS</h4>
+<p>Traffickers lure and ensnare people into forced labor and sex trafficking by manipulating and exploiting their vulnerabilities. Human traffickers recruit, transport, harbor, obtain, and exploit victims – often using force, threats, lies, or other psychological coercion. Traffickers promise a high-paying job, a loving relationship, or new and exciting opportunities. In other cases, they may kidnap victims or use physical violence to control them.</p>
+<p>Often the traffickers and their victims share the same national, ethnic, or cultural background, allowing the trafficker to better understand and exploit the vulnerabilities of their victims.</p>
+<p>Traffickers can be lone individuals or extensive criminal networks. Pimps, gangs, family members, labor brokers, employers of domestic servants, small business owners, and large factory owners have all been found guilty of human trafficking. Their common thread is a willingness to exploit other human beings for profit.</p>		</div>
+
+		
+		
+		<span class="article_separator">&nbsp;</span>
+
+	</div>
+
+</div>
+								
+							
+							
+														
+							<div class="clear">&nbsp;</div>
+							
+						</div>
+					</div>
+				
+									
+					<div class="clear">&nbsp;</div>	
+				
+				</div>
+			</div>
+			
+						<div id="sbx-container-bot">
+				<div id="sbx-container-bot2">
+						<div class="sbxMod sbxModTable-cb cbBtn mod-bottom-1 mod-bottom-first" id="Mod56">
+				<div class="sbxMod-content"><img id="Image-Maps_5201101172052315" src="/storage/NHTRC-module.png" alt="NHTRC-module" width="250" height="180" usemap="#Image-Maps_5201101172052315" /> <map id="_Image-Maps_5201101172052315" name="Image-Maps_5201101172052315"> 
+<area title="National Human Trafficking Resource Center" shape="rect" coords="0,0,255,75" href="/what-we-do/national-human-trafficking-hotline" alt="National Human Trafficking Resource Center" />
+ 
+<area title="Report Human Trafficking" shape="rect" coords="8,100,82,169" href="/what-we-do/national-human-trafficking-hotline/report-a-tip" alt="Report Human Trafficking" />
+ 
+<area title="Access Trainings" shape="rect" coords="83,100,157,169" href="/what-we-do/national-human-trafficking-hotline/access-training" alt="Access Trainings" />
+ 
+<area title="Human Trafficking Information &amp; Resources" shape="rect" coords="158,100,249,169" href="/resources/resources-by-topic" alt="Human Trafficking Information &amp; Resources" />
+ </map></div>
+	</div>
+		<div class="sbxMod sbxModTable-cb cbQuotes mod-bottom-2" id="Mod115">
+				<h3 class="sbxMod-title"><span>Client Quotes</span></h3>
+				<div class="sbxMod-content"><table style="width: 220px;">
+<tbody>
+<tr>
+<td>
+<p style="text-align: left;"><span style="color: #3a3a42; font-family: Nunito, sans-serif; font-size: small;">"Thanks to Polaris Project, I have a job, a home, and many friends that help me when I need it. <strong>I am making a life of my own.</strong>"</span></p>
+</td>
+</tr>
+<tr>
+<td>
+<p><span style="color: #ffffff; font-family: Nunito, sans-serif; font-size: small;">.</span></p>
+</td>
+</tr>
+<tr>
+<td>
+<p style="text-align: right;"><span style="color: #3a3a42; font-family: Nunito, sans-serif; font-size: small;">- Survivor of Labor Trafficking &amp; Client of Polaris</span><span></span></p>
+</td>
+</tr>
+</tbody>
+</table></div>
+	</div>
+		<div class="sbxMod sbxModTable-cb cbMostVisit mod-bottom-3 mod-bottom-last" id="Mod82">
+				<h3 class="sbxMod-title"><span>Top Resources</span></h3>
+				<div class="sbxMod-content">
+<!-- START 'Display News by BK 1.5.7' -->
+
+ 
+<div class='mod mod-dn'class='dn-whole'>
+<ul  class='mod-list mod-dnList'>
+	<li class='mod-item dn-item item-1'><div class='item-cntr'><div class='item-title dn-title'><a href='/what-we-do/national-human-trafficking-hotline/the-nhtrc/overview' class='item-titleLink dn-titleLink' >NHTRC and BeFree Hotlines</a></div><div class="clear"></div></div></li>
+	<li class='mod-item dn-item item-2'><div class='item-cntr'><div class='item-title dn-title'><a href='/human-trafficking/overview' class='item-titleLink dn-titleLink' >Human Trafficking</a></div><div class="clear"></div></div></li>
+	<li class='mod-item dn-item item-3'><div class='item-cntr'><div class='item-title dn-title'><a href='/human-trafficking/sex-trafficking-in-the-us' class='item-titleLink dn-titleLink' >Sex Trafficking in the U.S.</a></div><div class="clear"></div></div></li>
+	<li class='mod-item dn-item item-4'><div class='item-cntr'><div class='item-title dn-title'><a href='/human-trafficking/recognizing-the-signs' class='item-titleLink dn-titleLink' >Recognizing the Signs</a></div><div class="clear"></div></div></li>
+	<li class='mod-item dn-item item-5'><div class='item-cntr'><div class='item-title dn-title'><a href='/what-we-do/client-services/survivor-stories/242-the-victims' class='item-titleLink dn-titleLink' >The Victims</a></div><div class="clear"></div></div></li>
+</ul>
+
+</div>
+<!-- END module 'Display News by BK 1.5.7' -->
+</div>
+	</div>
+	
+				</div>
+			</div>
+						
+		</div>
+	</div>
+	<!-- !END: BODY -->
+	
+	
+	<!-- !BEGIN: FOOTER -->
+	<div id="sbx-footerwrap">
+		<div id="sbx-footer" class="clearfix">	
+			<div id="foot-top"></div>
+			<div id="foot-grid" class="clearfix">	<div class="sbxMod sbxModTable-ft ftContact mod-footer-1 mod-footer-first" id="Mod49">
+				<div class="sbxMod-content"><h3>Contact</h3>
+<p><strong>Polaris&nbsp;<br />P.O. Box 65323 <br />Washington, DC 20035</strong> <br />Tel: 202-745-1001 <br />Fax: 202-745-1119 <br /><a class="arrow" href="mailto:info@polarisproject.org">Email Polaris Project</a></p></div>
+	</div>
+		<div class="sbxMod sbxModTable-ft ftWeDo mod-footer-2" id="Mod50">
+				<div class="sbxMod-content"><h3>What We Do</h3>
+<p><a class="arrow" href="/what-we-do/national-human-trafficking-hotline/the-nhtrc/overview">National Human Trafficking Resource Center Hotline</a><a class="arrow" href="/what-we-do/policy-advocacy">Policy Advocacy</a><a class="arrow" href="/what-we-do/client-services">Client Services</a><a class="arrow" href="/what-we-do/advisory-services">Advisory Services</a><a class="arrow" href="/what-we-do/global-programs">Global Programs</a><a class="arrow" href="/what-we-do/data-analysis-program">Data Analysis Program</a>
+</p></div>
+	</div>
+		<div class="sbxMod sbxModTable-ft ftConnect mod-footer-3" id="Mod52">
+				<div class="sbxMod-content"><h3>Connect</h3>
+<a href="http://twitter.com/polaris_project" target="_blank"><img src="/templates/polaris/images/btn-twitter.png" alt="" /></a> <a href="http://www.facebook.com/polarisproject" target="_blank"><img src="/templates/polaris/images/btn-facebook.png" alt="" /></a> <a href="http://www.youtube.com/user/polarisproject1" target="_blank"><img src="/templates/polaris/images/btn-youtube.png" alt="" /></a> <a href="https://www.change.org/organizations/polaris" target="_blank"><img src="/templates/polaris/images/btn-change.png" alt="" /></a></div>
+	</div>
+		<div class="sbxMod sbxModTable-ft ftForm ftSearch mod-footer-4" id="Mod21">
+				<h3 class="sbxMod-title"><span>Search</span></h3>
+				<div class="sbxMod-content">
+<div class="mod mod-search clearfix">
+
+	<form action="index.php" method="post" id="form-modSearch" name="form-modSearch" class="jForm form-modSearch">
+		
+			<input name="searchword" id="mod_search_searchword" maxlength="20" alt="Search" class="field text" type="text" size="20" value="search the site"  onblur="if(this.value=='') this.value='search the site';" onfocus="if(this.value=='search the site') this.value='';" /><button type="submit" class="button" onclick="this.form.searchword.focus();"><span>Search</span></button>		
+		<input type="hidden" name="task"   value="search" />
+		<input type="hidden" name="option" value="com_search" />
+		<input type="hidden" name="Itemid" value="13" />
+		
+	</form>
+
+</div></div>
+	</div>
+		<div class="sbxMod sbxModTable-ft ftForm ftJoin mod-footer-5 mod-footer-last" id="Mod149">
+				<h3 class="sbxMod-title"><span>Join Our Network</span></h3>
+				<div class="sbxMod-content"><div class="mod mod-search clearfix"><form class="jForm form-modNetwork" name="form-modNetwork" id="form-modNetwork" method="post" action="http://act.polarisproject.org/p/salsa/web/common/public/signup?signup_page_KEY=2986"><input type="text" onfocus="if(this.value=='enter your email') this.value='';" onblur="if(this.value=='') this.value='search the site';" value="enter your email" size="20" alt="Email.." class="field text" name="Email" id="f3" title="Email" /> <button onclick="this.form.joinword.focus();" class="button" type="submit"><span>Join</span></button></form></div></div>
+	</div>
+	</div>
+			<div id="foot-nav"><p><span style="color: #999999;"><a class="jce_file" title="Privacy Policy" href="/about-us/overview/786-privacy-center">Privacy Policy</a></span>&nbsp; &nbsp;| &nbsp;&nbsp;Copyright&nbsp;2015 Polaris.</p></div>
+		</div>
+	</div>
+	<!-- !END: FOOTER -->	
+	
+
+</div>
+
+<!-- Ever Page Sidebar w/ jQuery for all -->
+<script src="http://www.polarisproject.org/templates/polaris/js/jquery-1.4.3.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+     $.noConflict();
+     jQuery(document).ready(function($) {
+$(function () {
+var msie6 = $.browser == 'msie' && $.browser.version < 7;
+if (!msie6) {
+var top = $('#sidebar3').offset().top - parseFloat($('#sidebar3').css('margin-top').replace(/auto/, 0));
+$(window).scroll(function (event) {
+// what the y position of the scroll is
+var y = $(this).scrollTop();
+// whether that's below the form
+if (y >= top) {
+// if so, ad the fixed class
+$('#sidebar3').addClass('fixed');
+} else {
+// otherwise remove it
+$('#sidebar3').removeClass('fixed');
+}
+});
+}
+});
+     });
+</script>
+
+
+<!-- Slideshow, Tabs & Colorbox Popup -->
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>

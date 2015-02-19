@@ -1,0 +1,417 @@
+<!DOCTYPE HTML>
+<html lang="en" dir="ltr" xmlns="http://www.w3.org/1999/xhtml" prefix="fb: http://www.facebook.com/2008/fbml content: http://purl.org/rss/1.0/modules/content/ dc: http://purl.org/dc/terms/ foaf: http://xmlns.com/foaf/0.1/ og: http://ogp.me/ns# rdfs: http://www.w3.org/2000/01/rdf-schema# sioc: http://rdfs.org/sioc/ns# sioct: http://rdfs.org/sioc/types# skos: http://www.w3.org/2004/02/skos/core# xsd: http://www.w3.org/2001/XMLSchema#">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><script type="text/javascript">window.NREUM||(NREUM={}),__nr_require=function(n,t,e){function r(e){if(!t[e]){var o=t[e]={exports:{}};n[e][0].call(o.exports,function(t){var o=n[e][1][t];return r(o?o:t)},o,o.exports)}return t[e].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<e.length;o++)r(e[o]);return r}({QJf3ax:[function(n,t){function e(n){function t(t,e,a){n&&n(t,e,a),a||(a={});for(var u=c(t),f=u.length,s=i(a,o,r),p=0;f>p;p++)u[p].apply(s,e);return s}function a(n,t){f[n]=c(n).concat(t)}function c(n){return f[n]||[]}function u(){return e(t)}var f={};return{on:a,emit:t,create:u,listeners:c,_events:f}}function r(){return{}}var o="nr@context",i=n("gos");t.exports=e()},{gos:"7eSDFh"}],ee:[function(n,t){t.exports=n("QJf3ax")},{}],gos:[function(n,t){t.exports=n("7eSDFh")},{}],"7eSDFh":[function(n,t){function e(n,t,e){if(r.call(n,t))return n[t];var o=e();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(n,t,{value:o,writable:!0,enumerable:!1}),o}catch(i){}return n[t]=o,o}var r=Object.prototype.hasOwnProperty;t.exports=e},{}],D5DuLP:[function(n,t){function e(n,t,e){return r.listeners(n).length?r.emit(n,t,e):(o[n]||(o[n]=[]),void o[n].push(t))}var r=n("ee").create(),o={};t.exports=e,e.ee=r,r.q=o},{ee:"QJf3ax"}],handle:[function(n,t){t.exports=n("D5DuLP")},{}],XL7HBI:[function(n,t){function e(n){var t=typeof n;return!n||"object"!==t&&"function"!==t?-1:n===window?0:i(n,o,function(){return r++})}var r=1,o="nr@id",i=n("gos");t.exports=e},{gos:"7eSDFh"}],id:[function(n,t){t.exports=n("XL7HBI")},{}],loader:[function(n,t){t.exports=n("G9z0Bl")},{}],G9z0Bl:[function(n,t){function e(){var n=v.info=NREUM.info;if(n&&n.licenseKey&&n.applicationID&&f&&f.body){c(d,function(t,e){t in n||(n[t]=e)}),v.proto="https"===l.split(":")[0]||n.sslForHttp?"https://":"http://",a("mark",["onload",i()]);var t=f.createElement("script");t.src=v.proto+n.agent,f.body.appendChild(t)}}function r(){"complete"===f.readyState&&o()}function o(){a("mark",["domContent",i()])}function i(){return(new Date).getTime()}var a=n("handle"),c=n(1),u=window,f=u.document,s="addEventListener",p="attachEvent",l=(""+location).split("?")[0],d={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-515.min.js"},v=t.exports={offset:i(),origin:l,features:{}};f[s]?(f[s]("DOMContentLoaded",o,!1),u[s]("load",e,!1)):(f[p]("onreadystatechange",r),u[p]("onload",e)),a("mark",["firstbyte",i()])},{1:11,handle:"D5DuLP"}],11:[function(n,t){function e(n,t){var e=[],o="",i=0;for(o in n)r.call(n,o)&&(e[i]=t(o,n[o]),i+=1);return e}var r=Object.prototype.hasOwnProperty;t.exports=e},{}]},{},["G9z0Bl"]);</script>
+<link rel="shortcut icon" href="http://www.dhs.gov/profiles/dhs_gov/themes/dhs_gov_theme/favicon.ico" type="image/vnd.microsoft.icon" />
+<!--[if lt IE 9]><script src="/profiles/dhs_gov/themes/dhs_gov_theme/js/html5.js"></script><![endif]--><link rel="shortlink" href="http://www.dhs.gov/es/node/3753" />
+<link rel="canonical" href="http://www.dhs.gov/es/topic/human-trafficking" />
+<meta name="description" content="Human trafficking is a crime and a form of modern-day slavery involving the exploitation of children and adults." />
+<meta name="generator" content="Drupal 7 (http://drupal.org)" />
+  <title>Human Trafficking | Homeland Security</title>  
+  <link type="text/css" rel="stylesheet" href="http://www.dhs.gov/sites/default/files/css/css_xE-rWrJf-fncB6ztZfd2huxqgxu4WO-qwma6Xer30m4.css" media="all" />
+<link type="text/css" rel="stylesheet" href="http://www.dhs.gov/sites/default/files/css/css_WBlF_kef1sqflgwtvS6Mks1AVtHnCUuKBs1iyaD7d6Y.css" media="all" />
+<link type="text/css" rel="stylesheet" href="http://www.dhs.gov/sites/default/files/css/css_VJBJ3qrwF4k5xfKrFK8acIsYyB_pPFpYIAs_Twt4nTI.css" media="all" />
+<link type="text/css" rel="stylesheet" href="http://www.dhs.gov/sites/default/files/css/css_ddrj05MzYzNGF31A0dysoIawgiDdY2cbns3Pr8UbBkI.css" media="all" />
+<link type="text/css" rel="stylesheet" href="http://www.dhs.gov/sites/default/files/css/css_Ow2Ar7rjzC_GdCYffodTbfwtxYEYlf1yaH9kkNhR4dA.css" media="all" />
+<link type="text/css" rel="stylesheet" href="http://www.dhs.gov/sites/default/files/css/css_U3YbT3YE8hM_9SGjkA4V1MeZbvc8dfm-y0pjMUTfeiU.css" media="all" />
+<link type="text/css" rel="stylesheet" href="http://www.dhs.gov/sites/default/files/css/css___FtpdsLTqPEIBLbfnDpZ1XBHFs8JCvnyP_zYV4JkRg.css" media="all" />
+<link type="text/css" rel="stylesheet" href="http://www.dhs.gov/sites/default/files/css/css_hoOssDXCkLYKn41ZhKkj5QBq6x-urKbX4w-WM2tUxCU.css" media="all" />
+<link type="text/css" rel="stylesheet" href="http://www.dhs.gov/sites/default/files/css/css_gXnnLGpCeVNpVh6RKXqlssSBcNJrDv3r5RZCp02WBo8.css" media="print" />
+
+<!--[if IE 7]>
+<link type="text/css" rel="stylesheet" href="http://www.dhs.gov/profiles/dhs_gov/themes/dhs_gov_theme/css/ie7.css?njd6zf" media="all" />
+<![endif]-->
+  <script type="text/javascript" src="http://www.dhs.gov/sites/default/files/js/js_xAPl0qIk9eowy_iS9tNkCWXLUVoat94SQT48UBCFkyQ.js"></script>
+<script type="text/javascript" src="http://www.dhs.gov/sites/all/libraries/mediaelement/build/mediaelement-and-player.min.js?v=2.1.6"></script>
+<script type="text/javascript" src="http://www.dhs.gov/sites/default/files/js/js_FWhivYi4UcaqHYEkNsbGkQJp5NPtgfT8LOMeoru1q7I.js"></script>
+<script type="text/javascript" src="http://www.dhs.gov/sites/default/files/js/js_w8pnt60wbo7A6OE2pXeFEM6qmIFmqQ-h1wIdrk3tHsg.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+window.CKEDITOR_BASEPATH = '/sites/all/libraries/ckeditor/'
+//--><!]]>
+</script>
+<script type="text/javascript" src="http://www.dhs.gov/sites/default/files/js/js__IcoQ9F6ifX3glQE3dtvV4JVbMZPnbgCs0nBN8aYnCU.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+(function(i,s,o,g,r,a,m){i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,"script","//www.google-analytics.com/analytics.js","ga");ga("create", "UA-32318423-1", "auto");ga("set", "anonymizeIp", true);ga("send", "pageview");
+//--><!]]>
+</script>
+<script type="text/javascript" src="http://www.dhs.gov/sites/default/files/js/js_YY9EMFArBZRhgNH2l6w3SdCSx7AkskIgZVJyZnmbaBQ.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+jQuery.extend(Drupal.settings, {"basePath":"\/","pathPrefix":"","ajaxPageState":{"theme":"dhs_gov_theme","theme_token":"QP9b3HxXXEHkh6vCFFkJuoS29HmWltDRHP8gVcgl7pI","js":{"0":1,"http:\/\/s7.addthis.com\/js\/250\/addthis_widget.js#pubid=DHSJournal\u0026async=1":1,"sites\/all\/modules\/addthis\/addthis.js":1,"1":1,"misc\/jquery.js":1,"misc\/jquery.once.js":1,"misc\/drupal.js":1,"sites\/all\/libraries\/mediaelement\/build\/mediaelement-and-player.min.js":1,"profiles\/dhs_gov\/modules\/contrib\/comment_notify\/comment_notify.js":1,"profiles\/dhs_gov\/modules\/custom\/menu_block_mobile\/menu_block_mobile.js":1,"profiles\/dhs_wcm\/modules\/contrib\/redirect_page\/js\/external_links.js":1,"sites\/all\/libraries\/colorbox\/jquery.colorbox-min.js":1,"sites\/all\/modules\/colorbox\/js\/colorbox.js":1,"sites\/all\/modules\/colorbox\/styles\/default\/colorbox_style.js":1,"sites\/all\/modules\/colorbox\/js\/colorbox_load.js":1,"profiles\/dhs_gov\/modules\/features\/dhs_rotator\/js\/jquery.cycle.all.js":1,"profiles\/dhs_gov\/modules\/features\/dhs_rotator\/js\/jquery.jcarousel.min.js":1,"profiles\/dhs_gov\/modules\/features\/dhs_rotator\/js\/dhs_rotator.js":1,"profiles\/dhs_gov\/modules\/features\/dhs_text_formats_wysiwyg\/dhs_text_formats_wysiwyg.js":1,"profiles\/dhs_wcm\/modules\/contrib\/mediaelement\/mediaelement.js":1,"sites\/all\/libraries\/fed_analytics\/federated-analytics-DHS.js":1,"sites\/all\/modules\/wcm_survey\/js\/wcm_survey.js":1,"sites\/all\/modules\/wcm_survey\/js\/json3.min.js":1,"sites\/all\/modules\/wcm_survey\/js\/jquery.cookie.js":1,"profiles\/dhs_gov\/modules\/custom\/dhs_core\/js\/accessability.js":1,"sites\/all\/modules\/field_boxes\/jquery.tablednd_0_5.js":1,"sites\/all\/modules\/field_boxes\/field_boxes.js":1,"2":1,"profiles\/dhs_wcm\/modules\/contrib\/google_analytics\/googleanalytics.js":1,"3":1,"profiles\/dhs_wcm\/themes\/omega\/omega\/js\/omega-equalheights.js":1,"profiles\/dhs_gov\/themes\/dhs_gov_theme\/js\/microsites.js":1},"css":{"modules\/system\/system.base.css":1,"modules\/system\/system.menus.css":1,"modules\/system\/system.messages.css":1,"modules\/system\/system.theme.css":1,"sites\/all\/libraries\/mediaelement\/build\/mediaelementplayer.min.css":1,"profiles\/dhs_gov\/modules\/contrib\/comment_notify\/comment_notify.css":1,"modules\/comment\/comment.css":1,"profiles\/dhs_wcm\/modules\/contrib\/date\/date_api\/date.css":1,"profiles\/dhs_wcm\/modules\/contrib\/date\/date_popup\/themes\/datepicker.1.7.css":1,"profiles\/dhs_wcm\/modules\/contrib\/date\/date_repeat_field\/date_repeat_field.css":1,"modules\/field\/theme\/field.css":1,"profiles\/dhs_gov\/modules\/custom\/menu_block_mobile\/menu_block_mobile.css":1,"modules\/node\/node.css":1,"modules\/search\/search.css":1,"modules\/user\/user.css":1,"sites\/all\/modules\/wcm_survey\/wcm_survey.css":1,"profiles\/dhs_wcm\/modules\/contrib\/views\/css\/views.css":1,"sites\/all\/modules\/colorbox\/styles\/default\/colorbox_style.css":1,"profiles\/dhs_wcm\/modules\/contrib\/ctools\/css\/ctools.css":1,"profiles\/dhs_gov\/modules\/features\/dhs_sidebar\/dhs_sidebar.css":1,"profiles\/dhs_gov\/modules\/custom\/dhs_workflow\/dhs_workflow.css":1,"profiles\/dhs_gov\/modules\/contrib\/follow\/follow.css":1,"sites\/all\/modules\/panels\/css\/panels.css":1,"profiles\/dhs_gov\/modules\/features\/openpublic\/openpublic_defaults\/theme\/openpublic_defaults.css":1,"profiles\/dhs_gov\/modules\/contrib\/field_collection\/field_collection.theme.css":1,"profiles\/dhs_gov\/themes\/dhs_gov_theme\/css\/wcm_survey.css":1,"profiles\/dhs_wcm\/themes\/omega\/alpha\/css\/alpha-reset.css":1,"profiles\/dhs_wcm\/themes\/omega\/alpha\/css\/alpha-mobile.css":1,"profiles\/dhs_wcm\/themes\/omega\/alpha\/css\/alpha-alpha.css":1,"profiles\/dhs_wcm\/themes\/omega\/omega\/css\/omega-text.css":1,"profiles\/dhs_wcm\/themes\/omega\/omega\/css\/omega-branding.css":1,"profiles\/dhs_wcm\/themes\/omega\/omega\/css\/omega-menu.css":1,"profiles\/dhs_wcm\/themes\/omega\/omega\/css\/omega-visuals.css":1,"profiles\/dhs_wcm\/themes\/openomega\/css\/global.css":1,"normal::profiles\/dhs_wcm\/themes\/openomega\/css\/openomega-alpha-default.css":1,"normal::profiles\/dhs_wcm\/themes\/openomega\/css\/openomega-alpha-default-normal.css":1,"normal::profiles\/dhs_gov\/themes\/dhs_gov_theme\/css\/dhs-gov-theme-alpha-default.css":1,"normal::profiles\/dhs_gov\/themes\/dhs_gov_theme\/css\/dhs-gov-theme-alpha-default-normal.css":1,"profiles\/dhs_wcm\/themes\/omega\/alpha\/css\/grid\/alpha_default\/normal\/alpha-default-normal-12.css":1,"profiles\/dhs_gov\/themes\/dhs_gov_theme\/css\/dhs-global.css":1,"profiles\/dhs_gov\/themes\/dhs_gov_theme\/css\/dhs-print.css":1,"profiles\/dhs_gov\/themes\/dhs_gov_theme\/css\/ie7.css":1}},"colorbox":{"opacity":"0.85","current":"{current} of {total}","previous":"\u00ab Prev","next":"Next \u00bb","close":"Close","maxWidth":"98%","maxHeight":"98%","fixed":true,"mobiledetect":true,"mobiledevicewidth":"480px"},"mediaelementAll":true,"wcmSurvey":{"userPercentage":"25","pageDepth":"4","url":"https:\/\/www.surveymonkey.com\/s\/dhs-survey","force":false,"surveyRetakeTimeout":"90","surveyPopup":"\u003Cdiv id=\u0022wcm-survey-popup\u0022 class=\u0022dhs_gov_theme\u0022\u003E\n\t\u003Cdiv class=\u0022logo\u0022\u003E\n\t\t\u003Cimg alt=\u0022Department of Homeland Security Agency Seal\u0022 src=\u0022http:\/\/www.dhs.gov\/sites\/default\/files\/images\/dhs_surveypopup.png\u0022 \/\u003E\n\t\u003C\/div\u003E\n\t\u003Cdiv class=\u0022message\u0022\u003E\n\t\t\u003Cp\u003EYou have been selected to participate in a brief survey about your experience today with DHS.gov.\u003C\/p\u003E\t\u003C\/div\u003E\n\t\u003Cdiv class=\u0022choices\u0022\u003E\n\t\t\u003Cspan class=\u0022button yes\u0022\u003E\u003Ca title=\u0022Yes, I\u0027ll give feedback\u0022 href=\u0022https:\/\/www.surveymonkey.com\/s\/dhs-survey\u0022 class=\u0022accept\u0022 target=\u0022_blank\u0022 id=\u0022external_link\u0022\u003EYes, I\u0027ll give feedback\u003C\/a\u003E\u003C\/span\u003E\n\t\t\u003Cspan class=\u0022button no\u0022\u003E\u003Ca title=\u0022No Thanks, I do not want to give feedback\u0022 href=\u0022#\u0022 class=\u0022decline\u0022 target=\u0022_blank\u0022\u003ENo, thanks\u003C\/a\u003E\u003C\/span\u003E\n\t\u003C\/div\u003E","debugMode":0,"position":"centered","offset":"","height":"","width":"","maxHeight":"100%","maxWidth":"75%"},"addthis":{"load_type":"async"},"googleanalytics":{"trackOutbound":1,"trackMailto":1,"trackDownload":1,"trackDownloadExtensions":"7z|aac|arc|arj|asf|asx|avi|bin|csv|doc|exe|flv|gif|gz|gzip|hqx|jar|jpe?g|js|mp(2|3|4|e?g)|mov(ie)?|msi|msp|pdf|phps|png|ppt|qtm?|ra(m|r)?|sea|sit|tar|tgz|torrent|txt|wav|wma|wmv|wpd|xls|xml|z|zip","trackCrossDomains":["dhs.gov"]},"menu_block_mobile":{"mobile_menu_ids":"block-menu-block-1, block-menu-block-2, block-menu-block-4, rotator-menu-block-1"},"redirect_new_window":true,"redirect_page_safe_href_regexp":"(\\.fayze2\\.com|\\.gov|\\.mil|feedburner\\.com|www\\.facebook\\.com\/\\#\\!\/homelandsecurity|twitter\\.com\/dhsgov\/|www\\.youtube\\.com\/ushomelandsec|surveymonkey\\.com|JavaScript:void())"});
+//--><!]]>
+</script>
+</head>
+<body class="html not-front not-logged-in page-node page-node- page-node-3753 node-type-topic i18n-en context-topic">
+  <div id="skip-link">
+    <a href="#main-content" class="element-invisible element-focusable">Skip to main content</a>
+  </div>
+    <div class="page clearfix" id="page">
+      <header id="section-header" class="section section-header">
+  <div id="zone-user-wrapper" class="zone-wrapper zone-user-wrapper clearfix">  
+  <div id="zone-user" class="zone zone-user clearfix container-12">
+    <div class="grid-12 region region-user-first" id="region-user-first">
+  <div class="region-inner region-user-first-inner">
+    <div class="block block-boxes block-boxes-simple block-dhs-header-tagline block-boxes-dhs-header-tagline odd block-without-title" id="block-boxes-dhs-header-tagline">
+  <div class="block-inner clearfix">
+                
+    <div class="content clearfix">
+      <div id='boxes-box-dhs_header_tagline' class='boxes-box'><div class="boxes-box-content"><p><img alt="US flag signifying that this is a United States Federal Government website" src="/sites/default/files/images/icn-us-flag-21px.png" style="width: 21px; height: 13px;" />   Official website of the Department of Homeland Security</p>
+</div></div>    </div>
+  </div>
+</div><div class="block block-openpublic-defaults block-openpublic-utility-menu block-openpublic-defaults-openpublic-utility-menu even block-without-title" id="block-openpublic-defaults-openpublic-utility-menu">
+  <div class="block-inner clearfix">
+                
+    <div class="content clearfix">
+      <h2 class="element-invisible">User menu</h2><ul id="user-menu" class="links clearfix"><li class="menu-623 first"><a href="/contact-us" title="Contact Us">Contact Us</a></li><li class="menu-11505"><a href="/frequently-requested-pages" title="Quick Links">Quick Links</a></li><li class="menu-11111"><a href="/sitemap" title="Site Map">Site Map</a></li><li class="menu-2272 last"><a href="/dhsgov-z-index" title="A-Z Index">A-Z Index</a></li></ul>    </div>
+  </div>
+</div>  </div>
+</div>  </div>
+</div><div id="zone-branding-wrapper" class="zone-wrapper zone-branding-wrapper clearfix">  
+  <div id="zone-branding" class="zone zone-branding clearfix container-12">
+    <div class="grid-12 region region-branding" id="region-branding">
+  <div class="region-inner region-branding-inner">
+        <div class="branding-data clearfix">
+      <div class="block block-block block-1 block-block-1 odd block-without-title" id="block-block-1">
+  <div class="block-inner clearfix">
+                
+    <div class="content clearfix">
+      <style type="text/css">
+<!--/*--><![CDATA[/* ><!--*/
+
+#wcm-survey-popup .logo img { max-height: none !important;}
+#block-block-1 { height:0; width:0; padding:0; margin:0; border:none; overflow:hidden; }
+/*--><!]]>*/
+</style>    </div>
+  </div>
+</div><div class="block block-search block-form block-search-form even block-without-title" id="block-search-form">
+  <div class="block-inner clearfix">
+                
+    <div class="content clearfix">
+      <form action="//search.dhs.gov/search" method="get" id="search-block-form" accept-charset="UTF-8"><div><div class="container-inline">
+      <h2 class="element-invisible">Search form</h2>
+    <div class="form-item form-type-textfield form-item-search-block-form">
+  <label class="element-invisible" for="edit-search-block-form--2">Search </label>
+ <input class="usagov-search-autocomplete ui-autocomplete-input ui-corner-all form-text" autocomplete="off" type ="text" name="query" type="text" id="edit-search-block-form--2" value="" size="15" maxlength="128" />
+</div>
+<div class="form-actions form-wrapper" id="edit-actions"><input type="submit" id="edit-submit" name="op" value="Search" class="form-submit" /></div><input type="hidden" name="affiliate" value="dhs" />
+</div>
+</div></form>    </div>
+  </div>
+</div><div class="block block-boxes block-boxes-simple block-social-media-follow block-boxes-social-media-follow odd block-without-title" id="block-boxes-social-media-follow">
+  <div class="block-inner clearfix">
+                
+    <div class="content clearfix">
+      <div id='boxes-box-social_media_follow' class='boxes-box'><div class="boxes-box-content"><ul><li><a class="follow-link" href="/facebook" target="_blank" title="Follow Homeland Security on Facebook"><img alt="Facebook icon" src="/profiles/dhs_gov/themes/dhs_gov_theme/images/sm_icon_facebook_trans.png" style="width: 25px; height: 25px;" /></a></li>
+<li><a class="follow-link" href="/twitter" target="_blank" title="Follow Homeland Security on Twitter"><img alt="twitter icon" src="/profiles/dhs_gov/themes/dhs_gov_theme/images/sm_icon_twitter_trans.png" style="width: 25px; height: 25px;" /></a></li>
+<li><a class="follow-link" href="/instagram" target="_blank" title="Follow Homeland Security on Instagram"><img alt="Instagram icon" src="/sites/default/files/images/icon_instagram.png" style="height: 25px; width: 25px;" /></a></li>
+<li><a class="follow-link" href="/flickr" target="_blank" title="Follow Homeland Security on Flickr"><img alt="Flickr icon" src="/sites/default/files/images/icon_flickr.png" style="width: 25px; height: 25px;" /></a></li>
+<li><a class="follow-link" href="/youtube" target="_blank" title="Follow Homeland Security on YouTube"><img alt="Youtube icon" src="/profiles/dhs_gov/themes/dhs_gov_theme/images/sm_icon_youtube_trans.png" style="width: 25px; height: 25px;" /></a></li>
+<li><a class="follow-link" href="http://public.govdelivery.com/accounts/USDHS/subscriber/new" target="_blank" title="Subscribe to email updates from Homeland Security"><img alt="Govdelivery icon" src="/profiles/dhs_gov/themes/dhs_gov_theme/images/sm_icon_govdelivery_trans.png" style="width: 25px; height: 25px;" /></a></li>
+</ul></div></div>    </div>
+  </div>
+</div>            <div class="logo-img">
+        <a href="/" rel="home" title="Homeland Security"><img src="http://www.dhs.gov/profiles/dhs_gov/themes/dhs_gov_theme/logo.png" alt="U.S. Department of Homeland Security seal" id="logo" /></a>      </div>
+                        <hgroup class="site-name-slogan">        
+                        <h1 class="site-name"><a href="/" title="Home">Homeland Security</a></h1>
+                      </hgroup>
+            <nav class="navigation">
+        <ul class="menu clearfix"><li class="first leaf level-1"><a href="/topics" title="">Topics</a></li>
+<li class="leaf level-1"><a href="/how-do-i/by-type" title="">How Do I?</a></li>
+<li class="leaf level-1"><a href="/get-involved" title="">Get Involved</a></li>
+<li class="leaf level-1"><a href="/news" title="">News</a></li>
+<li class="last leaf level-1"><a href="/about-dhs" title="">About DHS</a></li>
+</ul>      </nav>
+    </div>
+      </div>
+</div>  </div>
+</div></header>    
+      <section id="section-content" class="section section-content">
+  <div id="zone-header-wrapper" class="zone-wrapper zone-header-wrapper clearfix">  
+  <div id="zone-header" class="zone zone-header clearfix container-12">
+    <div class="grid-12 region region-header-second" id="region-header-second">
+  <div class="region-inner region-header-second-inner">
+    <div class="block block-addthis block-addthis-block block-addthis-addthis-block odd block-without-title" id="block-addthis-addthis-block">
+  <div class="block-inner clearfix">
+                
+    <div class="content clearfix">
+      <a class="addthis_button "><img src="/profiles/dhs_gov/themes/dhs_gov_theme/images/button_addthis.png" alt="AddThis share icon" />
+</a>
+    </div>
+  </div>
+</div><div class="block block-delta-blocks block-breadcrumb block-delta-blocks-breadcrumb even block-without-title" id="block-delta-blocks-breadcrumb">
+  <div class="block-inner clearfix">
+                
+    <div class="content clearfix">
+      <div id="breadcrumb" class="clearfix"><ul class="breadcrumb"><li class="depth-1 odd first"><a href="/">Home</a></li><li class="depth-2 even"><a href="/topics" title="Topics">Topics</a></li><li class="depth-3 odd last"><a href="/topic/human-trafficking" class="active">Human Trafficking</a></li></ul></div>    </div>
+  </div>
+</div>  </div>
+</div>  </div>
+</div><div id="zone-content-wrapper" class="zone-wrapper zone-content-wrapper clearfix">  
+  <div id="zone-content" class="zone zone-content clearfix container-12">    
+        
+        <aside class="grid-2 region region-sidebar-first" id="region-sidebar-first">
+  <div class="region-inner region-sidebar-first-inner">
+    <div class="block block-menu block-menu-left-menu block-menu-menu-left-menu odd block-without-title" id="block-menu-menu-left-menu">
+  <div class="block-inner clearfix">
+                
+    <div class="content clearfix">
+      <ul class="menu clearfix"><li class="first expanded active-trail level-1"><a href="/topics" title="Topics" class="active-trail">Topics</a><ul class="menu clearfix"><li class="first collapsed level-2"><a href="/topic/academic-engagement" title="Academic Engagement Topics Page">Academic Engagement</a></li>
+<li class="collapsed level-2"><a href="/border-security" title="Border Security">Border Security</a></li>
+<li class="collapsed level-2"><a href="/topic/citizenship-and-immigration-services" title="Citizenship and Immigration Services">Citizenship and Immigration Services</a></li>
+<li class="leaf level-2"><a href="/topic/civil-rights-and-civil-liberties" title="Civil Rights and Civil Liberties">Civil Rights and Civil Liberties</a></li>
+<li class="collapsed level-2"><a href="/topic/cybersecurity" title="Cybersecurity">Cybersecurity</a></li>
+<li class="collapsed level-2"><a href="/topic/disasters" title="Disasters">Disasters</a></li>
+<li class="collapsed level-2"><a href="/economic-security" title="Economic Security">Economic Security</a></li>
+<li class="collapsed level-2"><a href="/homeland-security-enterprise" title="Homeland Security Enterprise">Homeland Security Enterprise</a></li>
+<li class="leaf level-2"><a href="/topic/homeland-security-jobs" title="Homeland Security Jobs">Homeland Security Jobs</a></li>
+<li class="collapsed active-trail level-2"><a href="/topic/human-trafficking" title="Human Trafficking" class="active-trail active">Human Trafficking</a></li>
+<li class="collapsed level-2"><a href="/topic/immigration-enforcement" title="Immigration Enforcement">Immigration Enforcement</a></li>
+<li class="collapsed level-2"><a href="/topic/international-engagement" title="International Engagement">International Engagement</a></li>
+<li class="leaf level-2"><a href="/topic/law-enforcement-partnerships" title="Law Enforcement Partnerships">Law Enforcement Partnerships</a></li>
+<li class="collapsed level-2"><a href="/preventing-terrorism" title="Preventing Terrorism">Preventing Terrorism</a></li>
+<li class="collapsed level-2"><a href="/topic/privacy" title="Privacy">Privacy</a></li>
+<li class="leaf level-2"><a href="/topic/resilience" title="Resilience">Resilience</a></li>
+<li class="last collapsed level-2"><a href="/topic/transportation-security" title="Transportation Security">Transportation Security</a></li>
+</ul></li>
+<li class="collapsed level-1"><a href="/get-involved" title="Get Involved">Get Involved</a></li>
+<li class="collapsed level-1"><a href="/how-do-i/by-type" title="">How Do I?</a></li>
+<li class="collapsed level-1"><a href="/news" title="News">News</a></li>
+<li class="collapsed level-1"><a href="/about-dhs">About DHS</a></li>
+<li class="collapsed level-1"><a href="/" title="">Initiatives</a></li>
+<li class="last collapsed level-1"><a href="/site-links">Site Links</a></li>
+</ul>    </div>
+  </div>
+</div><div class="block block-boxes block-boxes-field block-field-box-widget block-boxes-field-box-widget even block-without-title" id="block-boxes-field-box-widget">
+  <div class="block-inner clearfix">
+                
+    <div class="content clearfix">
+      <div id='boxes-box-field_box_widget' class='boxes-box'><div class="boxes-box-content"><div class="field field-name-field-widget field-type-node-reference field-label-hidden"><div class="field-items"><div class="field-item even"><article about="/widget/blue-campaign" typeof="sioc:Item foaf:Document" class="node node-widget node-published node-not-promoted node-not-sticky author-cathleentracy odd clearfix node-view-mode-sidebar" id="node-widget-7362">
+        <span property="dc:title" content="The Blue Campaign" class="rdf-meta element-hidden"></span><span property="sioc:num_replies" content="0" datatype="xsd:integer" class="rdf-meta element-hidden"></span>    
+  
+  <div class="content clearfix">
+    <div class="field field-name-field-widget-html field-type-text-long field-label-hidden"><div class="field-items"><div class="field-item even"><a href="/landing-page/blue-campaign"><img src="/sites/default/files/images/blue-campaign/Blue-Campaign-Logo-150x132.jpg" border="0" alt="The Blue Campaign"></a></div></div></div>  </div>
+  
+  <div class="clearfix">
+          <nav class="links node-links clearfix"></nav>
+    
+      </div>
+</article></div></div></div></div></div>    </div>
+  </div>
+</div>  </div>
+</aside><div class="grid-7 region region-content" id="region-content">
+  <div class="region-inner region-content-inner">
+    <div id="main-content"></div>
+                <h1 class="title" id="page-title">Human Trafficking</h1>
+                        <div class="block block-system block-main block-system-main odd block-without-title" id="block-system-main">
+  <div class="block-inner clearfix">
+                
+    <div class="content clearfix">
+      <article about="/topic/human-trafficking" typeof="sioc:Item foaf:Document" class="node node-topic node-published node-not-promoted node-not-sticky author-webteamopa even clearfix node-view-mode-full" id="node-topic-3753">
+
+  <header>
+        <h1 class="page-title title-with-background node-title" style="background-image: url(http://www.dhs.gov/sites/default/files/styles/dhs_topic_banner/public/images/HumanTaffick.jpg)">Human Trafficking</h1>
+    <span property="dc:title" content="Human Trafficking" class="rdf-meta element-hidden"></span><span property="sioc:num_replies" content="0" datatype="xsd:integer" class="rdf-meta element-hidden"></span>  </header>
+
+  
+  <div class="content clearfix">
+    <div class="field field-name-body field-type-text-with-summary field-label-hidden"><div class="field-items"><div class="field-item even" property="content:encoded"><p><a href="http://service.govdelivery.com/service/subscribe.html?code=USDHS_141">Sign up for the Blue Campaign Newsletter!</a></p><h2>Combating Human Trafficking</h2><p>Human trafficking is a form of modern-day slavery, and involves the use of force, fraud, or coercion to exploit human beings for some type of labor or commercial sex purpose. Every year, millions of men, women, and children worldwide—including in the United States—are victims of human trafficking. Victims are often lured with false promises of well-paying jobs or are manipulated by people they trust, but instead are forced or coerced into prostitution, domestic servitude, farm or factory labor, or other types of forced labor.</p><p>The U.S. Department of Homeland Security (DHS) is responsible for investigating human trafficking, arresting traffickers and protecting victims. DHS initiates hundreds of investigations and makes numerous arrests every year, using a victim-centered approach. DHS also processes immigration relief through Continued Presence (CP), T visas, and U visas to victims of human trafficking and other designated crimes.</p><h2>Blue Campaign</h2><p>In 2010, DHS launched the <a href="/blue-campaign">Blue Campaign</a>, unifying the DHS components to more effectively combat human trafficking through enhanced <a href="/blue-campaign-materials-catalog">public awareness</a>, <a href="/human-trafficking-awareness-training">training</a>, <a href="/human-trafficking-victim-assistance-program">victim assistance</a>, and <a href="/anti-human-trafficking-resources-law-enforcement">law enforcement </a>investigations. By expanding our collaboration within the department, as well as among domestic and international governments, law enforcement, non-governmental organizations, and the private sector, DHS is helping to protect victims from being trafficked both within the United States and around the world.</p><h2>Recognize the Indicators of Human Trafficking</h2><p>Everyone has a role to play in combating human trafficking. Blue Campaign created a <a href="/blue-campaign-materials-catalog">variety of resources </a>to inform people about the crime of human trafficking, how to report suspected cases of human trafficking, and how to get involved in combating human trafficking.</p><h2>Report Suspected Human Trafficking</h2><p>Report suspected human trafficking activity to law enforcement (available 24/7, in over 300 languages and dialects at):</p><ul><li>Call 1-866-347-2423 (toll free)</li><li>Call 1-802-872-6199 (non toll free international)</li><li>Report online at <a href="http://www.ice.gov/tips">www.ice.gov/tips</a></li></ul><p>Call the National Human Trafficking Resource Center (NHTRC) at 1-888-3737-888 to get help or connect with a service provider in your area. The NHTRC is not a law enforcement or immigration authority and is operated by a nongovernmental organization.</p><p>For more information, please contact the Blue Campaign at <a href="mailto:bluecampaign@hq.dhs.gov">bluecampaign@hq.dhs.gov</a>.<br /> </p></div></div></div>    
+  <div class="last-updated">
+  	<span class="last-updated-field-heading">Last Published Date:</span> 
+  	January 15, 2015  </div>
+    
+  </div>
+  
+  <div class="clearfix">
+          <nav class="links node-links clearfix"></nav>
+    
+      </div>
+</article>    </div>
+  </div>
+</div><section class="block block-views block-what-s-new-block block-views-what-s-new-block even" id="block-views-what-s-new-block">
+  <div class="block-inner clearfix">
+              <h2 class="block-title">What's New</h2>
+            
+    <div class="content clearfix">
+      <div class="view view-what-s-new view-id-what_s_new view-display-id-block view-dom-id-e073b1fa8612396d17d14003b94c3ffb">
+        
+  
+  
+      <div class="view-content">
+        <div class="views-row views-row-1 views-row-odd views-row-first clearfix clearfix">
+      
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/news/2014/06/12/readout-deputy-secretary-mayorkas%E2%80%99-visit-california">Readout of Deputy Secretary Mayorkas’ Visit to California</a></span>  </div>  
+  <div class="views-field views-field-created">        <span class="field-content">June 12, 2014</span>  </div>  </div>
+  <div class="views-row views-row-2 views-row-even clearfix clearfix">
+      
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/news/2014/06/11/written-testimony-dhs-secretary-jeh-johnson-senate-committee-judiciary-hearing">Written testimony of DHS Secretary Jeh Johnson for a Senate Committee on the Judiciary hearing titled “Oversight of the Department of Homeland Security”</a></span>  </div>  
+  <div class="views-field views-field-created">        <span class="field-content">June 11, 2014</span>  </div>  </div>
+  <div class="views-row views-row-3 views-row-odd views-row-last clearfix clearfix">
+      
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/news/2014/03/20/written-testimony-ice-house-committee-homeland-security-field-hearing-titled-">Written testimony of ICE for a House Committee on Homeland Security field hearing titled “Combating Human Trafficking in our Major Cities”</a></span>  </div>  
+  <div class="views-field views-field-created">        <span class="field-content">March 20, 2014</span>  </div>  </div>
+    </div>
+  
+  
+  
+  
+      <div class="view-footer">
+      <p><a href="/news-releases?field_taxonomy_topics_tid=177">More News</a></p>
+    </div>
+  
+  
+</div>    </div>
+  </div>
+</section><section class="block block-views block-resource-directory-block block-views-resource-directory-block odd" id="block-views-resource-directory-block">
+  <div class="block-inner clearfix">
+              <h2 class="block-title">Resource Directory</h2>
+            
+    <div class="content clearfix">
+      <div class="view view-resource-directory view-id-resource_directory view-display-id-block view-dom-id-81a1ca305f66148a5eafbf8a9651d767">
+        
+  
+  
+      <div class="view-content">
+        <div class="views-row views-row-1 views-row-odd views-row-first clearfix clearfix">
+      
+  <div class="views-field views-field-field-link-url">        <div class="field-content"><a href="/blue-campaign/awareness-training">Awareness Training</a></div>  </div>  </div>
+  <div class="views-row views-row-2 views-row-even clearfix clearfix">
+      
+  <div class="views-field views-field-field-link-url">        <div class="field-content"><a href="/blue-campaign/share-resources">Resources</a></div>  </div>  </div>
+  <div class="views-row views-row-3 views-row-odd views-row-last clearfix clearfix">
+      
+  <div class="views-field views-field-field-link-url">        <div class="field-content"><a href="/blue-campaign/what-human-trafficking">What Is Human Trafficking?</a></div>  </div>  </div>
+    </div>
+  
+  
+  
+  
+      <div class="view-footer">
+      <p><a href="/resource-directory/?field_taxonomy_topics_tid=177">More Resources</a></p>
+    </div>
+  
+  
+</div>    </div>
+  </div>
+</section>      </div>
+</div><aside class="grid-3 region region-sidebar-second" id="region-sidebar-second">
+  <div class="region-inner region-sidebar-second-inner">
+    <div class="block block-boxes block-boxes-field block-sidebar-box block-boxes-sidebar-box odd block-without-title" id="block-boxes-sidebar-box">
+  <div class="block-inner clearfix">
+                
+    <div class="content clearfix">
+      <div id='boxes-box-sidebar_box' class='boxes-box'><div class="boxes-box-content"><div class="field-collection-container clearfix"><div class="field field-name-field-sidebar field-type-field-collection field-label-hidden"><div class="field-items"><div class="field-item even"><div class="field-collection-view clearfix view-mode-full field-collection-view-final"><div class="entity entity-field-collection-item field-collection-item-field-sidebar clearfix" about="/field-collection/field-sidebar/6675">
+  <div class="content">
+    <div class="field field-name-field-sidebar-text field-type-text-long field-label-hidden"><div class="field-items"><div class="field-item even"><p><strong>More from DHS</strong><br /><a href="http://www.dhs.gov/blue-campaign/government-roles">Blue Campaign</a><br /><a href="http://www.dhs.gov/topic/human-trafficking">Human Trafficking</a></p><p><strong>Across the Agencies</strong><br /><a href="http://www.state.gov/j/tip/index.htm">State - Office to Monitor and Combat Human Trafficking in Persons</a><br /><a href="https://www.ncjrs.gov/App/Topics/Topic.aspx?Topicid=82">DOJ - National Criminal Justice Reference Service</a><br /><a href="http://ovc.ncjrs.gov/topic.aspx?topicid=68">DOJ - Office for Victims of Crime</a></p></div></div></div>  </div>
+</div>
+</div></div></div></div></div></div></div>    </div>
+  </div>
+</div>  </div>
+</aside>  </div>
+</div></section>    
+  
+      <footer id="section-footer" class="section section-footer">
+  <div id="zone-footer-wrapper" class="zone-wrapper zone-footer-wrapper clearfix">  
+  <div id="zone-footer" class="zone zone-footer clearfix container-12">
+    <div class="grid-12 region region-footer-second" id="region-footer-second">
+  <div class="region-inner region-footer-second-inner">
+    <nav id="footer-nav" class="footer-nav clearfix"><ul class="menu clearfix"><li class="first expanded menu-item-1 level-1"><a href="/topics" title="Topics">Topics</a><ul class="menu clearfix"><li class="first leaf level-2"><a href="/topic/academic-engagement" title="">Academic Engagement</a></li>
+<li class="leaf level-2"><a href="/border-security" title="">Border Security</a></li>
+<li class="leaf level-2"><a href="/topic/citizenship-and-immigration-services" title="Citizenship and Immigration Services">Citizenship and Immigration Services</a></li>
+<li class="leaf level-2"><a href="/topic/civil-rights-and-civil-liberties" title="">Civil Rights and Civil Liberties</a></li>
+<li class="leaf level-2"><a href="/topic/cybersecurity" title="">Cybersecurity</a></li>
+<li class="leaf level-2"><a href="/topic/disasters" title="">Disasters</a></li>
+<li class="leaf level-2"><a href="/economic-security" title="Economic Security">Economic Security</a></li>
+<li class="leaf level-2"><a href="/homeland-security-enterprise" title="">Homeland Security Enterprise</a></li>
+<li class="leaf level-2"><a href="/topic/homeland-security-jobs" title="">Homeland Security Jobs</a></li>
+<li class="leaf level-2"><a href="/topic/human-trafficking" title="" class="active">Human Trafficking</a></li>
+<li class="leaf level-2"><a href="/topic/international-engagement" title="">International Engagement</a></li>
+<li class="leaf level-2"><a href="/topic/immigration-enforcement" title="">Immigration and Enforcement</a></li>
+<li class="leaf level-2"><a href="/topic/law-enforcement-partnerships" title="">Law Enforcement Partnerships</a></li>
+<li class="leaf level-2"><a href="/preventing-terrorism" title="">Preventing Terrorism</a></li>
+<li class="leaf level-2"><a href="/topic/resilience" title="">Resilience</a></li>
+<li class="last leaf level-2"><a href="/topic/transportation-security" title="Transportation Security">Transportation Security</a></li>
+</ul></li>
+<li class="expanded menu-item-2 level-1"><a href="/get-involved" title="">Get Involved</a><ul class="menu clearfix"><li class="first leaf level-2"><a href="/blue-campaign-fight-human-trafficking" title="">Blue Campaign</a></li>
+<li class="leaf level-2"><a href="/citizen-corps" title="">Citizen Corps</a></li>
+<li class="leaf level-2"><a href="/if-you-see-something-say-something%E2%84%A2" title="">If You See Something Say Something</a></li>
+<li class="leaf level-2"><a href="/ready" title="">Ready.gov</a></li>
+<li class="last leaf level-2"><a href="/stopthinkconnect" title="">Stop.Think.Connect</a></li>
+</ul></li>
+<li class="expanded menu-item-3 level-1"><a href="/how-do-i/by-type" title="">How Do I?</a><ul class="menu clearfix"><li class="first leaf level-2"><a href="/how-do-i/by-type#For-the-Public" title="">For the Public</a></li>
+<li class="leaf level-2"><a href="/how-do-i/by-type#For-Businesses" title="">For Businesses</a></li>
+<li class="leaf level-2"><a href="/how-do-i/by-type#For-Travelers" title="">For Travelers</a></li>
+<li class="leaf level-2"><a href="/how-do-i/by-type#At-DHS" title="">At DHS</a></li>
+<li class="last leaf level-2"><a href="/how-do-i/alphabetical" title="">By Alphabet</a></li>
+</ul></li>
+<li class="expanded menu-item-4 level-1"><a href="/news" title="">News</a><ul class="menu clearfix"><li class="first leaf level-2"><a href="/news-releases/blog?field_news_type_tid=588" title="">Blog</a></li>
+<li class="leaf level-2"><a href="/comunicados-de-prensa" title="Comunicado de Prensa">Comunicado de Prensa</a></li>
+<li class="leaf level-2"><a href="/topic/data" title="Data">Data</a></li>
+<li class="leaf level-2"><a href="/events" title="">Events</a></li>
+<li class="leaf level-2"><a href="/news-releases/fact-sheets?field_news_type_tid=587" title="Fact Sheets">Fact Sheets</a></li>
+<li class="leaf level-2"><a href="/media-contacts" title="">Media Contacts</a></li>
+<li class="leaf level-2"><a href="/multimedia" title="">Multimedia</a></li>
+<li class="leaf level-2"><a href="/news-releases/press-releases?field_news_type_tid=436" title="Press Releases">Press Releases</a></li>
+<li class="leaf level-2"><a href="/publications" title="Publications">Publications</a></li>
+<li class="leaf level-2"><a href="/social-media-directory" title="">Social Media</a></li>
+<li class="leaf level-2"><a href="/news-releases/speeches?field_news_type_tid=439" title="Speeches">Speeches</a></li>
+<li class="last leaf level-2"><a href="/news-releases/testimony?field_news_type_tid=440" title="Testimony">Testimony</a></li>
+</ul></li>
+<li class="expanded menu-item-5 level-1"><a href="/about-dhs" title="About DHS">About DHS</a><ul class="menu clearfix"><li class="first leaf level-2"><a href="http://www.dhs.gov/secretary-jeh-johnson" title="The Secretary">The Secretary</a></li>
+<li class="leaf level-2"><a href="/budget-performance" title="Budget &amp; Performance">Budget &amp; Performance</a></li>
+<li class="leaf level-2"><a href="/careers" title="Careers">Careers</a></li>
+<li class="leaf level-2"><a href="/contact-us" title="Contact Us">Contact Us</a></li>
+<li class="leaf level-2"><a href="/dhs-digital-strategy" title="">DHS Digital Strategy</a></li>
+<li class="leaf level-2"><a href="/do-business-dhs" title="Doing Business with DHS">Doing Business with DHS</a></li>
+<li class="leaf level-2"><a href="/history" title="History">History</a></li>
+<li class="leaf level-2"><a href="/laws-regulations" title="Laws &amp; Regulations">Laws &amp; Regulations</a></li>
+<li class="leaf level-2"><a href="/mission" title="Mission">Mission</a></li>
+<li class="last leaf level-2"><a href="/organization" title="Organization">Organization</a></li>
+</ul></li>
+<li class="last expanded menu-item-6 level-1"><a href="/site-links" title="Site Links">Site Links</a><ul class="menu clearfix"><li class="first leaf level-2"><a href="/accessibility" title="">Accessibility</a></li>
+<li class="leaf level-2"><a href="/contact-us" title="Contact Us">Contact Us</a></li>
+<li class="leaf level-2"><a href="/dhs-component-websites" title="DHS Component Websites">DHS Component Websites</a></li>
+<li class="leaf level-2"><a href="/en-espa%C3%B1ol" title="">En Español</a></li>
+<li class="leaf level-2"><a href="/freedom-information-act-foia" title="FOIA">FOIA</a></li>
+<li class="leaf level-2"><a href="/frequently-requested-pages" title="">Frequently Requested Pages</a></li>
+<li class="leaf level-2"><a href="http://www.oig.dhs.gov/" title="Office of the Inspector General">Inspector General</a></li>
+<li class="leaf level-2"><a href="/metrics" title="">Metrics</a></li>
+<li class="leaf level-2"><a href="/notices" title="Notices">Notices</a></li>
+<li class="leaf level-2"><a href="/plain-writing-dhs" title="">Plain Writing at DHS</a></li>
+<li class="leaf level-2"><a href="/plug-information" title="Plug-in">Plug-ins</a></li>
+<li class="leaf level-2"><a href="/privacy-policy" title="Privacy Policy">Privacy Policy</a></li>
+<li class="leaf level-2"><a href="http://www.dhs.gov/homeland-security-no-fear-act-reporting" title="No Fear Act Reporting">No FEAR Act</a></li>
+<li class="leaf level-2"><a href="/sitemap" title="">Site Map</a></li>
+<li class="leaf level-2"><a href="http://www.whitehouse.gov" title="">The White House</a></li>
+<li class="leaf level-2"><a href="http://www.usa.gov" title="">USA.gov</a></li>
+<li class="last leaf level-2"><a href="http://www.usa.gov/gobiernousa/" title="">GobiernoUSA.gov</a></li>
+</ul></li>
+</ul></nav>
+    <section class="clearfix"></section>
+  </div>
+</div>  </div>
+</div></footer>  </div>  <div class="region region-page-bottom" id="region-page-bottom">
+  <div class="region-inner region-page-bottom-inner">
+    <a href="#skip-link" class="element-invisible element-focusable">Back to Top</a>  </div>
+</div><script type="text/javascript">
+<!--//--><![CDATA[//><!--
+var addthis_config = {"pubid":"DHSJournal","services_compact":"email,mailto,facebook,linkedin,print,twitter,more","data_track_clickback":false,"ui_508_compliant":true,"ui_click":false,"ui_cobrand":"","ui_delay":0,"ui_header_background":"","ui_header_color":"","ui_open_windows":false,"ui_use_css":true,"ui_use_addressbook":false,"ui_language":"en"}
+var addthis_share = {"templates":{"twitter":"{{title}} {{url}} via @AddThis"}}
+//--><!]]>
+</script>
+<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=DHSJournal&amp;async=1"></script>
+<script type="text/javascript" src="http://www.dhs.gov/sites/default/files/js/js_33BaXx14mLWwIKRLHiDD1YUISrtmHDN9BKx9c77CeZ0.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+var usasearch_config = { siteHandle:'dhs' };
+usasearch_config['host'] = '//search.dhs.gov'
+var script = document.createElement('script');
+script.type = 'text/javascript';
+script.src = '//search.dhs.gov/javascripts/remote.loader.js';
+document.getElementsByTagName('head')[0].appendChild(script);
+
+//--><!]]>
+</script>
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"beacon-2.newrelic.com","licenseKey":"877b02039c","applicationID":"2858372,2052686","transactionName":"ZFYHMhZSXUpRUkcKDF0cMBQNHFpXVFRLTRNbQw==","queueTime":0,"applicationTime":34,"ttGuid":"","agentToken":"","userAttributes":"","errorBeacon":"bam.nr-data.net","agent":"js-agent.newrelic.com\/nr-515.min.js"}</script></body>
+</html>

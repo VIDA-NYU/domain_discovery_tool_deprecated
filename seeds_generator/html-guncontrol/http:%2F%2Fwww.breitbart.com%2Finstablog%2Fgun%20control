@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html xml:lang="en" lang="en" dir="ltr" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# dc: http://purl.org/dc/elements/1.1/# v: http://rdf.data-vocabulary.org/#" itemscope="" itemtype="http://schema.org/Article">
+<head>
+	<title>404 Not Found</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	
+	<link rel="stylesheet" href="/t/style-01423779.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="/t/assets/css/mobile-01423779.css" type="text/css" media="all" />
+
+	<script type="text/javascript">var isc_js_debug=false;</script>
+<!-- This site is optimized with the Yoast WordPress SEO plugin v1.7.1 - https://yoast.com/wordpress/plugins/seo/ -->
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="object" />
+<meta property="og:title" content="Page Not Found - Breitbart" />
+<meta property="og:site_name" content="Breitbart" />
+<!-- / Yoast WordPress SEO plugin. -->
+
+
+
+		<!-- Google 404 Plugin by www.AskApache.com -->
+		<meta name="robots" content="noindex,follow" />
+		<style type="text/css">
+		div#g404ajax{width:99%;overflow:hidden;margin-left:2px}div#lDiv{width:140px;float:right}div#lDiv .gsc-control .gsc-ad-box{padding-top:100px}div#rDiv{min-width:400px;min-height:400px;width:75%}div#rDiv .gsc-control .gsc-ad-box,#gDiv{height:120px;margin-bottom:20px;padding:1em;width:99%;background-color:#EAF9EA;overflow:hidden}#gDiv .gsc-control .gsc-ad-box{width:50%}#gDiv .gsc-control .gsc-resultsHeader{border-bottom-width:0;color:#2B2D2B;font-weight:bold}#gDiv .gsc-control .gsc-results{position:relative;display:block;margin:0;overflow:hidden}#gDiv .gsc-control .gsc-results .gsc-trailing-more-results,#gDiv .gsc-control .gsc-results .gsc-expansionArea,.gs-videoResult .gs-text-box,.gs-imageResult .gs-text-box{display:none}#sFormDiv .gsc-input{margin-right:200px}#sFormDiv .gsc-clear-button{width:30px}#sFormDiv .gsc-search-button{width:100px}.gsc-control{width:100% !important;margin:0 auto;position:relative;overflow:hidden}.gsc-control form{width:96%}.gsc-control table{margin:0;padding:0}.gsc-control,.gsc-control *{font-family:"trebuchet ms",verdana,sans-serif;font-size:13px}table.gsc-search-box{margin-left:0}		</style>
+
+		
+		<script src="//www.google.com/jsapi?key=ABQIAAAAGpnYzhlFfhxcnc02U1NT1hSrXMCP0pDj9HHVk8NG53Pp2_-7KxSdZ5paIt0ciL3cNLv20-kmmxlTcA" type="text/javascript"></script>
+		<script type="text/javascript">
+		/* <![CDATA[ */
+		var aa_BGLABEL,aa_LABEL="Breitbart";
+		var aa_MYSITE="www.breitbart.com";
+		var GOOG_FIXURL_LANG="en-US";
+		var GOOG_FIXURL_SITE="http://www.breitbart.com";
+		var aa_XX="blog|gun|20control";
+		
+		function a16g(B) {
+  var b = document.getElementById(B);
+  return typeof b != "undefined" && typeof b === "object" ? b : false;
+}
+
+
+function GACSEOnLoad() {
+  new cse;
+}
+
+
+
+google.load("search", "1");
+
+
+
+function cse() {
+
+  // the GoogleContainer
+  var GoogleContainer = a16g("g404ajax");
+  this.GoogleContainer = GoogleContainer;
+
+  // create the divs
+  var sFormDiv = a16g("sFormDiv");
+  var gDiv = a16g("gDiv");
+  var lDiv = a16g("lDiv");
+  var rDiv = a16g("rDiv");
+
+  this.sFormDiv = sFormDiv;
+  this.gDiv = gDiv;
+  this.lDiv = lDiv;
+  this.rDiv = rDiv;
+
+
+   // create the search form in sFormDiv and add event handlers
+  this.sForm = new GSearchForm(true, sFormDiv);
+  this.sForm.setOnSubmitCallback(this, cse.prototype.onSubmit);
+  this.sForm.setOnClearCallback(this, cse.prototype.onClear);
+
+
+  // the search controls
+  this.gCT = new GSearchControl();
+  this.lCT = new GSearchControl();
+  this.rCT = new GSearchControl();
+
+    // set the results size
+  this.lCT.setResultSetSize(GSearch.SMALL_RESULTSET);
+  this.rCT.setResultSetSize(GSearch.LARGE_RESULTSET);
+  this.gCT.setResultSetSize(GSearch.SMALL_RESULTSET);
+
+  // set the default link target
+  this.lCT.setLinkTarget(GSearch.LINK_TARGET_SELF);
+  this.rCT.setLinkTarget(GSearch.LINK_TARGET_SELF);
+  this.gCT.setLinkTarget(GSearch.LINK_TARGET_SELF);
+
+
+  var gSearchGoogleGuess = new GwebSearch();
+  var gSearchVideo = new GvideoSearch();
+  var gSearchImage = new GimageSearch();
+  var gSearchSite = new GwebSearch();
+  var gSearchBlog = new GblogSearch();
+  var gSearchWeb = new GwebSearch();
+  var gSearchNews = new GnewsSearch();
+  var gSearchCSE = new GwebSearch();
+  var gSearchLocal = new GlocalSearch();
+
+
+
+
+  //EXPAND_MODE_CLOSED
+  //EXPAND_MODE_OPEN
+  //EXPAND_MODE_PARTIAL
+  var sOPT = new GsearcherOptions();
+  sOPT.setExpandMode(GSearchControl.EXPAND_MODE_OPEN);
+
+  var drawOptions = new GdrawOptions();
+  drawOptions.setSearchFormRoot(sFormDiv);
+  drawOptions.setDrawMode(GSearchControl.DRAW_MODE_OPEN);
+
+
+
+  // Googles Best Guess Setup
+  gSearchGoogleGuess.setUserDefinedLabel("Googles Best Guess");
+  gSearchGoogleGuess.setSiteRestriction('http://www.breitbart.com');
+  gSearchGoogleGuess.setQueryAddition(aa_BGLABEL);
+  this.gCT.addSearcher(gSearchGoogleGuess, sOPT);
+  this.gCT.draw(a16g("gDiv"), drawOptions);
+
+
+  drawOptions = new GdrawOptions();
+  sOPT = new GsearcherOptions();
+  drawOptions.setSearchFormRoot(sFormDiv);
+  drawOptions.setDrawMode(GSearchControl.DRAW_MODE_LINEAR);
+  sOPT.setExpandMode(GSearchControl.EXPAND_MODE_OPEN);
+
+
+  gSearchVideo.setQueryAddition(aa_LABEL);
+
+   // Add the searcher to the SearchControl
+  this.lCT.addSearcher(gSearchVideo, sOPT);
+  sOPT = new GsearcherOptions();
+  sOPT.setExpandMode(GSearchControl.EXPAND_MODE_OPEN);
+
+  gSearchImage.setRestriction(GSearch.RESTRICT_SAFESEARCH, GSearch.SAFESEARCH_OFF);
+  gSearchImage.setQueryAddition(aa_LABEL);
+
+   // Add the searcher to the SearchControl
+  this.lCT.addSearcher(gSearchImage, sOPT);
+  this.lCT.draw(a16g("lDiv"), drawOptions);
+
+
+
+  gSearchSite.setUserDefinedLabel(aa_LABEL);
+  gSearchSite.setSiteRestriction('http://www.breitbart.com');
+  gSearchSite.setQueryAddition(aa_LABEL);
+  gSearchSite.setRestriction(GSearch.RESTRICT_SAFESEARCH, GSearch.SAFESEARCH_OFF);
+
+  gSearchBlog.setQueryAddition(aa_LABEL);
+  gSearchBlog.setResultOrder(GSearch.ORDER_BY_DATE);
+
+  gSearchWeb.setQueryAddition(aa_LABEL);
+  gSearchWeb.setRestriction(GSearch.RESTRICT_SAFESEARCH, GSearch.SAFESEARCH_OFF);
+
+  gSearchCSE.setQueryAddition("askapache");
+  gSearchCSE.setUserDefinedLabel("CSE");
+  gSearchCSE.setRestriction(GSearch.RESTRICT_SAFESEARCH, GSearch.SAFESEARCH_OFF);
+  gSearchCSE.setSiteRestriction("002660089121042511758:kk7rwc2gx0i", null);
+
+
+  // Add the searcher to the SearchControl
+  this.rCT.addSearcher(gSearchSite);
+  /*this.rCT.addSearcher(gSearchBlog);*/
+  this.rCT.addSearcher(gSearchWeb);
+  /*this.rCT.addSearcher(gSearchNews);*/
+  /*this.rCT.addSearcher(gSearchCSE);*/
+  /*this.rCT.addSearcher(gSearchLocal);*/
+
+  drawOptions.setDrawMode(GSearchControl.DRAW_MODE_TABBED);
+  this.rCT.draw(a16g("rDiv"), drawOptions);
+
+
+  // execute the search, firing the other 3 searches as well
+  this.sForm.execute(aa_XX);
+};
+
+
+
+
+
+cse.prototype.onSubmit = function(form) {
+  var q = form.input.value;
+  if (q && q != "") {
+    this.gCT.execute(q);
+    this.lCT.execute(q);
+    this.rCT.execute(q);
+  }
+  return false;
+};
+
+cse.prototype.onClear = function(form) {
+  form.input.value = "";
+  this.gCT.clearAllResults();
+  this.lCT.clearAllResults();
+  this.rCT.clearAllResults();
+  return false;
+};
+
+google.setOnLoadCallback(GACSEOnLoad);
+		/* ]]> */
+		</script>
+		<!-- Google 404 Plugin by www.AskApache.com -->
+		
+	<script type="text/javascript">var _gaq=_gaq||[];_gaq.push(["_setAccount","UA-715222-1"],["_setSiteSpeedSampleRate",1],["_setAllowLinker",true],["_setDomainName","breitbart.com"],["_trackPageview"],["_trackPageLoadTime"]);(function(){var a=document.createElement("script");a.type="text/javascript";a.async=!0;a.src=("https:"==document.location.protocol?"https://ssl":"http://www")+".google-analytics.com/ga.js";var b=document.getElementsByTagName("script")[0];b.parentNode.insertBefore(a,b)})();</script>
+	
+	<script type='text/javascript'>
+		var google_ad_client = "ca-pub-9229289037503472";
+		var isc_is_mobile=/Android|Silk|Kindle|Opera Mini|Opera Mobi|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)?!0:!1;
+		var googletag=googletag||{};googletag.cmd=googletag.cmd||[];
+		(function(){var src="//www.googletagservices.com/tag/js/gpt.js";document.write("<scr"+'ipt src="'+src+'"></scr'+"ipt>")})();
+		googletag.cmd.push(function() {
+			if ( ! isc_is_mobile ) {
+				 					isc_js_debug && console.log('NOT mobile, NOT home');
+					// 10-30-14_ROS_Wordpress.txt
+					googletag.defineSlot('/1003622/Breitbart.ROS.1x1', [1, 1], 'div-gpt-ad-1414695719889-0').addService(googletag.pubads());
+					googletag.defineSlot('/1003622/Breitbart.ROS.Bottom.Leader', [728, 90], 'div-gpt-ad-1414695719889-1').addService(googletag.pubads());
+					googletag.defineSlot('/1003622/Breitbart.ROS.Rail1', [300, 250], 'div-gpt-ad-1414695719889-2').addService(googletag.pubads());
+					googletag.defineSlot('/1003622/Breitbart.ROS.Rail2', [300, 250], 'div-gpt-ad-1414695719889-3').addService(googletag.pubads());
+					googletag.defineSlot('/1003622/Breitbart.ROS.Rail3', [300, 250], 'div-gpt-ad-1414695719889-4').addService(googletag.pubads());
+					googletag.defineSlot('/1003622/Breitbart.ROS.Rail4', [300, 250], 'div-gpt-ad-1414695719889-5').addService(googletag.pubads());
+					googletag.defineSlot('/1003622/Breitbart.ROS.Top.Leader', [728, 90], 'div-gpt-ad-1414695719889-6').addService(googletag.pubads());
+					} else {					isc_js_debug && console.log('IS mobile, NOT home');
+					googletag.defineSlot('/1003622/Breitbart.Mob.ROS.Body', [300, 250], 'div-gpt-ad-1414695920234-0').addService(googletag.pubads());
+					googletag.defineSlot('/1003622/Breitbart.Mob.ROS.Footer', [320, 50], 'div-gpt-ad-1414695920234-1').addService(googletag.pubads());
+					googletag.defineSlot('/1003622/Breitbart.Mob.ROS.Header', [320, 50], 'div-gpt-ad-1414695920234-2').addService(googletag.pubads());
+								}
+			googletag.pubads().enableSingleRequest();
+			googletag.pubads().enableSyncRendering();
+			googletag.enableServices();
+		});
+	</script>
+	
+	<link rel="home" href="http://www.breitbart.com/" title="Home" />
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+<!--
+	generated in 0.093 seconds
+	37610 bytes batcached for 300 seconds
+-->
+</head>
+<body class="category-gun%20control error404 no-js"><script type="text/javascript">var c=document.body.className,c=c.replace(/no-js/,"js"),c=isc_is_mobile?"ismobile "+c:"isnotmobile "+c;document.body.className=c;</script><div id="page" class="hfeed site"><a class="skip-link screen-reader-text" rel="nofollow" href="#content">Skip to content</a>
+			<div class="ad">
+			<!-- // Breitbart.ROS.Top.Leader-->
+			<div id='div-gpt-ad-1414695719889-6' style='width:728px;height:98px;margin:0 auto;'>
+				<script type='text/javascript'>googletag.cmd.push(function(){googletag.display('div-gpt-ad-1414695719889-6');});</script>
+			</div>
+		</div>
+		<div id="HeadW">
+		<div class="navigation">
+			<div class="container">
+				<div class="mobile menu-toggle"><span></span><span></span><span></span></div>
+				<a class="logo" href="http://www.breitbart.com/" title="Breitbart News Network"></a>
+				
+				<div class="top-right">
+					<ul class="links">
+						<li><a title="Breitbart News Network" href="http://www.breitbart.com/">Home</a></li>
+						<li><a rel="nofollow" href="/newsletter-signup/">Subscribe</a></li>
+					</ul>
+					<ul class="social">
+						<li><a class="fb" href="https://www.facebook.com/Breitbart">Facebook</a></li>
+						<li><a class="tw" href="https://twitter.com/#!/BreitbartNews">Twitter</a></li>
+						<li><a class="rs" href="http://feeds.feedburner.com/breitbart">RSS</a></li>
+					</ul>
+					<form class="search-form"  method="get" action="/"><label for="s"></label><input type="text" placeholder="SEARCH" name="s" value="" /><input type="submit" value="search" /></form>				</div><!--.top-right-->
+			
+				<div class="mobile mobile-search"><form class="search-form"  method="get" action="/"><label for="s"></label><input type="text" placeholder="SEARCH" name="s" value="" /><input type="submit" value="search" /></form></div><!--.mobile mobile-search-->
+
+				<!--Primary Nav-->
+<ul id="NavP" class="menu"><li class="menu-big-government category-big-government"><a href="/big-government/" id="p0">Big Government</a></li><li class="menu-big-journalism category-big-journalism"><a href="/big-journalism/" id="p1">Big Journalism</a></li><li class="menu-big-hollywood category-big-hollywood"><a href="/big-hollywood/" id="p2">Big Hollywood</a></li><li class="menu-national-security current-post-ancestor current-menu-parent current-post-parent category-national-security"><a href="/national-security/" id="p3">National Security</a></li><li class="menu-breitbart-tv category-video"><a href="/video/" id="p4">Breitbart TV</a></li><li class="menu-breitbart-sports category-sports"><a href="/sports/" id="p5">Breitbart Sports</a></li><li class="menu-the-wires post-type-archive-wire"><a href="/news/" id="p6">The Wires</a></li><li class="menu-2016-the-race"><a href="/2016-presidential-race/" id="p7">2016 : The Race</a></li></ul>
+<!--Primary Nav-->
+
+				<!--Secondary Nav-->
+<ul id="NavS" class="menu"><li class="menu-breitbart-london category-london"><a href="/london/" id="s0">Breitbart London</a></li><li class="menu-breitbart-texas category-texas"><a href="/texas/" id="s1">Breitbart Texas</a></li><li class="menu-breitbart-california category-california"><a href="/california/" id="s2">Breitbart California</a></li></ul>
+<!--Secondary Nav-->
+
+			</div><!--.container-->
+
+		</div><!--.navigation-->
+	</div><!--HeadW-->
+
+	<div id="content" class="site-content">
+		<div class="container">
+
+	<div id="error404-container" class="col12">
+		<article>          
+			<h2>404 Not Found</h2>
+
+<div id="g404ajax">
+  <div id="sFormDiv">Loading...</div>
+  <div id="gDiv"></div>
+  <div id="lDiv"></div>
+  <div id="rDiv"></div>
+  <p style="clear:both;"></p>
+</div><!--g404ajax-->
+
+
+<p><a href='http://www.breitbart.com/tag/abc/' class='tag-link-961' title='1,940 topics' style='font-size: 9.8421052631579pt;'>ABC</a>
+<a href='http://www.breitbart.com/tag/afghanistan/' class='tag-link-893' title='2,150 topics' style='font-size: 10.333333333333pt;'>Afghanistan</a>
+<a href='http://www.breitbart.com/tag/associated-press/' class='tag-link-972' title='3,421 topics' style='font-size: 12.789473684211pt;'>Associated Press</a>
+<a href='http://www.breitbart.com/tag/benghazi/' class='tag-link-897' title='1,875 topics' style='font-size: 9.5964912280702pt;'>Benghazi</a>
+<a href='http://www.breitbart.com/tag/cbs/' class='tag-link-989' title='2,044 topics' style='font-size: 10.087719298246pt;'>CBS</a>
+<a href='http://www.breitbart.com/tag/chicago/' class='tag-link-901' title='2,830 topics' style='font-size: 11.80701754386pt;'>Chicago</a>
+<a href='http://www.breitbart.com/tag/china/' class='tag-link-902' title='2,869 topics' style='font-size: 11.929824561404pt;'>China</a>
+<a href='http://www.breitbart.com/tag/cnn/' class='tag-link-997' title='4,922 topics' style='font-size: 14.754385964912pt;'>CNN</a>
+<a href='http://www.breitbart.com/tag/congress/' class='tag-link-905' title='8,752 topics' style='font-size: 17.824561403509pt;'>Congress</a>
+<a href='http://www.breitbart.com/tag/crime/' class='tag-link-906' title='3,300 topics' style='font-size: 12.666666666667pt;'>Crime</a>
+<a href='http://www.breitbart.com/tag/defense/' class='tag-link-907' title='5,853 topics' style='font-size: 15.736842105263pt;'>Defense</a>
+<a href='http://www.breitbart.com/tag/fox/' class='tag-link-854' title='2,705 topics' style='font-size: 11.561403508772pt;'>FOX</a>
+<a href='http://www.breitbart.com/tag/fox-news/' class='tag-link-1019' title='3,808 topics' style='font-size: 13.40350877193pt;'>FOX NEWS</a>
+<a href='http://www.breitbart.com/tag/france/' class='tag-link-915' title='1,694 topics' style='font-size: 9.1052631578947pt;'>France</a>
+<a href='http://www.breitbart.com/tag/germany/' class='tag-link-1111' title='1,581 topics' style='font-size: 8.7368421052632pt;'>Germany</a>
+<a href='http://www.breitbart.com/tag/google/' class='tag-link-857' title='1,663 topics' style='font-size: 8.9824561403509pt;'>Google</a>
+<a href='http://www.breitbart.com/tag/illegal-immigrants/' class='tag-link-924' title='1,824 topics' style='font-size: 9.4736842105263pt;'>Illegal Immigrants</a>
+<a href='http://www.breitbart.com/tag/independence/' class='tag-link-925' title='1,364 topics' style='font-size: 8pt;'>Independence</a>
+<a href='http://www.breitbart.com/tag/independent/' class='tag-link-1034' title='2,598 topics' style='font-size: 11.315789473684pt;'>Independent</a>
+<a href='http://www.breitbart.com/tag/iran/' class='tag-link-926' title='3,353 topics' style='font-size: 12.789473684211pt;'>Iran</a>
+<a href='http://www.breitbart.com/tag/iraq/' class='tag-link-927' title='4,014 topics' style='font-size: 13.649122807018pt;'>Iraq</a>
+<a href='http://www.breitbart.com/tag/isis/' class='tag-link-928' title='2,417 topics' style='font-size: 10.947368421053pt;'>ISIS</a>
+<a href='http://www.breitbart.com/tag/islam/' class='tag-link-929' title='2,703 topics' style='font-size: 11.561403508772pt;'>Islam</a>
+<a href='http://www.breitbart.com/tag/mainstream-media/' class='tag-link-931' title='1,793 topics' style='font-size: 9.3508771929825pt;'>Mainstream Media</a>
+<a href='http://www.breitbart.com/tag/mitt-romney/' class='tag-link-831' title='2,950 topics' style='font-size: 12.052631578947pt;'>Mitt Romney</a>
+<a href='http://www.breitbart.com/tag/msnbc/' class='tag-link-1069' title='4,310 topics' style='font-size: 14.017543859649pt;'>MSNBC</a>
+<a href='http://www.breitbart.com/tag/nbc/' class='tag-link-1071' title='3,099 topics' style='font-size: 12.298245614035pt;'>NBC</a>
+<a href='http://www.breitbart.com/tag/new-york-times/' class='tag-link-1073' title='3,267 topics' style='font-size: 12.543859649123pt;'>New York Times</a>
+<a href='http://www.breitbart.com/tag/nfl/' class='tag-link-932' title='1,932 topics' style='font-size: 9.8421052631579pt;'>NFL</a>
+<a href='http://www.breitbart.com/tag/pakistan/' class='tag-link-934' title='1,377 topics' style='font-size: 8pt;'>Pakistan</a>
+<a href='http://www.breitbart.com/tag/politico/' class='tag-link-1079' title='3,281 topics' style='font-size: 12.666666666667pt;'>Politico</a>
+<a href='http://www.breitbart.com/tag/reuters/' class='tag-link-1082' title='5,407 topics' style='font-size: 15.245614035088pt;'>Reuters</a>
+<a href='http://www.breitbart.com/tag/russia/' class='tag-link-938' title='3,695 topics' style='font-size: 13.280701754386pt;'>Russia</a>
+<a href='http://www.breitbart.com/tag/sarah-palin/' class='tag-link-120' title='2,281 topics' style='font-size: 10.701754385965pt;'>Sarah Palin</a>
+<a href='http://www.breitbart.com/tag/senate/' class='tag-link-940' title='11,495 topics' style='font-size: 19.298245614035pt;'>Senate</a>
+<a href='http://www.breitbart.com/tag/state-department/' class='tag-link-944' title='1,701 topics' style='font-size: 9.1052631578947pt;'>State Department</a>
+<a href='http://www.breitbart.com/tag/supreme-court/' class='tag-link-945' title='2,646 topics' style='font-size: 11.438596491228pt;'>Supreme Court</a>
+<a href='http://www.breitbart.com/tag/syria/' class='tag-link-946' title='4,258 topics' style='font-size: 14.017543859649pt;'>Syria</a>
+<a href='http://www.breitbart.com/tag/ted-cruz/' class='tag-link-698' title='1,432 topics' style='font-size: 8.2456140350877pt;'>Ted Cruz</a>
+<a href='http://www.breitbart.com/tag/twitter/' class='tag-link-883' title='19,099 topics' style='font-size: 22pt;'>Twitter</a>
+<a href='http://www.breitbart.com/tag/ukraine/' class='tag-link-951' title='1,766 topics' style='font-size: 9.3508771929825pt;'>Ukraine</a>
+<a href='http://www.breitbart.com/tag/unions/' class='tag-link-952' title='2,539 topics' style='font-size: 11.19298245614pt;'>Unions</a>
+<a href='http://www.breitbart.com/tag/washington-post/' class='tag-link-1104' title='2,792 topics' style='font-size: 11.80701754386pt;'>Washington Post</a>
+<a href='http://www.breitbart.com/tag/white-house/' class='tag-link-958' title='10,109 topics' style='font-size: 18.561403508772pt;'>White House</a>
+<a href='http://www.breitbart.com/tag/wsj/' class='tag-link-1107' title='2,152 topics' style='font-size: 10.333333333333pt;'>WSJ</a></p>
+        </article>
+	</div><!-- #primary -->
+<div id="SideW" class="widget-area col6 endcol">
+
+	<div class="ad right-rail1">
+		<div class="ad-wrapper">
+					<div id='div-gpt-ad-1414695719889-2' style='width:300px;'>
+				<script type='text/javascript'>googletag.cmd.push(function(){googletag.display('div-gpt-ad-1414695719889-2');});</script>
+			</div><!--// Breitbart.ROS.Rail1-->
+				</div><!--ad-wrapper-->
+	</div><!--right-rail1-->
+
+
+	<div class="ndn-videos">
+		<h2 id="content_0_rightrail_0_ctl11_h1Title">Breitbart Video Picks</h2>
+		<div class="ndn-videos-content">
+			<div class="ndn_embed" data-config-widget-id="27513" data-config-type="VideoLauncher/Slider300x250" data-config-tracking-group="90085" data-config-site-section="breitbart2slider_nws_us_sec"></div>
+		</div><!--ndn-videos-content-->
+	</div><!--ndn-videos-->
+
+
+	<div class="ad taboola-rightrail">
+		<div class="ad-wrapper">
+			<div id='taboola-right-rail'></div>
+		</div><!--ad-wrapper-->
+	</div><!--taboola-rightrail-->
+
+			<div class="ad right-rail2">
+			<div class="ad-wrapper">
+				<div id='div-gpt-ad-1414695719889-3' style='width:300px;height:250px'>
+					<script type='text/javascript'>googletag.cmd.push(function(){googletag.display('div-gpt-ad-1414695719889-3');});</script>
+				</div><!--// Breitbart.ROS.Rail2-->
+			</div><!--ad-wrapper-->
+		</div><!--right-rail2-->
+	
+		<div class="ad right-rail3">
+			<div class="ad-wrapper">
+				<div id='div-gpt-ad-1414695719889-4' style='width:300px;height:250px'>
+					<script type='text/javascript'>googletag.cmd.push(function(){googletag.display('div-gpt-ad-1414695719889-4');});</script>
+				</div><!--// Breitbart.ROS.Rail3-->
+			</div><!--ad-wrapper-->
+		</div><!--right-rail3-->
+	
+
+	<div id="disqus-popular-threads">
+		<h2>Most Popular</h2>
+		<div id="disqus-popular-threads-body">
+			<li class="dsq-widget-item"><a href="/big-government/2015/02/11/vehement-atheist-charged-with-executing-3-muslims-students/" class="dsq-widget-thread">‘Vehement Atheist’ Charged with Executing 3 Muslims Students</a><p class="dsq-widget-meta">4420 comments · 1 day ago</p></li><li class="dsq-widget-item"><a href="/big-government/2015/02/11/scott-walkers-possible-2016-run-hits-pro-life-speed-bump/" class="dsq-widget-thread">Scott Walker’s Possible 2016 Run Hits Pro-Life Speed Bump</a><p class="dsq-widget-meta">1657 comments · 17 hours ago</p></li><li class="dsq-widget-item"><a href="/texas/2015/02/11/10000-muhammad-art-and-cartoon-contest-to-be-held-at-site-of-stand-with-the-prophet-conference-in-texas/" class="dsq-widget-thread">$10,000 Muhammad Art and Cartoon Contest to be Held at Site of ‘Stand With the Prophet’ Conference in Texas</a><p class="dsq-widget-meta">836 comments · 10 hours ago</p></li><li class="dsq-widget-item"><a href="/big-government/2015/02/11/district-judge-rules-federal-interstate-handgun-sales-ban-unconstitutional/" class="dsq-widget-thread">District Judge Rules Federal Interstate Handgun Sales Ban Unconstitutional</a><p class="dsq-widget-meta">1430 comments · 18 hours ago</p></li><li class="dsq-widget-item"><a href="/big-government/2015/02/11/scott-walker-dodges-media-trap-in-uk/" class="dsq-widget-thread">Scott Walker ‘Punts’ on Evolution Question</a><p class="dsq-widget-meta">583 comments · 11 hours ago</p></li>		</div><!--disqus-popular-threads-body-->
+	</div><!--disqus-popular-threads-->
+
+
+	<div id="FoxSW"><div class="fox-national"><h3><span></span>Fox News National</h3><ul><li><a href="http://www.foxnews.com/us/2015/02/12/cops-louisiana-man-strangles-4-puppies-cuts-head-off-girlfriends-favorite/">Louisiana man charged after 4 puppies found dead, 1 decapitated</a><span>12 Feb 2015, 7:13 AM PDT</span></li><li><a href="http://www.foxnews.com/us/2015/02/12/us-indexes-open-higher-following-cease-fire-deal-in-ukraine-orbitz-soars-after/">US indexes open higher following cease-fire deal in Ukraine; Orbitz soars after Expedia deal</a><span>12 Feb 2015, 6:46 AM PDT</span></li><li><a href="http://www.foxnews.com/us/2015/02/12/fifty-shades-grey-puzzles-given-to-pa-middle-school-children/">&#039;Fifty Shades of Grey&#039; puzzles given to Pa. middle school children </a><span>12 Feb 2015, 6:17 AM PDT</span></li><li><a href="http://www.foxnews.com/us/2015/02/12/widow-american-sniper-testifies-recalls-last-call-with-chris-kyle/">Widow of ‘American Sniper’ testifies; recalls last call with Chris Kyle</a><span>12 Feb 2015, 6:02 AM PDT</span></li><li><a href="http://www.foxnews.com/us/2015/02/12/after-delays-opening-statements-expected-in-trial-marine-who-vanished-in-iraq/">After delays, opening statements expected in trial of Marine who vanished in Iraq in 2004</a><span>12 Feb 2015, 5:05 AM PDT</span></li></ul></div></div><!--FoxSW-->
+		<div class="send-tip">
+			<h2><a rel="nofollow" href="/send-a-tip/">Send A Tip</a></h2>
+		</div><!--send-tip-->
+
+		<div class="mobile send-tip mobile-send-tip">
+			<h2><a rel="nofollow" href="mailto:tip/at/email.com">Send A Tip</a></h2>
+		</div><!--mobile-send-tip-->
+
+		<div class="newsletter-signup">
+			<h2>Sign up for our <span>newsletter</span></h2>
+						<div class='gf_browser_safari gform_wrapper' id='gform_wrapper_1' ><a id='gf_1' name='gf_1' class='gform_anchor' ></a><form method='post' enctype='multipart/form-data' id='gform_1' action='#gf_1'><div class='gform_body'><ul id='gform_fields_1' class='gform_fields top_label description_below'><li id='field_1_1' class='gfield gfield_contains_required' ><label class='gfield_label' for='input_1_1'>Email<span class='gfield_required'>*</span></label><div class='ginput_container'><input name='input_1' id='input_1_1' type='text' value='' class='medium' tabindex='1' /></div></li></ul></div><div class='gform_footer top_label'><input type='submit' id='gform_submit_button_1' class='gform_button button' value='Submit' tabindex='2' onclick='if(window["gf_submitting_1"]){return false;} window["gf_submitting_1"]=true; '/><input type='hidden' class='gform_hidden' name='is_submit_1' value='1' /><input type='hidden' class='gform_hidden' name='gform_submit' value='1' /><input type='hidden' class='gform_hidden' name='gform_unique_id' value='' /><input type='hidden' class='gform_hidden' name='gform_target_page_number_1' id='gform_target_page_number_1' value='0' /><input type='hidden' class='gform_hidden' name='gform_source_page_number_1' id='gform_source_page_number_1' value='1' /><input type='hidden' name='gform_field_values' value='' /></div></form></div><script type='text/javascript'>var isc_rgft=0,isc_gftid,isc_rgfc=function(){"number"==typeof isc_gftid&&clearTimeout(isc_gftid); jQuery(document).ready(function(){jQuery(document).trigger('gform_post_render', [1, 1]) } ); },isc_gftim=function(){isc_rgft++;if(window.jQuery&&"function"==typeof window.jQuery)isc_rgfc();else{if(10<isc_rgft)try{var a=document.createElement("script");a.type="text/javascript";a.src="/t/style-1419375.js";document.getElementsByTagName("body")[0].appendChild(a);isc_rgft=0}catch(b){}isc_gftid=setTimeout(isc_gftim,1000)}};isc_gftim();</script>			
+		</div><!--newsletter-signup-->
+		
+		<div class="mobile mobile-newsletter-signup">
+			<h2><a rel="nofollow" href="mailto:email/at/email.com">Send Me the Latest</a></h2>
+		</div><!--mobile-newsletter-signup-->
+		
+	<div><br class="C" /></div>
+
+	<div class="ad right-rail4">
+		<div class="ad-wrapper">
+						<div id='div-gpt-ad-1414695719889-5' style='width:300px;height:250px;overflow-y:auto;overflow-x:hidden'>
+				<script type='text/javascript'>googletag.cmd.push(function(){googletag.display('div-gpt-ad-1414695719889-5');});</script>
+			</div><!--// Breitbart.ROS.Rail4-->
+					</div><!--ad-wrapper-->
+	</div><!--right-rail4-->
+
+</div><!--SideW-->
+			<div class="clear"></div>
+			<div id="FoxPW"><h2>From Our Partners</h2><div class="fox-politics"><h3><span></span>Fox News Politics</h3><ul><li><a rel="nofollow" href="http://www.foxnews.com/politics/2015/02/12/obama-builds-hamster-wheel-for-gop-on-isis/">Obama builds hamster wheel for GOP on ISIS </a><span>12 Feb 2015, 8:34 AM PDT</span></li><li><a rel="nofollow" href="http://www.foxnews.com/politics/2015/02/12/democrats-to-hold-2016-convention-in-philadelphia/">Democrats to hold 2016 convention in Philadelphia</a><span>12 Feb 2015, 7:38 AM PDT</span></li><li><a rel="nofollow" href="http://www.foxnews.com/politics/2015/02/12/intelligence-officials-tight-lipped-on-foreign-fighters-back-in-us-admit/">Intel officials tight-lipped on American militant fighters back in US, admit tracking is difficult</a><span>12 Feb 2015, 1:00 AM PDT</span></li><li><a rel="nofollow" href="http://www.foxnews.com/politics/2015/02/12/oregon-governor-reportedly-changed-his-mind-about-resigning-over-ethics/">Oregon governor reportedly changed his mind about resigning over ethics controversy</a><span>12 Feb 2015, 1:00 AM PDT</span></li><li><a rel="nofollow" href="http://www.foxnews.com/politics/2015/02/12/illegal-immigrant-activists-protest-inside-offices-ted-cruz-jeff-sessions/">Illegal immigrant activists protest inside offices of Ted Cruz, Jeff Sessions</a><span>11 Feb 2015, 11:00 PM PDT</span></li></ul></div><div class="fox-national"><h3><span></span>Fox News National</h3><ul><li><a rel="nofollow" href="http://www.foxnews.com/us/2015/02/12/shoot-or-dont-shoot-police-scenarios-prove-eye-opening-for-civil-rights-leaders/">Shoot or don&#039;t shoot: Police scenarios prove eye-opening for civil rights leaders</a><span>12 Feb 2015, 12:07 PM PDT</span></li><li><a rel="nofollow" href="http://www.foxnews.com/us/2015/02/12/los-angeles-officer-who-saw-replica-gun-shoots-teen-in-back/">Los Angeles officer who saw replica gun shoots teen in back</a><span>12 Feb 2015, 8:47 AM PDT</span></li><li><a rel="nofollow" href="http://www.foxnews.com/us/2015/02/12/los-angeles-police-officer-shoots-injures-teen-after-seeing-someone-near-him/">Los Angeles police officer shoots, injures teen after seeing someone near him with replica gun</a><span>12 Feb 2015, 7:31 AM PDT</span></li><li><a rel="nofollow" href="http://www.foxnews.com/us/2015/02/12/cops-louisiana-man-strangles-4-puppies-cuts-head-off-girlfriends-favorite/">Louisiana man charged after 4 puppies found dead, 1 decapitated</a><span>12 Feb 2015, 7:13 AM PDT</span></li><li><a rel="nofollow" href="http://www.foxnews.com/us/2015/02/12/us-indexes-open-higher-following-cease-fire-deal-in-ukraine-orbitz-soars-after/">US indexes open higher following cease-fire deal in Ukraine; Orbitz soars after Expedia deal</a><span>12 Feb 2015, 6:46 AM PDT</span></li></ul></div><div class="fox-sports"><h3><span></span>Fox News Sports</h3><ul><li><a rel="nofollow" href="http://www.foxnews.com/sports/2015/02/12/lebron-directs-cavs-to-windy-city/">LeBron directs Cavs to Windy City</a><span>12 Feb 2015, 7:33 AM PDT</span></li><li><a rel="nofollow" href="http://www.foxnews.com/sports/2015/02/12/hantuchova-continues-push-for-another-title-in-thailand/">Hantuchova continues push for another title in Thailand</a><span>12 Feb 2015, 7:17 AM PDT</span></li><li><a rel="nofollow" href="http://www.foxnews.com/sports/2015/02/12/report-kings-set-to-bring-in-karl/">Report: Kings set to bring in Karl</a><span>12 Feb 2015, 6:46 AM PDT</span></li><li><a rel="nofollow" href="http://www.foxnews.com/world/2015/02/12/former-tennis-champion-bob-hewitt-testifies-at-his-rape-trial-denies-charges/">Former tennis champion Bob Hewitt testifies at his rape trial, denies charges</a><span>12 Feb 2015, 6:45 AM PDT</span></li><li><a rel="nofollow" href="http://www.foxnews.com/sports/2015/02/12/dorm-report-tarkanian-original-rebel/">Dorm Report: Tarkanian, the original Rebel</a><span>12 Feb 2015, 6:14 AM PDT</span></li></ul></div></div><!--FoxPW--><div class="clear"></div>			
+							<div class="ad" style="padding:60px 0; background:transparent; margin-top:20px;">
+					<!-- // Breitbart.ROS.Bottom.Leader -->
+					<div id='div-gpt-ad-1414695719889-1' style='width:728px;height:90px;margin:0 auto;'>
+						<script type='text/javascript'>googletag.cmd.push(function(){googletag.display('div-gpt-ad-1414695719889-1');});</script>
+					</div>
+				</div>
+				
+				<!--// Breitbart.ROS.1x1-->
+				<div id='div-gpt-ad-1414695719889-0' style='width:1px;height:1px'><script type='text/javascript'>googletag.cmd.push(function(){googletag.display('div-gpt-ad-1414695719889-0');});</script></div>
+				
+		</div><!-- .container -->
+	</div><!-- #content -->
+
+	<div id="FootW">
+		<div id="FWI">
+			<div class="col7">
+				<a class="logo" href="/" title="Breitbart" alt="Breitbart"></a>  
+				<div class="copyright">     
+					Copyright &copy; 2015 Breitbart
+					<form class="search-form"  method="get" action="/"><label for="s"></label><input type="text" placeholder="SEARCH" name="s" value="" /><input type="submit" value="search" /></form>   
+					<a rel="nofollow" class="arrow" href="/advertise-with-us/">Advertise With Us</a>
+				</div>
+			</div>
+			<div class="col8">
+				<h4>EXPLORE BREITBART</h4>
+				<!--Footer Nav-->
+<ul id="NavF" class="menu"><li class="menu-breitbart"><a href="/" id="f0">Breitbart</a></li><li class="menu-breitbart-sports"><a href="/sports/" id="f1">Breitbart Sports</a></li><li class="menu-breitbart-tv"><a href="/video/" id="f2">Breitbart TV</a></li><li class="menu-breitbart-texas"><a href="/texas/" id="f3">Breitbart Texas</a></li><li class="menu-breitbart-london"><a href="/london/" id="f4">Breitbart London</a></li><li class="menu-national-security"><a href="/national-security/" id="f5">National Security</a></li><li class="menu-big-journalism"><a href="/big-journalism/" id="f6">Big Journalism</a></li><li class="menu-big-hollywood"><a href="/big-hollywood/" id="f7">Big Hollywood</a></li><li class="menu-big-government current-post-ancestor current-menu-parent current-post-parent"><a href="/big-government/" id="f8">Big Government</a></li><li class="menu-breitbart-california"><a href="/california/" id="f9">Breitbart California</a></li><li class="menu-the-conversation"><a href="/blog/" id="f10">The Conversation</a></li><li class="menu-the-wires"><a href="/news/" id="f11">The Wires</a></li><li class="menu-privacy-policy"><a href="/about-us/privacy-policy/" id="f12">Privacy Policy</a></li><li class="menu-terms-of-use"><a href="/about-us/terms-of-use/" id="f13">Terms of Use</a></li><li class="menu-breitbart-jobs"><a href="/about-us/jobs/" id="f14">Breitbart Jobs</a></li></ul>
+<!--Footer Nav-->
+
+			</div>
+			<div class="col3 endcol">
+        		<h4>Connect</h4>
+				<ul class="social">
+					<li><a href="https://www.facebook.com/Breitbart"><span class="fb"></span>Facebook</a></li>
+					<li><a href="https://twitter.com/#!/BreitbartNews"><span class="tw"></span>Twitter</a></li>
+					<li><a href="http://feeds.feedburner.com/breitbart"><span class="rs"></span>RSS</a></li>
+					<li><a rel="nofollow" href="/send-a-tip/"><span class="tp"></span>Send us a tip</a></li>
+				</ul>
+        		<h2>
+					<a class="logo mobile" href="/" title="Breitbart" alt="Breitbart"></a>  
+					<a rel="nofollow" class="subscribe" href="/newsletter-signup/">SUBSCRIBE TO THE BREITBART NEWSLETTER</a>
+					<a id="fullsiteswitch" class="full-site mobile" href="/">Switch to Full Site</a>  
+				</h2>
+			</div>
+			<div class="copyright mobile">Copyright &copy; 2015 Breitbart</div>         
+		</div><!--FWI-->
+	</div><!--FootW-->
+	<div id="mobiledebugg"><p id="mbinfoh"></p><pre id="mbinfoua"></pre></div><!--mobiledebugg-->
+</div><!--#page-->
+
+
+<script type="text/javascript">var disqus_shortname="breitbartproduction"; (function(){var nodes=document.getElementsByTagName("span");for(var i=0,url;i<nodes.length;i++)if(nodes[i].className.indexOf("dsq-postid")!=-1){nodes[i].parentNode.setAttribute("data-disqus-identifier",nodes[i].getAttribute("data-dsqidentifier"));url=nodes[i].parentNode.href.split("#",1);if(url.length==1)url=url[0];else url=url[1];nodes[i].parentNode.href=url+"#disqus_thread"}var s=document.createElement("script");s.async=true;s.type="text/javascript";s.src="//breitbartproduction.disqus.com/count.js"; (document.getElementsByTagName("HEAD")[0]||document.getElementsByTagName("BODY")[0]).appendChild(s)})();</script><script type="text/javascript" src="/t/style-01423779.js" async></script><script type="text/javascript" src="//launch.newsinc.com/js/embed.js" id="_nw2e-js" async></script><!--[if lt IE 9]><script type="text/javascript" src="/t/assets/js/html5.js"></script><![endif]-->
+
+<noscript><img style="display:none" height="1" width="1" alt="" src="//pixel.quantserve.com/pixel/p-dcxh5b8qxvs6g.gif" /><img style="display:none" height="1" width="1" alt="" src="https://www.facebook.com/tr?id=296280873867140&amp;ev=NoScript" /><img style="display:none" height="1" width="1" alt="" src="http://b.scorecardresearch.com/p?c1=2&c2=17674108&cv=2.0&cj=1" /></noscript>
+
+<!-- 5 queries. 0.093 seconds. -->
+</body>
+</html>
