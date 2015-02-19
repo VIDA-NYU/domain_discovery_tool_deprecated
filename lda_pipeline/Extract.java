@@ -47,6 +47,7 @@ public class Extract {
         content = content.trim().replaceAll(" +", " ");
         content = content.replaceAll("[\n\"\t]", " ");
 	content = content.replaceAll(",","");
+	content = content.toLowerCase();
         System.out.println(url + "\t"  + content);
         
     }
@@ -60,7 +61,7 @@ public class Extract {
         if (fileEntry.isDirectory()) {
             listFiles(fileEntry);
         } else {
-            //System.out.println);
+            System.out.println(fileEntry);
             process(fileEntry, URLDecoder.decode(fileEntry.getName()));
         }
     }
