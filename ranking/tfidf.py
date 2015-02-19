@@ -27,7 +27,9 @@ class tfidf:
             self.tfidfVector.append([url,doc_tfidf])
 
     def getTfidfArray(self):
-        corpus = sorted(self.corpus_dict.items(), key=operator.itemgetter(0))
+        corpus = sorted(self.corpus_dict.items(), key=operator.itemgetter(1),reverse=True)
+        for i in range(0,50):
+            print i," ",corpus[i]
         data = np.ndarray(shape=(len(self.tfidfVector),len(corpus)))
         index_i = 0
         for [url, vect] in self.tfidfVector:
@@ -40,6 +42,10 @@ class tfidf:
     
     def getURLs(self, args):
         return [self.documents[x][0] for x in args]
+
+    def getTerms(self, args):
+        corpus = sorted(self.corpus_dict.items(), key=operator.itemgetter(1),reverse=True)
+        return [corpus[x][0] for x in args]
         
     def process(self, inputfile):
         with open(inputfile) as lines:
