@@ -61,7 +61,6 @@ public class Extract {
         if (fileEntry.isDirectory()) {
             listFiles(fileEntry);
         } else {
-            System.out.println(fileEntry);
             process(fileEntry, URLDecoder.decode(fileEntry.getName()));
         }
     }
