@@ -5,17 +5,24 @@ import BayesianSets
 import numpy as np
 
 class extract_terms:
-    def results(self,input_file,query_index):
-        table = tfidf.tfidf()
-    
-        # Compute tfidf of terms in the documents
-        table.process(input_file)
+    def __init__(self, input_file, ignore_index):
+        self.table = tfidf.tfidf()
+        self.table.process(input_file,ignore_index)
+
+    def getTopTerms(self,top):
+        return self.table.getTopTerms(top)
         
-        d = table.getTfidfArray()
+    def results(self,query_terms):
+            
+        d = self.table.getTfArray()
+        
+        query_index = self.table.getIndex(query_terms)
+
+        col_sum_d = np.sum(d,axis=0)
+
+        norm_d = np.divide(d, col_sum_d)
 
         data = np.transpose(d)
-        
-        print np.shape(data)
 
         bs = BayesianSets.BayesianSets()
     
@@ -29,7 +36,7 @@ class extract_terms:
         offset_rank_index = [index[x] for x in rank_index]
 
         # Get the urls corresponding to the scored documents
-        ranked_terms = table.getTerms(offset_rank_index)
+        ranked_terms = self.table.getTerms(offset_rank_index)
 
         ranked_scores = [score[rank_index[i]] for i in range(0, len(score))]
         return [ranked_terms,ranked_scores]
@@ -47,7 +54,7 @@ def main(argv):
     ranker = extract_terms()
     [ranked_urls,scores] = ranker.results(input_file,query_index)
 
-    for i in range(0,100):
+    for i in range(0,20):
         print ranked_urls[i]," ", str(scores[i])
     
 if __name__=="__main__":
