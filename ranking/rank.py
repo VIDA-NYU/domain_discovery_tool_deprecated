@@ -5,20 +5,21 @@ import BayesianSets
 import numpy as np
 
 class rank:
-    def results(self,input_file,query_index):
+    def results(self,input_file,query_index,ignore_index):
         table = tfidf.tfidf()
     
         # Compute tfidf of terms in the documents
-        table.process(input_file)
+        adjusted_indices = table.process(input_file, ignore_index)
+        query_index_copy = query_index
+        
+        query_index = [adjusted_indices[x] for x in query_index_copy]
         
         data = table.getTfidfArray()
-        
-        print np.shape(data)
 
         bs = BayesianSets.BayesianSets()
     
         # documents other than the relevant documents
-        index = [x for x in range(0,len(data)) if x not in query_index]
+        index = [x for x in range(0,len(data)) if x not in query_index ]
 
         score = bs.score(data[query_index,:], data[index,:])
 
