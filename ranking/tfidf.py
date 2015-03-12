@@ -7,10 +7,10 @@ from os.path import exists
 
 class tfidf:
     def __init__(self):
-        self.documents = []
+        self.documents = {}
         self.corpus_dict = {}
         self.idf = {}
-        self.tfidfVector = []
+        self.tfidfVector = {}
         self.exclude = []
         self.corpus_tf = {}
         if exists('exclude.txt'):
@@ -26,11 +26,12 @@ class tfidf:
             self.idf[word] = math.log(float(N)/self.corpus_dict[word])
 
     def getTfidf(self):
-        for [url, tf] in self.documents:
+        for url in self.documents.keys():
+            tf = self.documents[url]
             doc_tfidf = {}
             for word in tf:
                 doc_tfidf[word] = tf[word] * self.idf[word]
-            self.tfidfVector.append([url,doc_tfidf])
+            self.tfidfVector[url] = doc_tfidf
 
     def getTopTerms(self,top):
         corpus = sorted(self.corpus_tf.items(), key=operator.itemgetter(1),reverse=True)
@@ -44,11 +45,18 @@ class tfidf:
             index.append(corpus_keys.index(term.strip()))
         return index
 
-    def getTfidfArray(self):
+    def getTfidfArray(self, urls):
+        print "URLS = ", urls
+        for url in self.tfidfVector.keys():
+            if url in urls:
+                print 'FOUND', url
+            else:
+                print 'NOT FOUND', url
         corpus = sorted(self.corpus_tf.items(), key=operator.itemgetter(1),reverse=True)
-        data = np.ndarray(shape=(len(self.tfidfVector),len(corpus)))
+        data = np.ndarray(shape=(len(urls),len(corpus)))
         index_i = 0
-        for [url, vect] in self.tfidfVector:
+        for url in urls:
+            vect = self.tfidfVector[url]
             index_j = 0
             for [word, count] in corpus:
                 data[index_i,index_j] = vect.get(word, 0.0)
@@ -75,32 +83,22 @@ class tfidf:
         corpus = sorted(self.corpus_tf.items(), key=operator.itemgetter(1),reverse=True)
         return [corpus[x][0] for x in args]
         
-    def process(self, inputfile, ignore_index):
-        adjusted_indices = {}
-        adjusted_index = 0
-        with open(inputfile) as lines:
-            count = 0
-            for line in lines:
-                if count not in ignore_index:
-                    adjusted_indices[count] = adjusted_index
-                    adjusted_index = adjusted_index + 1
-                    url, content = line.split(";");
-                    tokens = content.split(" ");
-                    text = [ word.strip().strip('"') for word in nltk.Text(tokens) if word.strip().strip('"') not in self.exclude]
-                
-                    fdist = self.getFreqDist(text)
+    def process(self, documents):
+        for url in documents.keys():
+            content = documents[url]
+            tokens = content.split(" ");
+            text = [ word.strip().strip('"') for word in nltk.Text(tokens) if word.strip().strip('"') not in self.exclude]
 
-                    N = fdist.N()
-                    for word in fdist:
-                        self.corpus_dict[word] = self.corpus_dict.get(word,0.0) + 1.0
-                        self.corpus_tf[word] = self.corpus_tf.get(word,0.0) + fdist[word]
-                        fdist[word] = fdist[word] / float(N)
-                    self.documents.append([url,fdist])
-                count = count + 1
+            fdist = self.getFreqDist(text)
+
+            N = fdist.N()
+            for word in fdist:
+                self.corpus_dict[word] = self.corpus_dict.get(word,0.0) + 1.0
+                self.corpus_tf[word] = self.corpus_tf.get(word,0.0) + fdist[word]
+                fdist[word] = fdist[word] / float(N)
+            self.documents[url]=fdist
         self.getIdf()
-        self.getTfidf()
-        return adjusted_indices
-            
+        self.getTfidf()            
                     
 
 
