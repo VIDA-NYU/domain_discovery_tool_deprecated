@@ -5,6 +5,8 @@ from django.utils.safestring import mark_safe
 import QueryForm
 from django import forms
 
+import seed_crawler_model 
+
 from subprocess import call
 from subprocess import Popen
 from subprocess import PIPE
@@ -19,26 +21,30 @@ import operator
 from os import listdir
 from os.path import isfile, join, exists
 
-def populate_urls(request):
-    fields = {}
+def populate_urls(request, urls):
+    fields = []
     CHOICES = ((1,'Yes'),(2,'No'))
-    if 'choice_urls_field1' not in request.session.keys() or 'search' in request.POST:
+    if len(urls) > 0:
         # Display search results
-        urlspath = '/Users/krishnam/Memex/memex/seed_crawler/seeds_generator/html'
-        urls = [ download.decode(f) for f in listdir(urlspath) if isfile(join(urlspath,f)) ]
         index = 0
         for url in urls:
-            request.session['choice_urls_field'+str(index)] = url
-            fields['choice_urls_field'+str(index)] = forms.TypedChoiceField(label=mark_safe('<a href="'+url+'"target="_blank">'+url+'</a>'),required=False,widget=forms.RadioSelect(), choices=CHOICES,coerce=int)
+            request.session['choice_urls_field_'+str(index)] = url
+            fields.append(['choice_urls_field_'+str(index), forms.TypedChoiceField(label=mark_safe('<a href="'+url+'"target="_blank">'+url+'</a>'),required=False,widget=forms.RadioSelect(), choices=CHOICES,coerce=int)])
             index = index + 1
     else:
-        for key in request.session.keys():
-            if 'choice_urls_field' in key:
-                fields[key] = forms.TypedChoiceField(label=mark_safe('<a href="'+ request.session[key]+'"target="_blank">'+request.session[key]+'</a>'),required=False,widget=forms.RadioSelect(), choices=CHOICES,coerce=int)
+        index = 0
+        while True:
+            key = 'choice_urls_field_'+str(index)
+            field = request.session.get(key,None)
+            if field is not None:
+                fields.append([key, forms.TypedChoiceField(label=mark_safe('<a href="'+ field +'"target="_blank">'+request.session[key]+'</a>'),required=False,widget=forms.RadioSelect(), choices=CHOICES,coerce=int)])
+                index = index + 1
+            else:
+                break
                 
-    fields = OrderedDict(sorted(fields.items(), key=operator.itemgetter(0)))
-            
-    return type('QueryFormWithUrl', (forms.BaseForm,), { 'base_fields': fields })
+    ordered_fields = OrderedDict(fields)
+
+    return type('QueryFormWithUrl', (forms.BaseForm,), { 'base_fields': ordered_fields })
 
 def populate_freq_terms(request, terms):
     CHOICES = ((1,'Yes'),(2,'No'))
@@ -53,9 +59,8 @@ def populate_freq_terms(request, terms):
         for key in request.session.keys():
             if 'choice_freq_terms_field' in key:
                 fields[key] = forms.TypedChoiceField(label=mark_safe(request.session[key]),required=False,widget=forms.RadioSelect(), choices=CHOICES,coerce=int)
-    print "FREQ TERMS ",fields
     fields = OrderedDict(sorted(fields.items(), key=operator.itemgetter(0)))
-    print "FREQ TERMS ORDERED",fields
+
     return type('QueryFormWithTerms', (forms.BaseForm,), { 'base_fields': fields })
 
 def populate_ranked_terms(request,terms):
@@ -126,60 +131,38 @@ def get_query(request):
             # check whether it's valid:
             if form1.is_valid():
                 # Search Bing for the urls related to the query terms
-                query_terms = form1.cleaned_data['query_terms']
+                query_terms = [form1.cleaned_data['query_terms']]
                 
-                os.chdir('/Users/krishnam/Memex/memex/seed_crawler/seeds_generator')
-                
-                with open('conf/queries.txt','w') as f:
-                    f.write(query_terms)
-                    
-                p=Popen("java -cp .:class:libs/commons-codec-1.9.jar BingSearch -t 15",shell=True,stdout=PIPE)
-                output, errors = p.communicate()
-                print output
-                print errors
-                call(["rm", "-rf", "html"])
-                call(["mkdir", "-p", "html"])
-                dl = download.download("results.txt","html")
-                
-                if exists("/Users/krishnam/Memex/memex/seed_crawler/ranking/exclude.txt"):
-                    call(["rm", "/Users/krishnam/Memex/memex/seed_crawler/ranking/exclude.txt"])
+                scm = seed_crawler_model.SeedCrawlerModel()
 
-                form_class = populate_urls(request)
+                results = scm.submit_query_terms(query_terms)
+                
+                form_class = populate_urls(request, results)
                 form2 = form_class()
-                print "Sessions ", request.session.keys()
-                # redirect to a new URL:
+
                 return render(request, 'query_with_results.html', {'form1': form1,'form2':form2})
 
-        form_class = populate_urls(request)
+        form_class = populate_urls(request, [])
         form2 = form_class(request.POST)
-        int_url_yes_choices = []
-        int_url_no_choices = []
+        url_yes_choices = []
+        url_no_choices = []
         if form2.is_valid():
             # If relevant pages are selected do the ranking
             for field in form2.cleaned_data:
-                if form2.cleaned_data[field] == 1:
-                    int_url_yes_choices.append(int(field.replace("choice_urls_field","")))
-                elif form2.cleaned_data[field] == 2:
-                    int_url_no_choices.append(int(field.replace("choice_urls_field","")))
-
+                if "choice_urls_field_" in field:
+                    if form2.cleaned_data[field] == 1:
+                        url_yes_choices.append(request.session[field].encode('ascii','ignore'))
+                    elif form2.cleaned_data[field] == 2:
+                        url_no_choices.append(request.session[field].encode('ascii','ignore'))
+            
         if 'rank' in request.POST:
                         
-                copy_files(int_url_yes_choices,int_url_no_choices)
-                        
-                os.chdir('/Users/krishnam/Memex/memex/seed_crawler/lda_pipeline')
-                call(["mkdir", "-p", "data"])
-                p=Popen("java -cp .:class/:lib/boilerpipe-1.2.0.jar:lib/nekohtml-1.9.13.jar:lib/xerces-2.9.1.jar Extract ../seeds_generator/html/  | python concat_nltk.py data/lda_input.csv",shell=True,stdout=PIPE)
-                output, errors = p.communicate()
-                print output
-                print errors
-                
-                os.chdir('/Users/krishnam/Memex/memex/seed_crawler/ranking')
-                ranker = rank.rank()
-                [ranked_urls,scores] = ranker.results('/Users/krishnam/Memex/memex/seed_crawler/lda_pipeline/data/lda_input.csv',int_url_yes_choices, int_url_no_choices)
-                print "Scores ", scores
-                form_class = populate_score(ranked_urls, scores)
-                form3 = form_class()
-                return render(request, 'query_with_ranks.html', {'form1': form1,'form2':form2, 'form3':form3})
+            #copy_files(int_url_yes_choices,int_url_no_choices)
+            scm = seed_crawler_model.SeedCrawlerModel()
+            [ranked_urls, scores] = scm.submit_selected_urls(url_yes_choices, url_no_choices)
+            form_class = populate_score(ranked_urls, scores)
+            form3 = form_class()
+            return render(request, 'query_with_ranks.html', {'form1': form1,'form2':form2, 'form3':form3})
 
         elif 'extract' in request.POST:
             os.chdir('/Users/krishnam/Memex/memex/seed_crawler/ranking')
