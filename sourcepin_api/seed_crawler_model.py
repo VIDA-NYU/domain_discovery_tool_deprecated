@@ -3,11 +3,19 @@
 #
 #03/11/2015
 
+from subprocess import call
+from subprocess import Popen
+from subprocess import PIPE
+import os
+from os.path import isfile, join, exists
+import download
+import rank
+
 class SeedCrawlerModel:
     #Note: we should estimate the latency of each operation so that the application could adapt smoothly
 
     def __init__(self):
-        #Intermediated data will being handled here: urls, extracted text, terms, clusters, etc.
+        #Intermediate data will being handled here: urls, extracted text, terms, clusters, etc.
 
         #list of urls and their labels, ranking scores
         #e.g: urls = [["nature.com", 1, 0.9], ["sport.com", 0, 0.01]
@@ -16,6 +24,8 @@ class SeedCrawlerModel:
         #list of terms and their labels, ranking scores
         #e.g: terms = [["science", 1, 0.9], ["sport", 0, 0.02]]
         self.terms = []
+        self.memex_home = os.environ['MEMEX_HOME']
+
 
     def submit_query_terms(self, term_list):
     #Perform queries to Search Engine APIs
@@ -26,12 +36,31 @@ class SeedCrawlerModel:
     #   term_list: list of search terms that are submited by user
     #Returns:
     #   urls: list of urls that are returned by Search Engine
-    
+        os.chdir(self.memex_home + '/seed_crawler/seeds_generator')
+        
+        with open('conf/queries.txt','w') as f:
+            for term in term_list:
+                f.write(term)
+            
+        p=Popen("java -cp .:class:libs/commons-codec-1.9.jar BingSearch -t 15",shell=True,stdout=PIPE)
+        output, errors = p.communicate()
+        print output
+        print errors
+        call(["rm", "-rf", "html"])
+        call(["mkdir", "-p", "html"])
+        download.download("results.txt","html")
+        
+        if exists(self.memex_home + "/seed_crawler/ranking/exclude.txt"):
+            call(["rm", self.memex_home + "/seed_crawler/ranking/exclude.txt"])
+
         urls = []
+        with open("results.txt",'r') as f:
+            urls = [self.validate_url(line.strip()) for line in f.readlines()]
+
         return urls #Results from Search Engine
         
     
-    def submit_selected_urls(self, labeled_urls):
+    def submit_selected_urls(self, positive, negative):
     #Perform ranking and diversifing on all urls with regard to the positive urls
     #
     #Args:
@@ -43,8 +72,18 @@ class SeedCrawlerModel:
         # If accuracy above threshold classify pages
         # Ranking 
         # Diversification
-        urls = []
-        return urls # classified, ranked, diversified 
+        os.chdir(self.memex_home + '/seed_crawler/lda_pipeline')
+        call(["mkdir", "-p", "data"])
+        p=Popen("java -cp .:class/:lib/boilerpipe-1.2.0.jar:lib/nekohtml-1.9.13.jar:lib/xerces-2.9.1.jar Extract ../seeds_generator/html/  | python concat_nltk.py data/lda_input.csv",shell=True,stdout=PIPE)
+        output, errors = p.communicate()
+        print output
+        print errors
+        
+        os.chdir(self.memex_home + '/seed_crawler/ranking')
+        ranker = rank.rank()
+        
+        [ranked_urls,scores] = ranker.results(self.memex_home + '/seed_crawler/lda_pipeline/data/lda_input.csv',positive, negative)
+        return [ranked_urls, scores] # classified, ranked, diversified 
 
     def extract_terms(self):
     #Extract salient terms from positive urls
@@ -66,8 +105,17 @@ class SeedCrawlerModel:
         terms = []
         return terms # ranked
 
+    def validate_url(self, url):
+        s = url[:4]
+        if s == "http":
+            return url
+        else:
+            url = "http://" + url
+        return url
+
+
 if __name__=="__main__":
-    scm = new SeedCrawlerModel()
+    scm = SeedCrawlerModel()
     #Create a test that mimick user process here to test
     #1. User starts with some terms
     #2. (Repeat) User labels the urls and submits the labeled urls
