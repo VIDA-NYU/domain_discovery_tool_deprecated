@@ -58,5 +58,5 @@ for content in sys.stdin:
  text = valid_words(text)
  #if len(text) > 100:
  # len_count += 1
- output.write("\"" + url + "\";\"" + text + "\"\n")
+ output.write(url + ";" + text + "\n")
 output.close()
