@@ -11,11 +11,7 @@ class tfidf:
         self.corpus_dict = {}
         self.idf = {}
         self.tfidfVector = {}
-        self.exclude = []
         self.corpus_tf = {}
-        if exists('exclude.txt'):
-            with open('exclude.txt','r') as f:
-                self.exclude = [word.strip() for word in f.readlines()];
             
     def getFreqDist(self, text):
         return nltk.probability.FreqDist(text)
@@ -46,12 +42,6 @@ class tfidf:
         return index
 
     def getTfidfArray(self, urls):
-        print "URLS = ", urls
-        for url in self.tfidfVector.keys():
-            if url in urls:
-                print 'FOUND', url
-            else:
-                print 'NOT FOUND', url
         corpus = sorted(self.corpus_tf.items(), key=operator.itemgetter(1),reverse=True)
         data = np.ndarray(shape=(len(urls),len(corpus)))
         index_i = 0
@@ -68,7 +58,8 @@ class tfidf:
         corpus = sorted(self.corpus_tf.items(), key=operator.itemgetter(1),reverse=True)
         data = np.ndarray(shape=(len(self.documents),len(corpus)))
         index_i = 0
-        for [url, tf] in self.documents:
+        for url in self.documents.keys():
+            tf = self.documents[url]
             index_j = 0
             for [word, count] in corpus:
                 data[index_i,index_j] = tf.get(word, 0.0)
@@ -87,7 +78,7 @@ class tfidf:
         for url in documents.keys():
             content = documents[url]
             tokens = content.split(" ");
-            text = [ word.strip().strip('"') for word in nltk.Text(tokens) if word.strip().strip('"') not in self.exclude]
+            text = [ word.strip().strip('"') for word in nltk.Text(tokens)]
 
             fdist = self.getFreqDist(text)
 
