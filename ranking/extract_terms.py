@@ -5,15 +5,14 @@ import BayesianSets
 import numpy as np
 
 class extract_terms:
-    def __init__(self, input_file, ignore_index):
-        self.table = tfidf.tfidf()
-        self.table.process(input_file,ignore_index)
+    def __init__(self, tfidf):
+        self.table = tfidf
 
     def getTopTerms(self,top):
         return self.table.getTopTerms(top)
         
     def results(self,query_terms):
-            
+
         d = self.table.getTfArray()
         
         query_index = self.table.getIndex(query_terms)
