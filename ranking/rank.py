@@ -5,32 +5,17 @@ import BayesianSets
 import numpy as np
 
 class rank:
-    def results(self,input_file,positive,negative):
-        documents = {}
-        other = []
+    def results(self,table,query_urls, other_urls):
 
-        with open(input_file,'r') as f:
-            for line in f.readlines():
-                url, content = line.strip().split(";")
-                if url not in negative:
-                    documents[url] = content
-                    if url not in positive:
-                        other.append(url)
-        
-        table = tfidf.tfidf()
-    
-        # Compute tfidf of terms in the documents
-        table.process(documents)
-
-        subquery_data = table.getTfidfArray(positive)
-        other_data = table.getTfidfArray(other)
+        subquery_data = table.getTfidfArray(query_urls)
+        other_data = table.getTfidfArray(other_urls)
 
         bs = BayesianSets.BayesianSets()
         
         score = bs.score(subquery_data, other_data)
 
         indices = np.argsort(np.multiply(score,-1))
-        ranked_urls = [other[index] for index in indices]
+        ranked_urls = [other_urls[index] for index in indices]
         ranked_scores = [score[index] for index in indices]
         return [ranked_urls,ranked_scores]
 
