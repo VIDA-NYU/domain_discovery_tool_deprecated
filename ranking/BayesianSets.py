@@ -1,7 +1,5 @@
 from math import sqrt
 from numpy import *
-from cvxopt import matrix
-from cvxopt.solvers import qp
 
 import sys
 
@@ -28,7 +26,7 @@ class BayesianSets:
         C = sum(subtract(add(subtract(log(add(a,b)),log(add(add(a,b),N))), log(bt)), log (b)))
 
         q = add(subtract(subtract(log(at),log(a)),log(bt)), log(b))
-
+        
         score_X = add(C, dot(X,q))
         
         return score_X
