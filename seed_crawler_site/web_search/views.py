@@ -165,12 +165,12 @@ def get_query(request):
             return render(request, 'query_with_ranks.html', {'form1': form1,'form2':form2, 'form3':form3})
 
         elif 'extract' in request.POST:
-            os.chdir('/Users/krishnam/Memex/memex/seed_crawler/ranking')
+            os.chdir(os.environ['MEMEX_HOME']+'/seed_crawler/ranking')
             if exists("selected_terms.txt"):
                 call(["rm", "selected_terms.txt"])
             if exists("exclude.txt"):
                 call(["rm", "exclude.txt"])
-            extract = extract_terms.extract_terms('/Users/krishnam/Memex/memex/seed_crawler/lda_pipeline/data/lda_input.csv',int_url_no_choices)
+            extract = extract_terms.extract_terms(os.environ['MEMEX_HOME']+'/seed_crawler/lda_pipeline/data/lda_input.csv',int_url_no_choices)
             form_class = populate_freq_terms(request, extract.getTopTerms(20))
             form4 = form_class()
             return render(request, 'query_with_terms.html', {'form1': form1,'form2':form2, 'form4':form4})
@@ -190,7 +190,7 @@ def get_query(request):
                             #int_no_choices.append(int(field.replace("choice_freq_terms_field","")))
                             int_no_choices.append(form4[field].label.lower().strip())
                             
-                os.chdir('/Users/krishnam/Memex/memex/seed_crawler/ranking')
+                os.chdir(os.environ['MEMEX_HOME']+'/seed_crawler/ranking')
                 with open('exclude.txt','w+') as f:
                     for choice in int_no_choices :
                         print "Choice Not in Words ", choice
@@ -226,7 +226,7 @@ def get_query(request):
                             #int_no_choices.append(int(field.replace("choice_ranked_terms_field","")))
                             int_no_choices.append(form5[field].label.lower().strip())
 
-                os.chdir('/Users/krishnam/Memex/memex/seed_crawler/ranking')
+                os.chdir(os.environ['MEMEX_HOME']+'/seed_crawler/ranking')
                 past_yes_terms = []
                 if exists("selected_terms.txt"):
                     with open('selected_terms.txt','r') as f:
