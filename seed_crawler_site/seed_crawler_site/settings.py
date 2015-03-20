@@ -60,7 +60,7 @@ ROOT_URLCONF = 'seed_crawler_site.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['/Users/krishnam/Memex/memex/seed_crawler/seed_crawler_site/web_search/templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
