@@ -165,13 +165,15 @@ def get_query(request):
             return render(request, 'query_with_ranks.html', {'form1': form1,'form2':form2, 'form3':form3})
 
         elif 'extract' in request.POST:
-            os.chdir('/Users/krishnam/Memex/memex/seed_crawler/ranking')
+            os.chdir(os.environ['MEMEX_HOME']+'/seed_crawler/ranking')
             if exists("selected_terms.txt"):
                 call(["rm", "selected_terms.txt"])
             if exists("exclude.txt"):
                 call(["rm", "exclude.txt"])
-            extract = extract_terms.extract_terms('/Users/krishnam/Memex/memex/seed_crawler/lda_pipeline/data/lda_input.csv',int_url_no_choices)
-            form_class = populate_freq_terms(request, extract.getTopTerms(20))
+            scm = seed_crawler_model.SeedCrawlerModel()
+            scm.submit_selected_urls(url_yes_choices, url_no_choices)
+            terms = scm.extract_terms(20)
+            form_class = populate_freq_terms(request,terms)
             form4 = form_class()
             return render(request, 'query_with_terms.html', {'form1': form1,'form2':form2, 'form4':form4})
                 
@@ -190,14 +192,14 @@ def get_query(request):
                             #int_no_choices.append(int(field.replace("choice_freq_terms_field","")))
                             int_no_choices.append(form4[field].label.lower().strip())
                             
-                os.chdir('/Users/krishnam/Memex/memex/seed_crawler/ranking')
+                os.chdir(os.environ['MEMEX_HOME']+'/seed_crawler/ranking')
                 with open('exclude.txt','w+') as f:
                     for choice in int_no_choices :
-                        print "Choice Not in Words ", choice
                         f.write(choice+'\n')
 
-                extract = extract_terms.extract_terms('/Users/krishnam/Memex/memex/seed_crawler/lda_pipeline/data/lda_input.csv', int_url_no_choices)
-                [ranked_terms,scores] = extract.results(int_yes_choices)
+                scm = seed_crawler_model.SeedCrawlerModel()
+                scm.submit_selected_urls(url_yes_choices, url_no_choices)
+                ranked_terms = scm.submit_selected_terms(int_yes_choices, int_no_choices)
                 form_class = populate_ranked_terms(request, ranked_terms[0:20])
                 form5 = form_class()
 
@@ -226,34 +228,10 @@ def get_query(request):
                             #int_no_choices.append(int(field.replace("choice_ranked_terms_field","")))
                             int_no_choices.append(form5[field].label.lower().strip())
 
-                os.chdir('/Users/krishnam/Memex/memex/seed_crawler/ranking')
-                past_yes_terms = []
-                if exists("selected_terms.txt"):
-                    with open('selected_terms.txt','r') as f:
-                        past_yes_terms = [line.strip() for line in f.readlines()]
-
-                with open('selected_terms.txt','w+') as f:
-                    for word in past_yes_terms:
-                        f.write(word+'\n')
-                    for choice in int_yes_choices :
-                        if choice not in past_yes_terms:
-                            f.write(choice+'\n')
-
-                past_no_terms = []
-                if exists("exclude.txt"):
-                    with open('exclude.txt','r') as f:
-                        past_no_terms = [line.strip() for line in f.readlines()]
-
-                with open('exclude.txt','w+') as f:
-                    for word in past_no_terms:
-                        f.write(word+'\n')
-                    for choice in int_no_choices :
-                        if choice not in past_no_terms:
-                            f.write(choice+'\n')
-
-                extract = extract_terms.extract_terms('/Users/krishnam/Memex/memex/seed_crawler/lda_pipeline/data/lda_input.csv', int_url_no_choices)
-                   
-                [ranked_terms,scores] = extract.results(int_yes_choices+past_yes_terms)
+                os.chdir(os.environ['MEMEX_HOME']+'/seed_crawler/ranking')
+                scm = seed_crawler_model.SeedCrawlerModel()
+                scm.submit_selected_urls(url_yes_choices, url_no_choices)
+                ranked_terms = scm.submit_selected_terms(int_yes_choices, int_no_choices)
                 form_class = populate_ranked_terms(request, ranked_terms[0:20])
                 form5 = form_class(request.POST)                
 
@@ -267,7 +245,6 @@ def get_query(request):
             form1 = QueryForm.QueryForm(request.POST)
             if form1.is_valid():
                 query_terms = form1.cleaned_data['query_terms']
-                print query_terms
                 for word in results:
                     query_terms = query_terms + " " + word;
                 form1 = QueryForm.QueryForm(initial={'query_terms':query_terms})
@@ -283,7 +260,6 @@ def get_query(request):
             form1 = QueryForm.QueryForm(request.POST)
             if form1.is_valid():
                 query_terms = form1.cleaned_data['query_terms']
-                print query_terms
                 for word in results:
                     query_terms = query_terms + " " + word;
                 form1 = QueryForm.QueryForm(initial={'query_terms':query_terms})
