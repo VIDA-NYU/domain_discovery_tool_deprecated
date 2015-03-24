@@ -3,3 +3,5 @@ Execute the run.sh (this executes the Bing search and page download for default 
 For customized input parameters change the run.sh appropriatly with the following info:
 
 BingSearch -q <query_file:default=conf/queries.txt> -o <outputfile:default=results.txt> -t <number of pages to download:default=50>
+
+To change the query modify ./conf/queries.txt
