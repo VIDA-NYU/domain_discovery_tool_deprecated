@@ -13,7 +13,7 @@ from os.path import isfile, join, exists
 import shutil
 import sys
 
-import parallel_download
+import download
 import rank
 import tfidf
 import extract_terms
@@ -53,11 +53,16 @@ class SeedCrawlerModel:
         output, errors = p.communicate()
         print output
         print errors
+
+        
         call(["rm", "-rf", "html"])
         call(["mkdir", "-p", "html"])
-        #download.download("results.txt","html")
-        parallel_download.startProcesses("results.txt","html")
         
+        if 'darwin' in sys.platform:
+            download.download("results.txt","html")
+        else:
+            download.download("results.txt","html", True)
+
         if exists(self.memex_home + "/seed_crawler/ranking/exclude.txt"):
             call(["rm", self.memex_home + "/seed_crawler/ranking/exclude.txt"])
 
