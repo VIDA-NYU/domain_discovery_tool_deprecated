@@ -63,31 +63,41 @@ public class BingSearch {
 	String accountKeyEnc = new String(accountKeyBytes);
 	URL url;
 	try {
-	    url = new URL("https://api.datamarket.azure.com/Data.ashx/Bing/Search/v1/Web?Query=%27" + query + "%27&$top="+ top);
-	    System.out.println(url);
-	    HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-	    conn.setRequestMethod("GET");
-	    conn.setRequestProperty("Authorization", "Basic " + accountKeyEnc);
+	    int chunk = 50;
+	    if (Integer.valueOf(top) < 50)
+		chunk = Integer.valueOf(top); 
+	    int skip_index = 0;
+	    while(chunk > 0){
+	    	url = new URL("https://api.datamarket.azure.com/Data.ashx/Bing/Search/v1/Web?$skip=" + String.valueOf(skip_index*50) + "&Query=%27" + query + "%27&$top=50");
+	    	System.out.println(url);
+	    	HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+	    	conn.setRequestMethod("GET");
+	    	conn.setRequestProperty("Authorization", "Basic " + accountKeyEnc);
 
-	    BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
-	    String output = "";
-	    String line;
-	    while ((line = br.readLine()) != null) {
-		output = output + line;
-	    } 
-	    conn.disconnect();
+	    	BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+	    	String output = "";
+	    	String line;
+	    	while ((line = br.readLine()) != null) {
+			output = output + line;
+	    	} 
+	    	conn.disconnect();
 
-	    DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-	    DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder(); 
-	    InputSource is = new InputSource(new StringReader(output));
-	    Document doc = docBuilder.parse(is);
-	    NodeList urls = doc.getElementsByTagName("d:DisplayUrl");
-	    int totalUrls = urls.getLength();
+	    	DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+	    	DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder(); 
+	    	InputSource is = new InputSource(new StringReader(output));
+	    	Document doc = docBuilder.parse(is);
+	    	NodeList urls = doc.getElementsByTagName("d:DisplayUrl");
+	    	int totalUrls = urls.getLength();
 
-	    for (int i=0; i<urls.getLength(); i++){
-		Element e = (Element)urls.item(i);
-		NodeList nl = e.getChildNodes();
-		results.add((nl.item(0).getNodeValue()));
+	    	for (int i=0; i<urls.getLength(); i++){
+			Element e = (Element)urls.item(i);
+			NodeList nl = e.getChildNodes();
+			results.add((nl.item(0).getNodeValue()));
+	    	}
+		if ((Integer.valueOf(top) - chunk) < 50) 
+			chunk = Integer.valueOf(top) - chunk;
+		else chunk += 50;
+		++skip_index;
 	    }
 	} 
 	catch (MalformedURLException e1) {
