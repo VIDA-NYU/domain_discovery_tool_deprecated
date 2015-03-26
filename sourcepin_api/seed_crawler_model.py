@@ -43,21 +43,13 @@ class SeedCrawlerModel:
     #   term_list: list of search terms that are submited by user
     #Returns:
     #   urls: list of urls that are returned by Search Engine
-        if 'tfidf' in sys.modules:  
-            print "tfidf"
-            del(sys.modules["tfidf"]) 
-
-        if 'rank' in sys.modules:  
-            print "rank"
-            del(sys.modules["rank"]) 
-        
         chdir(self.memex_home + '/seed_crawler/seeds_generator')
         
         with open('conf/queries.txt','w') as f:
             for term in term_list:
                 f.write(term)
             
-        p=Popen("java -cp .:class:libs/commons-codec-1.9.jar BingSearch -t 15",shell=True,stdout=PIPE)
+        p=Popen("java -cp .:class:libs/commons-codec-1.9.jar BingSearch -t 100",shell=True,stdout=PIPE)
         output, errors = p.communicate()
         print output
         print errors
