@@ -68,7 +68,7 @@ public class BingSearch {
 		chunk = Integer.valueOf(top); 
 	    int skip_index = 0;
 	    while(chunk > 0){
-	    	url = new URL("https://api.datamarket.azure.com/Data.ashx/Bing/Search/v1/Web?$skip=" + String.valueOf(skip_index*50) + "&Query=%27" + query + "%27&$top=50");
+	    	url = new URL("https://api.datamarket.azure.com/Data.ashx/Bing/Search/v1/Web?$skip=" + String.valueOf(skip_index*50) + "&Query=%27" + query + "%27&$top=" + String.valueOf(chunk));
 	    	System.out.println(url);
 	    	HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 	    	conn.setRequestMethod("GET");
