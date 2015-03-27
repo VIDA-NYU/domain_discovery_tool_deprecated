@@ -13,7 +13,7 @@ from os.path import isfile, join, exists
 import shutil
 import sys
 
-import download
+from download import download, decode
 import rank
 import tfidf
 import extract_terms
@@ -28,6 +28,7 @@ class SeedCrawlerModel:
         #e.g: urls = [["nature.com", 1, 0.9], ["sport.com", 0, 0.01]
         #list of terms and their labels, ranking scores
         #e.g: terms = [["science", 1, 0.9], ["sport", 0, 0.02]]
+        self.urls = []
         self.positive_urls = Set()
         self.negative_urls = Set()
         self.tfidf = tfidf.tfidf()
@@ -49,7 +50,7 @@ class SeedCrawlerModel:
             for term in term_list:
                 f.write(term)
             
-        p=Popen("java -cp .:class:libs/commons-codec-1.9.jar BingSearch -t 100",shell=True,stdout=PIPE)
+        p=Popen("java -cp .:class:libs/commons-codec-1.9.jar BingSearch -t 3",shell=True,stdout=PIPE)
         output, errors = p.communicate()
         print output
         print errors
@@ -59,16 +60,15 @@ class SeedCrawlerModel:
         call(["mkdir", "-p", "html"])
         
         if 'darwin' in sys.platform:
-            download.download("results.txt","html")
+            download("results.txt","html")
         else:
-            download.download("results.txt","html", True)
+            download("results.txt","html", parallel=True)
 
         if exists(self.memex_home + "/seed_crawler/ranking/exclude.txt"):
             call(["rm", self.memex_home + "/seed_crawler/ranking/exclude.txt"])
 
-        urls = []
         with open("results.txt",'r') as f:
-            urls = [self.validate_url(line.strip()) for line in f.readlines()]
+            self.urls = [self.validate_url(line.strip()) for line in f.readlines()]
 
         chdir(self.memex_home + '/seed_crawler/lda_pipeline')
         call(["mkdir", "-p", "data"])
@@ -77,7 +77,7 @@ class SeedCrawlerModel:
         print output
         print errors
 
-        return urls #Results from Search Engine
+        return self.urls[1:15] #Results from Search Engine
         
     
     def submit_selected_urls(self, positive, negative):
@@ -189,8 +189,8 @@ class SeedCrawlerModel:
         classifier_data_positive_path = self.memex_home+'/pageclassifier/conf/sample_training_data/positive'
         classifier_data_negative_path = self.memex_home+'/pageclassifier/conf/sample_training_data/negative'
         files = [ f for f in listdir(urlspath) if isfile(join(urlspath,f))]
-        [ shutil.copy(urlspath+f, classifier_data_positive_path) for f in files if parallel_download.decode(f) in positive ]
-        [ shutil.copy(urlspath+f, classifier_data_negative_path) for f in files if parallel_download.decode(f) in negative ]
+        [ shutil.copy(urlspath+f, classifier_data_positive_path) for f in files if decode(f) in positive ]
+        [ shutil.copy(urlspath+f, classifier_data_negative_path) for f in files if decode(f) in negative ]
 
     def validate_url(self, url):
         s = url[:4]
