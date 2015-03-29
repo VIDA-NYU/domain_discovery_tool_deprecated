@@ -1,7 +1,7 @@
 #parallel_download.py
 # thread_download.py
 
-from multiprocessing import Pool
+from multiprocessing import Pool, cpu_count
 from datetime import datetime
 import sys
 import urllib2
@@ -11,7 +11,7 @@ import requests
 
 from add_documents import add_document, extract_text
 
-from os import chdir, environ, getpid
+from os import chdir, environ, getpid, system
 
 #processes is the list of urls from the input link
 
@@ -45,7 +45,8 @@ def startProcesses( inputfile, outputdir):
   urls = []
   with open(inputfile) as lines:
     urls = [(line,outputdir) for line in lines]
-  pool = Pool(processes=3)
+  print 'number of processes = ' + str(cpu_count())
+  pool = Pool(processes=cpu_count())
   print "Pool created"
   pool.map_async(download_one, urls, callback=finished) 
 
@@ -55,7 +56,6 @@ def download_one((given_url, outputdir)):
     url = validate_url(url)
     res = requests.get(url)
     src = res.text
-    src = src.encode('utf-8')
     print 'GOOD\t' + url + ', PID=' + str(getpid())
     doc = extract_text(src,url)
     query = ""
