@@ -30,7 +30,7 @@ def validate_url( url):
   return url
   
 
-def download( inputfile, outputdir, parallel=False):
+def download(inputfile, outputdir, parallel=False):
   if parallel == True:
     print 'MULTIPROCESSING'
     startProcesses(inputfile, outputdir)
@@ -49,7 +49,7 @@ def startProcesses( inputfile, outputdir):
   print "Pool created"
   pool.map_async(download_one, urls, callback=finished) 
 
-def download_one( (given_url, outputdir)):
+def download_one((given_url, outputdir)):
   try:
     url = given_url.strip("\n")
     url = validate_url(url)
@@ -58,11 +58,18 @@ def download_one( (given_url, outputdir)):
     src = src.encode('utf-8')
     print 'GOOD\t' + url + ', PID=' + str(getpid())
     doc = extract_text(src,url)
+    query = ""
+    with open('conf/queries.txt', 'r') as f:
+      for line in f:
+        query = line.strip();
+
     entry = {
-            'url': url,
-            'text': doc,
-            'fetched': datetime.now(),
-        }
+      'url': url,
+      'text': doc,
+      'html': src,
+      'query': query,
+      'retrieved': datetime.now(),
+    }
     entries = [entry]
     add_document(entries)
     
