@@ -53,7 +53,7 @@ for content in sys.stdin:
  if (count % 1000) == 0:
   print "all count:\t" + str(count) + "\tless-100 count:\t" + str(len_count) 
  count += 1
- content = content.strip("\n")
+ content = content.decode('utf-8').strip("\n")
  url, text = content.split("\t")
  text = valid_words(text)
  #if len(text) > 100:
