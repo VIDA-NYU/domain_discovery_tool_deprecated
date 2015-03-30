@@ -46,11 +46,12 @@ def startProcesses( inputfile, outputdir):
   with open(inputfile) as lines:
     urls = [(line,outputdir) for line in lines]
   print 'number of processes = ' + str(cpu_count())
-  pool = Pool(processes=cpu_count())
+  pool = Pool(processes=cpu_count()-1)
   print "Pool created"
   pool.map_async(download_one, urls, callback=finished) 
 
 def download_one((given_url, outputdir)):
+  src = ""
   try:
     url = given_url.strip("\n")
     url = validate_url(url)
@@ -73,10 +74,6 @@ def download_one((given_url, outputdir)):
     entries = [entry]
     add_document(entries)
     
-    encoded_url = encode(url)
-    f = open(outputdir + "/" + encoded_url, "w")
-    f.write(src)
-    f.close()
   except urllib2.HTTPError, e:
     print 'HTTPERROR=' + str(e.code) + "\t" + url
   except socket.timeout, e:
@@ -84,6 +81,10 @@ def download_one((given_url, outputdir)):
   except:
     traceback.print_exc()
     print 'EXCEPTION' + "\t" + url
+  encoded_url = encode(url)
+  f = open(outputdir + "/" + encoded_url, "w")
+  f.write(src)
+  f.close()
 
 def finished(x):
   print "Processing ", str(getpid()), " is Complete.",x
