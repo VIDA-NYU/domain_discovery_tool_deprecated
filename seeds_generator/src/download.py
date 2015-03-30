@@ -83,7 +83,7 @@ def download_one((given_url, outputdir)):
     print 'EXCEPTION' + "\t" + url
   encoded_url = encode(url)
   f = open(outputdir + "/" + encoded_url, "w")
-  f.write(src)
+  f.write(src.encode("utf-8"))
   f.close()
 
 def finished(x):
