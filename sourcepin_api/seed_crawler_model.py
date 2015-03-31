@@ -77,7 +77,7 @@ class SeedCrawlerModel:
         print output
         print errors
 
-        return self.urls[1:15] #Results from Search Engine
+        return self.urls[0:14] #Results from Search Engine
         
     
     def submit_selected_urls(self, positive, negative):
