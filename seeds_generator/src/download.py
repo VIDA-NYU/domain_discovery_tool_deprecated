@@ -8,8 +8,9 @@ import urllib2
 import socket
 import traceback
 import requests
+import base64
 
-from add_documents import add_document, extract_text
+from add_documents import add_document, extract_text, compute_index_entry
 
 from os import chdir, environ, getpid, system
 
@@ -49,31 +50,35 @@ def startProcesses( inputfile, outputdir):
   pool = Pool(processes=cpu_count()-1)
   print "Pool created"
   pool.map_async(download_one, urls, callback=finished) 
-
+ 
 def download_one((given_url, outputdir)):
-  src = ""
+  src = "@empty@"
   try:
     url = given_url.strip("\n")
     url = validate_url(url)
-    res = requests.get(url)
-    src = res.text
-    print 'GOOD\t' + url + ', PID=' + str(getpid())
-    doc = extract_text(src,url)
+    #res = requests.get(url)
+
+    e = compute_index_entry(url,True)
+    if e:
+      print 'GOOD\t' + url + ', PID=' + str(getpid())
+    else:
+      e = {
+        'url': url,
+        'html': base64.b64encode(src)
+      }
     query = ""
     with open('conf/queries.txt', 'r') as f:
       for line in f:
         query = line.strip();
-
-    entry = {
-      'url': url,
-      'text': doc,
-      'html': src,
-      'query': query,
-      'retrieved': datetime.now(),
-    }
-    entries = [entry]
-    add_document(entries)
+    e['query'] = query
     
+    entries = [e]
+    add_document(entries)
+    src = base64.b64decode(e['html'])
+    encoded_url = encode(url)
+    f = open(outputdir + "/" + encoded_url, "w")
+    f.write(src)
+    f.close()
   except urllib2.HTTPError, e:
     print 'HTTPERROR=' + str(e.code) + "\t" + url
   except socket.timeout, e:
@@ -81,10 +86,6 @@ def download_one((given_url, outputdir)):
   except:
     traceback.print_exc()
     print 'EXCEPTION' + "\t" + url
-  encoded_url = encode(url)
-  f = open(outputdir + "/" + encoded_url, "w")
-  f.write(src.encode("utf-8"))
-  f.close()
 
 def finished(x):
   print "Processing ", str(getpid()), " is Complete.",x
@@ -97,7 +98,7 @@ def main(argv):
   inputfile=argv[0]
   outputdir=argv[1]
   
-  startProcesses(inputfile, outputdir)
+  download(inputfile, outputdir, parallel=False)
 
 if __name__=="__main__":
   main(sys.argv[1:])
