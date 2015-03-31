@@ -43,12 +43,14 @@ public class Extract {
 */
         
         String content = readFile(f.getPath());
-        content = ArticleExtractor.INSTANCE.getText(content);
-        content = content.trim().replaceAll(" +", " ");
-        content = content.replaceAll("[\n\"\t]", " ");
+	if(!content.contains("@empty@")){
+	    content = ArticleExtractor.INSTANCE.getText(content);
+	}
+	content = content.trim().replaceAll(" +", " ");
+	content = content.replaceAll("[\n\"\t]", " ");
 	content = content.replaceAll(",","");
 	content = content.toLowerCase();
-        System.out.println(url + "\t"  + content);
+	System.out.println(url + "\t"  + content);
         
     }
     catch(Exception e){
@@ -94,12 +96,12 @@ public class Extract {
 
   public static void main(String[] args) {
     try{
-          String inputpath = args[0];
-//          String timestampfile = args[1];
-          File folder = new File(inputpath);
-          Extract e = new Extract();
-//          e.getTimestamp(timestampfile);
-          e.listFiles(folder);
+	String inputpath = args[0];
+	//          String timestampfile = args[1];
+	File folder = new File(inputpath);
+	Extract e = new Extract();
+	//          e.getTimestamp(timestampfile);
+	e.listFiles(folder);
     } catch(Exception e){
       System.out.println("Exception");
     }
