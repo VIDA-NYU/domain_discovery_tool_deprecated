@@ -2,6 +2,7 @@ import sys
 from os import walk
 import re
 import nltk
+import codecs
 
 ENGLISH_STOPWORDS = set(nltk.corpus.stopwords.words('english'))
 NON_ENGLISH_STOPWORDS = set(nltk.corpus.stopwords.words()) - ENGLISH_STOPWORDS
@@ -49,14 +50,17 @@ output = open(sys.argv[1], "w")
 len_count = 0 #Count number of documents have less than 100 characters
 count = 0
 #for file in files:
-for content in sys.stdin:
+for content in codecs.getreader("utf-8")(sys.stdin):
  if (count % 1000) == 0:
   print "all count:\t" + str(count) + "\tless-100 count:\t" + str(len_count) 
  count += 1
- content = content.decode('utf-8').strip("\n")
+ content = content.strip()
  url, text = content.split("\t")
- text = valid_words(text)
- #if len(text) > 100:
- # len_count += 1
- output.write(url + ";" + text + "\n")
+ if not '@empty@' in text:
+  text = valid_words(text)
+  #if len(text) > 100:
+  # len_count += 1
+  output.write(url + ";" + text.encode('utf-8') + "\n")
+ else:
+  output.write(url + ";\n")
 output.close()
