@@ -51,6 +51,12 @@ public class BingSearch {
 	return queries;
     }
 
+    public String validate_url(String url){
+	if(!url.contains("http"))
+	    url = "http://" + url;
+	return url;
+    }
+	
     public ArrayList<String> search(String query, String top){
 	System.out.println("Query: " + query);
 	if (this.prop == null){
@@ -86,13 +92,13 @@ public class BingSearch {
 	    	DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder(); 
 	    	InputSource is = new InputSource(new StringReader(output));
 	    	Document doc = docBuilder.parse(is);
-	    	NodeList urls = doc.getElementsByTagName("d:DisplayUrl");
+	    	NodeList urls = doc.getElementsByTagName("d:Url");
 	    	int totalUrls = urls.getLength();
 
-	    	for (int i=0; i<urls.getLength(); i++){
+	    	for (int i=0; i<totalUrls; i++){
 			Element e = (Element)urls.item(i);
 			NodeList nl = e.getChildNodes();
-			results.add((nl.item(0).getNodeValue()));
+			results.add(validate_url((nl.item(0).getNodeValue())));
 	    	}
 		if ((Integer.valueOf(top) - chunk) < 50) 
 			chunk = Integer.valueOf(top) - chunk;
