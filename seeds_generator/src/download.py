@@ -30,6 +30,12 @@ def validate_url( url):
     url = "http://" + url
   return url
   
+def get_downloaded_urls(inputfile):
+  urls = []
+  with open(inputfile, 'r') as f:
+    urls = f.readlines
+  urls = [url.strip() for url in urls]
+  return urls
 
 def download(inputfile, outputdir, parallel=False):
   if parallel == True:
@@ -60,7 +66,7 @@ def download_one((given_url, outputdir)):
 
     e = compute_index_entry(url,True)
     if e:
-      print 'GOOD\t' + url + ', PID=' + str(getpid())
+      print 'GOOD\t' + e['url'] + ', PID=' + str(getpid())
     else:
       e = {
         'url': url,
@@ -75,7 +81,7 @@ def download_one((given_url, outputdir)):
     entries = [e]
     add_document(entries)
     src = base64.b64decode(e['html'])
-    encoded_url = encode(url)
+    encoded_url = encode(e['url'])
     f = open(outputdir + "/" + encoded_url, "w")
     f.write(src)
     f.close()
@@ -86,6 +92,7 @@ def download_one((given_url, outputdir)):
   except:
     traceback.print_exc()
     print 'EXCEPTION' + "\t" + url
+  return e
 
 def finished(x):
   print "Processing ", str(getpid()), " is Complete.",x
