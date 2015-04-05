@@ -14,6 +14,7 @@ import shutil
 import sys
 
 from download import download, decode
+from concat_nltk import get_bag_of_words
 import rank
 import tfidf
 import extract_terms
@@ -21,14 +22,14 @@ import extract_terms
 class SeedCrawlerModel:
     #Note: we should estimate the latency of each operation so that the application could adapt smoothly
 
-    def __init__(self):
+    def __init__(self, urls):
         #Intermediate data will being handled here: urls, extracted text, terms, clusters, etc.
 
         #list of urls and their labels, ranking scores
         #e.g: urls = [["nature.com", 1, 0.9], ["sport.com", 0, 0.01]
         #list of terms and their labels, ranking scores
         #e.g: terms = [["science", 1, 0.9], ["sport", 0, 0.02]]
-        self.urls = []
+        self.urls = urls
         self.positive_urls = Set()
         self.negative_urls = Set()
         self.tfidf = tfidf.tfidf()
@@ -50,7 +51,7 @@ class SeedCrawlerModel:
             for term in term_list:
                 f.write(term)
             
-        p=Popen("java -cp .:class:libs/commons-codec-1.9.jar BingSearch -t 3",shell=True,stdout=PIPE)
+        p=Popen("java -cp .:class:libs/commons-codec-1.9.jar BingSearch -t 15",shell=True,stdout=PIPE)
         output, errors = p.communicate()
         print output
         print errors
@@ -59,7 +60,7 @@ class SeedCrawlerModel:
         call(["rm", "-rf", "html"])
         call(["mkdir", "-p", "html"])
         
-        if 'darwin' in sys.platform:
+        if sys.platform in ['darwin','linux2']:
             download("results.txt","html")
         else:
             download("results.txt","html", parallel=True)
@@ -70,12 +71,12 @@ class SeedCrawlerModel:
         with open("results.txt",'r') as f:
             self.urls = [self.validate_url(line.strip()) for line in f.readlines()]
 
-        chdir(self.memex_home + '/seed_crawler/lda_pipeline')
-        call(["mkdir", "-p", "data"])
-        p=Popen("java -cp .:class/:lib/boilerpipe-1.2.0.jar:lib/nekohtml-1.9.13.jar:lib/xerces-2.9.1.jar Extract ../seeds_generator/html/  | python concat_nltk.py data/lda_input.csv",shell=True,stdout=PIPE)
-        output, errors = p.communicate()
-        print output
-        print errors
+        # chdir(self.memex_home + '/seed_crawler/lda_pipeline')
+        # call(["mkdir", "-p", "data"])
+        # p=Popen("java -cp .:class/:lib/boilerpipe-1.2.0.jar:lib/nekohtml-1.9.13.jar:lib/xerces-2.9.1.jar Extract ../seeds_generator/html/  | python concat_nltk.py data/lda_input.csv",shell=True,stdout=PIPE)
+        # output, errors = p.communicate()
+        # print output
+        # print errors
 
         return self.urls[0:14] #Results from Search Engine
         
@@ -105,18 +106,23 @@ class SeedCrawlerModel:
 
         documents = {}
         other = []
-        input_file = self.memex_home + '/seed_crawler/lda_pipeline/data/lda_input.csv'
+        
+        all_docs = get_bag_of_words(self.urls)
+        print all_docs.keys()
 
-        with open(input_file,'r') as f:
-            for line in f.readlines():
-                url, content = line.strip().split(";")
-                if url not in self.negative_urls:
-                    documents[url] = content
-                    if url not in self.positive_urls:
-                        other.append(url)
-                
+        print "positive", self.positive_urls
+        print "negative",  self.negative_urls
+
+        for url in all_docs.keys():
+            content = all_docs[url]
+            if (len(self.negative_urls) == 0) or (url not in self.negative_urls):
+                documents[url] = content
+                if url not in self.positive_urls:
+                    other.append(url)
+
         self.copy_files(positive, negative)
 
+        print documents.keys()
         self.tfidf.process(documents)
 
         chdir(self.memex_home + '/seed_crawler/ranking')
@@ -202,7 +208,7 @@ class SeedCrawlerModel:
 
 
 if __name__=="__main__":
-    scm = SeedCrawlerModel()
+    scm = SeedCrawlerModel([])
     scm.submit_query_terms(["elsa"])
     #scm.test()
     #Create a test that mimick user process here to test
