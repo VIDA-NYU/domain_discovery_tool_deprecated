@@ -4,6 +4,7 @@ from django import forms
 from django.utils.safestring import mark_safe
 import QueryForm
 from django import forms
+from django.core import serializers
 
 import seed_crawler_model 
 
@@ -13,13 +14,21 @@ from subprocess import PIPE
 import download
 import rank
 import extract_terms
-import os
 import sys
 import shutil
 from collections import OrderedDict
 import operator
-from os import listdir
+from os import listdir, chdir, environ
 from os.path import isfile, join, exists
+
+from concat_nltk import get_bag_of_words
+
+def get_downloaded_urls(inputfile):
+  urls = []
+  with open(inputfile, 'r') as f:
+    urls = f.readlines()
+  urls = [url.strip() for url in urls]
+  return urls
 
 def populate_urls(request, urls):
     fields = []
@@ -133,7 +142,7 @@ def get_query(request):
                 # Search Bing for the urls related to the query terms
                 query_terms = [form1.cleaned_data['query_terms']]
                 
-                scm = seed_crawler_model.SeedCrawlerModel()
+                scm = seed_crawler_model.SeedCrawlerModel([])
 
                 results = scm.submit_query_terms(query_terms)
                 
@@ -158,19 +167,23 @@ def get_query(request):
         if 'rank' in request.POST:
                         
             #copy_files(int_url_yes_choices,int_url_no_choices)
-            scm = seed_crawler_model.SeedCrawlerModel()
+            
+            results = get_downloaded_urls(environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/results.txt')
+            scm = seed_crawler_model.SeedCrawlerModel(results)
             [ranked_urls, scores] = scm.submit_selected_urls(url_yes_choices, url_no_choices)
             form_class = populate_score(ranked_urls, scores)
             form3 = form_class()
             return render(request, 'query_with_ranks.html', {'form1': form1,'form2':form2, 'form3':form3})
 
         elif 'extract' in request.POST:
-            os.chdir(os.environ['MEMEX_HOME']+'/seed_crawler/ranking')
+            chdir(environ['MEMEX_HOME']+'/seed_crawler/ranking')
             if exists("selected_terms.txt"):
                 call(["rm", "selected_terms.txt"])
             if exists("exclude.txt"):
                 call(["rm", "exclude.txt"])
-            scm = seed_crawler_model.SeedCrawlerModel()
+                
+            results = get_downloaded_urls(environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/results.txt')
+            scm = seed_crawler_model.SeedCrawlerModel(results)
             scm.submit_selected_urls(url_yes_choices, url_no_choices)
             terms = scm.extract_terms(20)
             form_class = populate_freq_terms(request,terms)
@@ -192,12 +205,13 @@ def get_query(request):
                             #int_no_choices.append(int(field.replace("choice_freq_terms_field","")))
                             int_no_choices.append(form4[field].label.lower().strip())
                             
-                os.chdir(os.environ['MEMEX_HOME']+'/seed_crawler/ranking')
+                chdir(environ['MEMEX_HOME']+'/seed_crawler/ranking')
                 with open('exclude.txt','w+') as f:
                     for choice in int_no_choices :
                         f.write(choice+'\n')
 
-                scm = seed_crawler_model.SeedCrawlerModel()
+                results = get_downloaded_urls(environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/results.txt')
+                scm = seed_crawler_model.SeedCrawlerModel(results)
                 scm.submit_selected_urls(url_yes_choices, url_no_choices)
                 ranked_terms = scm.submit_selected_terms(int_yes_choices, int_no_choices)
                 form_class = populate_ranked_terms(request, ranked_terms[0:20])
@@ -228,8 +242,9 @@ def get_query(request):
                             #int_no_choices.append(int(field.replace("choice_ranked_terms_field","")))
                             int_no_choices.append(form5[field].label.lower().strip())
 
-                os.chdir(os.environ['MEMEX_HOME']+'/seed_crawler/ranking')
-                scm = seed_crawler_model.SeedCrawlerModel()
+                chdir(environ['MEMEX_HOME']+'/seed_crawler/ranking')
+                results = get_downloaded_urls(environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/results.txt')
+                scm = seed_crawler_model.SeedCrawlerModel(results)
                 scm.submit_selected_urls(url_yes_choices, url_no_choices)
                 ranked_terms = scm.submit_selected_terms(int_yes_choices, int_no_choices)
                 form_class = populate_ranked_terms(request, ranked_terms[0:20])
