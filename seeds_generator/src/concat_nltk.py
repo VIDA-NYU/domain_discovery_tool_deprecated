@@ -3,7 +3,7 @@ from os import walk
 import re
 import nltk
 import codecs
-from search_documents import get_documents
+from get_documents import get_documents
 
 ENGLISH_STOPWORDS = set(nltk.corpus.stopwords.words('english'))
 NON_ENGLISH_STOPWORDS = set(nltk.corpus.stopwords.words()) - ENGLISH_STOPWORDS
