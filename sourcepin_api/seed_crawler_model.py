@@ -108,7 +108,6 @@ class SeedCrawlerModel:
         other = []
         
         all_docs = get_bag_of_words(self.urls)
-        print all_docs.keys()
 
         print "positive", self.positive_urls
         print "negative",  self.negative_urls
@@ -144,6 +143,12 @@ class SeedCrawlerModel:
 
         extract = extract_terms.extract_terms(self.tfidf)
         return extract.getTopTerms(count)
+
+    def term_frequency(self, urls):
+        all_docs = get_bag_of_words(self.urls)
+        tf = tfidf.tfidf()
+        tf.process(all_docs)
+        return tf.getTfArray(all_docs.keys())
 
     def submit_selected_terms(self, positive, negative):
     #Rerank the terms based on the labeled terms
@@ -209,7 +214,12 @@ class SeedCrawlerModel:
 
 if __name__=="__main__":
     scm = SeedCrawlerModel([])
-    scm.submit_query_terms(["elsa"])
+    urls =scm.submit_query_terms(["elsa"])
+    
+    [urls, corpus, data] = scm.term_frequency(urls)
+    
+    print corpus
+
     #scm.test()
     #Create a test that mimick user process here to test
     #1. User starts with some terms
