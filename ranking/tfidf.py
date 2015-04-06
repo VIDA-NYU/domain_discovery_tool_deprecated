@@ -12,7 +12,10 @@ class tfidf:
         self.idf = {}
         self.tfidfVector = {}
         self.corpus_tf = {}
-            
+
+    def term_frequency(self):
+        return self.documents
+
     def getFreqDist(self, text):
         return nltk.probability.FreqDist(text)
 
@@ -52,20 +55,20 @@ class tfidf:
                 data[index_i,index_j] = vect.get(word, 0.0)
                 index_j = index_j + 1 
             index_i = index_i + 1
-        return data
+        return [urls, corpus, data]
 
-    def getTfArray(self):
+    def getTfArray(self, urls):
         corpus = sorted(self.corpus_tf.items(), key=operator.itemgetter(1),reverse=True)
         data = np.ndarray(shape=(len(self.documents),len(corpus)))
         index_i = 0
-        for url in self.documents.keys():
+        for url in urls:
             tf = self.documents[url]
             index_j = 0
             for [word, count] in corpus:
                 data[index_i,index_j] = tf.get(word, 0.0)
                 index_j = index_j + 1 
             index_i = index_i + 1
-        return data
+        return [urls, corpus, data]
     
     def getURLs(self, args):
         return [self.documents[x][0] for x in args]
