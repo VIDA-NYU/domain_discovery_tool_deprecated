@@ -64,7 +64,7 @@ def download_one((given_url, outputdir)):
     url = validate_url(url)
     #res = requests.get(url)
 
-    e = compute_index_entry(url,True)
+    e = compute_index_entry(url=url)
     if e:
       print 'GOOD\t' + e['url'] + ', PID=' + str(getpid())
     else:
