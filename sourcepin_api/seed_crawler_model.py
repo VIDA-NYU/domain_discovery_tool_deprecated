@@ -22,7 +22,7 @@ import extract_terms
 class SeedCrawlerModel:
     #Note: we should estimate the latency of each operation so that the application could adapt smoothly
 
-    def __init__(self, urls):
+    def __init__(self, urls = []):
         #Intermediate data will being handled here: urls, extracted text, terms, clusters, etc.
 
         #list of urls and their labels, ranking scores

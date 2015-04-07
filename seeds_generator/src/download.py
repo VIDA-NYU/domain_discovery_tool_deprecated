@@ -20,6 +20,9 @@ from os import chdir, environ, getpid, system
 
 #processes is the list of urls from the input link
 
+THUMBNAIL_DIMENSIONS = "100px*130px"
+THUMBNAIL_ZOOM = "0.20"
+
 def encode( url):
   return urllib2.quote(url).replace("/", "%2F")
 
@@ -70,7 +73,7 @@ def download_one(given_url):
 
     e = compute_index_entry(url=url)
     if e:
-      print 'GOOD\t' + e['url'] + ', PID=' + str(getpid())
+      print '\nGOOD\t' + e['url'] + ', PID=' + str(getpid())
     else:
       e = {
         'url': url,
@@ -86,7 +89,10 @@ def download_one(given_url):
     add_document(entries)
 
     #Download thumbail
-    call([environ['MEMEX_HOME']+"/phantomjs/bin/phantomjs", environ['MEMEX_HOME']+"/phantomjs/examples/rasterize.js", url, environ['MEMEX_HOME']+"/seed_crawler/seeds_generator/thumbnails/"+encode(url)+".png", "200px*300px", "0.20"])
+    comm = environ['MEMEX_HOME'] + "/phantomjs/bin/phantomjs"
+    paramJs = environ['MEMEX_HOME'] + "/phantomjs/examples/rasterize.js"
+    paramImg = environ['MEMEX_HOME'] + "/seed_crawler/seeds_generator/thumbnails/" + encode(url)+".png"
+    call([comm, paramJs, url, paramImg, THUMBNAIL_DIMENSIONS, THUMBNAIL_ZOOM])
     e = {
       "doc" : {
         "thumbnail": base64.b64encode(environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/thumbnails/'+encode(url)+'.png')
