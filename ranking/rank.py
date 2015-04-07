@@ -7,8 +7,13 @@ import numpy as np
 class rank:
     def results(self,table,query_urls, other_urls):
 
-        subquery_data = table.getTfidfArray(query_urls)
-        other_data = table.getTfidfArray(other_urls)
+        [urls, _, data] = table.getTfidfArray()
+
+        indices = [urls.index(url) for url in query_urls]
+        subquery_data = data[indices, :]
+        
+        indices = [urls.index(url) for url in other_urls]
+        other_data = data[indices, :]
 
         bs = BayesianSets.BayesianSets()
         
