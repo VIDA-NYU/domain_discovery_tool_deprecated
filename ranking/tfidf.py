@@ -44,8 +44,9 @@ class tfidf:
             index.append(corpus_keys.index(term.strip()))
         return index
 
-    def getTfidfArray(self, urls):
+    def getTfidfArray(self):
         corpus = sorted(self.corpus_tf.items(), key=operator.itemgetter(1),reverse=True)
+        urls = self.tfidfVector.keys()
         data = np.ndarray(shape=(len(urls),len(corpus)))
         index_i = 0
         for url in urls:
@@ -57,9 +58,10 @@ class tfidf:
             index_i = index_i + 1
         return [urls, corpus, data]
 
-    def getTfArray(self, urls):
+    def getTfArray(self):
         corpus = sorted(self.corpus_tf.items(), key=operator.itemgetter(1),reverse=True)
-        data = np.ndarray(shape=(len(self.documents),len(corpus)))
+        urls = self.documents.keys()
+        data = np.ndarray(shape=(len(urls),len(corpus)))
         index_i = 0
         for url in urls:
             tf = self.documents[url]
