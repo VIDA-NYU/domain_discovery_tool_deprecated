@@ -59,11 +59,13 @@ class SeedCrawlerModel:
         
         call(["rm", "-rf", "html"])
         call(["mkdir", "-p", "html"])
+        call(["rm", "-rf", "thumbnails"])
+        call(["mkdir", "-p", "thumbnails"])
         
         if sys.platform in ['darwin','linux2']:
-            download("results.txt","html")
+            download("results.txt")
         else:
-            download("results.txt","html", parallel=True)
+            download("results.txt", parallel=True)
 
         if exists(self.memex_home + "/seed_crawler/ranking/exclude.txt"):
             call(["rm", self.memex_home + "/seed_crawler/ranking/exclude.txt"])
