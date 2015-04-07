@@ -13,7 +13,7 @@ class extract_terms:
         
     def results(self,query_terms):
 
-        d = self.table.getTfArray()
+        [_, _, d] = self.table.getTfArray()
         
         query_index = self.table.getIndex(query_terms)
 
