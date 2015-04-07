@@ -15,6 +15,7 @@ import sys
 
 from download import download, decode
 from concat_nltk import get_bag_of_words
+from search_documents import get_context
 import rank
 import tfidf
 import extract_terms
@@ -62,7 +63,7 @@ class SeedCrawlerModel:
         call(["rm", "-rf", "thumbnails"])
         call(["mkdir", "-p", "thumbnails"])
         
-        if sys.platform in ['darwin','linux2']:
+        if sys.platform in ['darwin']:
             download("results.txt")
         else:
             download("results.txt", parallel=True)
@@ -120,8 +121,6 @@ class SeedCrawlerModel:
                 documents[url] = content
                 if url not in self.positive_urls:
                     other.append(url)
-
-        self.copy_files(positive, negative)
 
         print documents.keys()
         self.tfidf.process(documents)
@@ -199,17 +198,8 @@ class SeedCrawlerModel:
                 
         return ranked_terms # ranked
 
-    def test(self):
-        chdir(self.memex_home+'/seed_crawler/seeds_generator')
-        parallel_download.startProcesses("results.txt","html")
-
-    def copy_files(self, positive, negative):
-        urlspath = self.memex_home + '/seed_crawler/seeds_generator/html/'
-        classifier_data_positive_path = self.memex_home+'/pageclassifier/conf/sample_training_data/positive'
-        classifier_data_negative_path = self.memex_home+'/pageclassifier/conf/sample_training_data/negative'
-        files = [ f for f in listdir(urlspath) if isfile(join(urlspath,f))]
-        [ shutil.copy(urlspath+f, classifier_data_positive_path) for f in files if decode(f) in positive ]
-        [ shutil.copy(urlspath+f, classifier_data_negative_path) for f in files if decode(f) in negative ]
+    def term_context(self, terms):
+        return get_context(terms)
 
     def validate_url(self, url):
         s = url[:4]
@@ -224,8 +214,8 @@ if __name__=="__main__":
     scm = SeedCrawlerModel([])
     urls =scm.submit_query_terms(["gun control"])
     
-    [urls, corpus, data] = scm.term_tfidf(urls)
-    
+    print scm.term_context(sys.argv[1:])
+
     #scm.test()
     #Create a test that mimick user process here to test
     #1. User starts with some terms
