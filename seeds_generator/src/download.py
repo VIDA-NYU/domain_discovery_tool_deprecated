@@ -13,7 +13,6 @@ from subprocess import call
 from subprocess import Popen
 from subprocess import PIPE
 
-
 from add_documents import add_document, extract_text, compute_index_entry, update_document
 
 from os import chdir, environ, getpid, system
@@ -62,7 +61,7 @@ def startProcesses( inputfile):
   print 'number of processes = ' + str(cpu_count())
   pool = Pool(processes=cpu_count()-1)
   print "Pool created"
-  pool.map_async(download_one, urls, callback=finished) 
+  pool.map_async(download_one, urls, callback=lambda x:finished(x,"Hello World!")) 
  
 def download_one(given_url):
   src = "@empty@"
@@ -108,7 +107,8 @@ def download_one(given_url):
     print 'EXCEPTION' + "\t" + url
   return e
 
-def finished(x):
+def finished(x, ctx):
+  print ctx
   print "Processing ", str(getpid()), " is Complete.",x
   
 def main(argv):
