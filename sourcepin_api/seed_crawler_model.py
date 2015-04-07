@@ -36,8 +36,8 @@ class SeedCrawlerModel:
         self.tfidf = tfidf.tfidf()
         self.memex_home = environ['MEMEX_HOME']
 
-
-    def submit_query_terms(self, term_list):
+ 
+    def submit_query_terms(self, term_list, max_url_count = 15):
     #Perform queries to Search Engine APIs
     #This function only operates when there is no information associated with the terms,
     #usually before running extract_terms()
@@ -52,7 +52,9 @@ class SeedCrawlerModel:
             for term in term_list:
                 f.write(term)
             
-        p=Popen("java -cp .:class:libs/commons-codec-1.9.jar BingSearch -t 15",shell=True,stdout=PIPE)
+
+        comm = "java -cp .:class:libs/commons-codec-1.9.jar BingSearch -t " + str(max_url_count)
+        p=Popen(comm, shell=True, stdout=PIPE)
         output, errors = p.communicate()
         print output
         print errors
@@ -81,7 +83,7 @@ class SeedCrawlerModel:
         # print output
         # print errors
 
-        return self.urls[0:14] #Results from Search Engine
+        return self.urls #Results from Search Engine
         
     
     def submit_selected_urls(self, positive, negative):
