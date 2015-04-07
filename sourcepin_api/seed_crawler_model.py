@@ -148,7 +148,13 @@ class SeedCrawlerModel:
         all_docs = get_bag_of_words(self.urls)
         tf = tfidf.tfidf()
         tf.process(all_docs)
-        return tf.getTfArray(all_docs.keys())
+        return tf.getTfArray()
+
+    def term_tfidf(self, urls):
+        all_docs = get_bag_of_words(self.urls)
+        tf = tfidf.tfidf()
+        tf.process(all_docs)
+        return tf.getTfidfArray()
 
     def submit_selected_terms(self, positive, negative):
     #Rerank the terms based on the labeled terms
@@ -214,12 +220,10 @@ class SeedCrawlerModel:
 
 if __name__=="__main__":
     scm = SeedCrawlerModel([])
-    urls =scm.submit_query_terms(["elsa"])
+    urls =scm.submit_query_terms(["gun control"])
     
-    [urls, corpus, data] = scm.term_frequency(urls)
+    [urls, corpus, data] = scm.term_tfidf(urls)
     
-    print corpus
-
     #scm.test()
     #Create a test that mimick user process here to test
     #1. User starts with some terms
