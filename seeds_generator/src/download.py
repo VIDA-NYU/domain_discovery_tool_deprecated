@@ -60,7 +60,7 @@ def startProcesses( inputfile, outputdir):
 def download_one((given_url, outputdir)):
   src = "@empty@"
   try:
-    url = given_url.strip("\n")
+    url = given_url.strip()
     url = validate_url(url)
     #res = requests.get(url)
 
@@ -80,11 +80,6 @@ def download_one((given_url, outputdir)):
     
     entries = [e]
     add_document(entries)
-    src = base64.b64decode(e['html'])
-    encoded_url = encode(e['url'])
-    f = open(outputdir + "/" + encoded_url, "w")
-    f.write(src)
-    f.close()
   except urllib2.HTTPError, e:
     print 'HTTPERROR=' + str(e.code) + "\t" + url
   except socket.timeout, e:
