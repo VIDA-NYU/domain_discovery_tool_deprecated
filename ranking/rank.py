@@ -7,13 +7,28 @@ import numpy as np
 class rank:
     def results(self,table,query_urls, other_urls):
 
-        [urls, _, data] = table.getTfidfArray()
+        [urls, corpus, data] = table.getTfidfArray()
 
         indices = [urls.index(url) for url in query_urls]
         subquery_data = data[indices, :]
-        
+
         indices = [urls.index(url) for url in other_urls]
         other_data = data[indices, :]
+
+        # Check if any of the features are not present in any 
+        # of the query set documents
+        check_for_zero = np.sum(subquery_data, axis=0)
+        zero_indices = np.where(check_for_zero == 0)[0]
+
+        if(len(zero_indices) > 0):
+            # If features not present in query set documents
+            # then remove them
+            old_corpus = corpus
+            corpus = []
+            [corpus.append(old_corpus[i]) for i in range(0,len(old_corpus)) if i not in zero_indices]
+
+            subquery_data = np.delete(subquery_data, zero_indices, 1)
+            other_data = np.delete(other_data, zero_indices, 1)
 
         bs = BayesianSets.BayesianSets()
         
