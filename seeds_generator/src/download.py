@@ -61,14 +61,13 @@ def startProcesses( inputfile):
   print 'number of processes = ' + str(cpu_count())
   pool = Pool(processes=cpu_count()-1)
   print "Pool created"
-  pool.map_async(download_one, urls, callback=lambda x:finished(x,"Hello World!")) 
+  pool.map_async(download_one, urls, callback=lambda x:finished(x,"Finished Processing")) 
  
 def download_one(given_url):
   src = "@empty@"
   try:
     url = given_url.strip()
     url = validate_url(url)
-    #res = requests.get(url)
 
     e = compute_index_entry(url=url)
     if e:
@@ -87,29 +86,17 @@ def download_one(given_url):
     entries = [e]
     add_document(entries)
 
-    #Download thumbail
-    comm = environ['MEMEX_HOME'] + "/phantomjs/bin/phantomjs"
-    paramJs = environ['MEMEX_HOME'] + "/phantomjs/examples/rasterize.js"
-    paramImg = environ['MEMEX_HOME'] + "/seed_crawler/seeds_generator/thumbnails/" + encode(url)+".png"
-    call([comm, paramJs, url, paramImg, THUMBNAIL_DIMENSIONS, THUMBNAIL_ZOOM])
-    e = {
-      "doc" : {
-        "thumbnail": base64.b64encode(environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/thumbnails/'+encode(url)+'.png')
-      }
-    }
-    update_document(url, e)
-  except urllib2.HTTPError, e:
-    print 'HTTPERROR=' + str(e.code) + "\t" + url
-  except socket.timeout, e:
-    print 'TIMEOUT=' + str(e) + "\t" + url
+  except urllib2.HTTPError, ex:
+    print 'HTTPERROR=' + str(ex.code) + "\t" + url
+  except socket.timeout, ex:
+    print 'TIMEOUT=' + str(ex) + "\t" + url
   except:
     traceback.print_exc()
     print 'EXCEPTION' + "\t" + url
   return e
 
 def finished(x, ctx):
-  print ctx
-  print "Processing ", str(getpid()), " is Complete.",x
+  print ctx , str(getpid())
   
 def main(argv):
   if len(argv) != 1:
