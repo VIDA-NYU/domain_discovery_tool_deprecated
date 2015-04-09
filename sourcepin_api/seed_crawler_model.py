@@ -3,8 +3,6 @@
 #
 #03/11/2015
 
-from sets import Set
-
 from subprocess import call
 from subprocess import Popen
 from subprocess import PIPE
@@ -30,9 +28,9 @@ class SeedCrawlerModel:
         #e.g: urls = [["nature.com", 1, 0.9], ["sport.com", 0, 0.01]
         #list of terms and their labels, ranking scores
         #e.g: terms = [["science", 1, 0.9], ["sport", 0, 0.02]]
-        self.urls = urls
-        self.positive_urls = Set()
-        self.negative_urls = Set()
+        self.urls_set = set(urls)
+        self.positive_urls_set = set()
+        self.negative_urls_set = set()
         self.tfidf = tfidf.tfidf()
         self.memex_home = environ['MEMEX_HOME']
 
@@ -65,7 +63,8 @@ class SeedCrawlerModel:
         call(["rm", "-rf", "thumbnails"])
         call(["mkdir", "-p", "thumbnails"])
         
-        if sys.platform in ['darwin']:
+        if sys.platform in ['darwin', 'linux2']:
+        #if sys.platform in ['darwin']:
             download("results.txt")
         else:
             download("results.txt", parallel=True)
@@ -74,7 +73,7 @@ class SeedCrawlerModel:
             call(["rm", self.memex_home + "/seed_crawler/ranking/exclude.txt"])
 
         with open("results.txt",'r') as f:
-            self.urls = [self.validate_url(line.strip()) for line in f.readlines()]
+            urls = [self.validate_url(line.strip()) for line in f.readlines()]
 
         # chdir(self.memex_home + '/seed_crawler/lda_pipeline')
         # call(["mkdir", "-p", "data"])
@@ -83,7 +82,9 @@ class SeedCrawlerModel:
         # print output
         # print errors
 
-        return self.urls #Results from Search Engine
+        for url in urls:
+          self.urls_set.add(url)
+        return self.urls_set #Results from Search Engine
         
     
     def submit_selected_urls(self, positive, negative):
@@ -100,28 +101,23 @@ class SeedCrawlerModel:
         # Diversification
 
         for url in positive:
-            self.positive_urls.add(url)
-            if url in self.negative_urls:
-                self.negative_urls.discard(url)
+            self.positive_urls_set.add(url)
+            self.negative_urls_set.discard(url)
 
         for url in negative:
-            self.negative_urls.add(url)
-            if url in self.positive_urls:
-                self.positive_urls.discard(url)
+            self.negative_urls_set.add(url)
+            self.positive_urls_set.discard(url)
 
         documents = {}
         other = []
         
-        all_docs = get_bag_of_words(self.urls)
-
-        print "positive", self.positive_urls
-        print "negative",  self.negative_urls
+        all_docs = get_bag_of_words(list(self.urls_set))
 
         for url in all_docs.keys():
             content = all_docs[url]
-            if (len(self.negative_urls) == 0) or (url not in self.negative_urls):
+            if (len(self.negative_urls_set) == 0) or (url not in self.negative_urls_set):
                 documents[url] = content
-                if url not in self.positive_urls:
+                if url not in self.positive_urls_set:
                     other.append(url)
 
         print documents.keys()
@@ -130,7 +126,7 @@ class SeedCrawlerModel:
         chdir(self.memex_home + '/seed_crawler/ranking')
         ranker = rank.rank()
         
-        [ranked_urls,scores] = ranker.results(self.tfidf,self.positive_urls, other)
+        [ranked_urls,scores] = ranker.results(self.tfidf,self.positive_urls_set, other)
         return [ranked_urls, scores] # classified, ranked, diversified 
 
     def extract_terms(self, count):
@@ -147,14 +143,14 @@ class SeedCrawlerModel:
         extract = extract_terms.extract_terms(self.tfidf)
         return extract.getTopTerms(count)
 
-    def term_frequency(self, urls):
-        all_docs = get_bag_of_words(self.urls)
+    def term_frequency(self):
+        all_docs = get_bag_of_words(list(self.urls_set))
         tf = tfidf.tfidf()
         tf.process(all_docs)
         return tf.getTfArray()
 
-    def term_tfidf(self, urls):
-        all_docs = get_bag_of_words(self.urls)
+    def term_tfidf(self):
+        all_docs = get_bag_of_words(list(self.urls_set))
         tf = tfidf.tfidf()
         tf.process(all_docs)
         return tf.getTfidfArray()
