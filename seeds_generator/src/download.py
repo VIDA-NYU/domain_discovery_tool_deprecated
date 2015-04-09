@@ -9,11 +9,10 @@ import socket
 import traceback
 import requests
 import base64
-from subprocess import call
-from subprocess import Popen
-from subprocess import PIPE
 
-from add_documents import add_document, extract_text, compute_index_entry, update_document
+from os import environ
+
+from add_documents import add_document
 
 from os import chdir, environ, getpid, system
 
@@ -69,7 +68,9 @@ def download_one(given_url):
     url = given_url.strip()
     url = validate_url(url)
 
-    e = compute_index_entry(url=url)
+    from add_documents import compute_index_entry
+    e = compute_index_entry(url=url, extractType='boilerpipe')
+
     if e:
       print '\nGOOD\t' + e['url'] + ', PID=' + str(getpid())
     else:
@@ -77,8 +78,9 @@ def download_one(given_url):
         'url': url,
         'html': base64.b64encode(src)
       }
+    
     query = ""
-    with open('conf/queries.txt', 'r') as f:
+    with open(environ['MEMEX_HOME'] + '/seed_crawler/seeds_generator/conf/queries.txt', 'r') as f:
       for line in f:
         query = line.strip();
     e['query'] = query
@@ -105,7 +107,7 @@ def main(argv):
     return
   inputfile=argv[0]
   
-  download(inputfile, parallel=False)
+  download(inputfile, parallel=True)
 
 if __name__=="__main__":
   main(sys.argv[1:])
