@@ -46,9 +46,9 @@ class SeedCrawlerModel:
     #   urls: list of urls that are returned by Search Engine
         chdir(self.memex_home + '/seed_crawler/seeds_generator')
         
+        query = ' '.join(term_list)
         with open('conf/queries.txt','w') as f:
-            for term in term_list:
-                f.write(term)
+            f.write(query)
             
 
         comm = "java -cp .:class:libs/commons-codec-1.9.jar BingSearch -t " + str(max_url_count)
@@ -120,8 +120,7 @@ class SeedCrawlerModel:
                 if url not in self.positive_urls_set:
                     other.append(url)
 
-        print documents.keys()
-        self.tfidf.process(documents)
+        self.tfidf = tfidf.tfidf(documents)
 
         chdir(self.memex_home + '/seed_crawler/ranking')
         ranker = rank.rank()
@@ -145,15 +144,11 @@ class SeedCrawlerModel:
 
     def term_frequency(self):
         all_docs = get_bag_of_words(list(self.urls_set))
-        tf = tfidf.tfidf()
-        tf.process(all_docs)
-        return tf.getTfArray()
+        return tfidf.tfidf(all_docs).getTfArray()
 
     def term_tfidf(self):
         all_docs = get_bag_of_words(list(self.urls_set))
-        tf = tfidf.tfidf()
-        tf.process(all_docs)
-        return tf.getTfidfArray()
+        return tfidf.tfidf(all_docs).getTfidfArray()
 
     def submit_selected_terms(self, positive, negative):
     #Rerank the terms based on the labeled terms
