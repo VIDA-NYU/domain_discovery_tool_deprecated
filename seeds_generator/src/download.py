@@ -57,8 +57,13 @@ def startProcesses( inputfile):
   urls = []
   with open(inputfile) as lines:
     urls = [line for line in lines]
-  print 'number of processes = ' + str(cpu_count())
-  pool = Pool(processes=cpu_count()-1)
+
+  num_processes = cpu_count()-1
+  if len(urls) < cpu_count()-1:
+    num_processes = len(urls)
+
+  print 'number of processes = ' + str(num_processes)
+  pool = Pool(processes=num_processes)
   print "Pool created"
   pool.map_async(download_one, urls, callback=lambda x:finished(x,"Finished Processing")) 
  
