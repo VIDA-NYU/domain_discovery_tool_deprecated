@@ -20,9 +20,13 @@ class tfidf:
         return nltk.probability.FreqDist(text)
 
     def getIdf(self):
-        N = len(self.documents)
+        num = float(len(self.documents))
         for word in self.corpus_dict:
-            self.idf[word] = math.log(float(N)/self.corpus_dict[word])
+            den = self.corpus_dict[word]
+            if den == 0:
+                den = den + 1
+
+            self.idf[word] = math.log(num/den)
 
     def getTfidf(self):
         for url in self.documents.keys():
