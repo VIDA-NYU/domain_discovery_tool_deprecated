@@ -6,12 +6,14 @@ import numpy as np
 from os.path import exists
 
 class tfidf:
-    def __init__(self):
+    def __init__(self, opt_docs = None):
         self.documents = {}
         self.corpus_dict = {}
         self.idf = {}
         self.tfidfVector = {}
         self.corpus_tf = {}
+        if opt_docs != None:
+          self.process(opt_docs)
 
     def term_frequency(self):
         return self.documents
