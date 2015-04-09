@@ -42,16 +42,17 @@ def get_downloaded_urls(inputfile):
   urls = [url.strip() for url in urls]
   return urls
 
-def download(inputfile, parallel=False):
+def download(inputfile, parallel=False, cb=None):
   if parallel == True:
     print 'MULTIPROCESSING'
-    startProcesses(inputfile)
+    callback = cb if cb != None else lambda x:finished(x,"Finished Processing")
+    startProcesses(inputfile, callback)
   else:
     with open(inputfile) as lines:
       for line in lines:
         download_one((line))
         
-def startProcesses( inputfile):
+def startProcesses( inputfile, cb):
   #multiprocessing :
   print 'START PROCESSES ', inputfile
   urls = []
@@ -65,7 +66,7 @@ def startProcesses( inputfile):
   print 'number of processes = ' + str(num_processes)
   pool = Pool(processes=num_processes)
   print "Pool created"
-  pool.map_async(download_one, urls, callback=lambda x:finished(x,"Finished Processing")) 
+  pool.map_async(download_one, urls, callback=cb) 
  
 def download_one(given_url):
   src = "@empty@"
