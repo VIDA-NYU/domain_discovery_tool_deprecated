@@ -110,7 +110,7 @@ def main(argv):
     return
   inputfile=argv[0]
   
-  download(inputfile, parallel=True)
+  download(inputfile)
 
 if __name__=="__main__":
   main(sys.argv[1:])
