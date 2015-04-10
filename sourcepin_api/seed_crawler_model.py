@@ -63,8 +63,8 @@ class SeedCrawlerModel:
         call(["rm", "-rf", "thumbnails"])
         call(["mkdir", "-p", "thumbnails"])
         
-        if sys.platform in ['darwin', 'linux2']:
-        #if sys.platform in ['darwin']:
+        #if sys.platform in ['darwin', 'linux2']:
+        if sys.platform in ['darwin']:
             download("results.txt")
         else:
             download("results.txt", parallel=True)
@@ -100,18 +100,20 @@ class SeedCrawlerModel:
         # Ranking 
         # Diversification
 
-        for url in positive:
-            self.positive_urls_set.add(url)
-            self.negative_urls_set.discard(url)
-
-        for url in negative:
-            self.negative_urls_set.add(url)
-            self.positive_urls_set.discard(url)
-
         documents = {}
         other = []
         
         all_docs = get_bag_of_words(list(self.urls_set))
+
+        for url in positive:
+            if url in all_docs:
+                self.positive_urls_set.add(url)
+                self.negative_urls_set.discard(url)
+
+        for url in negative:
+            if url in all_docs:
+                self.negative_urls_set.add(url)
+                self.positive_urls_set.discard(url)
 
         for url in all_docs.keys():
             content = all_docs[url]
