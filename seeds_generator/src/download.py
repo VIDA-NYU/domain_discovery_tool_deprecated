@@ -18,9 +18,6 @@ from os import chdir, environ, getpid, system
 
 #processes is the list of urls from the input link
 
-THUMBNAIL_DIMENSIONS = "100px*130px"
-THUMBNAIL_ZOOM = "0.20"
-
 def encode( url):
   return urllib2.quote(url).replace("/", "%2F")
 
@@ -58,8 +55,8 @@ def startProcesses( inputfile):
   with open(inputfile) as lines:
     urls = [line for line in lines]
 
-  num_processes = cpu_count()-1
-  if len(urls) < cpu_count()-1:
+  num_processes =  cpu_count()-1
+  if len(urls) < num_processes:
     num_processes = len(urls)
 
   print 'number of processes = ' + str(num_processes)
