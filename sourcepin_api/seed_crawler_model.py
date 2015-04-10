@@ -35,7 +35,7 @@ class SeedCrawlerModel:
         self.memex_home = environ['MEMEX_HOME']
 
  
-    def submit_query_terms(self, term_list, max_url_count = 15):
+    def submit_query_terms(self, term_list, max_url_count = 15, parallel_cb = None):
     #Perform queries to Search Engine APIs
     #This function only operates when there is no information associated with the terms,
     #usually before running extract_terms()
@@ -67,7 +67,7 @@ class SeedCrawlerModel:
         if sys.platform in ['darwin']:
             download("results.txt")
         else:
-            download("results.txt", parallel=True)
+            download("results.txt", True, parallel_cb)
 
         if exists(self.memex_home + "/seed_crawler/ranking/exclude.txt"):
             call(["rm", self.memex_home + "/seed_crawler/ranking/exclude.txt"])
