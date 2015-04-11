@@ -1,6 +1,6 @@
 import download
 import sys
-from os import environ, chdir
+from os import environ, chdir, path
 from subprocess import call
 import base64
 from add_documents import update_document
@@ -39,13 +39,17 @@ def download_thumbnail(url):
   #     "thumbnail": base64.b64encode(environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/thumbnails/'+download.encode(url)+'.png')
   #   }
   # }
-  e = {
-    "doc": {
-      "thumbnail": base64.b64encode(environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/thumbnails/'+download.encode(url)+'.png')
-    }
-  }
-  update_document(url, e)
-  print "updated thumbnail for ", url
+  if path.exists(environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/thumbnails/'+download.encode(url)+'.png'):
+    with open(environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/thumbnails/'+download.encode(url)+'.png', 'rb') as img:
+      e = {
+        "doc": {
+          "thumbnail": base64.b64encode(img)
+        }
+      }
+      update_document(url, e)
+      print "updated thumbnail for ", url
+  else:
+    print "No thumbnail downloaded"
   
 def download_thumbnails(inputfile, parallel=False):
   if parallel:
