@@ -13,7 +13,7 @@ import sys
 
 from download import download, decode
 from concat_nltk import get_bag_of_words
-from search_documents import get_context
+from search_documents import get_context, term_search
 import rank
 import tfidf
 import extract_terms
@@ -35,7 +35,7 @@ class SeedCrawlerModel:
         self.memex_home = environ['MEMEX_HOME']
 
  
-    def submit_query_terms(self, term_list, max_url_count = 15):
+    def submit_query_terms(self, term_list, max_url_count = 15, parallel_cb = None, cached=False):
     #Perform queries to Search Engine APIs
     #This function only operates when there is no information associated with the terms,
     #usually before running extract_terms()
@@ -46,44 +46,46 @@ class SeedCrawlerModel:
     #   urls: list of urls that are returned by Search Engine
         chdir(self.memex_home + '/seed_crawler/seeds_generator')
         
+        query = ' '.join(term_list)
         with open('conf/queries.txt','w') as f:
-            for term in term_list:
-                f.write(term)
+            f.write(query)
             
-
-        comm = "java -cp .:class:libs/commons-codec-1.9.jar BingSearch -t " + str(max_url_count)
-        p=Popen(comm, shell=True, stdout=PIPE)
-        output, errors = p.communicate()
-        print output
-        print errors
+        if not cached:
+            comm = "java -cp .:class:libs/commons-codec-1.9.jar BingSearch -t " + str(max_url_count)
+            p=Popen(comm, shell=True, stdout=PIPE)
+            output, errors = p.communicate()
+            print output
+            print errors
 
         
-        call(["rm", "-rf", "html"])
-        call(["mkdir", "-p", "html"])
-        call(["rm", "-rf", "thumbnails"])
-        call(["mkdir", "-p", "thumbnails"])
+            call(["rm", "-rf", "html"])
+            call(["mkdir", "-p", "html"])
+            call(["rm", "-rf", "thumbnails"])
+            call(["mkdir", "-p", "thumbnails"])
         
-        if sys.platform in ['darwin', 'linux2']:
-        #if sys.platform in ['darwin']:
-            download("results.txt")
+            #if sys.platform in ['darwin', 'linux2']:
+            if sys.platform in ['darwin']:
+                download("results.txt")
+            else:
+                download("results.txt", True, parallel_cb)
+
+            if exists(self.memex_home + "/seed_crawler/ranking/exclude.txt"):
+                call(["rm", self.memex_home + "/seed_crawler/ranking/exclude.txt"])
+
+            with open("results.txt",'r') as f:
+                urls = [self.validate_url(line.strip()) for line in f.readlines()]
+
+                # chdir(self.memex_home + '/seed_crawler/lda_pipeline')
+                # call(["mkdir", "-p", "data"])
+                # p=Popen("java -cp .:class/:lib/boilerpipe-1.2.0.jar:lib/nekohtml-1.9.13.jar:lib/xerces-2.9.1.jar Extract ../seeds_generator/html/  | python concat_nltk.py data/lda_input.csv",shell=True,stdout=PIPE)
+                # output, errors = p.communicate()
+                # print output
+                # print errors
         else:
-            download("results.txt", parallel=True)
-
-        if exists(self.memex_home + "/seed_crawler/ranking/exclude.txt"):
-            call(["rm", self.memex_home + "/seed_crawler/ranking/exclude.txt"])
-
-        with open("results.txt",'r') as f:
-            urls = [self.validate_url(line.strip()) for line in f.readlines()]
-
-        # chdir(self.memex_home + '/seed_crawler/lda_pipeline')
-        # call(["mkdir", "-p", "data"])
-        # p=Popen("java -cp .:class/:lib/boilerpipe-1.2.0.jar:lib/nekohtml-1.9.13.jar:lib/xerces-2.9.1.jar Extract ../seeds_generator/html/  | python concat_nltk.py data/lda_input.csv",shell=True,stdout=PIPE)
-        # output, errors = p.communicate()
-        # print output
-        # print errors
+            urls = term_search('query', term_list)
 
         for url in urls:
-          self.urls_set.add(url)
+            self.urls_set.add(url)
         return self.urls_set #Results from Search Engine
         
     
@@ -100,18 +102,20 @@ class SeedCrawlerModel:
         # Ranking 
         # Diversification
 
-        for url in positive:
-            self.positive_urls_set.add(url)
-            self.negative_urls_set.discard(url)
-
-        for url in negative:
-            self.negative_urls_set.add(url)
-            self.positive_urls_set.discard(url)
-
         documents = {}
         other = []
         
         all_docs = get_bag_of_words(list(self.urls_set))
+
+        for url in positive:
+            if url in all_docs:
+                self.positive_urls_set.add(url)
+                self.negative_urls_set.discard(url)
+
+        for url in negative:
+            if url in all_docs:
+                self.negative_urls_set.add(url)
+                self.positive_urls_set.discard(url)
 
         for url in all_docs.keys():
             content = all_docs[url]
@@ -120,8 +124,7 @@ class SeedCrawlerModel:
                 if url not in self.positive_urls_set:
                     other.append(url)
 
-        print documents.keys()
-        self.tfidf.process(documents)
+        self.tfidf = tfidf.tfidf(documents)
 
         chdir(self.memex_home + '/seed_crawler/ranking')
         ranker = rank.rank()
@@ -145,15 +148,11 @@ class SeedCrawlerModel:
 
     def term_frequency(self):
         all_docs = get_bag_of_words(list(self.urls_set))
-        tf = tfidf.tfidf()
-        tf.process(all_docs)
-        return tf.getTfArray()
+        return tfidf.tfidf(all_docs).getTfArray()
 
     def term_tfidf(self):
         all_docs = get_bag_of_words(list(self.urls_set))
-        tf = tfidf.tfidf()
-        tf.process(all_docs)
-        return tf.getTfidfArray()
+        return tfidf.tfidf(all_docs).getTfidfArray()
 
     def submit_selected_terms(self, positive, negative):
     #Rerank the terms based on the labeled terms

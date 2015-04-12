@@ -9,18 +9,14 @@ import socket
 import traceback
 import requests
 import base64
-from subprocess import call
-from subprocess import Popen
-from subprocess import PIPE
 
-from add_documents import add_document, extract_text, compute_index_entry, update_document
+from os import environ
+
+from add_documents import add_document
 
 from os import chdir, environ, getpid, system
 
 #processes is the list of urls from the input link
-
-THUMBNAIL_DIMENSIONS = "100px*130px"
-THUMBNAIL_ZOOM = "0.20"
 
 def encode( url):
   return urllib2.quote(url).replace("/", "%2F")
@@ -43,25 +39,31 @@ def get_downloaded_urls(inputfile):
   urls = [url.strip() for url in urls]
   return urls
 
-def download(inputfile, parallel=False):
+def download(inputfile, parallel=False, cb=None):
   if parallel == True:
     print 'MULTIPROCESSING'
-    startProcesses(inputfile)
+    callback = cb if cb != None else lambda x:finished(x,"Finished Processing")
+    startProcesses(inputfile, callback)
   else:
     with open(inputfile) as lines:
       for line in lines:
         download_one((line))
         
-def startProcesses( inputfile):
+def startProcesses( inputfile, cb):
   #multiprocessing :
   print 'START PROCESSES ', inputfile
   urls = []
   with open(inputfile) as lines:
     urls = [line for line in lines]
-  print 'number of processes = ' + str(cpu_count())
-  pool = Pool(processes=cpu_count()-1)
+
+  num_processes =  cpu_count()-1
+  if len(urls) < num_processes:
+    num_processes = len(urls)
+
+  print 'number of processes = ' + str(num_processes)
+  pool = Pool(processes=num_processes)
   print "Pool created"
-  pool.map_async(download_one, urls, callback=lambda x:finished(x,"Finished Processing")) 
+  pool.map_async(download_one, urls, callback=cb) 
  
 def download_one(given_url):
   src = "@empty@"
@@ -69,7 +71,9 @@ def download_one(given_url):
     url = given_url.strip()
     url = validate_url(url)
 
-    e = compute_index_entry(url=url)
+    from add_documents import compute_index_entry
+    e = compute_index_entry(url=url, extractType='boilerpipe')
+
     if e:
       print '\nGOOD\t' + e['url'] + ', PID=' + str(getpid())
     else:
@@ -77,8 +81,9 @@ def download_one(given_url):
         'url': url,
         'html': base64.b64encode(src)
       }
+    
     query = ""
-    with open('conf/queries.txt', 'r') as f:
+    with open(environ['MEMEX_HOME'] + '/seed_crawler/seeds_generator/conf/queries.txt', 'r') as f:
       for line in f:
         query = line.strip();
     e['query'] = query
@@ -105,7 +110,7 @@ def main(argv):
     return
   inputfile=argv[0]
   
-  download(inputfile, parallel=False)
+  download(inputfile)
 
 if __name__=="__main__":
   main(sys.argv[1:])
