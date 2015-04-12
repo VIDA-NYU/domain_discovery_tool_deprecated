@@ -24,40 +24,35 @@ def startProcesses( inputfile):
   print "Pool created"
   pool.map_async(download_thumnail, urls, callback=lambda x:finished_thumbnail(x,"Finished Processing")) 
 
-def download_thumbnail(url):
+def download_thumbnail(url, updatedb=True):
   #Download thumbail
   print 'Downloading thumnail for ', url
-  chdir(environ['MEMEX_HOME'] + "/phantomjs/bin/")
-  comm = "phantomjs"
+  chdir(environ['MEMEX_HOME'] + "/phantomjs/")
+  comm = "bin/phantomjs"
   paramJs = environ['MEMEX_HOME'] + "/phantomjs/examples/rasterize.js"
   paramImg = environ['MEMEX_HOME'] + "/seed_crawler/seeds_generator/thumbnails/" + download.encode(url)+".png"
   call([comm, paramJs, url, paramImg, THUMBNAIL_DIMENSIONS, THUMBNAIL_ZOOM])
-  
-  # e = {
-  #   "script": "ctx._source.thumbnail = thumbnail",
-  #   "params": {
-  #     "thumbnail": base64.b64encode(environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/thumbnails/'+download.encode(url)+'.png')
-  #   }
-  # }
-  if path.exists(environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/thumbnails/'+download.encode(url)+'.png'):
-    with open(environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/thumbnails/'+download.encode(url)+'.png', 'rb') as img:
-      e = {
-        "doc": {
-          "thumbnail": base64.b64encode(img)
+
+  if updatedb:
+    if path.exists(environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/thumbnails/'+download.encode(url)+'.png'):
+      with open(environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/thumbnails/'+download.encode(url)+'.png', 'rb') as img:
+        e = {
+          "doc": {
+            "thumbnail": base64.b64encode(img.read())
+          }
         }
-      }
-      update_document(url, e)
-      print "updated thumbnail for ", url
-  else:
-    print "No thumbnail downloaded"
+        update_document(url, e)
+        print "updated thumbnail for ", url
+    else:
+      print "No thumbnail downloaded"
   
-def download_thumbnails(inputfile, parallel=False):
+def download_thumbnails(inputfile, parallel=False, updatedb=True):
   if parallel:
     startProcesses(inputfile)
   else:
     with open(inputfile,'r') as f:
       for url in f:
-        download_thumbnail(url.strip())
+        download_thumbnail(url.strip(), updatedb)
 
 def main(argv):
   if len(argv) != 1:
@@ -65,7 +60,7 @@ def main(argv):
     print "python download.py inputfile"
     return
   inputfile=argv[0]
-  download_thumbnails(inputfile)
+  download_thumbnails(inputfile, updatedb=False)
 
 if __name__=="__main__":
   main(sys.argv[1:])
