@@ -52,7 +52,7 @@ def get_all_files(dirname):
   for [path, dirnames, filenames] in walk(dirname):
       for filename in filenames:
         files.append(path + "/" + filename)
-  print "Done loading filenes", len(files)
+  print "Done loading files", len(files)
   return files
 
 def get_bag_of_words(urls):
