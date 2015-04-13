@@ -4,10 +4,16 @@
     <input type="submit" name="search" value="Search" />
     <ul>
       {% for field in form2 %}
+        {% if "thumbnail" in field.name %}
+          {% load staticfiles %}
+          <img src="/static/{{field.label}}" alt="" />
+        {% elif "choice" in field.name %}
         <label for= field.id_for_label><br />{{field.label}}<br /></label>
 	{% for choice in field%}
 	 {{choice}}
 	{% endfor %}
+        <br> <br>
+	{% endif %}
       {% endfor %}
     </ul>
     <input type="submit" name="rank" value="Rank" />
