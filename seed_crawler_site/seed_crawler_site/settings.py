@@ -100,8 +100,18 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/dev/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.environ['MEMEX_HOME']+'/static'
+STATICFILES_DIRS = (os.environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/thumbnails',)
+
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
+STATICFILES_FINDERS = [
+     "django.contrib.staticfiles.finders.FileSystemFinder",
+     "django.contrib.staticfiles.finders.AppDirectoriesFinder"
+]
+
+
