@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<html>
+  <head>
+    <title>Understanding Topics on the Web</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <link type="text/css" rel="stylesheet" href="css/jquery-ui.css" media="all">
+    <link type="text/css" rel="stylesheet" href="css/style-white.css" media="all">
+
+    <script type="text/javascript" src="js/libs/d3.v3.5.5.min.js"></script>
+    <script type="text/javascript" src="js/libs/d3.layout.cloud.js"></script>
+    <script type="text/javascript" src="js/libs/jquery-1.10.0.min.js"></script>
+    <script type="text/javascript" src="js/libs/jquery-ui.js"></script>
+
+    <script type="text/javascript" src="js/bubblechart.js"></script>
+    <script type="text/javascript" src="js/heatmap.js"></script>
+    <script type="text/javascript" src="js/tagcloud.js"></script>
+    <script type="text/javascript" src="js/termite.js"></script>
+    <script type="text/javascript" src="js/topicsvis.js"></script>
+    <script type="text/javascript" src="js/utils.js"></script>
+  </head>
+
+  <body>
+    <div id="page_container">
+      <!-- Header panel -->
+      <div id="header">Dataset: <select id="selectDataset"></select></div>
+      <!-- Comparison panel -->
+      <div id="comparison_panel">
+        <div id="tagCloud1" class="tagCloudsPanel">
+        </div>
+      </div>
+      <!-- Middle panel -->
+      <div id="middle_panel">
+        <div class="topicsPanel">
+          <div id="heatmap_pos_container" class="heatmap"></div>
+          <div id="termite_pos_container" class="termite"></div>
+        </div><div id="topicsMaps">
+          <div id="pos_topics_map_container" class="topics_map_container"></div>
+          <div id="neg_topics_map_container" class="topics_map_container"></div>
+        </div><div class="topicsPanel">
+          <div id="heatmap_neg_container" class="heatmap"></div>
+          <div id="termite_neg_container" class="termite"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
