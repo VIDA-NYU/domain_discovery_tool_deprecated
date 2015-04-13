@@ -1,4 +1,3 @@
-import download
 import sys
 from os import environ, chdir, path
 from subprocess import call
@@ -7,6 +6,9 @@ from add_documents import update_document
 
 THUMBNAIL_DIMENSIONS = "100px*130px"
 THUMBNAIL_ZOOM = "0.20"
+
+def encode(url):
+  url.replace("/","_")
 
 def startProcesses( inputfile):
   #multiprocessing :
@@ -30,12 +32,12 @@ def download_thumbnail(url, updatedb=True):
   chdir(environ['MEMEX_HOME'] + "/phantomjs/")
   comm = "bin/phantomjs"
   paramJs = environ['MEMEX_HOME'] + "/phantomjs/examples/rasterize.js"
-  paramImg = environ['MEMEX_HOME'] + "/seed_crawler/seeds_generator/thumbnails/" + download.encode(url)+".png"
+  paramImg = environ['MEMEX_HOME'] + "/seed_crawler/seeds_generator/thumbnails/" + url.encode(url)+".png"
   call([comm, paramJs, url, paramImg, THUMBNAIL_DIMENSIONS, THUMBNAIL_ZOOM])
 
   if updatedb:
-    if path.exists(environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/thumbnails/'+download.encode(url)+'.png'):
-      with open(environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/thumbnails/'+download.encode(url)+'.png', 'rb') as img:
+    if path.exists(paramImg):
+      with open(paramImg, 'rb') as img:
         e = {
           "doc": {
             "thumbnail": base64.b64encode(img.read())
@@ -60,7 +62,7 @@ def main(argv):
     print "python download.py inputfile"
     return
   inputfile=argv[0]
-  download_thumbnails(inputfile, updatedb=False)
+  download_thumbnails(inputfile, updatedb=True)
 
 if __name__=="__main__":
   main(sys.argv[1:])
