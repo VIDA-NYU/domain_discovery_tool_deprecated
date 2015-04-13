@@ -23,6 +23,11 @@ from os.path import isfile, join, exists
 
 from concat_nltk import get_bag_of_words
 
+from django.core.files.uploadedfile import SimpleUploadedFile
+
+def encode( url):
+  return url.replace("/", "_")
+
 def get_downloaded_urls(inputfile):
   urls = []
   with open(inputfile, 'r') as f:
@@ -30,26 +35,29 @@ def get_downloaded_urls(inputfile):
   urls = [url.strip() for url in urls]
   return urls
 
-def populate_urls(request, urls):
+def populate_urls(request, urls=[]):
     fields = []
+    file_data = []
     CHOICES = ((1,'Yes'),(2,'No'))
     if len(urls) > 0:
         # Display search results
         index = 0
         for url in urls:
             request.session['choice_urls_field_'+str(index)] = url
+            fields.append(['thumbnail_'+str(index),forms.CharField(label=encode(url.encode('utf-8'))+'.png')])
             fields.append(['choice_urls_field_'+str(index), forms.TypedChoiceField(label=mark_safe('<a href="'+url+'"target="_blank">'+url+'</a>'),required=False,widget=forms.RadioSelect(), choices=CHOICES,coerce=int)])
             index = index + 1
     else:
         index = 0
         while True:
-            key = 'choice_urls_field_'+str(index)
-            field = request.session.get(key,None)
-            if field is not None:
-                fields.append([key, forms.TypedChoiceField(label=mark_safe('<a href="'+ field +'"target="_blank">'+request.session[key]+'</a>'),required=False,widget=forms.RadioSelect(), choices=CHOICES,coerce=int)])
-                index = index + 1
-            else:
-                break
+          key = 'choice_urls_field_'+str(index)
+          url = request.session.get(key,None)
+          if url is not None:
+            fields.append(['thumbnail_'+str(index),forms.CharField(label=encode(url.encode('utf-8'))+'.png')])
+            fields.append([key, forms.TypedChoiceField(label=mark_safe('<a href="'+ url +'"target="_blank">'+url+'</a>'),required=False,widget=forms.RadioSelect(), choices=CHOICES,coerce=int)])
+            index = index + 1
+          else:
+            break
                 
     ordered_fields = OrderedDict(fields)
 
@@ -144,25 +152,33 @@ def get_query(request):
                 
                 scm = seed_crawler_model.SeedCrawlerModel([])
 
-                results = scm.submit_query_terms(query_terms)
+                results = list(scm.submit_query_terms(query_terms, max_url_count = 500, cached=True))
                 
-                form_class = populate_urls(request, results)
+                form_class = populate_urls(request, results[0:15])
                 form2 = form_class()
 
                 return render(request, 'query_with_results.html', {'form1': form1,'form2':form2})
 
-        form_class = populate_urls(request, [])
+        form_class = populate_urls(request)
         form2 = form_class(request.POST)
         url_yes_choices = []
         url_no_choices = []
         if form2.is_valid():
             # If relevant pages are selected do the ranking
             for field in form2.cleaned_data:
-                if "choice_urls_field_" in field:
-                    if form2.cleaned_data[field] == 1:
-                        url_yes_choices.append(request.session[field].encode('ascii','ignore'))
-                    elif form2.cleaned_data[field] == 2:
-                        url_no_choices.append(request.session[field].encode('ascii','ignore'))
+              if "choice_urls_field_" in field:
+                if form2.cleaned_data[field] == 1:
+                  url_yes_choices.append(request.session[field].encode('ascii','ignore'))
+                elif form2.cleaned_data[field] == 2:
+                  url_no_choices.append(request.session[field].encode('ascii','ignore'))
+            print url_yes_choices
+        else:
+          for field in form2.cleaned_data:
+            if "choice_urls_field_" in field:
+              if form2.cleaned_data[field] == 1:
+                url_yes_choices.append(request.session[field].encode('ascii','ignore'))
+              elif form2.cleaned_data[field] == 2:
+                url_no_choices.append(request.session[field].encode('ascii','ignore'))
             
         if 'rank' in request.POST:
                         
@@ -170,8 +186,9 @@ def get_query(request):
             
             results = get_downloaded_urls(environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/results.txt')
             scm = seed_crawler_model.SeedCrawlerModel(results)
+
             [ranked_urls, scores] = scm.submit_selected_urls(url_yes_choices, url_no_choices)
-            form_class = populate_score(ranked_urls, scores)
+            form_class = populate_score(ranked_urls[0:15], scores[0:15])
             form3 = form_class()
             return render(request, 'query_with_ranks.html', {'form1': form1,'form2':form2, 'form3':form3})
 
