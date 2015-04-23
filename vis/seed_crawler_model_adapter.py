@@ -6,12 +6,11 @@ from seed_crawler_model import *
 class SeedCrawlerModelAdapter:
   def __init__(self):
     self._seedCrawlerModel = SeedCrawlerModel()
-    self._MAX_URL_COUNT = 30
+    self._MAX_URL_COUNT = 50
     self._MAX_EXTRACTED_TERMS_COUNT = 40
     self.urls = []
     self.positive_terms_set = set()
     self.negative_terms_set = set()
-
 
 
   @staticmethod
@@ -36,19 +35,19 @@ class SeedCrawlerModelAdapter:
       negative_pages_list = SeedCrawlerModelAdapter.extractListParam(negativePages)
       self._seedCrawlerModel.submit_selected_urls(positive_pages_list, negative_pages_list)
 
-    # Always updates labels for terms when submitting a query to avoid losing current labels.
-    if len(positiveTerms) > 0 or len(negativeTerms) > 0:
-      self._updateTermsLabels(positiveTerms, negativeTerms, neutralTerms)
 
     # Performs query.
     query_term_list = SeedCrawlerModelAdapter.extractListParam(queryTerms, ' ')
-    self._seedCrawlerModel.submit_query_terms(query_term_list, self._MAX_URL_COUNT)
-    self.urls = list(self._seedCrawlerModel.urls_set)
+    print query_term_list
+    self.urls = self._seedCrawlerModel.submit_query_terms(query_term_list, self._MAX_URL_COUNT, cached=True)
 
     print '\n\n\n', '*' * 80
     print 'query_term_list', query_term_list
     print '*' * 80, '\n\n\n'
 
+    # Always updates labels for terms when submitting a query to avoid losing current labels.
+    if len(positiveTerms) > 0 or len(negativeTerms) > 0:
+      self._updateTermsLabels(positiveTerms, negativeTerms, neutralTerms)
 
     # TODO When downloading in parallel, it should wait for pages content to be ready for tf-idf
     # computation.
@@ -73,26 +72,16 @@ class SeedCrawlerModelAdapter:
 
     return {'urls': self.urlsInfo, 'pcaData': pcaData}
 
-
-
   def doRanking(self, positivePages, negativePages):
     positive_pages_list = SeedCrawlerModelAdapter.extractListParam(positivePages)
     negative_pages_list = SeedCrawlerModelAdapter.extractListParam(negativePages)
 
-#    print '\n\n\n', '*' * 80
-#    print 'positive_pages_list', positive_pages_list
-#    print 'negative_pages_list', negative_pages_list
-
     rank = self._seedCrawlerModel.submit_selected_urls(positive_pages_list, negative_pages_list)
-    print '\n\n\n', '*' * 80
-#    print 'positive_pages_list', positive_pages_list
-#    print 'negative_pages_list', negative_pages_list
-    print rank
-    print '\n\n\n', '*' * 80
+
     # TODO remove test after Yamuna fixes scores computation.
     ranked_urls = rank[0]
     scores = rank[1]
-    scores = [random.random() if math.isnan(score) else score for score in scores]
+    #scores = [random.random() if math.isnan(score) else score for score in scores]
     return {'ranked_urls': ranked_urls, 'scores': scores}
 
 
@@ -109,18 +98,20 @@ class SeedCrawlerModelAdapter:
       self.positive_terms_set.discard(neutral_term)
       self.negative_terms_set.discard(neutral_term)
 
-    # Extracts terms and loads their snippets.
-    self._seedCrawlerModel.submit_selected_urls([], [])
-    self._seedCrawlerModel.submit_selected_terms( \
-    list(self.positive_terms_set), list(self.negative_terms_set))
-
-
-
   def extractTerms(self, positiveTerms, negativeTerms, neutralTerms):
     self._updateTermsLabels(positiveTerms, negativeTerms, neutralTerms)
+    self._seedCrawlerModel.submit_selected_urls([], [])
+    
+    positive_terms_list = list(self.positive_terms_set)
+    negative_terms_list = list(self.negative_terms_set)
 
     # Extracts terms and loads their snippets.
-    terms = self._seedCrawlerModel.extract_terms(self._MAX_EXTRACTED_TERMS_COUNT)
+    if len(positive_terms_list) > 0 or len(negative_terms_list) > 0:
+      terms = self._seedCrawlerModel.submit_selected_terms(positive_terms_list, negative_terms_list)[0:self._MAX_EXTRACTED_TERMS_COUNT]
+    else:
+      terms = self._seedCrawlerModel.extract_terms(self._MAX_EXTRACTED_TERMS_COUNT)
+
+    print terms
 
     new_terms_and_context = {term: self._seedCrawlerModel.term_context([term]) for term in terms}
 
