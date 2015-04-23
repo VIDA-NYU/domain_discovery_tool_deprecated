@@ -27,7 +27,7 @@ class SeedCrawlerModelAdapter:
 
 
   def query( \
-  self, queryTerms, positivePages, negativePages, positiveTerms, negativeTerms, neutralTerms):
+             self, queryTerms, positivePages=[], negativePages=[], positiveTerms=[], negativeTerms=[], neutralTerms=[]):
 
     # Always performs reranking when submitting a query to avoid losing current labels.
     if len(positivePages) > 0 or len(negativePages) > 0:
