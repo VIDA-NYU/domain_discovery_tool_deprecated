@@ -1,0 +1,9 @@
+/local
+/bin
+/include
+/lib
+/build
+/nltk_data
+config.conf
+class
+results.txt

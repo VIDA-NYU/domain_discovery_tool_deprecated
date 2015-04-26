@@ -7,7 +7,7 @@ import sys
 import urllib2
 import socket
 import traceback
-import requests
+#import requests
 import base64
 
 from os import environ

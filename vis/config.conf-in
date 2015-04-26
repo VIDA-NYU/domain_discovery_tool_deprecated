@@ -4,7 +4,7 @@ server.socket_port = 8084
 server.thread_pool = 10
 
 [/]
-tools.staticdir.root = /Users/cesarpalomo/projects/focusedcrawlersteering/memex/seed_crawler/vis/html
+tools.staticdir.root = .
 tools.encode.on = True
 tools.gzip.on = True
 
