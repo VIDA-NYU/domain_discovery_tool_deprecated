@@ -35,7 +35,7 @@ class SeedCrawlerModel:
         self.memex_home = environ['MEMEX_HOME']
 
  
-    def submit_query_terms(self, term_list, max_url_count = 15, parallel_cb = None, cached=False):
+    def submit_query_terms(self, term_list, max_url_count = 15, parallel_cb = None, cached=True):
     #Perform queries to Search Engine APIs
     #This function only operates when there is no information associated with the terms,
     #usually before running extract_terms()

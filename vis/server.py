@@ -30,7 +30,7 @@ class Page:
   # Default constructor reading app config file.
   def __init__(self):
     # Folder with html content.
-    self._HTML_DIR = os.path.join(os.path.abspath("."), u"html")
+    self._HTML_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), u"html")
 
 
   # Access to topics visualization.
