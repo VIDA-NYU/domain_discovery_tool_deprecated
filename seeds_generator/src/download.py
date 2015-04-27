@@ -87,7 +87,7 @@ def download_one(given_url):
       for line in f:
         query = line.strip();
     e['query'] = query
-    
+    print query
     entries = [e]
     add_document(entries)
 
@@ -101,7 +101,7 @@ def download_one(given_url):
   return e
 
 def finished(x, ctx):
-  print ctx , str(getpid())
+  print ctx
   
 def main(argv):
   if len(argv) != 1:
