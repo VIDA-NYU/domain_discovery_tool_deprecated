@@ -6,5 +6,5 @@ scikit-learn==0.15.2
 pyelasticsearch==1.2
 nltk
 cherrypy
-git+git://github.com/kivy/pyjnius.git
+#git+git://github.com/kivy/pyjnius.git
 
