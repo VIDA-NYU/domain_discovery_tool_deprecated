@@ -6,7 +6,7 @@ else
     ELASTIC=$1
 fi
 
-curl -XPUT "$ELASTIC/memex"; echo
+curl -s -XPUT "$ELASTIC/memex"; echo
 #  -d '{
 #     "index" : {
 # 	"analysis":{

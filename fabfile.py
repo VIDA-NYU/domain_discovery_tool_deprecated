@@ -83,8 +83,7 @@ def create_elastic_mappings():
     "Making sure elastic mappings are created"
     with lcd(PROJ_ROOT + '/elastic'):
         local('virtualenv .')
-        local('sh ./create_index.sh {elastic}'.format(**env))
-        local('sh ./put_mapping.sh {elastic}'.format(**env))
+        local('if sh ./create_index.sh {elastic}|grep :200; then sh ./put_mapping.sh {elastic}; fi'.format(**env))
 
 def make_virtual_env():
     "Make a virtual environment for local dev use"

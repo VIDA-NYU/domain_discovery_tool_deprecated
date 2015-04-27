@@ -17,7 +17,6 @@ query = {
     }
 }
 
-
 def tfidf(tf, df, n_docs):
     idf = math.log(n_docs / float(df))
     return tf * idf
@@ -43,6 +42,9 @@ while '_scroll_id' in res:
     hits = [hit['_id'] for hit in res['hits']['hits']]
     all_hits += hits
 
+
+for i in range(0, len(all_hits), 100):
+    hits = all_hits[i:i+100]
     term_res = es.mtermvectors(index='memex', doc_type='page', term_statistics=True, fields=['text'], ids=hits)
     #    pprint.pprint(term_res['docs'])
     for doc in term_res['docs']:
