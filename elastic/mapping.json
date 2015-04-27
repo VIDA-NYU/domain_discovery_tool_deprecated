@@ -1,0 +1,53 @@
+{
+    "page" : {
+	"_id" : {
+            "path" : "url"
+        },
+        "properties" : {
+	    "url" : {
+		"type" : "string",
+		"index" : "not_analyzed"
+	    },
+            "text" : {
+		"type" : "string",
+		"term_vector" : "yes"
+	    },
+	    "html" : {
+		"type" : "binary"
+	    },
+	    "query" : {
+		"type" : "string"
+	    },
+	    "retrieved" : {"type" : "date"},
+	    "last_modified" : {"type" : "date"},
+	    "length" : {"type" : "integer"},
+	    "md5" : {"type" : "binary"},
+	    "redirect" : {
+		"type" : "string",
+		"index" : "not_analyzed"
+	    },
+	    "thumbnail_name" : {"type" : "string"},
+	    "thumbnail" : {"type" : "binary" },
+	    "tag" : {
+		"type" : "string"
+	    },
+	    "class" : {
+		"type" : "string"
+	    },
+	    "doc_name" : {
+		"type" : "string",
+		"index" : "not_analyzed"
+	    },
+	    "doc_distance" : {
+		"type" : "float"
+	    },
+	    "topic_name" : {
+		"type" : "string",
+		"index" : "not_analyzed"
+	    },
+	    "topic_weight" : {
+		"type" : "float"
+	    }
+        }
+    }
+}

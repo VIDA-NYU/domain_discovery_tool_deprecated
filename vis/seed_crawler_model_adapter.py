@@ -1,7 +1,7 @@
 import math
 import random
 from sklearn.decomposition import PCA
-from seed_crawler_model import *
+from models.seed_crawler_model import *
 
 class SeedCrawlerModelAdapter:
   def __init__(self):
@@ -39,7 +39,7 @@ class SeedCrawlerModelAdapter:
     # Performs query.
     query_term_list = SeedCrawlerModelAdapter.extractListParam(queryTerms, ' ')
     print query_term_list
-    self.urls = self._seedCrawlerModel.submit_query_terms(query_term_list, self._MAX_URL_COUNT, cached=True)
+    self.urls = self._seedCrawlerModel.submit_query_terms(query_term_list, self._MAX_URL_COUNT, cached=False)
 
     print '\n\n\n', '*' * 80
     print 'query_term_list', query_term_list

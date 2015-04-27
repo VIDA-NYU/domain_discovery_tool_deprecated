@@ -12,7 +12,7 @@ import base64
 
 from os import environ
 
-from add_documents import add_document
+from elastic.add_documents import add_document, compute_index_entry
 
 from os import chdir, environ, getpid, system
 
@@ -71,7 +71,6 @@ def download_one(given_url):
     url = given_url.strip()
     url = validate_url(url)
 
-    from add_documents import compute_index_entry
     e = compute_index_entry(url=url, extractType='boilerpipe')
 
     if e:

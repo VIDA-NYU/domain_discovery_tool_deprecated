@@ -18,9 +18,9 @@ import time
 PROJ_ROOT = os.path.dirname(env.real_fabfile)
 MEMEX_ROOT= os.path.join(PROJ_ROOT,'..')
 env.project_name = 'seed_crawler'
-env.python = 'python' if 'VIRTUAL_ENV' in os.environ else 'python2'
+env.python = 'python' if 'VIRTUAL_ENV' in os.environ else 'bin/python'
 env.nltk_data = PROJ_ROOT+'/nltk_data';
-env.pythonpath = PROJ_ROOT+'/seeds_generator/src:'+MEMEX_ROOT+'/elastic:ranking'':'+PROJ_ROOT+'/sourcepin_api';
+env.pythonpath = PROJ_ROOT+'/seeds_generator/src:.';
 
 
 @task
