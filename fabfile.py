@@ -79,7 +79,6 @@ def runvis():
                 MEMEX_HOME=MEMEX_ROOT):
         local('{python} vis/server.py'.format(**env))
 
-@task
 def create_elastic_mappings():
     "Making sure elastic mappings are created"
     with lcd(PROJ_ROOT + '/elastic'):
