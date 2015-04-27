@@ -74,19 +74,15 @@ class SeedCrawlerModel:
 
             with open("results.txt",'r') as f:
                 urls = [self.validate_url(line.strip()) for line in f.readlines()]
-
-                # chdir(self.memex_home + '/seed_crawler/lda_pipeline')
-                # call(["mkdir", "-p", "data"])
-                # p=Popen("java -cp .:class/:lib/boilerpipe-1.2.0.jar:lib/nekohtml-1.9.13.jar:lib/xerces-2.9.1.jar Extract ../seeds_generator/html/  | python concat_nltk.py data/lda_input.csv",shell=True,stdout=PIPE)
-                # output, errors = p.communicate()
-                # print output
-                # print errors
         else:
             urls = term_search('query', term_list)
+            # with open("results.txt",'w') as f:
+            #     for url in urls:
+            #         f.write(url+"\n")
 
         for url in urls:
             self.urls_set.add(url)
-        return self.urls_set #Results from Search Engine
+        return urls #Results from Search Engine
         
     
     def submit_selected_urls(self, positive, negative):
@@ -108,12 +104,12 @@ class SeedCrawlerModel:
         all_docs = get_bag_of_words(list(self.urls_set))
 
         for url in positive:
-            if url in all_docs:
+            if url in all_docs.keys():
                 self.positive_urls_set.add(url)
                 self.negative_urls_set.discard(url)
 
         for url in negative:
-            if url in all_docs:
+            if url in all_docs.keys():
                 self.negative_urls_set.add(url)
                 self.positive_urls_set.discard(url)
 
@@ -123,7 +119,7 @@ class SeedCrawlerModel:
                 documents[url] = content
                 if url not in self.positive_urls_set:
                     other.append(url)
-
+        
         self.tfidf = tfidf.tfidf(documents)
 
         chdir(self.memex_home + '/seed_crawler/ranking')
