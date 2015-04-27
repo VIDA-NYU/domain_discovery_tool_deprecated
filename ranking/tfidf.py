@@ -4,6 +4,7 @@ import math
 import operator
 import numpy as np
 from os.path import exists
+from collections import OrderedDict
 
 class tfidf:
     def __init__(self, opt_docs = None):
@@ -39,30 +40,37 @@ class tfidf:
             self.tfidfVector[url] = doc_tfidf
 
     def getTopTerms(self,top):
-        corpus = sorted(self.corpus_tf.items(), key=operator.itemgetter(1),reverse=True)
-        return [x[0] for x in corpus[0:top]]
+        #corpus = sorted(self.corpus_tf.items(), key=operator.itemgetter(1),reverse=True)
+        #return [x[0] for x in corpus[0:top]]
+        
+        N = len(self.tfidfVector)
+        [urls, corpus, tfidfArray] = self.getTfidfArray()
+        avg = np.divide(np.sum(tfidfArray, axis=0), N)
+        sortedAvgIndices = np.argsort(avg)[::-1]
+        return [corpus[i] for i in sortedAvgIndices[0:top]]
 
     def getIndex(self, terms):
         corpus = sorted(self.corpus_tf.items(), key=operator.itemgetter(1),reverse=True)
         corpus_keys = [x[0] for x in corpus]
         index = []
         for term in terms:
-            index.append(corpus_keys.index(term.strip()))
+            if term.strip() in corpus_keys:
+                index.append(corpus_keys.index(term.strip()))
         return index
 
     def getTfidfArray(self):
-        corpus = sorted(self.corpus_tf.items(), key=operator.itemgetter(1),reverse=True)
+        corpus = OrderedDict(sorted(self.corpus_tf.items(), key=operator.itemgetter(1),reverse=True))
         urls = self.tfidfVector.keys()
         data = np.ndarray(shape=(len(urls),len(corpus)))
         index_i = 0
         for url in urls:
             vect = self.tfidfVector[url]
             index_j = 0
-            for [word, count] in corpus:
+            for word in corpus:
                 data[index_i,index_j] = vect.get(word, 0.0)
                 index_j = index_j + 1 
             index_i = index_i + 1
-        return [urls, corpus, data]
+        return [urls, corpus.keys(), data]
 
     def getTfArray(self):
         corpus = sorted(self.corpus_tf.items(), key=operator.itemgetter(1),reverse=True)
@@ -89,16 +97,29 @@ class tfidf:
         for url in documents.keys():
             content = documents[url]
             tokens = content.split(" ");
-            text = [ word.strip().strip('"') for word in nltk.Text(tokens)]
+            text = [ word.strip().strip('"') for word in nltk.Text(tokens) if word]
 
             fdist = self.getFreqDist(text)
-
+            
             N = fdist.N()
             for word in fdist:
                 self.corpus_dict[word] = self.corpus_dict.get(word,0.0) + 1.0
                 self.corpus_tf[word] = self.corpus_tf.get(word,0.0) + fdist[word]
                 fdist[word] = fdist[word] / float(N)
             self.documents[url]=fdist
+            
+        ignore_words = []
+        for [key, val] in self.corpus_tf.items():
+            if val == 1 and 'petn' not in key:
+                self.corpus_tf.pop(key, None)
+                self.corpus_dict.pop(key, None)
+                ignore_words.append(key)
+
+        for word in ignore_words:
+            for url in documents.keys():
+                if word in self.documents[url]:
+                    self.documents[url].pop(word)
+
         self.getIdf()
         self.getTfidf()            
                     
