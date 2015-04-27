@@ -1,4 +1,12 @@
-curl -XPUT "$1/memex"; echo
+#!/bin/sh
+if [ $# -eq 0 ]
+then
+    ELASTIC=http://localhost:9200
+else
+    ELASTIC=$1
+fi
+
+curl -XPUT "$ELASTIC/memex"; echo
 #  -d '{
 #     "index" : {
 # 	"analysis":{
