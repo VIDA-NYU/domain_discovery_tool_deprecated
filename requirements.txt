@@ -1,5 +1,5 @@
-numpy==1.9.1
-scipy==0.15.1
+# symlink: numpy
+# symlink: scipy
 numexpr==2.4
 cython==0.22
 scikit-learn==0.15.2

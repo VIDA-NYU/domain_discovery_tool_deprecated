@@ -19,6 +19,7 @@ PROJ_ROOT = os.path.dirname(env.real_fabfile)
 MEMEX_ROOT= os.path.join(PROJ_ROOT,'..')
 env.project_name = 'seed_crawler'
 env.python = 'python' if 'VIRTUAL_ENV' in os.environ else 'bin/python'
+env.elastic = os.environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in os.environ else 'http://localhost:9200'
 env.nltk_data = PROJ_ROOT+'/nltk_data';
 env.pythonpath = PROJ_ROOT+'/seeds_generator/src:.';
 
@@ -33,6 +34,7 @@ def setup():
     """
     if os.getenv('VIRTUAL_ENV') or hasattr(sys, 'real_prefix'):
         abort(red('Deactivate any virtual environments before continuing.'))
+    create_elastic_mappings()
     make_settings()
     make_virtual_env()
     install_nltk_data()
@@ -77,6 +79,14 @@ def runvis():
                 MEMEX_HOME=MEMEX_ROOT):
         local('{python} vis/server.py'.format(**env))
 
+@task
+def create_elastic_mappings():
+    "Making sure elastic mappings are created"
+    with lcd(PROJ_ROOT + '/elastic'):
+        local('virtualenv .')
+        local('sh ./create_index.sh {elastic}'.format(**env))
+        local('sh ./put_mapping.sh {elastic}'.format(**env))
+
 def make_virtual_env():
     "Make a virtual environment for local dev use"
     with lcd(PROJ_ROOT):
@@ -116,5 +126,3 @@ def symlink_packages():
             local('ln -f -s {}'.format(os.path.dirname(module.__file__)))
     if missing:
         abort('Missing python packages: {}'.format(', '.join(missing)))
-
-

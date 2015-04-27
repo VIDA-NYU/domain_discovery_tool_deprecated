@@ -1,4 +1,4 @@
-curl -XPUT 'http://localhost:9200/memex/'; echo
+curl -XPUT "$1/memex"; echo
 #  -d '{
 #     "index" : {
 # 	"analysis":{
