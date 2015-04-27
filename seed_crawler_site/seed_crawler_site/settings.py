@@ -104,8 +104,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/dev/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.environ['MEMEX_HOME']+'/static'
-STATICFILES_DIRS = (os.environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/thumbnails',)
+STATIC_ROOT = os.environ['MEMEX_HOME']+'/static/'
+STATICFILES_DIRS = (os.environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/thumbnails/',)
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 

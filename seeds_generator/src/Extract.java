@@ -21,7 +21,7 @@ public class Extract {
 	    System.out.println(content);
 	}
 	catch(Exception e){
-	    System.out.println("process Exception" + e.getMessage());
+	    System.err.println("process Exception" + e.getMessage());
 	}
      
     }

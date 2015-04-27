@@ -18,10 +18,11 @@ import sys
 import shutil
 from collections import OrderedDict
 import operator
-from os import listdir, chdir, environ
+from os import listdir, chdir, environ, getcwd
 from os.path import isfile, join, exists
 
 from concat_nltk import get_bag_of_words
+from search_documents import get_image
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 
@@ -36,25 +37,34 @@ def get_downloaded_urls(inputfile):
   return urls
 
 def populate_urls(request, urls=[]):
-    fields = []
+    fields = [] 
     file_data = []
     CHOICES = ((1,'Yes'),(2,'No'))
     if len(urls) > 0:
         # Display search results
         index = 0
         for url in urls:
-            request.session['choice_urls_field_'+str(index)] = url
-            fields.append(['thumbnail_'+str(index),forms.CharField(label=encode(url.encode('utf-8'))+'.png')])
+            [image_name, img] = get_image(url)
+            if not (image_name == None):
+              with open(environ['MEMEX_HOME']+"/seed_crawler/seed_crawler_site/web_search/static/web_search/"+image_name,'wb') as f:
+                f.write(img)
+              fields.append(['thumbnail_'+str(index),forms.CharField(label=image_name.encode('utf-8'))])
+              request.session['thumbnail_'+str(index)] = image_name                
             fields.append(['choice_urls_field_'+str(index), forms.TypedChoiceField(label=mark_safe('<a href="'+url+'"target="_blank">'+url+'</a>'),required=False,widget=forms.RadioSelect(), choices=CHOICES,coerce=int)])
+            request.session['choice_urls_field_'+str(index)] = url
             index = index + 1
     else:
         index = 0
         while True:
-          key = 'choice_urls_field_'+str(index)
-          url = request.session.get(key,None)
+          key_url = 'choice_urls_field_'+str(index)
+          url = request.session.get(key_url,None)
+          key_img = 'thumbnail_'+str(index)
+          image_name = request.session.get(key_img,None)
+
           if url is not None:
-            fields.append(['thumbnail_'+str(index),forms.CharField(label=encode(url.encode('utf-8'))+'.png')])
-            fields.append([key, forms.TypedChoiceField(label=mark_safe('<a href="'+ url +'"target="_blank">'+url+'</a>'),required=False,widget=forms.RadioSelect(), choices=CHOICES,coerce=int)])
+            if not (image_name == None):
+              fields.append([key_img,forms.CharField(label=image_name.encode('utf-8'))])
+            fields.append([key_url, forms.TypedChoiceField(label=mark_safe('<a href="'+ url +'"target="_blank">'+url+'</a>'),required=False,widget=forms.RadioSelect(), choices=CHOICES,coerce=int)])
             index = index + 1
           else:
             break
@@ -69,6 +79,7 @@ def populate_freq_terms(request, terms):
     if len(terms) > 0:
         index = 0
         for term in terms:
+          if term:
             fields['choice_freq_terms_field'+str(index)] = forms.TypedChoiceField(label=mark_safe(term.title()),required=False,widget=forms.RadioSelect(), choices=CHOICES,coerce=int)
             request.session['choice_freq_terms_field'+str(index)] = term.title()
             index = index + 1
@@ -150,9 +161,9 @@ def get_query(request):
                 # Search Bing for the urls related to the query terms
                 query_terms = [form1.cleaned_data['query_terms']]
                 
-                scm = seed_crawler_model.SeedCrawlerModel([])
+                scm = seed_crawler_model.SeedCrawlerModel()
 
-                results = list(scm.submit_query_terms(query_terms, max_url_count = 500, cached=True))
+                results = list(scm.submit_query_terms(query_terms, max_url_count = 20, cached=False))
                 
                 form_class = populate_urls(request, results[0:15])
                 form2 = form_class()
@@ -171,7 +182,6 @@ def get_query(request):
                   url_yes_choices.append(request.session[field].encode('ascii','ignore'))
                 elif form2.cleaned_data[field] == 2:
                   url_no_choices.append(request.session[field].encode('ascii','ignore'))
-            print url_yes_choices
         else:
           for field in form2.cleaned_data:
             if "choice_urls_field_" in field:
@@ -186,11 +196,15 @@ def get_query(request):
             
             results = get_downloaded_urls(environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/results.txt')
             scm = seed_crawler_model.SeedCrawlerModel(results)
-
             [ranked_urls, scores] = scm.submit_selected_urls(url_yes_choices, url_no_choices)
-            form_class = populate_score(ranked_urls[0:15], scores[0:15])
-            form3 = form_class()
-            return render(request, 'query_with_ranks.html', {'form1': form1,'form2':form2, 'form3':form3})
+            for i in range(0,len(ranked_urls)):
+              print ranked_urls[i], " ", scores[i]
+            #form_class = populate_score(ranked_urls[0:15], scores[0:15])
+            #form3 = form_class()
+            #return render(request, 'query_with_ranks.html', {'form1': form1,'form2':form2, 'form3':form3})
+            form_class = populate_urls(request, ranked_urls[0:15])
+            form2 = form_class()
+            return render(request, 'query_with_results.html', {'form1': form1,'form2':form2})
 
         elif 'extract' in request.POST:
             chdir(environ['MEMEX_HOME']+'/seed_crawler/ranking')
@@ -201,7 +215,7 @@ def get_query(request):
                 
             results = get_downloaded_urls(environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/results.txt')
             scm = seed_crawler_model.SeedCrawlerModel(results)
-            scm.submit_selected_urls(url_yes_choices, url_no_choices)
+            [ranked_urls, scores] = scm.submit_selected_urls(url_yes_choices, url_no_choices)
             terms = scm.extract_terms(20)
             form_class = populate_freq_terms(request,terms)
             form4 = form_class()
