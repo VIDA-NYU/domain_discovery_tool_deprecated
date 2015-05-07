@@ -7,3 +7,4 @@
 config.conf
 class
 results.txt
+*.pyc

@@ -21,7 +21,7 @@ env.project_name = 'seed_crawler'
 env.python = 'python' if 'VIRTUAL_ENV' in os.environ else 'bin/python'
 env.elastic = os.environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in os.environ else 'http://localhost:9200'
 env.nltk_data = PROJ_ROOT+'/nltk_data';
-env.pythonpath = PROJ_ROOT+'/seeds_generator/src:.';
+env.pythonpath = PROJ_ROOT+'/seeds_generator:.';
 
 
 @task

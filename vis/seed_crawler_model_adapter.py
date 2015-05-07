@@ -6,7 +6,7 @@ from models.seed_crawler_model import *
 class SeedCrawlerModelAdapter:
   def __init__(self):
     self._seedCrawlerModel = SeedCrawlerModel()
-    self._MAX_URL_COUNT = 50
+    self._MAX_URL_COUNT = 1000
     self._MAX_EXTRACTED_TERMS_COUNT = 40
     self.urls = []
     self.positive_terms_set = set()

@@ -11,8 +11,8 @@ from os.path import isfile, join, exists
 import shutil
 import sys
 
-from download import download, decode
-from concat_nltk import get_bag_of_words
+from seeds_generator.download import download, decode
+from seeds_generator.concat_nltk import get_bag_of_words
 from elastic.search_documents import get_context, term_search
 from ranking import tfidf, rank, extract_terms
 
@@ -50,7 +50,7 @@ class SeedCrawlerModel:
             f.write(query)
             
         if not cached:
-            comm = "java -cp .:class:libs/commons-codec-1.9.jar BingSearch -t " + str(max_url_count)
+            comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar BingSearch -t " + str(max_url_count)
             p=Popen(comm, shell=True, stdout=PIPE)
             output, errors = p.communicate()
             print output
