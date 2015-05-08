@@ -106,7 +106,7 @@ def install_nltk_data():
 def compile_seeds_generator():
     "Compile the sees generator."
     with lcd(PROJ_ROOT+'/seeds_generator'):
-        local('sh compile.sh')
+        local('mvn compile assembly:single')
 
 def symlink_packages():
     "Symlink python packages not installed with pip"
