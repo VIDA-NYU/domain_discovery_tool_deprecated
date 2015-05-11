@@ -49,7 +49,7 @@ def boilerpipe(html):
         pass
     return None
 
-def compute_index_entry(url, extractType='tika'):
+def compute_index_entry(url, extractType='boilerpipe'):
     try:
         response = requests.get(url)
         html = response.text.encode('utf-8')
