@@ -67,7 +67,7 @@ def runserver():
       shell_env(NLTK_DATA=env['nltk_data'],
                 PYTHONPATH=env['pythonpath'],
                 MEMEX_HOME=MEMEX_ROOT):
-        local('{python} sourcepin_api/seed_crawler_model.py'.format(**env))
+        local('{python} models/seed_crawler_model.py'.format(**env))
         #local('{python} manage.py runserver --traceback'.format(**env))
 
 @task
