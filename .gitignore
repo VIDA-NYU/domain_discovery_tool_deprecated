@@ -1,7 +1,8 @@
-/local
-/bin
-/include
+local
+bin
+include
 /lib
+python2.7
 /build
 /nltk_data
 config.conf
