@@ -23,9 +23,17 @@ import org.elasticsearch.action.index.IndexResponse;
 
 public class Download_URL implements Runnable {
     String url = "";
+    String query = "";
+    public static Client client = new TransportClient()
+	.addTransportAddress(new InetSocketTransportAddress(System.getenv("ELASTICSEARCH_SERVER") != null ?  System.getenv("ELASTICSEARCH_SERVER"):"localhost", 9300));
 
-    public Download_URL(String url){
+    public Download_URL(String url, String query){
 	this.url = url;
+	this.query = query;
+    }
+
+    public static void close(){
+	Download_URL.client.close();
     }
 
     public void run() {
@@ -38,13 +46,6 @@ public class Download_URL implements Runnable {
 	HttpUriRequest request = new HttpGet(url);
 	
 	System.out.println("Executing request " + request.getURI());
-	
-	String elasticServer = "localhost";
-	if(System.getenv("ELASTICSEARCH_SERVER") != null)
-	    elasticServer = System.getenv("ELASTICSEARCH_SERVER");
-	
-	Client client = new TransportClient()
-	    .addTransportAddress(new InetSocketTransportAddress(elasticServer, 9300));
 	
 	HttpResponse response = null;
 	try{
@@ -63,14 +64,14 @@ public class Download_URL implements Runnable {
 			content_text = extract.process(responseBody);
 		    }
 
-	
-		    IndexResponse indexresponse = client.prepareIndex("memex", "page")
+		    IndexResponse indexresponse = this.client.prepareIndex("memex", "page")
 			.setSource(XContentFactory.jsonBuilder()
 				   .startObject()
 				   .field("url", request.getURI())
 				   .field("html", Base64.encodeBase64(responseBody.getBytes()))
 				   .field("text", content_text)
 				   .field("length", content_length)
+				   .field("query", this.query)
 				   .endObject()
 				   )
 			.execute()
@@ -78,9 +79,9 @@ public class Download_URL implements Runnable {
 
 		}
 	    } else {
+		httpclient.close();
 		throw new ClientProtocolException("Unexpected response status: " + status);
 	    }
-
 	} catch (ClientProtocolException e1) {
 	    // TODO Auto-generated catch block
 	    e1.printStackTrace();
@@ -90,7 +91,6 @@ public class Download_URL implements Runnable {
 	} finally {
 	    try{
 		httpclient.close();
-		client.close();
 	    } catch (IOException e){
 		e.printStackTrace();
 	    }
