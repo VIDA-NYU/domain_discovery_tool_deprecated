@@ -1,5 +1,6 @@
 import urllib2
 import sys
+from os import environ
 
 from subprocess import Popen, PIPE, STDOUT
 
@@ -25,7 +26,12 @@ def get_downloaded_urls(inputfile):
   return urls
 
 def download(inputfile, parallel=False, cb=None):
-  comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar Download " + inputfile;
+  query = ""
+  with open('conf/queries.txt', 'r') as f:
+    for line in f:
+      query = line.strip();
+
+  comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar Download " + inputfile + ' "' + query +'"';
   p=Popen(comm, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT)
   output, errors = p.communicate()
   print output
