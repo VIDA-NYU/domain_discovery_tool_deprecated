@@ -61,7 +61,6 @@ def compute_index_entry(url, extractType='boilerpipe'):
                 return None
         except KeyError:
             return None
-        retrieved = header['date']
         try:
             length = header['content-length']
         except KeyError:
@@ -83,7 +82,8 @@ def compute_index_entry(url, extractType='boilerpipe'):
             'html': base64.b64encode(html),
             'text': doc,
             'length': length,
-            'md5': md5
+            'md5': md5,
+            'retrieved': datetime.utcnow() 
         }
 
         if trueurl != url:
