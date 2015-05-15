@@ -3,7 +3,6 @@
 from elasticsearch import Elasticsearch
 from elasticsearch.helpers import scan
 import math
-from elastic import *
 
 __export__ = ['ids_generator', 'termvectors_generator' ]
 
