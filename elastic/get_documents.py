@@ -4,10 +4,8 @@ import sys
 from os import environ
 
 def get_documents(urls):
-    es_server = 'http://localhost:9200/'
-    if environ.get('ELASTICSEARCH_SERVER'):
-        es_server = environ['ELASTICSEARCH_SERVER']
-    es = ElasticSearch(es_server)
+    host =  environ['ELASTICSEARCH_SERVER'] if environ.get('ELASTICSEARCH_SERVER') else 'http://localhost:9200'
+    es = ElasticSearch(host)
         
     if len(urls) > 0:
         results = {}
@@ -22,7 +20,9 @@ def get_documents(urls):
                 "fields": ["text"]
             }
         
-            res = es.search(query, index='memex', doc_type='page')
+            res = es.search(query, 
+                            index=environ['ELASTICSEARCH_INDEX'] if environ.get('ELASTICSEARCH_INDEX') else 'memex', 
+                            doc_type=environ['ELASTICSEARCH_DOC_TYPE'] if environ.get('ELASTICSEARCH_DOC_TYPE') else 'page')
             hits = res['hits']
             try:
                 results[url] = hits['hits'][0]['fields']['text'][0]

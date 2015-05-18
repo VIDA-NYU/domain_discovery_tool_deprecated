@@ -11,9 +11,11 @@ from os.path import isfile, join, exists
 import shutil
 import sys
 
-from download import download, decode
-from concat_nltk import get_bag_of_words
-from elastic.search_documents import get_context, term_search
+from seeds_generator.download import download, decode
+from seeds_generator.concat_nltk import get_bag_of_words
+from elastic.search_documents import get_context, term_search, search
+from elastic.add_documents import update_document
+from elastic.get_mtermvectors import getTermStatistics
 from ranking import tfidf, rank, extract_terms
 
 
@@ -50,7 +52,7 @@ class SeedCrawlerModel:
             f.write(query)
             
         if not cached:
-            comm = "java -cp .:class:libs/commons-codec-1.9.jar BingSearch -t " + str(max_url_count)
+            comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar BingSearch -t " + str(max_url_count)
             p=Popen(comm, shell=True, stdout=PIPE)
             output, errors = p.communicate()
             print output
@@ -74,13 +76,17 @@ class SeedCrawlerModel:
             with open("results.txt",'r') as f:
                 urls = [self.validate_url(line.strip()) for line in f.readlines()]
         else:
-            urls = term_search('query', term_list)
+            #urls = term_search('query', term_list)[0:max_url_count]
+            urls = search('text', term_list)[0:max_url_count]
             # with open("results.txt",'w') as f:
             #     for url in urls:
             #         f.write(url+"\n")
 
         for url in urls:
             self.urls_set.add(url)
+
+        self.tfidf = tfidf.tfidf(list(self.urls_set))
+
         return urls #Results from Search Engine
         
     
@@ -96,6 +102,23 @@ class SeedCrawlerModel:
         # If accuracy above threshold classify pages
         # Ranking 
         # Diversification
+
+        entries = []
+        for pos_url in positive:
+            entry = {
+                'url': pos_url,
+                'relevance': 1
+            }
+            entries.add(entry)
+            
+        for neg_url in negative:
+            entry = {
+                'url': pos_url,
+                'relevance': 0
+            }
+            entries.add(entry)
+
+        update_document(entries)
 
         documents = {}
         other = []
@@ -119,7 +142,8 @@ class SeedCrawlerModel:
                 if url not in self.positive_urls_set:
                     other.append(url)
         
-        self.tfidf = tfidf.tfidf(documents)
+        #self.tfidf = tfidf.tfidf(documents)
+        self.tfidf = tfidf.tfidf(all_docs.keys())
 
         chdir(self.memex_home + '/seed_crawler/ranking')
         ranker = rank.rank()
@@ -141,13 +165,16 @@ class SeedCrawlerModel:
         extract = extract_terms.extract_terms(self.tfidf)
         return extract.getTopTerms(count)
 
-    def term_frequency(self):
-        all_docs = get_bag_of_words(list(self.urls_set))
-        return tfidf.tfidf(all_docs).getTfArray()
+    #def term_frequency(self):
+     #   all_docs = get_bag_of_words(list(self.urls_set))
+      #  return tfidf.tfidf(all_docs).getTfArray()
 
     def term_tfidf(self):
-        all_docs = get_bag_of_words(list(self.urls_set))
-        return tfidf.tfidf(all_docs).getTfidfArray()
+        urls = list(self.urls_set)
+        [data, corpus] = getTermStatistics(urls)
+        #all_docs = get_bag_of_words(list(self.urls_set))
+        #return tfidf.tfidf(all_docs).getTfidfArray()
+        return [urls, corpus, data.toarray()]
 
     def submit_selected_terms(self, positive, negative):
     #Rerank the terms based on the labeled terms

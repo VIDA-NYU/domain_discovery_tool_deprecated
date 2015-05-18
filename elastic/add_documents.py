@@ -61,6 +61,9 @@ def compute_index_entry(url, extractType='boilerpipe'):
                 return None
         except KeyError:
             return None
+
+        #retrieved = header['date']
+
         try:
             length = header['content-length']
         except KeyError:
@@ -130,25 +133,24 @@ def add_document(entries):
     es = ElasticSearch(es_server)
 
     es.bulk([es.index_op(doc) for doc in entries],
-            index='memex',
-            doc_type='page')
+            index=os.environ['ELASTICSEARCH_INDEX'] if os.environ.get('ELASTICSEARCH_INDEX') else 'memex', 
+            doc_type=os.environ['ELASTICSEARCH_DOC_TYPE'] if os.environ.get('ELASTICSEARCH_DOC_TYPE') else 'page')
 
-def update_document(url,doc):
+def update_document(entries):
     es_server = 'http://localhost:9200/'
     if os.environ.get('ELASTICSEARCH_SERVER'):
         es_server = os.environ['ELASTICSEARCH_SERVER']
     es = ElasticSearch(es_server)
     
-    try:
-        es.update(index='memex',
-                  doc_type='page',
-                  id=url,
-                  script=doc,
-                  upsert=True
-              )
-    except:
-        print "Unexpected error:", sys.exc_info()[0]
-        pass
+    # es.update(index=os.environ['ELASTICSEARCH_INDEX'] if os.environ.get('ELASTICSEARCH_INDEX') else 'memex', 
+    #           doc_type=os.environ['ELASTICSEARCH_DOC_TYPE'] if os.environ.get('ELASTICSEARCH_DOC_TYPE') else 'page',
+    #           id=url,
+    #           script=doc,
+    #           upsert=True
+    #       )
+    es.bulk([es.update_op(doc, id=doc['url'], upsert=True) for doc in entries],
+            index=os.environ['ELASTICSEARCH_INDEX'] if os.environ.get('ELASTICSEARCH_INDEX') else 'memex', 
+            doc_type=os.environ['ELASTICSEARCH_DOC_TYPE'] if os.environ.get('ELASTICSEARCH_DOC_TYPE') else 'page')
 
 if __name__ == "__main__":
     if len(sys.argv)>1:
@@ -169,8 +171,15 @@ if __name__ == "__main__":
     for url in urls:
         print 'Retrieving url %s' % url
         e = compute_index_entry(url=url)
-
+        
         if e: entries.append(e)
     
     if len(entries):
         add_document(entries)
+    
+    url = 'http://en.wikipedia.org/wiki/Dark_internet',
+    entry = {
+        'url': url,
+        'relevance' : 1
+    }
+    update_document([entry])

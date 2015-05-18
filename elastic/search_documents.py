@@ -29,10 +29,12 @@ def search(field, queryStr):
             "fields": [field]
         }
         print query
-        res = es.search(query, index=es_index, doc_type=es_doc_type)
+        res = es.search(query, index=es_index, doc_type=es_doc_type, size=500)
         hits = res['hits']
-        print 'Document found: %d' % hits['total']
-        return hits['hits']
+        urls = []
+        for hit in hits['hits']:
+            urls.append(hit['_id'])
+        return urls
 
 def term_search(field, queryStr):
     es_server = 'http://localhost:9200/'
@@ -53,7 +55,10 @@ def term_search(field, queryStr):
             "fields": ["url"]
         }
         print query
-        res = es.search(query, index='memex', doc_type='page', size=500)
+        res = es.search(query, 
+                        index=environ['ELASTICSEARCH_INDEX'] if environ.get('ELASTICSEARCH_INDEX') else 'memex', 
+                        doc_type=environ['ELASTICSEARCH_DOC_TYPE'] if environ.get('ELASTICSEARCH_DOC_TYPE') else 'page',
+                        size=500)
 
         hits = res['hits']
         urls = []
@@ -76,7 +81,10 @@ def get_image(url):
             },
             "fields": ["thumbnail", "thumbnail_name"]
         }
-        res = es.search(query, index='memex', doc_type='page')
+        res = es.search(query, 
+                        index=environ['ELASTICSEARCH_INDEX'] if environ.get('ELASTICSEARCH_INDEX') else 'memex', 
+                        doc_type=environ['ELASTICSEARCH_DOC_TYPE'] if environ.get('ELASTICSEARCH_DOC_TYPE') else 'page')
+
         hits = res['hits']['hits']
         if (len(hits) > 0):
             try:
@@ -115,7 +123,10 @@ def get_context(terms):
             }
         }
         print query
-        res = es.search(query, index='memex', doc_type='page')
+        res = es.search(query, 
+                        index=environ['ELASTICSEARCH_INDEX'] if environ.get('ELASTICSEARCH_INDEX') else 'memex', 
+                        doc_type=environ['ELASTICSEARCH_DOC_TYPE'] if environ.get('ELASTICSEARCH_DOC_TYPE') else 'page')
+
         hits = res['hits']
         print 'Document found: %d' % hits['total']
         highlights = []
@@ -126,7 +137,7 @@ def get_context(terms):
 if __name__ == "__main__":
     print sys.argv[1:]
     if 'string' in sys.argv[1]:
-        search(sys.argv[2], sys.argv[3:])
+        print search(sys.argv[2], sys.argv[3:])
     elif 'term' in sys.argv[1]:
         for url in term_search(sys.argv[2], sys.argv[3:]):
             print url

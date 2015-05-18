@@ -9,11 +9,15 @@ class rank:
 
         [urls, corpus, data] = table.getTfidfArray()
 
+        #Normalise the data
+        col_sum_d = np.sum(data,axis=0)    
+        norm_d = np.divide(data, col_sum_d)
+
         indices = [urls.index(url) for url in query_urls]
-        subquery_data = data[indices, :]
+        subquery_data = norm_d[indices, :]
 
         indices = [urls.index(url) for url in other_urls]
-        other_data = data[indices, :]
+        other_data = norm_d[indices, :]
 
         # Check if any of the features are not present in any 
         # of the query set documents

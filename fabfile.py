@@ -21,7 +21,7 @@ env.project_name = 'seed_crawler'
 env.python = 'python' if 'VIRTUAL_ENV' in os.environ else 'bin/python'
 env.elastic = os.environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in os.environ else 'http://localhost:9200'
 env.nltk_data = PROJ_ROOT+'/nltk_data';
-env.pythonpath = PROJ_ROOT+'/seeds_generator/src:.';
+env.pythonpath = PROJ_ROOT+'/seeds_generator:.';
 
 
 @task
@@ -106,7 +106,7 @@ def install_nltk_data():
 def compile_seeds_generator():
     "Compile the sees generator."
     with lcd(PROJ_ROOT+'/seeds_generator'):
-        local('sh compile.sh')
+        local('mvn compile assembly:single')
 
 def symlink_packages():
     "Symlink python packages not installed with pip"

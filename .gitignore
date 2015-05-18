@@ -8,3 +8,4 @@ python2.7
 config.conf
 class
 results.txt
+*.pyc
