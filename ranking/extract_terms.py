@@ -12,29 +12,42 @@ class extract_terms:
         return self.table.getTopTerms(top)
         
     def results(self,query_terms):
-
-        [_, _, d] = self.table.getTfArray()
         
+        [_, _, d] = self.table.getTfidfArray()
+
         query_index = self.table.getIndex(query_terms)
 
-        col_sum_d = np.sum(d,axis=0)
-
+        #Normalise the data
+        col_sum_d = np.sum(d,axis=0)    
         norm_d = np.divide(d, col_sum_d)
 
-        data = np.transpose(d)
+        data = np.transpose(norm_d)
 
-        bs = BayesianSets.BayesianSets()
-    
         # documents other than the relevant documents
         index = [x for x in range(0,len(data)) if x not in query_index]
 
-        score = bs.score(data[query_index,:], data[index,:])
+        subquery_data = data[query_index,:]
+        other_data = data[index,:]
+
+        # Check if any of the features are not present in any 
+        # of the query set documents
+        check_for_zero = np.sum(subquery_data, axis=0)
+        zero_indices = np.where(check_for_zero == 0)[0]
+        
+        if(len(zero_indices) > 0):
+            # If features not present in query set documents
+            # then remove them
+            subquery_data = np.delete(subquery_data, zero_indices, 1)
+            other_data  = np.delete(other_data, zero_indices, 1)
+
+        bs = BayesianSets.BayesianSets()
+        score = bs.score(subquery_data, other_data)
 
         rank_index = np.argsort(np.multiply(score,-1))
 
         offset_rank_index = [index[x] for x in rank_index]
 
-        # Get the urls corresponding to the scored documents
+        # Get the terms corresponding to the scored indices
         ranked_terms = self.table.getTerms(offset_rank_index)
 
         ranked_scores = [score[rank_index[i]] for i in range(0, len(score))]
