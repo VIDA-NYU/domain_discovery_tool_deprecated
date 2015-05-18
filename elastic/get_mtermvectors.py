@@ -4,7 +4,6 @@ import nltk
 import sys
 import pprint
 import math
-from get_all_documents import get_all_documents
 
 ENGLISH_STOPWORDS = set(nltk.corpus.stopwords.words('english'))
 
@@ -53,12 +52,3 @@ def getTermStatistics(all_hits):
 
     return [v.fit_transform(tfidfs), v.get_feature_names()]
 
-if __name__ == "__main__":
-    
-    res = get_all_documents(fields = ["url"])
-    #pprint.pprint(res)
-    
-    all_hits = [hit['_id'] for hit in res]
-    #pprint.pprint(all_hits)
-    [_, features] = getTermStatistics(all_hits)
-    print features
