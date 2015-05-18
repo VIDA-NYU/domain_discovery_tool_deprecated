@@ -26,6 +26,9 @@
 		"type" : "string",
 		"index" : "not_analyzed"
 	    },
+	    "relevance" : {
+		"type" : "float"
+	    },
 	    "thumbnail_name" : {"type" : "string"},
 	    "thumbnail" : {"type" : "binary" },
 	    "tag" : {
