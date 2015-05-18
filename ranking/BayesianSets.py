@@ -14,12 +14,13 @@ class BayesianSets:
 
         #Compute Bayesian Sets Parameters
         c = 2
-        T = concatenate((D,X))
         N = D.shape[0]
-        m = divide(sum(T, axis=0),X.shape[0])
+        T = concatenate((D,X))
+        m = divide(sum(T, axis=0),T.shape[0])
+
         a = multiply(m, c)
         b = multiply(subtract(1,m),c)
-
+        
         at = add(a,sum(D, axis=0))
         bt = subtract(add(b,N),sum(D, axis=0))
 
