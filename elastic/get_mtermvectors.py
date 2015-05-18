@@ -30,7 +30,6 @@ def terms_from_es_json(doc):
     return terms
 
 def getTermStatistics(all_hits):
- 
     host =  environ['ELASTICSEARCH_SERVER'] if environ.get('ELASTICSEARCH_SERVER') else 'localhost'
     es = Elasticsearch(hosts=[host])
     tfidfs = []
@@ -39,8 +38,8 @@ def getTermStatistics(all_hits):
     for i in range(0, len(all_hits), 100):
         hits = all_hits[i:i+100]
         term_res = es.mtermvectors(index=environ['ELASTICSEARCH_INDEX'] if environ.get('ELASTICSEARCH_INDEX') else 'memex', 
-                                   doc_type=environ['ELASTICSEARCH_DOC_TYPE'] if environ.get('ELASTICSEARCH_DOC_TYPE') else 'page', 
-                                   term_statistics=True, fields=['text'], ids=hits)
+                                doc_type=environ['ELASTICSEARCH_DOC_TYPE'] if environ.get('ELASTICSEARCH_DOC_TYPE') else 'page', 
+                                term_statistics=True, fields=['text'], ids=hits)
         #pprint.pprint(term_res['docs'])
         for doc in term_res['docs']:
             #pprint.pprint(doc)
