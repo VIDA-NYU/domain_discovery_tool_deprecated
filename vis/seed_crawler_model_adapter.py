@@ -3,10 +3,12 @@ import random
 from sklearn.decomposition import PCA
 from models.seed_crawler_model import *
 
+import numpy as np
+
 class SeedCrawlerModelAdapter:
   def __init__(self):
     self._seedCrawlerModel = SeedCrawlerModel()
-    self._MAX_URL_COUNT = 1000
+    self._MAX_URL_COUNT = 100
     self._MAX_EXTRACTED_TERMS_COUNT = 40
     self.urls = []
     self.positive_terms_set = set()
@@ -26,9 +28,7 @@ class SeedCrawlerModelAdapter:
     return param.split(divider) if len(param) > 0 else []
 
 
-  def query( \
-             self, queryTerms, positivePages=[], negativePages=[], positiveTerms=[], negativeTerms=[], neutralTerms=[]):
-
+  def query(self, queryTerms, positivePages=[], negativePages=[], positiveTerms=[], negativeTerms=[], neutralTerms=[]):
     # Always performs reranking when submitting a query to avoid losing current labels.
     if len(positivePages) > 0 or len(negativePages) > 0:
       positive_pages_list = SeedCrawlerModelAdapter.extractListParam(positivePages)
@@ -38,12 +38,12 @@ class SeedCrawlerModelAdapter:
 
     # Performs query.
     query_term_list = SeedCrawlerModelAdapter.extractListParam(queryTerms, ' ')
-    print query_term_list
-    self.urls = self._seedCrawlerModel.submit_query_terms(query_term_list, self._MAX_URL_COUNT, cached=False)
 
     print '\n\n\n', '*' * 80
     print 'query_term_list', query_term_list
     print '*' * 80, '\n\n\n'
+    
+    self.urls = self._seedCrawlerModel.submit_query_terms(query_term_list, self._MAX_URL_COUNT, cached=True)
 
     # Always updates labels for terms when submitting a query to avoid losing current labels.
     if len(positiveTerms) > 0 or len(negativeTerms) > 0:
@@ -53,6 +53,7 @@ class SeedCrawlerModelAdapter:
     # computation.
     # Computes PCA with tf-idf vectors for urls.
     [self.urls, corpus, data] = self._seedCrawlerModel.term_tfidf()
+
     pc_count = 2
     pcaData = SeedCrawlerModelAdapter.runPCASKLearn(data, pc_count)
 
@@ -83,8 +84,6 @@ class SeedCrawlerModelAdapter:
     scores = rank[1]
     #scores = [random.random() if math.isnan(score) else score for score in scores]
     return {'ranked_urls': ranked_urls, 'scores': scores}
-
-
 
   def _updateTermsLabels(self, positiveTerms, negativeTerms, neutralTerms):
     positive_terms_list = SeedCrawlerModelAdapter.extractListParam(positiveTerms)
