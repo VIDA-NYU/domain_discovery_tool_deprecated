@@ -42,7 +42,7 @@ class Page:
   # Access to seed crawler vis.
   @cherrypy.expose
   def seedcrawler(self):
-    #self._seedCrawler = SeedCrawlerModelAdapter()
+    self._seedCrawler = SeedCrawlerModelAdapter()
     return open(os.path.join(self._HTML_DIR, u"seedcrawlervis.html"))
 
 
@@ -58,10 +58,6 @@ class Page:
   @cherrypy.expose
   def query( \
   self, queryTerms, positivePages, negativePages, positiveTerms, negativeTerms, neutralTerms):
-    self._seedCrawler = SeedCrawlerModelAdapter()
-    positivePages = []
-    negativePages = []
-
     res = self._seedCrawler.query( \
     queryTerms, positivePages, negativePages, positiveTerms, negativeTerms, neutralTerms)
 
