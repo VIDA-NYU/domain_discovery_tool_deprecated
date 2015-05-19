@@ -4,26 +4,35 @@ import nltk
 import sys
 import pprint
 import math
+from os import environ
+from elasticsearch import Elasticsearch
 
 ENGLISH_STOPWORDS = set(nltk.corpus.stopwords.words('english'))
 
-def tfidf(tf, df, n_docs):
-    idf = math.log(n_docs / float(df))
+def tfidf(tf, df, n_doc):
+    idf = math.log(n_doc / float(df))
     return tf * idf
 
-def terms_from_es_json(doc):
+def terms_from_es_json(doc, rm_stopwords=True, pos_tags=[]):
     terms = {}
     docterms = doc["term_vectors"]["text"]["terms"]
     n_doc = doc["term_vectors"]["text"]["field_statistics"]["doc_count"]
-    no_stopwords = [k for k in docterms.keys() if k not in ENGLISH_STOPWORDS and (len(k) > 2)]
-    #print no_stopwords, "\n"
-    tagged = nltk.pos_tag(no_stopwords)
-    #print tagged, "\n"
-    tags = ['NN', 'NNS', 'NNP', 'NNPS', 'VBN', 'JJ']
-    valid_words = [tag[0] for tag in tagged if tag[1] in tags]
-    #print valid_words, "\n"
+    valid_words = docterms.keys()
+    if rm_stopwords:
+        no_stopwords = [k for k in docterms.keys() if k not in ENGLISH_STOPWORDS and (len(k) > 2)]
+        valid_words = no_stopwords
+
+    if len(pos_tags) > 0:
+        tagged = nltk.pos_tag(docterms)
+        #tags = ['NN', 'NNS', 'NNP', 'NNPS', 'VBN', 'JJ']
+        valid_words = [tag[0] for tag in tagged if tag[1] in tags]
+
     for k in valid_words:
-        terms[k] = tfidf(docterms[k]["term_freq"], docterms[k]["doc_freq"], n_doc)
+        try:
+            terms[k] = tfidf(docterms[k]["term_freq"], docterms[k]["doc_freq"], n_doc)
+        except KeyError:
+            print k, " ", docterms[k]
+
     return terms
 
 def getTermStatistics(all_hits):
