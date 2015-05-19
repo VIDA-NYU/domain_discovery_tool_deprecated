@@ -76,17 +76,13 @@ class SeedCrawlerModel:
             with open("results.txt",'r') as f:
                 urls = [self.validate_url(line.strip()) for line in f.readlines()]
         else:
-            #urls = term_search('query', term_list)[0:max_url_count]
             urls = search('text', term_list)[0:max_url_count]
-            # with open("results.txt",'w') as f:
-            #     for url in urls:
-            #         f.write(url+"\n")
 
         for url in urls:
             self.urls_set.add(url)
 
         self.tfidf = tfidf.tfidf(list(self.urls_set))
-
+        
         return urls #Results from Search Engine
         
     
@@ -109,41 +105,34 @@ class SeedCrawlerModel:
                 'url': pos_url,
                 'relevance': 1
             }
-            entries.add(entry)
+            entries.append(entry)
             
         for neg_url in negative:
             entry = {
                 'url': pos_url,
                 'relevance': 0
             }
-            entries.add(entry)
+            entries.append(entry)
 
-        update_document(entries)
+        if len(entries) > 0:
+            update_document(entries)
 
         documents = {}
         other = []
         
-        all_docs = get_bag_of_words(list(self.urls_set))
-
         for url in positive:
-            if url in all_docs.keys():
+            if url in self.urls_set:
                 self.positive_urls_set.add(url)
                 self.negative_urls_set.discard(url)
 
         for url in negative:
-            if url in all_docs.keys():
+            if url in self.urls_set:
                 self.negative_urls_set.add(url)
                 self.positive_urls_set.discard(url)
 
-        for url in all_docs.keys():
-            content = all_docs[url]
-            if (len(self.negative_urls_set) == 0) or (url not in self.negative_urls_set):
-                documents[url] = content
-                if url not in self.positive_urls_set:
-                    other.append(url)
-        
-        #self.tfidf = tfidf.tfidf(documents)
-        self.tfidf = tfidf.tfidf(all_docs.keys())
+        #self.tfidf = tfidf.tfidf(self.urls_set)
+
+        print self.urls_set
 
         chdir(self.memex_home + '/seed_crawler/ranking')
         ranker = rank.rank()
