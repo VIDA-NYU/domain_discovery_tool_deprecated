@@ -2,8 +2,6 @@ import cherrypy
 from ConfigParser import ConfigParser
 import json
 import os
-from trainsetdataloader import *
-#from seed_crawler_model_adapter import *
 from crawler_model_adapter import *
 
 
