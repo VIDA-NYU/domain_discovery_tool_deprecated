@@ -45,6 +45,9 @@ class SeedCrawlerModel:
     #   term_list: list of search terms that are submited by user
     #Returns:
     #   urls: list of urls that are returned by Search Engine
+
+        print '\n\nsubmit_query_terms\n\n'
+
         chdir(self.memex_home + '/seed_crawler/seeds_generator')
         
         query = ' '.join(term_list)
@@ -82,7 +85,7 @@ class SeedCrawlerModel:
             self.urls_set.add(url)
 
         self.tfidf = tfidf.tfidf(list(self.urls_set))
-        
+
         return urls #Results from Search Engine
         
     
@@ -98,6 +101,8 @@ class SeedCrawlerModel:
         # If accuracy above threshold classify pages
         # Ranking 
         # Diversification
+        
+        print '\n\nsubmit_selected_urls\n\n'
 
         entries = []
         for pos_url in positive:
@@ -117,7 +122,6 @@ class SeedCrawlerModel:
         if len(entries) > 0:
             update_document(entries)
 
-        documents = {}
         other = []
         
         for url in positive:
@@ -129,10 +133,11 @@ class SeedCrawlerModel:
             if url in self.urls_set:
                 self.negative_urls_set.add(url)
                 self.positive_urls_set.discard(url)
-
-        #self.tfidf = tfidf.tfidf(self.urls_set)
-
-        print self.urls_set
+                
+        for url in self.urls_set:
+            if (len(self.negative_urls_set) == 0) or (url not in self.negative_urls_set):
+                if url not in self.positive_urls_set:
+                    other.append(url)
 
         chdir(self.memex_home + '/seed_crawler/ranking')
         ranker = rank.rank()
@@ -145,6 +150,9 @@ class SeedCrawlerModel:
     #
     #Returns:        
     #   terms: list of extracted salient terms and their ranking scores
+        
+        print '\n\nextract_terms\n\n'
+
         chdir(self.memex_home + '/seed_crawler/ranking')
         if exists("selected_terms.txt"):
             call(["rm", "selected_terms.txt"])
@@ -172,6 +180,9 @@ class SeedCrawlerModel:
     #   labeled_terms: list of pair of term and label: <term, label>. Label 1 means postive, 0 means negative.
     #Returns:
     #   terms: list of newly ranked terms and their ranking scores
+
+        print '\n\nsubmit_selected_terms\n\n'
+
         terms = []
         chdir(self.memex_home+'/seed_crawler/ranking')
         
