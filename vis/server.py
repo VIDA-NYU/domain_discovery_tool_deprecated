@@ -3,7 +3,8 @@ from ConfigParser import ConfigParser
 import json
 import os
 from trainsetdataloader import *
-from seed_crawler_model_adapter import *
+#from seed_crawler_model_adapter import *
+from crawler_model_adapter import *
 
 
 class Page:
@@ -30,13 +31,20 @@ class Page:
   # Default constructor reading app config file.
   def __init__(self):
     # Folder with html content.
-    self._HTML_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), u"html")
+    self._HTML_DIR = os.path.join(os.path.abspath("."), u"html")
 
 
   # Access to topics visualization.
   @cherrypy.expose
   def topicsvis(self):
     return open(os.path.join(self._HTML_DIR, u"topicsvis.html"))
+
+
+  # Access to crawler vis.
+  @cherrypy.expose
+  def crawler(self):
+    self._crawler = CrawlerModelAdapter()
+    return open(os.path.join(self._HTML_DIR, u"crawlervis.html"))
 
 
   # Access to seed crawler vis.
@@ -58,6 +66,7 @@ class Page:
   @cherrypy.expose
   def query( \
   self, queryTerms, positivePages, negativePages, positiveTerms, negativeTerms, neutralTerms):
+
     res = self._seedCrawler.query( \
     queryTerms, positivePages, negativePages, positiveTerms, negativeTerms, neutralTerms)
 
@@ -76,6 +85,119 @@ class Page:
 
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
+
+
+
+  # Returns a list of available crawlers in the format:
+  # [
+  #   {'id': crawlerId, 'name': crawlerName, 'creation': epochInSecondsOfFirstDownloadedURL},
+  #   {'id': crawlerId, 'name': crawlerName, 'creation': epochInSecondsOfFirstDownloadedURL},
+  #   ...
+  # ]
+  @cherrypy.expose
+  def getAvailableCrawlers(self):
+    res = self._crawler.getAvailableCrawlers()
+    cherrypy.response.headers["Content-Type"] = "application/json;"
+    return json.dumps(res)
+
+
+
+  # Changes the active crawler to be monitored.
+  @cherrypy.expose
+  def setActiveCrawler(self, crawlerId):
+    self._crawler.setActiveCrawler(crawlerId)
+    # TODO(cesar): Resets data structures holding data about active crawler.
+
+
+
+  # Returns number of pages downloaded between ts1 and ts2 for active crawler.
+  # ts1 and ts2 are Unix epochs (seconds after 1970).
+  # Returns dictionary in the format:
+  # {
+  #   'positive': {'explored': numExploredPages, 'exploited': numExploitedPages},
+  #   'negative': {'explored': numExploredPages, 'exploited': numExploitedPages},
+  # }
+  @cherrypy.expose
+  def getPagesSummary(self, opt_ts1 = None, opt_ts2 = None):
+    res = self._crawler.getPagesSummary(opt_ts1, opt_ts2)
+    cherrypy.response.headers["Content-Type"] = "application/json;"
+    return json.dumps(res)
+
+
+
+  # Returns number of terms present in positive and negative pages.
+  # Returns array in the format:
+  # [
+  #   [term, frequencyInPositivePages, frequencyInNegativePages],
+  #   [term, frequencyInPositivePages, frequencyInNegativePages],
+  #   ...
+  # ]
+  @cherrypy.expose
+  def getTermsSummary(self):
+    res = self._crawler.getTermsSummary()
+    cherrypy.response.headers["Content-Type"] = "application/json;"
+    return json.dumps(res)
+
+
+
+  # Returns pages downloaded between ts1 and ts2 for active crawler.
+  # ts1 and ts2 are Unix epochs (seconds after 1970).
+  # Returns dictionary in the format:
+  # {
+  #   'positive': {'explored': [[url1, x, y], ...], 'exploited': [[url1, x, y], ...]},
+  #   'negative': {'explored': [[url1, x, y], ...], 'exploited': [[url1, x, y], ...]},
+  # }
+  @cherrypy.expose
+  def getPages(self, opt_ts1 = None, opt_ts2 = None):
+    res = self._crawler.getPages(opt_ts1, opt_ts2)
+    cherrypy.response.headers["Content-Type"] = "application/json;"
+    return json.dumps(res)
+
+
+
+  # Boosts set of pages: crawler exploits outlinks for the given set of pages.
+  @cherrypy.expose
+  def boostPages(self, pages):
+    self._crawler.boostPages(pages)
+
+
+  # Fetches snippets for a given term.
+  @cherrypy.expose
+  def getTermSnippets(self, term):
+    res = self._crawler.getTermSnippets(term)
+    cherrypy.response.headers["Content-Type"] = "application/json;"
+    return json.dumps(res)
+
+
+  # Adds tag to pages (if applyTagFlag is True) or removes tag from pages (if applyTagFlag is
+  # False).
+  @cherrypy.expose
+  def setPagesTag(self, pages, tag, applyTagFlag):
+    self._crawler.setPageTag(pages, tag, applyTagFlag)
+
+
+  # Adds tag to terms (if applyTagFlag is True) or removes tag from terms (if applyTagFlag is
+  # False).
+  @cherrypy.expose
+  def setTermsTag(self, terms, tag, applyTagFlag):
+    self._crawler.setTermTag(terms, tag, applyTagFlag)
+
+
+
+
+  # TODO(Yamuna): from here on we need to discuss the best strategy.
+  ##########
+  ##########
+  ##########
+  ##########
+  ##########
+  ##########
+  ##########
+  ##########
+
+
+
+
 
 
   # Extracts terms with current labels state.
