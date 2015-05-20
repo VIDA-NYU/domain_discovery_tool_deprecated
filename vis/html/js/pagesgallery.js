@@ -18,6 +18,8 @@
 var PagesGallery = function(parentContainerId) {
   var gallery = this;
   this.parentContainerId = parentContainerId;
+  this.MOUSE_ANCHORED_PREVIEW = false;
+  this.PREVIEW_ANCHOR_TOP = 400;
 
   // Items in gallery.
   this.items = [];
@@ -104,7 +106,9 @@ PagesGallery.prototype.update = function() {
           }
         }
 
-        gallery.onItemClick(item, i, d3.event.shiftKey, d3.mouse(this));
+        var anchorPos = (gallery.MOUSE_ANCHORED_PREVIEW) ? 
+          [d3.event.x, d3.event.y] : [window.innerWidth / 2, gallery.PREVIEW_ANCHOR_TOP];
+        gallery.onItemClick(item, i, d3.event.shiftKey, anchorPos);
       })
       .on('mouseover', function(item, i) {
         Utils.showTooltip();
@@ -174,7 +178,7 @@ PagesGallery.prototype.getItemInfo = function(item, i) {
 /**
  * Handles click in an item.
  */
-PagesGallery.prototype.onItemClick = function(item, i, isShiftKeyPressed, mousePosition) {
+PagesGallery.prototype.onItemClick = function(item, i, isShiftKeyPressed, anchorPos) {
   // TODO.
   console.log('itemClicked ' + i);
   if (isShiftKeyPressed) {
@@ -182,7 +186,7 @@ PagesGallery.prototype.onItemClick = function(item, i, isShiftKeyPressed, mouseP
     if (url.indexOf('http') !== 0) {
       url = 'http://' + url;
     }
-    this.setPagePreviewEnabled(true, url, mousePosition);
+    this.setPagePreviewEnabled(true, url, anchorPos);
   } else {
     __sig__.emit(__sig__.pages_labels_changed);
   }
@@ -246,7 +250,7 @@ PagesGallery.prototype.setAllNeutral = function() {
 /**
  * Sets visibility of url preview.
  */
-PagesGallery.prototype.setPagePreviewEnabled = function(enabled, url, mousePosition) {
+PagesGallery.prototype.setPagePreviewEnabled = function(enabled, url, anchorPos) {
   var gallery = this;
   if (enabled) {
     var transitionTimeInMili = 2000;
@@ -269,8 +273,8 @@ PagesGallery.prototype.setPagePreviewEnabled = function(enabled, url, mousePosit
 
     // TODO: should keep track of width defined in css.
     var iframeWidth = 800;
-    var top = d3.event.y;
-    var left = d3.event.x - iframeWidth / 2;
+    var top = anchorPos[1];
+    var left = anchorPos[0] - iframeWidth / 2;
     left = Math.max(0, Math.min(left, window.innerWidth - iframeWidth - 20));
 
     d3.selectAll('iframe#urlPreview').data(['urlPreview'])

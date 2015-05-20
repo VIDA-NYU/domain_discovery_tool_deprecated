@@ -166,6 +166,7 @@ PagesLandscape.prototype.update = function() {
       .on('mouseout', function(point, i) {
         Utils.hideTooltip();
       });
+  // TODO(cesar): have a clever way of allowing classing elements with multiple tags.
   this.circles
       .classed('positive', function(point, i) {
         return point.label == 'positive';

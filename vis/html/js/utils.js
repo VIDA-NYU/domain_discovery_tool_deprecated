@@ -27,6 +27,12 @@ var Utils = (function() {
   });
 
   var pub = {};
+  pub.parseFullDate = function(epochInSeconds) {
+    return moment.unix(epochInSeconds).format('MMMM Do YYYY h:mm a');
+  };
+  pub.parseDateTime = function(epochInSeconds) {
+    return moment.unix(epochInSeconds).format('MM/DD/YY h:mm a');
+  };
   pub.showTooltip = function() {
     maybeCreateTooltip();
     tooltipDiv.transition()
@@ -41,8 +47,8 @@ var Utils = (function() {
   };
   pub.updateTooltip = function(text, opt_x, opt_y) {
     maybeCreateTooltip();
-    var x = opt_x || d3.event.pageX + 5;
-    var y = opt_y || d3.event.pageY - 12;
+    var x = opt_x || d3.event.pageX + 10;
+    var y = opt_y || d3.event.pageY - 25;
     tooltipDiv
       .text(text)
       .style('left', x + 'px')
