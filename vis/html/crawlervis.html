@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<html>
+  <head>
+    <title>Crawler</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <link type="text/css" rel="stylesheet" href="css/d3.slider.css" media="all">
+    <link type="text/css" rel="stylesheet" href="css/jquery-ui.css" media="all">
+    <link type="text/css" rel="stylesheet" href="css/jquery.urlive.css" media="all">
+    <link type="text/css" rel="stylesheet" href="css/crawler-white.css" media="all">
+
+    <script type="text/javascript" src="js/libs/d3.v3.5.5.min.js"></script>
+    <script type="text/javascript" src="js/libs/d3.layout.cloud.js"></script>
+    <script type="text/javascript" src="js/libs/jquery-1.10.0.min.js"></script>
+    <script type="text/javascript" src="js/libs/jquery-ui.js"></script>
+    <script type="text/javascript" src="js/libs/jquery.urlive.js"></script>
+
+    <script type="text/javascript" src="js/libs/d3.slider.js"></script>
+    <script type="text/javascript" src="js/libs/d3.lasso.js"></script>
+    <script type="text/javascript" src="js/libs/moment.js"></script>
+    <script type="text/javascript" src="js/libs/queue.min.js"></script>
+    <!--script type="text/javascript" src="js/pagescontrols.js"></script-->
+    <script type="text/javascript" src="js/pagesgallery.js"></script>
+    <script type="text/javascript" src="js/pageslandscape.js"></script>
+    <script type="text/javascript" src="js/tagsgallery.js"></script>
+    <script type="text/javascript" src="js/crawlervis.js"></script>
+    <script type="text/javascript" src="js/dataaccess.js"></script>
+    <script type="text/javascript" src="js/sigslot_core.js"></script>
+    <script type="text/javascript" src="js/crawlersigslots.js"></script>
+    <script type="text/javascript" src="js/statslist.js"></script>
+    <script type="text/javascript" src="js/snippetsviewer.js"></script>
+    <!--script type="text/javascript" src="js/termsgallery.js"></script-->
+    <script type="text/javascript" src="js/utils.js"></script>
+    <script type="text/javascript" src="js/wordlist.js"></script>
+  </head>
+
+  <body>
+    <div id="page_container">
+      <!-- Left panel -->
+      <div id="left_panel">
+        <div>
+          Crawler: <select id="selectCrawler"></select>
+        </div>
+        <div id="crawler_info">
+          <div id="statslist" class="statslist">
+            <svg>
+              <defs>
+                <pattern id="pattern-stripe" 
+                  width="4" height="4" 
+                  patternUnits="userSpaceOnUse"
+                  patternTransform="rotate(45)">
+                  <rect width="3" height="6" transform="translate(0,0)" fill="white"></rect>
+                </pattern>
+                <mask id="mask-stripe">
+                  <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-stripe)" />
+                </mask>      
+              </defs>
+            </svg> 
+          </div>
+        </div>
+
+        <div id="query_panel">
+          Query terms:<input type="text" id="query_box" list="query_box_previous_queries"></input><span id="submit_query"></span>
+          <datalist id='query_box_previous_queries'></datalist>
+
+          <div id="query_statslist" class="statslist">
+            <svg>
+              <defs>
+                <pattern id="pattern-stripe" 
+                  width="4" height="4" 
+                  patternUnits="userSpaceOnUse"
+                  patternTransform="rotate(45)">
+                  <rect width="3" height="6" transform="translate(0,0)" fill="white"></rect>
+                </pattern>
+                <mask id="mask-stripe">
+                  <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-stripe)" />
+                </mask>      
+              </defs>
+            </svg> 
+          </div>
+        </div>
+
+      </div>
+      <!-- Middle panel -->
+      <div id="middle_panel">
+        Pages<span id="last_update_info_box" class="noselect"></span>
+        <span id="pages_landscape_buttons" class="control_buttons">
+          <span id="pages_landscape_update" class="button-img disabled pages_landscape_button noselect">
+            <img src="img/reload.png" width="22px">
+          </span>
+          <span id="pages_landscape_boost" class="button-img disabled pages_landscape_button noselect">
+            <img src="img/boost.png" width="22px">
+          </span>
+        </span>
+        Tags
+        <div id="pages_landscape_container">
+          <div id="pages_landscape" class="noselect"></div>
+          <div id="tags_items">
+          </div>
+        </div>
+
+        <div id="pages_panel">
+          <div id="pages_items"></div>
+        </div>
+
+      </div>
+      <!-- Right panel -->
+      <div id="right_panel">
+        Terms
+        <div id="wordlist"></div>
+        <div id="terms_snippets_viewer" class="terms_interface"></div>
+      </div>
+    </div>
+    <div id="mask"></div>
+    <div id="urlBgMask"></div>
+  </body>
+</html>
