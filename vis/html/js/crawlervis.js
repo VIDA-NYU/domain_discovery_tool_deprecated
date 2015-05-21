@@ -72,6 +72,7 @@ CrawlerVis.prototype.initSignalSlotsSeedCrawler = function() {
   SigSlots.connect(__sig__.new_pages_summary_fetched, this, this.onLoadedNewPagesSummary);
   SigSlots.connect(__sig__.terms_summary_fetched, this, this.onLoadedTermsSummary);
   SigSlots.connect(__sig__.term_focus, this, this.onTermFocus);
+  SigSlots.connect(__sig__.term_toggle, this, this.onTermToggle);
   SigSlots.connect(__sig__.terms_snippets_loaded, this, this.onLoadedTermsSnippets);
   SigSlots.connect(__sig__.pages_loaded, this, this.onLoadedPages);
 
@@ -89,7 +90,7 @@ CrawlerVis.prototype.initUICrawler = function() {
   this.loadAvailableCrawlers();
   this.initWordlist();
   this.initStatslist();
-  this.initQueryStatslist();
+  this.initFilterStatslist();
   this.initPagesLandscape();
   this.initTagsGallery([
     {'label': 'Positive', 'tag': 'positive', 'clickable': false},
@@ -110,7 +111,7 @@ CrawlerVis.prototype.initUISeedCrawler = function() {
   this.loadAvailableCrawlers();
   this.initWordlist();
   this.initStatslist();
-  this.initQueryStatslist();
+  this.initFilterStatslist();
   this.initPagesLandscape();
   this.initTagsGallery([
     {'label': 'Positive', 'tag': 'positive', 'clickable': true},
@@ -165,10 +166,10 @@ CrawlerVis.prototype.initStatslist = function() {
 };
 
 
-// Initializes statistics about query: number of positive/negative pages,
+// Initializes statistics resulting from filter: number of positive/negative pages,
 // exploited/explored/pending for visualization.
-CrawlerVis.prototype.initQueryStatslist = function() {
-  this.queryStatslist = new Statslist('query_statslist');
+CrawlerVis.prototype.initFilterStatslist = function() {
+  this.queryStatslist = new Statslist('filter_statslist');
 };
 
 
@@ -315,6 +316,46 @@ CrawlerVis.prototype.onTermFocus = function(term, onFocus) {
 };
 
 
+// Responds to toggle of a term.
+// Term format:
+// {'word': term, 'tags': [], ...}
+CrawlerVis.prototype.onTermToggle = function(term, enabled) {
+  var vis = this;
+
+  // State machine: neutral -> positive -> negative -> neutral.
+  var tags = term['tags'];
+  var isPositive = tags.indexOf('positive') != -1;
+  var isNegative = tags.indexOf('negative') != -1;
+
+  if (isPositive) {
+    // It was positive, so it turns negative.
+    DataAccess.setTermTag(term['word'], 'positive', false);
+    DataAccess.setTermTag(term['word'], 'negative', true);
+
+    // Removes tag 'positive' from tags array, adds 'negative'.
+    tags.splice(tags.indexOf('positive'), 1);
+    tags.push('negative');
+  }
+  else if (isNegative) {
+    // It was negative, so it turns neutral.
+    DataAccess.setTermTag(term['word'], 'negative', false);
+
+    // Removes tag 'negative' from tags array.
+    tags.splice(tags.indexOf('negative'), 1);
+  }
+  else {
+    // It was neutral, so it turns negative.
+    DataAccess.setTermTag(term['word'], 'positive', false);
+    DataAccess.setTermTag(term['word'], 'negative', true);
+
+    // Adds tag 'positive' to tags array.
+    tags.push('positive');
+  }
+  // Updates wordlist.
+  vis.wordlist.update();
+};
+
+
 // Responds to loaded terms snippets.
 CrawlerVis.prototype.onLoadedTermsSnippets = function(data) {
   var vis = this;
@@ -407,11 +448,4 @@ CrawlerVis.prototype.onBrushedPagesChanged = function(indexOfSelectedItems) {
   d3.select('#pages_landscape_boost')
     .classed('enabled', indexOfSelectedItems.length > 0)
     .classed('disabled', indexOfSelectedItems.length == 0);
-};
-
-
-// Initializes main app class after page is loaded.
-window.onload = function() {
-  // TODO(cesar): Build a switch for crawler/seed crawler use.
-  CrawlerVis.buildForSeedCrawler();
 };

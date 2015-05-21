@@ -1,9 +1,23 @@
+/**
+ * @fileoverview js List with salient terms in crawled pages.
+ *
+ * @author (cesarpalomo@gmail.com) Cesar Palomo
+ */
+
+
+
+/**
+ * Manages a list of terms present in crawled pages, including positive/negative/not-tagged.
+ * Also shows frequency of words in positive/negative pages.
+ *
+ * @param containerId ID for parent element.
+ */
 var Wordlist = function(containerId) {
     this.containerId = containerId;  
     this.entries = [];
     this.setMaxPosNegFreq(100, 100);
     this.update();
-};10
+};
 
 
 Wordlist.prototype.setMaxPosNegFreq = function(maxPosFreq, maxNegFreq) {
@@ -14,12 +28,22 @@ Wordlist.prototype.setMaxPosNegFreq = function(maxPosFreq, maxNegFreq) {
 
 
 Wordlist.prototype.addEntries = function(entries) {
-    this.entries = this.entries.concat(entries);
-    this.update();
+    this.setEntries(this.entries.concat(entries));
 };
 
 
+/**
+ * E.gs. of entry expected format:
+ * [{ 'word': 'posTerm', 'posFreq': 40, 'negFreq': 30, 'tags': ['negative']},
+ *  { 'word': 'negTerm', 'posFreq': 20, 'negFreq': 30, 'tags': ['positive']},
+ *  { 'word': 'neutralTerm', 'posFreq': 10, 'negFreq': 40, 'tags': []},]
+ */
 Wordlist.prototype.setEntries = function(entries) {
+    // If not tags entry for term, adds empty array.
+    for (var i in entries) {
+      entries[i]['tags'] = entries[i]['tags'] || [];
+    }
+
     this.entries = entries;
     this.update();
 };
@@ -38,7 +62,6 @@ Wordlist.prototype.update = function() {
 
     // Computes svg height.
     var svgHeight = svgMargin.top + svgMargin.bottom + rowHeight * this.entries.length;
-
 
     var transitionDuration = 500;
     
@@ -84,13 +107,24 @@ Wordlist.prototype.update = function() {
         .classed('noselect', true)
         .text(function(d) { return d['word']; });
 
+    // Term should be classed according to its tags, e.g. positive/negative.
+    words.each(function(d) {
+      var elm = d3.select(this).select('text');
+      var tags = d['tags'];
+      var isPositive = tags.indexOf('positive') != -1;
+      var isNegative = tags.indexOf('negative') != -1;
+      elm
+        .classed('positive', isPositive)
+        .classed('negative', isNegative);
+    });
+
     // Interaction rectangle.
     rows.selectAll('rect.interaction').data(function(d, i) { return [d]; })
       .enter().append('rect').classed('interaction', true)
         .attr('width', width)
         .attr('height', rowHeight)
         .on('click', function(d) {
-            console.log('click on word ', d['word']);
+            __sig__.emit(__sig__.term_toggle, d, true);
         })
         .on('mouseover', function(d) {
             __sig__.emit(__sig__.term_focus, d['word'], true);
