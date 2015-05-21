@@ -136,5 +136,10 @@ var DataAccess = (function() {
   pub.getLastSummaryTime = function() {
     return lastSummary;
   };
+  // Adds tag to term.
+  pub.setTermTag = function(term, tag, applyTagFlag) {
+    runQueryForCurrentCrawler(
+      '/setTermsTag', {'terms': term, 'tag': tag, 'applyTagFlag': applyTagFlag});
+  };
   return pub;
 }());
