@@ -160,9 +160,9 @@ class CrawlerModel:
     # TODO(Yamuna): Apply tag to page and update in elastic search. Suggestion: concatenate tags
     # with semi colon, removing repetitions.
     if applyTagFlag:
-      print 'applied tag ', tag, 'to pages', str(pages)
+      print '\n\napplied tag ' + tag + ' to pages' + str(pages) + '\n\n'
     else:
-      print 'removed tag ', tag, 'from pages', str(pages)
+      print '\n\nremoved tag ' + tag + ' from pages' + str(pages) + '\n\n'
 
 
 
@@ -172,9 +172,9 @@ class CrawlerModel:
     # TODO(Yamuna): Apply tag to page and update in elastic search. Suggestion: concatenate tags
     # with semi colon, removing repetitions.
     if applyTagFlag:
-      print 'applied tag ', tag, 'to terms', str(terms)
+      print '\n\napplied tag ' + tag + ' to terms' + str(terms) + '\n\n'
     else:
-      print 'removed tag ', tag, 'from terms', str(terms)
+      print '\n\nremoved tag ' + tag + ' from terms' + str(terms) + '\n\n'
 
 
 

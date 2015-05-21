@@ -12,6 +12,13 @@ class CrawlerModelAdapter:
 
 
 
+  # Extracts boolean parameter.
+  @staticmethod
+  def extractBooleanParam(param):
+    return param == 'true'
+
+
+
   # Extracts list of parameters: array is encoded as a long string with a delimiter.
   @staticmethod
   def extractListParam(param, opt_char = None):
@@ -92,6 +99,7 @@ class CrawlerModelAdapter:
   # Adds tag to page (if applyTagFlag is True) or removes tag from page (if applyTagFlag is False).
   def setPagesTag(self, page, tag, applyTagFlag):
     pages = CrawlerModelAdapter.extractListParam(pages)
+    applyTagFlag =  CrawlerModelAdapter.extractBooleanParam(applyTagFlag)
     self._crawlerModel.setPagesTag(self._activeCrawlerId, pages, tag, applyTagFlag)
 
 
@@ -99,6 +107,7 @@ class CrawlerModelAdapter:
   # False).
   def setTermsTag(self, terms, tag, applyTagFlag):
     terms = CrawlerModelAdapter.extractListParam(terms)
+    applyTagFlag =  CrawlerModelAdapter.extractBooleanParam(applyTagFlag)
     self._crawlerModel.setTermsTag(self._activeCrawlerId, terms, tag, applyTagFlag)
 
 

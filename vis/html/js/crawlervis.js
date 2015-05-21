@@ -345,8 +345,7 @@ CrawlerVis.prototype.onTermToggle = function(term, enabled) {
   }
   else {
     // It was neutral, so it turns negative.
-    DataAccess.setTermTag(term['word'], 'positive', false);
-    DataAccess.setTermTag(term['word'], 'negative', true);
+    DataAccess.setTermTag(term['word'], 'positive', true);
 
     // Adds tag 'positive' to tags array.
     tags.push('positive');
