@@ -92,14 +92,14 @@ class CrawlerModelAdapter:
   # Adds tag to page (if applyTagFlag is True) or removes tag from page (if applyTagFlag is False).
   def setPagesTag(self, page, tag, applyTagFlag):
     pages = CrawlerModelAdapter.extractListParam(pages)
-    self._crawlerModel.setPageTag(self._activeCrawlerId, pages, tag, applyTagFlag)
+    self._crawlerModel.setPagesTag(self._activeCrawlerId, pages, tag, applyTagFlag)
 
 
   # Adds tag to terms (if applyTagFlag is True) or removes tag from terms (if applyTagFlag is
   # False).
   def setTermsTag(self, terms, tag, applyTagFlag):
     terms = CrawlerModelAdapter.extractListParam(terms)
-    self._crawlerModel.setTermTag(self._activeCrawlerId, terms, tag, applyTagFlag)
+    self._crawlerModel.setTermsTag(self._activeCrawlerId, terms, tag, applyTagFlag)
 
 
 

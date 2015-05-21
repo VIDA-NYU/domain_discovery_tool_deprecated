@@ -162,19 +162,19 @@ class CrawlerModel:
     if applyTagFlag:
       print 'applied tag ', tag, 'to pages', str(pages)
     else:
-      print 'removed tag ', tag, 'to page', str(pages)
+      print 'removed tag ', tag, 'from pages', str(pages)
 
 
 
   # Adds tag to terms (if applyTagFlag is True) or removes tag from terms (if applyTagFlag is
   # False).
-  def setTermsTag(self, crawlerId, term, tag, applyTagFlag):
+  def setTermsTag(self, crawlerId, terms, tag, applyTagFlag):
     # TODO(Yamuna): Apply tag to page and update in elastic search. Suggestion: concatenate tags
     # with semi colon, removing repetitions.
     if applyTagFlag:
-      print 'applied tag ', tag, 'to term', str(terms)
+      print 'applied tag ', tag, 'to terms', str(terms)
     else:
-      print 'removed tag ', tag, 'to term', str(terms)
+      print 'removed tag ', tag, 'from terms', str(terms)
 
 
 

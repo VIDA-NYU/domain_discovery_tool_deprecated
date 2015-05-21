@@ -48,7 +48,8 @@ class Page:
   # Access to seed crawler vis.
   @cherrypy.expose
   def seedcrawler(self):
-    self._seedCrawler = SeedCrawlerModelAdapter()
+    # TODO Use SeedCrawlerModelAdapter self._crawler = SeedCrawlerModelAdapter()
+    self._crawler = CrawlerModelAdapter()
     return open(os.path.join(self._HTML_DIR, u"seedcrawlervis.html"))
 
 
@@ -171,14 +172,14 @@ class Page:
   # False).
   @cherrypy.expose
   def setPagesTag(self, pages, tag, applyTagFlag):
-    self._crawler.setPageTag(pages, tag, applyTagFlag)
+    self._crawler.setPagesTag(pages, tag, applyTagFlag)
 
 
   # Adds tag to terms (if applyTagFlag is True) or removes tag from terms (if applyTagFlag is
   # False).
   @cherrypy.expose
   def setTermsTag(self, terms, tag, applyTagFlag):
-    self._crawler.setTermTag(terms, tag, applyTagFlag)
+    self._crawler.setTermsTag(terms, tag, applyTagFlag)
 
 
 
