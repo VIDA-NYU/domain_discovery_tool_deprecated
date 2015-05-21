@@ -16,8 +16,7 @@ import sys
 import time
 
 PROJ_ROOT = os.path.dirname(env.real_fabfile)
-MEMEX_ROOT= os.path.join(PROJ_ROOT,'..')
-env.project_name = 'seed_crawler'
+env.project_name = 'domain_discovery_tool'
 env.python = 'python' if 'VIRTUAL_ENV' in os.environ else 'bin/python'
 env.elastic = os.environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in os.environ else 'http://localhost:9200'
 env.nltk_data = PROJ_ROOT+'/nltk_data';
@@ -66,7 +65,7 @@ def runserver():
     with lcd(PROJ_ROOT), \
       shell_env(NLTK_DATA=env['nltk_data'],
                 PYTHONPATH=env['pythonpath'],
-                MEMEX_HOME=MEMEX_ROOT):
+                DDT_HOME=PROJ_ROOT):
         local('{python} models/seed_crawler_model.py'.format(**env))
         #local('{python} manage.py runserver --traceback'.format(**env))
 
@@ -76,7 +75,7 @@ def runvis():
     with lcd(PROJ_ROOT), \
       shell_env(NLTK_DATA=env['nltk_data'],
                 PYTHONPATH=env['pythonpath'],
-                MEMEX_HOME=MEMEX_ROOT):
+                DDT_HOME=PROJ_ROOT):
         local('{python} vis/server.py'.format(**env))
 
 def create_elastic_mappings():
@@ -100,7 +99,7 @@ def install_nltk_data():
     "Install data files for NLTK."
     with lcd(PROJ_ROOT), shell_env(NLTK_DATA=env['nltk_data']):
         local("if [ ! -d {nltk_data} ]; then mkdir {nltk_data}; fi".format(**env))
-        local('if [ ! -d {nltk_data}/chunkers ]; then {python} -m nltk.downloader -d {nltk_data} all; fi'.format(**env))
+        local('if [ ! -d {nltk_data}/chunkers ]; then {python} -m nltk.downloader -d {nltk_data} stopwords; fi'.format(**env))
 
 
 def compile_seeds_generator():
