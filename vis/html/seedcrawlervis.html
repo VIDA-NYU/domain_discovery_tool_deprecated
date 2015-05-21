@@ -3,7 +3,7 @@
 
 <html>
   <head>
-    <title>Crawler</title>
+    <title>Seed Crawler</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <link type="text/css" rel="stylesheet" href="css/d3.slider.css" media="all">
     <link type="text/css" rel="stylesheet" href="css/jquery-ui.css" media="all">
@@ -42,7 +42,9 @@
         <div>
           Crawler: <select id="selectCrawler"></select>
         </div>
-        <div id="crawler_info">
+        <div id="seed_crawler_info">
+          Query terms:<input type="text" id="query_box" class="query_input" list="query_box_previous_queries"></input><span id="submit_query"></span>
+          <datalist id='query_box_previous_queries'></datalist>
           <div id="statslist" class="statslist">
             <svg>
               <defs>
@@ -60,8 +62,8 @@
           </div>
         </div>
 
-        <div id="query_panel">
-          Filter:<input type="text" id="filter_box" class="query_input" list="filter_box_previous_queries"></input><span id="submit_filter"></span>
+        <div id="filter_panel">
+          Filter:<input type="text" id="filter_box" class="query_input" list="filter_box_previous_queries"></input><span id="submit_query"></span>
           <datalist id='filter_box_previous_queries'></datalist>
 
           <div id="filter_statslist" class="statslist">
@@ -118,7 +120,7 @@
     <script>
       // Initializes main app class after page is loaded.
       window.onload = function() {
-        CrawlerVis.buildForCrawler();
+        CrawlerVis.buildForSeedCrawler();
       };
     </script>
   </body>

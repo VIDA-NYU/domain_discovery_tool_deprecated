@@ -33,7 +33,7 @@ div {
 }
 
 #left_panel {
-  width: 265px;
+  width: 285px;
   margin-top: 10px;
   font-size: 25px;
 }
@@ -60,6 +60,11 @@ div {
   padding: 10px;
 }
 
+#seed_crawler_info {
+  text-align: left;
+  height: 360px;
+}
+
 #crawler_info {
   height: 300px;
 }
@@ -83,9 +88,18 @@ div {
 
 #wordlist svg text {
   font: 12px sans-serif;
-  color: #444;
+  fill: #444;
   text-anchor: middle;
   alignment-baseline: middle;
+  font-weight: bold;
+}
+
+#wordlist svg text.positive {
+  fill: rgb(19, 72, 186);
+}
+
+#wordlist svg text.negative {
+  fill: rgb(244, 68, 110);
 }
 
 #wordlist svg rect {
@@ -471,17 +485,18 @@ div#urlBgMask {
   color: rgb(244, 68, 110);
 }
 
-
-
-
-#query_panel {
-  height: 468px;
+#query_panel ,
+#filter_panel {
   text-align: left;
 }
 
-#query_box {
+#filter_panel {
+  height: 468px;
+}
+
+.query_input {
   margin-right: 2px;
-  width: 200px;
+  width: 222px;
   height: 30px;
   font-size: 14px;
   text-indent: 5px;
@@ -507,7 +522,7 @@ div#urlBgMask {
   border: 2px solid #2F5BB7;
 }
 
-#query_statslist {
+#filter_statslist {
   margin-top: 10px;
 }
 
