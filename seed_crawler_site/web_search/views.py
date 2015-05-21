@@ -46,7 +46,7 @@ def populate_urls(request, urls=[]):
         for url in urls:
             [image_name, img] = get_image(url)
             if not (image_name == None):
-              with open(environ['MEMEX_HOME']+"/seed_crawler/seed_crawler_site/web_search/static/web_search/"+image_name,'wb') as f:
+              with open(environ['DDT_HOME']+"/seed_crawler/seed_crawler_site/web_search/static/web_search/"+image_name,'wb') as f:
                 f.write(img)
               fields.append(['thumbnail_'+str(index),forms.CharField(label=image_name.encode('utf-8'))])
               request.session['thumbnail_'+str(index)] = image_name                
@@ -194,7 +194,7 @@ def get_query(request):
                         
             #copy_files(int_url_yes_choices,int_url_no_choices)
             
-            results = get_downloaded_urls(environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/results.txt')
+            results = get_downloaded_urls(environ['DDT_HOME']+'/seed_crawler/seeds_generator/results.txt')
             scm = seed_crawler_model.SeedCrawlerModel(results)
             [ranked_urls, scores] = scm.submit_selected_urls(url_yes_choices, url_no_choices)
             for i in range(0,len(ranked_urls)):
@@ -207,13 +207,13 @@ def get_query(request):
             return render(request, 'query_with_results.html', {'form1': form1,'form2':form2})
 
         elif 'extract' in request.POST:
-            chdir(environ['MEMEX_HOME']+'/seed_crawler/ranking')
+            chdir(environ['DDT_HOME']+'/seed_crawler/ranking')
             if exists("selected_terms.txt"):
                 call(["rm", "selected_terms.txt"])
             if exists("exclude.txt"):
                 call(["rm", "exclude.txt"])
                 
-            results = get_downloaded_urls(environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/results.txt')
+            results = get_downloaded_urls(environ['DDT_HOME']+'/seed_crawler/seeds_generator/results.txt')
             scm = seed_crawler_model.SeedCrawlerModel(results)
             [ranked_urls, scores] = scm.submit_selected_urls(url_yes_choices, url_no_choices)
             terms = scm.extract_terms(20)
@@ -236,12 +236,12 @@ def get_query(request):
                             #int_no_choices.append(int(field.replace("choice_freq_terms_field","")))
                             int_no_choices.append(form4[field].label.lower().strip())
                             
-                chdir(environ['MEMEX_HOME']+'/seed_crawler/ranking')
+                chdir(environ['DDT_HOME']+'/seed_crawler/ranking')
                 with open('exclude.txt','w+') as f:
                     for choice in int_no_choices :
                         f.write(choice+'\n')
 
-                results = get_downloaded_urls(environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/results.txt')
+                results = get_downloaded_urls(environ['DDT_HOME']+'/seed_crawler/seeds_generator/results.txt')
                 scm = seed_crawler_model.SeedCrawlerModel(results)
                 scm.submit_selected_urls(url_yes_choices, url_no_choices)
                 ranked_terms = scm.submit_selected_terms(int_yes_choices, int_no_choices)
@@ -273,8 +273,8 @@ def get_query(request):
                             #int_no_choices.append(int(field.replace("choice_ranked_terms_field","")))
                             int_no_choices.append(form5[field].label.lower().strip())
 
-                chdir(environ['MEMEX_HOME']+'/seed_crawler/ranking')
-                results = get_downloaded_urls(environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/results.txt')
+                chdir(environ['DDT_HOME']+'/seed_crawler/ranking')
+                results = get_downloaded_urls(environ['DDT_HOME']+'/seed_crawler/seeds_generator/results.txt')
                 scm = seed_crawler_model.SeedCrawlerModel(results)
                 scm.submit_selected_urls(url_yes_choices, url_no_choices)
                 ranked_terms = scm.submit_selected_terms(int_yes_choices, int_no_choices)
