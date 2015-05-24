@@ -139,7 +139,7 @@ CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
     .attr('value', getElementValue)
     .text(function(d, i) {
       // TODO(cesar): Builds string with crawler's name and creation date.
-      return d.name + ' (' + Utils.parseFullDate(d.creation) + ')';
+      return d.domain_name + ' (' + Utils.parseFullDate(d.timestamp) + ')';
     });
 
   // Manually triggers change of value.
