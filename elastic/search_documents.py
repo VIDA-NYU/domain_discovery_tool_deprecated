@@ -4,19 +4,12 @@ import sys
 import urllib2
 import base64
 from os import environ
+from pprint import pprint
+from datetime import datetime
         
-def search(field, queryStr):
-    es_server = 'http://localhost:9200/'
-    es_index = 'memex'
-    es_doc_type = 'page'
-    if environ.get('ELASTICSEARCH_SERVER'):
-        es_server = environ['ELASTICSEARCH_SERVER']
-    if environ.get('ELASTICSEARCH_INDEX'):
-        es_index = environ['ELASTICSEARCH_INDEX']
-    if environ.get('ELASTICSEARCH_DOC_TYPE'):
-        es_doc_type = environ['ELASTICSEARCH_DOC_TYPE']
-        
-    es = ElasticSearch(es_server)
+def search(field, queryStr, es_index='memex', es_doc_type='page', es=None):
+    if es is None:
+        es = ElasticSearch("http://localhost:9200")
 
     if len(queryStr) > 0:
         query = {
@@ -36,11 +29,9 @@ def search(field, queryStr):
             urls.append(hit['_id'])
         return urls
 
-def term_search(field, queryStr):
-    es_server = 'http://localhost:9200/'
-    if environ.get('ELASTICSEARCH_SERVER'):
-        es_server = environ['ELASTICSEARCH_SERVER']
-    es = ElasticSearch(es_server)
+def term_search(field, queryStr, es_index='memex', es_doc_type='page', es=None):
+    if es is None:
+        es = ElasticSearch("http://localhost:9200")
 
     if len(queryStr) > 0:
         query = {
@@ -55,10 +46,7 @@ def term_search(field, queryStr):
             "fields": ["url"]
         }
         print query
-        res = es.search(query, 
-                        index=environ['ELASTICSEARCH_INDEX'] if environ.get('ELASTICSEARCH_INDEX') else 'memex', 
-                        doc_type=environ['ELASTICSEARCH_DOC_TYPE'] if environ.get('ELASTICSEARCH_DOC_TYPE') else 'page',
-                        size=500)
+        res = es.search(query, index=es_index, doc_type=es_doc_type, size=500)
 
         hits = res['hits']
         urls = []
@@ -66,11 +54,9 @@ def term_search(field, queryStr):
             urls.append(hit['_id'])
         return urls
 
-def get_image(url):
-    es_server = 'http://localhost:9200/'
-    if environ.get('ELASTICSEARCH_SERVER'):
-        es_server = environ['ELASTICSEARCH_SERVER']
-    es = ElasticSearch(es_server)
+def get_image(url, es_index='memex', es_doc_type='page', es=None):
+    if es is None:
+        es = ElasticSearch("http://localhost:9200")
 
     if url:
         query = {
@@ -81,9 +67,7 @@ def get_image(url):
             },
             "fields": ["thumbnail", "thumbnail_name"]
         }
-        res = es.search(query, 
-                        index=environ['ELASTICSEARCH_INDEX'] if environ.get('ELASTICSEARCH_INDEX') else 'memex', 
-                        doc_type=environ['ELASTICSEARCH_DOC_TYPE'] if environ.get('ELASTICSEARCH_DOC_TYPE') else 'page')
+        res = es.search(query, index=es_index, doc_type=es_doc_type, size=500)
 
         hits = res['hits']['hits']
         if (len(hits) > 0):
@@ -97,14 +81,11 @@ def get_image(url):
             print "No thumbnail found"
     return [None, None]
 
-def get_context(terms):
-    es_server = 'http://localhost:9200/'
-    if environ.get('ELASTICSEARCH_SERVER'):
-        es_server = environ['ELASTICSEARCH_SERVER']
-    es = ElasticSearch(es_server)
+def get_context(terms, es_index='memex', es_doc_type='page', es=None):
+    if es is None:
+        es = ElasticSearch("http://localhost:9200")
 
     if len(terms) > 0:
-
         query = {
             "query": { 
                 "match": {
@@ -123,16 +104,43 @@ def get_context(terms):
             }
         }
         print query
-        res = es.search(query, 
-                        index=environ['ELASTICSEARCH_INDEX'] if environ.get('ELASTICSEARCH_INDEX') else 'memex', 
-                        doc_type=environ['ELASTICSEARCH_DOC_TYPE'] if environ.get('ELASTICSEARCH_DOC_TYPE') else 'page')
-
+        res = es.search(query, index=es_index, doc_type=es_doc_type, size=500)
         hits = res['hits']
         print 'Document found: %d' % hits['total']
         highlights = []
         for hit in hits['hits']:
             highlights.append(hit['highlight']['text'])
         return highlights
+
+def range(field, from_val, to_val, ret_fields=[], epoch=None, es_index='memex', es_doc_type='page', es=None):
+    if es is None:
+        es = ElasticSearch("http://localhost:9200")
+
+    if not (epoch is None):
+        if epoch:
+            from_val = datetime.utcfromtimestamp(long(from_val)).strftime('%Y-%m-%dT%H:%M:%S')
+            to_val = datetime.utcfromtimestamp(long(to_val)).strftime('%Y-%m-%dT%H:%M:%S')
+            
+    query = { 
+        "query" : { 
+            "range" : { 
+                field : {
+                    "from": from_val,
+                    "to": to_val
+                }
+            },
+        },
+        "fields": ret_fields
+    }
+
+    res = es.search(query, index=es_index, doc_type=es_doc_type, size=500)
+    hits = res['hits']['hits']
+
+    results=[]
+    for hit in hits:
+        results.append(hit['fields'])
+
+    return results
 
 if __name__ == "__main__":
     print sys.argv[1:]
@@ -145,3 +153,10 @@ if __name__ == "__main__":
         print get_context(sys.argv[2:])
     elif 'image' in sys.argv[1]:
         get_image(sys.argv[2])
+    elif 'range' in sys.argv[1]:
+        epoch = True
+        if len(sys.argv) == 7:
+            if 'False' in sys.argv[6]:
+                epoch = False
+        print range(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5].split(','), epoch, es_index='memex')
+
