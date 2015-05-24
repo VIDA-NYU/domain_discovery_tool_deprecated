@@ -1,4 +1,6 @@
 import math
+from datetime import datetime
+
 #FIXME(yamuna): Import crawler model.
 #from crawler_model import *
 from crawlermodel import *
@@ -35,9 +37,9 @@ class CrawlerModelAdapter:
   # ]
   def getAvailableCrawlers(self):
     crawlers = self._crawlerModel.getAvailableCrawlers()
-    return sorted(crawlers, key = lambda c: (c['name'], c['creation']))
+    return sorted(crawlers, key = lambda c: (c['domain_name'], c['timestamp']))
 
-
+    
 
   # Changes the active crawler to be monitored.
   def setActiveCrawler(self, crawlerId):
