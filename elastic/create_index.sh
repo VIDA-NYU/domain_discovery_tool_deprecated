@@ -1,12 +1,19 @@
 #!/bin/sh
 if [ $# -eq 0 ]
-then
-    ELASTIC=http://localhost:9200
+then 
+    INDEX=memex
 else
-    ELASTIC=$1
+    INDEX=$1
 fi
 
-curl -s -XPUT "$ELASTIC/memex"; echo
+if [ $# -gt 1 ]
+then
+    ELASTIC=$2
+else
+    ELASTIC=http://localhost:9200
+fi
+
+curl -s -XPUT "$ELASTIC/$INDEX"; echo
 #  -d '{
 #     "index" : {
 # 	"analysis":{
