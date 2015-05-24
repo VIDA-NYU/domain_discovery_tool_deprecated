@@ -125,29 +125,18 @@ def extract_text(doc, url):
     os.unlink(tmppath)
     return doc
     
-
-def add_document(entries):
-    es_server = 'http://localhost:9200/'
-    if os.environ.get('ELASTICSEARCH_SERVER'):
-        es_server = os.environ['ELASTICSEARCH_SERVER']
-    es = ElasticSearch(es_server)
+def add_document(entries, es_index='memex', es_doc_type='page', es=None):
+    if es is None:
+        es = ElasticSearch('http://localhost:9200/')
 
     es.bulk([es.index_op(doc) for doc in entries],
-            index=os.environ['ELASTICSEARCH_INDEX'] if os.environ.get('ELASTICSEARCH_INDEX') else 'memex', 
-            doc_type=os.environ['ELASTICSEARCH_DOC_TYPE'] if os.environ.get('ELASTICSEARCH_DOC_TYPE') else 'page')
+            index = es_index,
+            doc_type= es_doc_type)
 
-def update_document(entries):
-    es_server = 'http://localhost:9200/'
-    if os.environ.get('ELASTICSEARCH_SERVER'):
-        es_server = os.environ['ELASTICSEARCH_SERVER']
-    es = ElasticSearch(es_server)
-    
-    # es.update(index=os.environ['ELASTICSEARCH_INDEX'] if os.environ.get('ELASTICSEARCH_INDEX') else 'memex', 
-    #           doc_type=os.environ['ELASTICSEARCH_DOC_TYPE'] if os.environ.get('ELASTICSEARCH_DOC_TYPE') else 'page',
-    #           id=url,
-    #           script=doc,
-    #           upsert=True
-    #       )
+def update_document(entries, es_index='memex', es_doc_type='page', es=None):
+    if es is None:
+        es = ElasticSearch('http://localhost:9200/')
+
     es.bulk([es.update_op(doc, id=doc['url'], upsert=True) for doc in entries],
             index=os.environ['ELASTICSEARCH_INDEX'] if os.environ.get('ELASTICSEARCH_INDEX') else 'memex', 
             doc_type=os.environ['ELASTICSEARCH_DOC_TYPE'] if os.environ.get('ELASTICSEARCH_DOC_TYPE') else 'page')
