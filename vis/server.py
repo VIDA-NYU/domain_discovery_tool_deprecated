@@ -66,7 +66,7 @@ class Page:
   def query( \
   self, queryTerms, positivePages, negativePages, positiveTerms, negativeTerms, neutralTerms):
 
-    res = self._seedCrawler.query( \
+    res = self._crawler.query( \
     queryTerms, positivePages, negativePages, positiveTerms, negativeTerms, neutralTerms)
 
     cherrypy.response.headers["Content-Type"] = "application/json;"
@@ -76,7 +76,7 @@ class Page:
   # Does ranking using newly labeled positive and negative pages.
   @cherrypy.expose
   def doRanking(self, positivePages, negativePages):
-    res = self._seedCrawler.doRanking(positivePages, negativePages)
+    res = self._crawler.doRanking(positivePages, negativePages)
 
     print "\n\n\n returning"
     print res
@@ -152,8 +152,6 @@ class Page:
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
 
-
-
   # Boosts set of pages: crawler exploits outlinks for the given set of pages.
   @cherrypy.expose
   def boostPages(self, pages):
@@ -202,7 +200,7 @@ class Page:
   # Extracts terms with current labels state.
   @cherrypy.expose
   def extractTerms(self, positiveTerms, negativeTerms, neutralTerms):
-    res = self._seedCrawler.extractTerms(positiveTerms, negativeTerms, neutralTerms)
+    res = self._crawler.extractTerms(positiveTerms, negativeTerms, neutralTerms)
 
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
