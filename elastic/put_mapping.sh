@@ -1,9 +1,33 @@
 #!/bin/sh
 if [ $# -eq 0 ]
 then
-    ELASTIC=http://localhost:9200
+    INDEX=memex
 else
-    ELASTIC=$1
+    INDEX=$1
 fi
 
-curl -XPUT "$ELASTIC/memex/page/_mapping?pretty=1" -d '@mapping.json'
+if [ $# -gt 1 ]
+then
+    TYPE=$2
+    echo $TYPE
+else
+    TYPE=page
+fi
+
+if [ $# -gt 2 ]
+then 
+    MAPPING=$3
+else
+    MAPPING='mapping.json'
+fi
+
+if [ $# -gt 3 ]
+then
+    ELASTIC=$4
+else
+    ELASTIC=http://localhost:9200
+fi
+
+echo $INDEX $TYPE $MAPPING $ELASTIC
+
+curl -XPUT "$ELASTIC/$INDEX/$TYPE/_mapping?pretty=1" -d @$MAPPING
