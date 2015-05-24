@@ -1,16 +1,40 @@
 import math
 import time
+import os
 from sklearn.decomposition import PCA
 from random import random, randint
+from pprint import pprint
+from subprocess import call
+from subprocess import Popen
+from subprocess import PIPE
+from os import chdir, listdir, environ
+from os.path import isfile, join, exists
+import shutil
+import sys
 
+from seeds_generator.download import download, decode
+from seeds_generator.concat_nltk import get_bag_of_words
 
+from pyelasticsearch import ElasticSearch
+from elastic.get_config import get_available_domains
+from elastic.search_documents import get_context, term_search, search, range
+from elastic.add_documents import update_document
+from elastic.get_mtermvectors import getTermStatistics
+from ranking import tfidf, rank, extract_terms
 
 class CrawlerModel:
   def __init__(self):
     #TODO(yamuna): Instantiate Elastic Search client, and use the same instance for all queries.
-    self._es = None
-
-
+    self.es = ElasticSearch(os.environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in os.environ else 'http://localhost:9200')
+    self.domains = {}
+    #list of urls and their labels, ranking scores
+    #e.g: urls = [["nature.com", 1, 0.9], ["sport.com", 0, 0.01]
+    #list of terms and their labels, ranking scores
+    #e.g: terms = [["science", 1, 0.9], ["sport", 0, 0.02]]
+    self.urls_set = set()
+    self.positive_urls_set = set()
+    self.negative_urls_set = set()
+    self.tfidf = tfidf.tfidf()
 
   # Returns a list of available crawlers in the format:
   # [
@@ -21,12 +45,10 @@ class CrawlerModel:
   def getAvailableCrawlers(self):
     # TODO(Yamuna): Query Elastic Search or other internal structure to return name, Id and time of
     # creation of available crawlers.
-    return [ \
-        {'id': 0, 'name': 'Ebola', 'creation': 1431544719},
-        {'id': 1, 'name': 'Gun control', 'creation': 1430040719},
-    ]
-
-
+    domains = get_available_domains(self.es)
+    for domain in domains:
+      self.domains[domain['id']]=domain
+    return domains
 
   # Returns a list of available seed crawlers in the format:
   # [
@@ -37,12 +59,10 @@ class CrawlerModel:
   def getAvailableSeedCrawlers(self):
     # TODO(Yamuna): Query Elastic Search or other internal structure to return name, Id and time of
     # creation of available crawlers.
-    return [ \
-        {'id': 0, 'name': 'Ebola', 'creation': 1431544719},
-        {'id': 1, 'name': 'Gun control', 'creation': 1430040719},
-    ]
-
-
+    domains = get_available_domains(self.es)
+    for domain in domains:
+      self.domains[result['id']]=result
+    return domains
 
   # Returns number of pages downloaded between ts1 and ts2 for crawler with Id crawlerId.
   # ts1 and ts2 are Unix epochs (seconds after 1970).
@@ -68,18 +88,30 @@ class CrawlerModel:
 
     # TODO(Yamuna): Query Elastic Search (schema crawlerId) for number of downloaded pages between
     # given Unix epochs.
-    print opt_ts1
+    print 'from ', opt_ts1
+    print 'to ', opt_ts2
+    print 'index ', self.domains[crawlerId]['index']
 
-    inc = opt_ts2 - opt_ts1
-    explored = int(opt_ts1 / 10E6 + inc)
-    exploited = int(opt_ts1 / 10E8 + inc / 2)
-    neutral = int(opt_ts1 / 10E8 + inc / 2)
+    results = range('retrieved',opt_ts1, opt_ts2, ['url','tag'], True, self.domains[crawlerId]['index'], es=self.es )
+
+    positive = 0
+    negative = 0
+    neutral = 0
+
+    for res in results:
+      try:
+        if 'positive' in res['tag']:
+          positive = positive + 1
+        if 'negative' in res['tag']:
+          negative = negative + 1
+      except KeyError:
+        neutral = neutral + 1
+
     return { \
-      'positive': {'explored': explored, 'exploited': exploited, 'neutral': neutral},
-      'negative': {'explored': explored / 5, 'exploited': exploited / 5, 'neutral':  neutral / 5},
+      'positive': positive,
+      'negative': negative,
+      'neutral': neutral
     }
-
-
 
   # Returns number of terms present in positive and negative pages.
   # Returns array in the format:
@@ -125,18 +157,33 @@ class CrawlerModel:
     # TODO(Yamuna): Query Elastic Search (schema crawlerId) for positive/negative pages between ts1
     # and ts2.
     # TODO(Yamuna): maybe positive/explored/exploited etc can be tags.
-    return { \
-      'positive': {
-        'explored': 1 * [['usatoday.com', random(), random(), 'tag1;tag2'], ['globo.com', random(), random()], ['cnn.com', random(), random()], ['news.google.com', random(), random()],],
-        'exploited': 1 * [['bbc.com', random(), random()], ['wired.com', random(), random()],],
-      }, 
-      'negative': {
-        'explored': 1 * [['nydailynews.com', random(), random()], ['cnet.com', random(), random()], ['news.yahoo.com', random(), random()],],
-        'exploited': 1 * [['nbcnews.com', random(), random()],],
-      },
-    }
 
+    results = range('retrieved',opt_ts1, opt_ts2, ['url','tag'], True, self.domains[crawlerId]['index'], es=self.es )
 
+    positive = {}
+    negative = {}
+
+    for res in results:
+      try:
+        if 'positive' in res['tag']:
+          positive[res['url']] = [res['tag']]
+        if 'negative' in res['tag']:
+          negative[res['url']] = [res['tag']]
+      except KeyError:
+        pass
+
+    pc_count = 2        
+    if len(pos.keys()) > 0:
+      [pos_urls, pos_corpus, pos_data] = self.term_tfidf(positive.keys())
+      pos_pcaData = CrawlerModelAdapter.runPCASKLearn(pos_data, pc_count)
+      print pos_pcaData
+
+    if len(pos.keys()) > 0:
+      [neg_urls, neg_corpus, neg_data] = self.term_tfidf(negative.keys())
+      pos_pcaData = CrawlerModelAdapter.runPCASKLearn(neg_data, pc_count)
+      print neg_pcaData
+
+    return json.dumps([postive, negative]) 
 
   # Boosts set of pages: crawler exploits outlinks for the given set of pages in crawlerId.
   def boostPages(self, crawlerId, pages):
@@ -208,15 +255,6 @@ class CrawlerModel:
     return self.getQueryResults()
 
 
-
-  @staticmethod
-  def runPCASKLearn(X, pc_count = None):
-    pca = PCA(n_components=pc_count)
-    pca.fit(X)
-    return [pca.explained_variance_ratio_.tolist(), pca.transform(X).tolist()]
-
-
-
   @staticmethod
   def extractListParam(param, opt_char = None):
     divider = opt_char if opt_char != None else '|'
@@ -244,12 +282,6 @@ class CrawlerModel:
 
 
 
-  def _onQueryDone(self, x):
-    print '\n\n\n query is done\n\n'
-    self.queryDone = True
-
-
-
   def getQueryResults(self):
     self.urls = list(self._crawlerModel.urls_set)
 
@@ -260,11 +292,7 @@ class CrawlerModel:
     print self.urls
 
     # Gets tf-idf for terms.
-    [self.urls, corpus, data] = self._crawlerModel.term_tfidf()
-    print '\n\n\ntfidf'
-    print '\n\n\n', data
-
-    print data
+    [self.urls, corpus, data] = self.term_tfidf()
 
     pc_count = 2
     pcaData = CrawlerModelAdapter.runPCASKLearn(data, pc_count)
@@ -372,3 +400,195 @@ class CrawlerModel:
         self.terms_and_context[term]['label'] = 'negative'
 
     return self.terms_and_context.values()
+
+    def submit_query_terms(self, term_list, max_url_count = 15, parallel_cb = None, cached=True):
+    #Perform queries to Search Engine APIs
+    #This function only operates when there is no information associated with the terms,
+    #usually before running extract_terms()
+    #
+    #Args:
+    #   term_list: list of search terms that are submited by user
+    #Returns:
+    #   urls: list of urls that are returned by Search Engine
+
+        print '\n\nsubmit_query_terms\n\n'
+
+        chdir(self.memex_home + '/seed_crawler/seeds_generator')
+        
+        query = ' '.join(term_list)
+        with open('conf/queries.txt','w') as f:
+            f.write(query)
+            
+        if not cached:
+            comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar BingSearch -t " + str(max_url_count)
+            p=Popen(comm, shell=True, stdout=PIPE)
+            output, errors = p.communicate()
+            print output
+            print errors
+
+        
+            call(["rm", "-rf", "html"])
+            call(["mkdir", "-p", "html"])
+            call(["rm", "-rf", "thumbnails"])
+            call(["mkdir", "-p", "thumbnails"])
+        
+            #if sys.platform in ['darwin', 'linux2']:
+            if sys.platform in ['darwin']:
+                download("results.txt")
+            else:
+                download("results.txt", True, parallel_cb)
+
+            if exists(self.memex_home + "/seed_crawler/ranking/exclude.txt"):
+                call(["rm", self.memex_home + "/seed_crawler/ranking/exclude.txt"])
+
+            with open("results.txt",'r') as f:
+                urls = [self.validate_url(line.strip()) for line in f.readlines()]
+        else:
+            urls = search('text', term_list)[0:max_url_count]
+
+        for url in urls:
+            self.urls_set.add(url)
+
+        self.tfidf = tfidf.tfidf(list(self.urls_set))
+
+        return urls #Results from Search Engine
+        
+    
+    def submit_selected_urls(self, positive, negative):
+    #Perform ranking and diversifing on all urls with regard to the positive urls
+    #
+    #Args:
+    #   labeled_urls: a list of pair <url, label>. Label 1 means positive and 0 means negative.
+    #Returns:
+    #   urls: list of urls with ranking scores
+
+        # Test new positive and negative examples with exisitng classifier
+        # If accuracy above threshold classify pages
+        # Ranking 
+        # Diversification
+        
+        print '\n\nsubmit_selected_urls\n\n'
+
+        entries = []
+        for pos_url in positive:
+            entry = {
+                'url': pos_url,
+                'relevance': 1
+            }
+            entries.append(entry)
+            
+        for neg_url in negative:
+            entry = {
+                'url': pos_url,
+                'relevance': 0
+            }
+            entries.append(entry)
+
+        if len(entries) > 0:
+            update_document(entries)
+
+        other = []
+        
+        for url in positive:
+            if url in self.urls_set:
+                self.positive_urls_set.add(url)
+                self.negative_urls_set.discard(url)
+
+        for url in negative:
+            if url in self.urls_set:
+                self.negative_urls_set.add(url)
+                self.positive_urls_set.discard(url)
+                
+        for url in self.urls_set:
+            if (len(self.negative_urls_set) == 0) or (url not in self.negative_urls_set):
+                if url not in self.positive_urls_set:
+                    other.append(url)
+
+        chdir(self.memex_home + '/seed_crawler/ranking')
+        ranker = rank.rank()
+        
+        [ranked_urls,scores] = ranker.results(self.tfidf,self.positive_urls_set, other)
+        return [ranked_urls, scores] # classified, ranked, diversified 
+
+    def extract_terms(self, count):
+    #Extract salient terms from positive urls
+    #
+    #Returns:        
+    #   terms: list of extracted salient terms and their ranking scores
+        
+        print '\n\nextract_terms\n\n'
+
+        chdir(self.memex_home + '/seed_crawler/ranking')
+        if exists("selected_terms.txt"):
+            call(["rm", "selected_terms.txt"])
+        if exists("exclude.txt"):
+            call(["rm", "exclude.txt"])
+
+        extract = extract_terms.extract_terms(self.tfidf)
+        return extract.getTopTerms(count)
+
+    #def term_frequency(self):
+     #   all_docs = get_bag_of_words(list(self.urls_set))
+      #  return tfidf.tfidf(all_docs).getTfArray()
+
+    def term_tfidf(self):
+        urls = list(self.urls_set)
+        [data, corpus] = getTermStatistics(urls)
+        #all_docs = get_bag_of_words(list(self.urls_set))
+        #return tfidf.tfidf(all_docs).getTfidfArray()
+        return [urls, corpus, data.toarray()]
+
+    def submit_selected_terms(self, positive, negative):
+    #Rerank the terms based on the labeled terms
+    #
+    #Args:
+    #   labeled_terms: list of pair of term and label: <term, label>. Label 1 means postive, 0 means negative.
+    #Returns:
+    #   terms: list of newly ranked terms and their ranking scores
+
+        print '\n\nsubmit_selected_terms\n\n'
+
+        terms = []
+        chdir(self.memex_home+'/seed_crawler/ranking')
+        
+        past_yes_terms = []
+        if exists("selected_terms.txt"):
+            with open('selected_terms.txt','r') as f:
+                past_yes_terms = [line.strip() for line in f.readlines()]
+
+        with open('selected_terms.txt','w+') as f:
+            for word in past_yes_terms:
+                f.write(word+'\n')
+            for choice in positive :
+                if choice not in past_yes_terms:
+                    f.write(choice+'\n')
+
+        past_no_terms = []
+        if exists("exclude.txt"):
+            with open('exclude.txt','r') as f:
+                past_no_terms = [line.strip() for line in f.readlines()]
+
+        with open('exclude.txt','w+') as f:
+            for word in past_no_terms:
+                f.write(word+'\n')
+            for choice in negative :
+                if choice not in past_no_terms:
+                    f.write(choice+'\n')
+
+        extract = extract_terms.extract_terms(self.tfidf)
+        [ranked_terms, scores] = extract.results(past_yes_terms + positive)
+
+        ranked_terms = [ term for term in ranked_terms if (term not in past_no_terms) and (term not in negative)]
+                
+        return ranked_terms # ranked
+
+    def term_context(self, terms):
+        return get_context(terms)
+
+    def validate_url(self, url):
+        s = url[:4]
+        if s == "http":
+            return url
+        else:
+            url = "http://" + url
+        return url
