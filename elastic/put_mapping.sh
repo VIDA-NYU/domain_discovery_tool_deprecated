@@ -28,6 +28,4 @@ else
     ELASTIC=http://localhost:9200
 fi
 
-echo $INDEX $TYPE $MAPPING $ELASTIC
-
 curl -XPUT "$ELASTIC/$INDEX/$TYPE/_mapping?pretty=1" -d @$MAPPING
