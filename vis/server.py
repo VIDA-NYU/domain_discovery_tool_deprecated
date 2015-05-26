@@ -49,41 +49,8 @@ class Page:
   @cherrypy.expose
   def seedcrawler(self):
     # TODO Use SeedCrawlerModelAdapter self._crawler = SeedCrawlerModelAdapter()
-    self._crawler = CrawlerModelAdapter()
+    self._crawler = SeedCrawlerModelAdapter()
     return open(os.path.join(self._HTML_DIR, u"seedcrawlervis.html"))
-
-
-#  # Submits query for a list of terms.
-#  @cherrypy.expose
-#  def queryTerms(self, term_list):
-#    cherrypy.response.headers["Content-Type"] = "application/json;"
-#    #return json.dumps(_seedCrawler.query(term_list))
-#    return json.dumps(TrainSetDataLoader._DATASET_OPTIONS.keys())
-
-
-  # Performs query.
-  @cherrypy.expose
-  def query( \
-  self, queryTerms, positivePages, negativePages, positiveTerms, negativeTerms, neutralTerms):
-
-    res = self._crawler.query( \
-    queryTerms, positivePages, negativePages, positiveTerms, negativeTerms, neutralTerms)
-
-    cherrypy.response.headers["Content-Type"] = "application/json;"
-    return json.dumps(res)
-
-
-  # Does ranking using newly labeled positive and negative pages.
-  @cherrypy.expose
-  def doRanking(self, positivePages, negativePages):
-    res = self._crawler.doRanking(positivePages, negativePages)
-
-    print "\n\n\n returning"
-    print res
-    print "\n\n\n"
-
-    cherrypy.response.headers["Content-Type"] = "application/json;"
-    return json.dumps(res)
 
 
 
@@ -105,20 +72,44 @@ class Page:
   @cherrypy.expose
   def setActiveCrawler(self, crawlerId):
     self._crawler.setActiveCrawler(crawlerId)
-    # TODO(cesar): Resets data structures holding data about active crawler.
+
+
+
+  # Submits a web query for a list of terms, e.g. 'ebola disease'
+  @cherrypy.expose
+  def queryWeb(self, terms):
+    self._crawler.queryWeb(terms)
+
+
+
+  # Applies a filter to crawler results, e.g. 'ebola disease'
+  @cherrypy.expose
+  def applyFilter(self, terms):
+    self._crawler.applyFilter(terms)
 
 
 
   # Returns number of pages downloaded between ts1 and ts2 for active crawler.
   # ts1 and ts2 are Unix epochs (seconds after 1970).
-  # Returns dictionary in the format:
+  # If opt_applyFilter is True, the summary returned corresponds to the applied pages filter defined
+  # previously in @applyFilter. Otherwise the returned summary corresponds to the entire dataset
+  # between ts1 and ts2.
+  # 
+  # For crawler vis, returns dictionary in the format:
   # {
-  #   'positive': {'explored': numExploredPages, 'exploited': numExploitedPages},
-  #   'negative': {'explored': numExploredPages, 'exploited': numExploitedPages},
+  #   'Positive': {'Explored': #ExploredPgs, 'Exploited': #ExploitedPgs, 'Boosted': #BoostedPgs},
+  #   'Negative': {'Explored': #ExploredPgs, 'Exploited': #ExploitedPgs, 'Boosted': #BoostedPgs},
+  # }
+  #
+  # For seed crawler vis, returns dictionary in the format:
+  # {
+  #   'Relevant': numPositivePages,
+  #   'Irrelevant': numNegativePages,
+  #   'Neutral': numNeutralPages,
   # }
   @cherrypy.expose
-  def getPagesSummary(self, opt_ts1 = None, opt_ts2 = None):
-    res = self._crawler.getPagesSummary(opt_ts1, opt_ts2)
+  def getPagesSummary(self, opt_ts1 = None, opt_ts2 = None, opt_applyFilter = False):
+    res = self._crawler.getPagesSummary(opt_ts1, opt_ts2, opt_applyFilter)
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
 
@@ -139,18 +130,23 @@ class Page:
 
 
 
-  # Returns pages downloaded between ts1 and ts2 for active crawler.
-  # ts1 and ts2 are Unix epochs (seconds after 1970).
+  # Returns most recent downloaded pages.
   # Returns dictionary in the format:
   # {
-  #   'positive': {'explored': [[url1, x, y], ...], 'exploited': [[url1, x, y], ...]},
-  #   'negative': {'explored': [[url1, x, y], ...], 'exploited': [[url1, x, y], ...]},
+  #   'last_downloaded_url_epoch': 1432310403 (in seconds)
+  #   'pages': [
+  #             [url1, x, y, tags],     (tags are a list, potentially empty)
+  #             [url2, x, y, tags],
+  #             [url3, x, y, tags],
+  #   ]
   # }
   @cherrypy.expose
-  def getPages(self, opt_ts1 = None, opt_ts2 = None):
-    res = self._crawler.getPages(opt_ts1, opt_ts2)
+  def getPages(self, opt_maxNumberOfPages = None):
+    res = self._crawler.getPages(opt_maxNumberOfPages)
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
+
+
 
   # Boosts set of pages: crawler exploits outlinks for the given set of pages.
   @cherrypy.expose
@@ -200,7 +196,7 @@ class Page:
   # Extracts terms with current labels state.
   @cherrypy.expose
   def extractTerms(self, positiveTerms, negativeTerms, neutralTerms):
-    res = self._crawler.extractTerms(positiveTerms, negativeTerms, neutralTerms)
+    res = self._seedCrawler.extractTerms(positiveTerms, negativeTerms, neutralTerms)
 
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
