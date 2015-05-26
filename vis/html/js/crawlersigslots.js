@@ -13,8 +13,8 @@
 var SigSlots = (function() {
   ////// Signals definition is centralized here.
   __sig__.available_crawlers_list_loaded = function(crawlers) {};
-  __sig__.active_crawler_changed = function(crawlerId) {};
   __sig__.new_pages_summary_fetched = function(summary) {};
+  __sig__.previous_pages_summary_fetched = function(summary) {};
   __sig__.terms_summary_fetched = function(summary) {};
   __sig__.term_focus = function(term, onFocus) {};
   __sig__.term_toggle = function(term, enabled) {};
@@ -25,6 +25,8 @@ var SigSlots = (function() {
   __sig__.tag_action_clicked = function(tag, actionType) {};
   __sig__.brushed_pages_changed = function(pagesIndices) {};
 
+  __sig__.query_enter = function(terms) {};
+  __sig__.filter_enter = function(terms) {};
 
   //__sig__.pages_labels_changed = function() {};
   //__sig__.term_selected = function(term) {};

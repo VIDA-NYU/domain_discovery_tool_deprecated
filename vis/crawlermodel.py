@@ -26,15 +26,10 @@ class CrawlerModel:
   def __init__(self):
     #TODO(yamuna): Instantiate Elastic Search client, and use the same instance for all queries.
     self.es = ElasticSearch(os.environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in os.environ else 'http://localhost:9200')
-    self.domains = {}
-    #list of urls and their labels, ranking scores
-    #e.g: urls = [["nature.com", 1, 0.9], ["sport.com", 0, 0.01]
-    #list of terms and their labels, ranking scores
-    #e.g: terms = [["science", 1, 0.9], ["sport", 0, 0.02]]
-    self.urls_set = set()
-    self.positive_urls_set = set()
-    self.negative_urls_set = set()
-    self.tfidf = tfidf.tfidf()
+    self._activeCrawlerIndex = None
+    self._filter = None
+
+
 
   # Returns a list of available crawlers in the format:
   # [
@@ -46,9 +41,9 @@ class CrawlerModel:
     # TODO(Yamuna): Query Elastic Search or other internal structure to return name, Id and time of
     # creation of available crawlers.
     domains = get_available_domains(self.es)
-    for domain in domains:
-      self.domains[domain['id']]=domain
-    return domains
+    return [{'id': d['index'], 'name', d['domain_name'], 'creation': d['timestamp']} for d in domains]
+
+
 
   # Returns a list of available seed crawlers in the format:
   # [
@@ -60,18 +55,26 @@ class CrawlerModel:
     # TODO(Yamuna): Query Elastic Search or other internal structure to return name, Id and time of
     # creation of available crawlers.
     domains = get_available_domains(self.es)
-    for domain in domains:
-      self.domains[result['id']]=result
-    return domains
+    return [{'id': d['index'], 'name', d['domain_name'], 'creation': d['timestamp']} for d in domains]
 
-  # Returns number of pages downloaded between ts1 and ts2 for crawler with Id crawlerId.
+
+  # Changes the active crawler to be monitored.
+  def setActiveCrawler(self, crawlerId):
+    self._activeCrawlerIndex = crawlerId
+
+
+
+  # Returns number of pages downloaded between ts1 and ts2 for active crawler.
   # ts1 and ts2 are Unix epochs (seconds after 1970).
+  # If opt_applyFilter is True, the summary returned corresponds to the applied pages filter defined
+  # previously in @applyFilter. Otherwise the returned summary corresponds to the entire dataset
+  # between ts1 and ts2.
   # Returns dictionary in the format:
   # {
-  #   'positive': {'explored': numExploredPages, 'exploited': numExploitedPages},
-  #   'negative': {'explored': numExploredPages, 'exploited': numExploitedPages},
+  #   'Positive': {'Explored': numExploredPages, 'Exploited': numExploitedPages},
+  #   'Negative': {'Explored': numExploredPages, 'Exploited': numExploitedPages},
   # }
-  def getPagesSummary(self, crawlerId, opt_ts1 = None, opt_ts2 = None):
+  def getPagesSummaryCrawler(self, opt_ts1 = None, opt_ts2 = None, opt_applyFilter = False):
     # If ts1 not specified, sets it to -Infinity.
     if opt_ts1 is None:
       now = time.localtime(0)
@@ -90,51 +93,37 @@ class CrawlerModel:
     # given Unix epochs.
     print 'from ', opt_ts1
     print 'to ', opt_ts2
-    print 'index ', self.domains[crawlerId]['index']
+    print 'index ', self._activeCrawlerIndex
 
-    results = range('retrieved',opt_ts1, opt_ts2, ['url','tag'], True, self.domains[crawlerId]['index'], es=self.es )
+    results = range('retrieved',opt_ts1, opt_ts2, ['url','tag'], True, self._activeCrawlerIndex, es=self.es )
 
     positive = 0
     negative = 0
     neutral = 0
 
+    # TODO(Yamuna): Double check the return values for crawler
     for res in results:
       try:
-        if 'positive' in res['tag']:
+        if 'Positive' in res['tag']:
           positive = positive + 1
-        if 'negative' in res['tag']:
+        if 'Negative' in res['tag']:
           negative = negative + 1
       except KeyError:
         neutral = neutral + 1
 
     return { \
-      'positive': positive,
-      'negative': negative,
-      'neutral': neutral
+      'Positive': positive,
+      'Negative': negative,
+      'Neutral': neutral
     }
 
-  # Returns number of terms present in positive and negative pages.
-  # Returns array in the format:
-  # [
-  #   [term, frequencyInPositivePages, frequencyInNegativePages],
-  #   [term, frequencyInPositivePages, frequencyInNegativePages],
-  #   ...
-  # ]
-  def getTermsSummary(self, crawlerId):
-    # TODO(Yamuna): Query Elastic Search (schema crawlerId) for terms in positive/negative
-    # downloaded pages.
-    return 9 * [ \
-      ['Word', randint(1, 100), randint(1, 100)],
-      ['Disease', randint(1, 100), randint(1, 100)],
-      ['Control', randint(1, 100), randint(1, 100)],
-      ['Symptoms', randint(1, 100), randint(1, 100)],
-      ['Epidemy', 100, 100],
-    ]
 
 
-
-  # Returns pages downloaded between ts1 and ts2 for active crawler.
+  # Returns number of pages downloaded between ts1 and ts2 for active crawler.
   # ts1 and ts2 are Unix epochs (seconds after 1970).
+  # If opt_applyFilter is True, the summary returned corresponds to the applied pages filter defined
+  # previously in @applyFilter. Otherwise the returned summary corresponds to the entire dataset
+  # between ts1 and ts2.
   # Returns dictionary in the format:
   # {
   #   'positive': {'explored': [[url1, x, y, tags], ...], 'exploited': [[url1, x, y], ...]},
@@ -158,7 +147,7 @@ class CrawlerModel:
     # and ts2.
     # TODO(Yamuna): maybe positive/explored/exploited etc can be tags.
 
-    results = range('retrieved',opt_ts1, opt_ts2, ['url','tag'], True, self.domains[crawlerId]['index'], es=self.es )
+    results = range('retrieved',opt_ts1, opt_ts2, ['url','tag'], true, self.domains[crawlerid]['index'], es=self.es )
 
     positive = {}
     negative = {}
@@ -169,19 +158,19 @@ class CrawlerModel:
           positive[res['url']] = [res['tag']]
         if 'negative' in res['tag']:
           negative[res['url']] = [res['tag']]
-      except KeyError:
+      except keyerror:
         pass
 
     pc_count = 2        
     if len(pos.keys()) > 0:
       [pos_urls, pos_corpus, pos_data] = self.term_tfidf(positive.keys())
-      pos_pcaData = CrawlerModelAdapter.runPCASKLearn(pos_data, pc_count)
-      print pos_pcaData
+      pos_pcadata = crawlermodeladapter.runpcasklearn(pos_data, pc_count)
+      print pos_pcadata
 
     if len(pos.keys()) > 0:
       [neg_urls, neg_corpus, neg_data] = self.term_tfidf(negative.keys())
-      pos_pcaData = CrawlerModelAdapter.runPCASKLearn(neg_data, pc_count)
-      print neg_pcaData
+      pos_pcadata = crawlermodeladapter.runpcasklearn(neg_data, pc_count)
+      print neg_pcadata
 
     return json.dumps([postive, negative]) 
 
