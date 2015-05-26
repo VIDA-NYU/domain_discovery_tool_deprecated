@@ -82,9 +82,12 @@ SnippetsViewer.prototype.update = function() {
       return viewer.getItemInfo(item, i);
     });
   items.each(function(item, i) {
+    var tags = item.term['tags'];
+    var isPositive = tags.indexOf('Positive') != -1;
+    var isNegative = tags.indexOf('Negative') != -1;
     d3.select(this).selectAll('em')
-      .classed('positive', item.term.label === 'positive')
-      .classed('negative', item.term.label === 'negative');
+      .classed('Positive', isPositive)
+      .classed('Negative', isNegative);
   });
 };
 

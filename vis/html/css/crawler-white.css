@@ -94,11 +94,13 @@ div {
   font-weight: bold;
 }
 
-#wordlist svg text.positive {
+#wordlist.seedcrawler svg text.Relevant,
+#wordlist.seedcrawler svg text.Positive {
   fill: rgb(19, 72, 186);
 }
 
-#wordlist svg text.negative {
+#wordlist.seedcrawler svg text.Irrelevant,
+#wordlist.seedcrawler svg text.Negative {
   fill: rgb(244, 68, 110);
 }
 
@@ -171,16 +173,16 @@ div {
     fill-opacity: 0;
 }
 
-.statslist svg rect.explored {
+.statslist svg rect.Explored {
     stroke: lightgray;
 }
 
-.statslist svg rect.exploited {
+.statslist svg rect.Exploited {
     stroke: lightgray;
     mask: url(#mask-stripe);
 }
 
-.statslist svg rect.new {
+.statslist svg rect.New {
     stroke: lightgray;
     fill-opacity: 0.2;
 }
@@ -193,11 +195,13 @@ div {
     width: 70px;
 }
 
-.statslist g.bar.positive rect {
+.statslist g.bar.Positive rect,
+.statslist g.bar.Relevant rect {
   fill: rgb(19, 72, 186);
 }
 
-.statslist g.bar.negative rect {
+.statslist g.bar.Negative rect,
+.statslist g.bar.Irrelevant rect {
   fill: rgb(244, 68, 110);
 }
 
@@ -207,7 +211,7 @@ div {
     text-anchor: end;
 }
 
-.statslist .numericalData.new {
+.statslist .numericalData.New {
     font-weight: bold;
 }
 
@@ -244,22 +248,14 @@ div {
   fill: #bbb;
 }
 
-#pages_landscape circle.positive {
+#pages_landscape circle.Positive,
+#pages_landscape circle.Relevant {
   fill: #4B8DF8;
 }
 
-#pages_landscape circle.positive_recommendation {
-  stroke: rgb(19, 72, 186);
-  stroke-width: 2;
-}
-
-#pages_landscape circle.negative {
+#pages_landscape circle.Negative,
+#pages_landscape circle.Irrelevant {
   fill: rgb(244, 68, 110);
-}
-
-#pages_landscape circle.negative_recommendation {
-  stroke: rgb(244, 68, 110);
-  stroke-width: 2;
 }
 
 #last_update_info_box {
@@ -477,11 +473,13 @@ div#urlBgMask {
   color: #000;
 }
 
-#terms_snippets_viewer .item p em.positive {
+#terms_snippets_viewer.seedcrawler .item p em.Positive,
+#terms_snippets_viewer.seedcrawler .item p em.Relevant {
   color: rgb(19, 72, 186);
 }
 
-#terms_snippets_viewer .item p em.negative {
+#terms_snippets_viewer.seedcrawler .item p em.Negative,
+#terms_snippets_viewer.seedcrawler .item p em.Irrelevant {
   color: rgb(244, 68, 110);
 }
 
@@ -505,7 +503,8 @@ div#urlBgMask {
   background-color: #fcfcfc;
 }
 
-#submit_query {
+#submit_query,
+#submit_filter {
 	background: url("../img/search.png") no-repeat scroll center center #FECD57;
   vertical-align: top;
   display: inline-block;
@@ -518,7 +517,8 @@ div#urlBgMask {
 	border: 2px solid #fff;
 }
 
-#submit_query:hover {
+#submit_query:hover,
+#submit_filter:hover {
   border: 2px solid #2F5BB7;
 }
 

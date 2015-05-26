@@ -21,8 +21,6 @@ var TagsGallery = function(parentContainerId, predefinedTags) {
 
   // User-defined items in gallery.
   this.userItems = [];
-  // TODO(cesar): remove!
-  this.userItems = [ {'label': 'User-defined1', 'tag': 'userdefined1', 'clickable': true} ];
 
   this.update();
 };
@@ -33,9 +31,6 @@ var TagsGallery = function(parentContainerId, predefinedTags) {
  */
 TagsGallery.prototype.clear = function(lazyUpdate) {
   this.userItems = [];
-
-  // TODO(cesar): remove!
-  this.userItems = [ {'label': 'User-defined1', 'tag': 'userdefined1', 'clickable': true} ];
 
   if (!lazyUpdate) {
     this.update();
