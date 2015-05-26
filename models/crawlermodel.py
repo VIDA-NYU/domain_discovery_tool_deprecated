@@ -55,7 +55,7 @@ class CrawlerModel:
 
     domains = get_available_domains(self.es)
     return \
-    [{'id': d['index'], 'name', d['domain_name'], 'creation': d['timestamp']} for d in domains]
+    [{'id': d['index'], 'name': d['domain_name'], 'creation': d['timestamp']} for d in domains]
 
 
 
@@ -72,7 +72,7 @@ class CrawlerModel:
 
     domains = get_available_domains(self.es)
     return \
-    [{'id': d['index'], 'name', d['domain_name'], 'creation': d['timestamp']} for d in domains]
+    [{'id': d['index'], 'name': d['domain_name'], 'creation': d['timestamp']} for d in domains]
 
 
 
@@ -166,14 +166,15 @@ class CrawlerModel:
 
     # TODO(Yamuna): Double check the return values for crawler
     for res in results:
-        tags = res['tag']
-        if 'Relevant' in res['tag']:
-          relevant = relevant + 1
-        elif 'Irrelevant' in res['tag']:
-          irrelevant = irrelevant + 1
-        else:
-          # Page has tags, but not Relevant or Irrelevant.
-          neutral = neutral + 1
+        try:
+          tags = res['tag']
+          if 'Relevant' in res['tag']:
+            relevant = relevant + 1
+          elif 'Irrelevant' in res['tag']:
+            irrelevant = irrelevant + 1
+          else:
+            # Page has tags, but not Relevant or Irrelevant.
+            neutral = neutral + 1
         except KeyError:
           # Page does not have tags.
           neutral = neutral + 1
@@ -231,7 +232,8 @@ class CrawlerModel:
     # results are in the format:
     # [["url", "x", "y", "tag", "retrieved"], ... ]
     results = get_most_recent_documents( \
-      opt_maxNumberOfPages, self._filter, self._activeCrawlerIndex, es_doc_type = 'page', self.es)
+      opt_maxNumberOfPages, self._filter, self._activeCrawlerIndex, es_doc_type = 'page', \
+      es = self.es)
 
     # Gets last downloaded url epoch from top result (most recent one).
     last_downloaded_url_epoch = 0
