@@ -28,7 +28,7 @@
     <script type="text/javascript" src="js/dataaccess.js"></script>
     <script type="text/javascript" src="js/sigslot_core.js"></script>
     <script type="text/javascript" src="js/crawlersigslots.js"></script>
-    <script type="text/javascript" src="js/seedcrawlerstatslist.js"></script>
+    <script type="text/javascript" src="js/statslist.js"></script>
     <script type="text/javascript" src="js/snippetsviewer.js"></script>
     <!--script type="text/javascript" src="js/termsgallery.js"></script-->
     <script type="text/javascript" src="js/utils.js"></script>
@@ -63,8 +63,8 @@
         </div>
 
         <div id="filter_panel">
-          Filter:<input type="text" id="filter_box" class="query_input" list="filter_box_previous_filters"></input><span id="submit_filter"></span>
-          <datalist id='filter_box_previous_filters'></datalist>
+          Filter:<input type="text" id="filter_box" class="query_input" list="filter_box_previous_queries"></input><span id="submit_query"></span>
+          <datalist id='filter_box_previous_queries'></datalist>
 
           <div id="filter_statslist" class="statslist">
             <svg>
@@ -110,8 +110,8 @@
       <!-- Right panel -->
       <div id="right_panel">
         Terms
-        <div id="wordlist" class="seedcrawler"></div>
-        <div id="terms_snippets_viewer" class="terms_interface seedcrawler"></div>
+        <div id="wordlist"></div>
+        <div id="terms_snippets_viewer" class="terms_interface"></div>
       </div>
     </div>
     <div id="mask"></div>
