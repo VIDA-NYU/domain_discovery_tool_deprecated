@@ -120,7 +120,7 @@ PagesLandscape.prototype.update = function() {
       .call(xAxisGrid);
   */
 
-  var useZoom = true;
+  var useZoom = false;
   if (useZoom) {
     if (!this.zoom) {
       this.zoomed = function() {
@@ -149,9 +149,10 @@ PagesLandscape.prototype.update = function() {
       .call(landscape.zoom);
 
   // Creates circles.
+  // NOTE: page must be the only class here, so that the tags are added as classes later. So do not
+  // use .classed('page', true) as it would not remove classes when a tag is removed.
   this.circles = svg.selectAll('circle.page').data(data);
   this.circles.enter().append('circle')
-      .classed('page', true)
       .attr('r', 0)
       .on('click', function(point, i) {
         // TODO trigger event for click on element.
@@ -166,27 +167,33 @@ PagesLandscape.prototype.update = function() {
       .on('mouseout', function(point, i) {
         Utils.hideTooltip();
       });
-  // TODO(cesar): have a clever way of allowing classing elements with multiple tags.
+  // Applies tags as classes.
+  this.circles.each(function(point, i) {
+      var elm = d3.select(this);
+      var tags = point['tags'];
+
+      // Put here any class that need to be kept.
+      var selected = elm.classed('selected');
+
+      // NOTE: page must be the only class here, so that the tags are added as classes later. So do not
+      // use .classed('page', true) as it would not remove classes when a tag is removed.
+      elm
+          .attr('class', 'page')
+          .classed('selected', selected);
+
+      for (var ti in tags) {
+        elm.classed(tags[ti], true);
+      };
+      // TODO(cesar): Will we recommend a classification based on rank?
+      //elm.style('stroke-opacity', function(point, i) {
+      //  if (point.label == 'positive_recommendation' || point.label == 'negative_recommendation') {
+      //    return point.opacity;
+      //  } else {
+      //    return null;
+      //  }
+      //})
+  });
   this.circles
-      .classed('positive', function(point, i) {
-        return point.label == 'positive';
-      })
-      .classed('positive_recommendation', function(point, i) {
-        return point.label == 'positive_recommendation';
-      })
-      .classed('negative', function(point, i) {
-        return point.label == 'negative';
-      })
-      .classed('negative_recommendation', function(point, i) {
-        return point.label == 'negative_recommendation';
-      })
-      .style('stroke-opacity', function(point, i) {
-        if (point.label == 'positive_recommendation' || point.label == 'negative_recommendation') {
-          return point.opacity;
-        } else {
-          return null;
-        }
-      })
       .transition(500)
       .attr('cx', function(point, i) {
         return xScale(point.x);

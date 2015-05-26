@@ -34,16 +34,11 @@ Wordlist.prototype.addEntries = function(entries) {
 
 /**
  * E.gs. of entry expected format:
- * [{ 'word': 'posTerm', 'posFreq': 40, 'negFreq': 30, 'tags': ['negative']},
- *  { 'word': 'negTerm', 'posFreq': 20, 'negFreq': 30, 'tags': ['positive']},
+ * [{ 'word': 'posTerm', 'posFreq': 40, 'negFreq': 30, 'tags': ['Negative']},
+ *  { 'word': 'negTerm', 'posFreq': 20, 'negFreq': 30, 'tags': ['Positive']},
  *  { 'word': 'neutralTerm', 'posFreq': 10, 'negFreq': 40, 'tags': []},]
  */
 Wordlist.prototype.setEntries = function(entries) {
-    // If not tags entry for term, adds empty array.
-    for (var i in entries) {
-      entries[i]['tags'] = entries[i]['tags'] || [];
-    }
-
     this.entries = entries;
     this.update();
 };
@@ -107,15 +102,15 @@ Wordlist.prototype.update = function() {
         .classed('noselect', true)
         .text(function(d) { return d['word']; });
 
-    // Term should be classed according to its tags, e.g. positive/negative.
+    // Term should be classed according to its tags, e.g. Positive/Negative.
     words.each(function(d) {
       var elm = d3.select(this).select('text');
       var tags = d['tags'];
-      var isPositive = tags.indexOf('positive') != -1;
-      var isNegative = tags.indexOf('negative') != -1;
+      var isPositive = tags.indexOf('Positive') != -1 || tags.indexOf('Relevant') != -1;
+      var isNegative = tags.indexOf('Negative') != -1 || tags.indexOf('Irrelevant') != -1;
       elm
-        .classed('positive', isPositive)
-        .classed('negative', isNegative);
+        .classed('Positive', isPositive)
+        .classed('Negative', isNegative);
     });
 
     // Interaction rectangle.

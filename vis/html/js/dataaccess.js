@@ -10,7 +10,7 @@ var DataAccess = (function() {
   var REFRESH_EVERY_N_MILLISECONDS = 2000;
 
   var lastUpdate = 0;
-  var lastSummary = undefined;
+  var lastSummary = 0;
   var currentCrawler = undefined;
   var loadingSummary = false;
   var updating = false;
@@ -20,7 +20,12 @@ var DataAccess = (function() {
   var termsSummary = undefined;
 
   // Processes loaded pages summaries.
-  var onPagesSummaryLoaded = function(summary) {
+  var onPagesSummaryUntilLastUpdateLoaded = function(summary) {
+    __sig__.emit(__sig__.previous_pages_summary_fetched, summary);
+  };
+
+  // Processes loaded pages summaries.
+  var onNewPagesSummaryLoaded = function(summary) {
     loadingSummary = false;
     lastSummary = moment().unix();
     __sig__.emit(__sig__.new_pages_summary_fetched, summary);
@@ -29,7 +34,7 @@ var DataAccess = (function() {
   // Processes loaded pages.
   var onPagesLoaded = function(loadedPages) {
     pages = loadedPages;
-    lastUpdate = moment().unix();
+    lastUpdate = loadedPages['last_downloaded_url_epoch'];
     loadingPages = false;
   };
 
@@ -76,24 +81,27 @@ var DataAccess = (function() {
 
   // TODO(cesar): Load both terms and pages summaries, and update after both complete.
   //queue()
-  //  .defer(loadPagesSummary)
+  //  .defer(loadNewPagesSummary)
   //  .awaitAll(function(results) {
   //    onPagesSummaryLoaded(results[0]);
   //    console.log(results);
   //  });
 
-  window.setInterval(function() {
+  // Loads new pages summary.
+  pub.loadNewPagesSummary = function() {
     if (!loadingSummary && currentCrawler !== undefined) {
       loadingSummary = true;
-
-      // Fetches pages summaries every n seconds.
-      loadingPages = true;
       runQueryForCurrentCrawler(
-        '/getPagesSummary', {'opt_ts1': lastUpdate}, onPagesSummaryLoaded);
+        '/getPagesSummary', {'opt_ts1': lastUpdate}, onNewPagesSummaryLoaded);
     }
-  }, REFRESH_EVERY_N_MILLISECONDS);
-
-
+  };
+  // Loads pages summary until last pages update.
+  pub.loadPagesSummaryUntilLastUpdate = function() {
+    if (currentCrawler !== undefined) {
+      runQueryForCurrentCrawler(
+        '/getPagesSummary', {'opt_ts2': lastUpdate}, onPagesSummaryUntilLastUpdateLoaded);
+    }
+  };
   // Returns public interface.
   // Gets available crawlers from backend.
   pub.loadAvailableCrawlers = function() {
@@ -104,6 +112,14 @@ var DataAccess = (function() {
     currentCrawler = crawlerId;
     runQuery('/setActiveCrawler', {'crawlerId': crawlerId});
   };
+  // Queries the web for terms (used in Seed Crawler mode).
+  pub.queryWeb = function(terms) {
+    runQueryForCurrentCrawler('/queryWeb', {'terms': terms});
+  };
+  // Applies filter to returned pages and pages result.
+  pub.applyFilter = function(terms) {
+    runQueryForCurrentCrawler('/applyFilter', {'terms': terms});
+  };
   // Loads pages (complete data, including URL, x and y position etc) and terms.
   pub.update = function() {
     if (!updating && currentCrawler !== undefined) {
@@ -112,7 +128,7 @@ var DataAccess = (function() {
       // Fetches pages summaries every n seconds.
       loadingPages = true;
       runQueryForCurrentCrawler(
-        '/getPages', {'opt_ts1': lastUpdate}, onPagesLoaded, onMaybeUpdateComplete);
+        '/getPages', {}, onPagesLoaded, onMaybeUpdateComplete);
 
       // Fetches terms summaries.
       loadingTerms = true;
@@ -141,5 +157,9 @@ var DataAccess = (function() {
     runQueryForCurrentCrawler(
       '/setTermsTag', {'terms': term, 'tag': tag, 'applyTagFlag': applyTagFlag});
   };
+
+  // Fetches new pages summaries every n seconds.
+  window.setInterval(pub.loadNewPagesSummary, REFRESH_EVERY_N_MILLISECONDS);
+
   return pub;
 }());
