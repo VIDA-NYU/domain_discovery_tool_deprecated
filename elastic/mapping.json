@@ -52,6 +52,12 @@
 		"type" : "string",
 		"index" : "not_analyzed"
 	    },
+	    "x" : {
+		"type" : "float"
+	    },
+	    "y" : {
+		"type" : "float"
+	    },
 	    "topic_weight" : {
 		"type" : "float"
 	    }
