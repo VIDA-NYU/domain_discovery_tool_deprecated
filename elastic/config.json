@@ -1,0 +1,25 @@
+{
+    "domains" : {
+        "_timestamp" : {
+	    "enabled" : true,
+	    "store" : true
+	},
+	"_id" : {
+	    "path" : "id"
+        },
+	"properties" : {
+            "domain_name" : {
+		"type" : "string"
+	    },
+	    "timestamp" : {
+		"type" : "date"
+	    },
+	    "index" : {
+		"type" : "string"
+	    },
+	    "id" : {
+		"type" : "float"
+	    }
+	}
+    }
+}
