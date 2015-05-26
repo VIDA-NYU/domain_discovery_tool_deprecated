@@ -34,7 +34,7 @@ class CrawlerModelAdapter:
   def getAvailableCrawlers(self):
     crawlers = self._crawlerModel.getAvailableCrawlers()
     crawlers = sorted(crawlers, key = lambda c: (c['domain_name'], c['timestamp']))
-    return [{'id': c['id'], 'name', c['domain_name'], 'creation': c['timestamp']} for c in crawlers]
+    return [{'id': c['id'], 'name': c['domain_name'], 'creation': c['timestamp']} for c in crawlers]
 
 
 
