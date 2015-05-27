@@ -86,17 +86,21 @@
 				
 				el.data('urlive-container', opts.container);
 								
-				if(el.is('a')){
-					url = el.attr('href');
-				}else{
-					var text = el.val() || el.text(), 
-						regexp = opts.regexp, 
-						email = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-				
-					url = regexp.exec(text);
-					
-					url = (url && !email.test(url[0])) ? url[0] : null;			
-				}
+        if ('url' in opts) {
+          url = opts.url;
+        } else {
+          if(el.is('a')){
+            url = el.attr('href');
+          }else{
+            var text = el.val() || el.text(), 
+              regexp = opts.regexp, 
+              email = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          
+            url = regexp.exec(text);
+            
+            url = (url && !email.test(url[0])) ? url[0] : null;			
+          }
+        }
 				
 				if(url){
 					if(/\.(?:jpe?g|gif|png)/.test(url)){

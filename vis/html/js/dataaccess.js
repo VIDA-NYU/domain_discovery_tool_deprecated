@@ -152,6 +152,16 @@ var DataAccess = (function() {
   pub.getLastSummaryTime = function() {
     return lastSummary;
   };
+  // Adds tag to page.
+  pub.setPageTag = function(page, tag, applyTagFlag) {
+    runQueryForCurrentCrawler(
+      '/setPagesTag', {'pages': page, 'tag': tag, 'applyTagFlag': applyTagFlag});
+  };
+  // Adds tag to multiple pages.
+  pub.setPagesTag = function(pages, tag, applyTagFlag) {
+    runQueryForCurrentCrawler(
+      '/setPagesTag', {'pages': pages.join('|'), 'tag': tag, 'applyTagFlag': applyTagFlag});
+  };
   // Adds tag to term.
   pub.setTermTag = function(term, tag, applyTagFlag) {
     runQueryForCurrentCrawler(

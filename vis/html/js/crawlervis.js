@@ -503,9 +503,37 @@ CrawlerVis.prototype.onTagClicked = function(tag) {
 
 
 // Responds to clicked tag action.
-CrawlerVis.prototype.onTagActionClicked = function(tag, action) {
-  // TODO(cesar): Tag selected pages on landscape.
-  console.log('tag action clicked: ', tag, action);
+CrawlerVis.prototype.onTagActionClicked = function(tag, action, opt_items) {
+  // If items is empty array, applies action to selected pages in the landscape.
+  if (!opt_items || opt_items.length == 0) {
+    opt_items = this.pagesLandscape.getSelectedItems();
+  }
+  // Apply or remove tag from urls.
+  var applyTagFlag = 'action' == 'Apply';
+  var urls = [];
+  for (var i in opt_items) {
+    var item = opt_items[i];
+    var tags = item.tags;
+
+    // Removes tag when the tag is present for item, and applies only when tag is not present for
+    // item.
+    var isTagPresent = item.tags.some(function(itemTag) {
+      return itemTag == tag;
+    });
+    if ((applyTagFlag && !isTagPresent) || (!applyTagFlag && isTagPresent)) {
+      urls.push(item.url);
+
+      // Updates tag list for items.
+      if (applyTagFlag) {
+        tags.append(tag);
+      } else {
+        tags.splice(tags.indexOf(tag), 1);
+      }
+    }
+  }
+  DataAccess.setPagesTag(urls, tag, applyTagFlag);
+  this.pagesLandscape.update();
+  this.pagesGallery.update();
 };
 
 

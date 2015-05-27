@@ -22,7 +22,7 @@ var SigSlots = (function() {
   __sig__.pages_loaded = function(pages) {};
   __sig__.tag_focus = function(tag, onFocus) {};
   __sig__.tag_clicked = function(tag) {};
-  __sig__.tag_action_clicked = function(tag, actionType) {};
+  __sig__.tag_action_clicked = function(tag, actionType, pages) {};
   __sig__.brushed_pages_changed = function(pagesIndices) {};
 
   __sig__.query_enter = function(terms) {};

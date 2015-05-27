@@ -22,6 +22,10 @@ div {
   padding: 0;
 }
 
+p {
+  margin: 5px;
+}
+
 #page_container {
   width: 1280px;
   margin: 0 auto;
@@ -94,11 +98,13 @@ div {
   font-weight: bold;
 }
 
-#wordlist svg text.positive {
+#wordlist.seedcrawler svg text.Relevant,
+#wordlist.seedcrawler svg text.Positive {
   fill: rgb(19, 72, 186);
 }
 
-#wordlist svg text.negative {
+#wordlist.seedcrawler svg text.Irrelevant,
+#wordlist.seedcrawler svg text.Negative {
   fill: rgb(244, 68, 110);
 }
 
@@ -171,16 +177,16 @@ div {
     fill-opacity: 0;
 }
 
-.statslist svg rect.explored {
+.statslist svg rect.Explored {
     stroke: lightgray;
 }
 
-.statslist svg rect.exploited {
+.statslist svg rect.Exploited {
     stroke: lightgray;
     mask: url(#mask-stripe);
 }
 
-.statslist svg rect.new {
+.statslist svg rect.New {
     stroke: lightgray;
     fill-opacity: 0.2;
 }
@@ -193,11 +199,13 @@ div {
     width: 70px;
 }
 
-.statslist g.bar.positive rect {
+.statslist g.bar.Positive rect,
+.statslist g.bar.Relevant rect {
   fill: rgb(19, 72, 186);
 }
 
-.statslist g.bar.negative rect {
+.statslist g.bar.Negative rect,
+.statslist g.bar.Irrelevant rect {
   fill: rgb(244, 68, 110);
 }
 
@@ -207,7 +215,7 @@ div {
     text-anchor: end;
 }
 
-.statslist .numericalData.new {
+.statslist .numericalData.New {
     font-weight: bold;
 }
 
@@ -244,22 +252,14 @@ div {
   fill: #bbb;
 }
 
-#pages_landscape circle.positive {
+#pages_landscape circle.Positive,
+#pages_landscape circle.Relevant {
   fill: #4B8DF8;
 }
 
-#pages_landscape circle.positive_recommendation {
-  stroke: rgb(19, 72, 186);
-  stroke-width: 2;
-}
-
-#pages_landscape circle.negative {
+#pages_landscape circle.Negative,
+#pages_landscape circle.Irrelevant {
   fill: rgb(244, 68, 110);
-}
-
-#pages_landscape circle.negative_recommendation {
-  stroke: rgb(244, 68, 110);
-  stroke-width: 2;
 }
 
 #last_update_info_box {
@@ -406,17 +406,57 @@ div.tooltip {
   display: inline-block;
   width: 660px;
   height: 100px;
-  margin: 5px 0px 5px 5px;
+  margin: 5px 0px 0px 5px;
   padding: 5px;
-  background: #f3f3f3;
-  box-shadow: 0 0 1px 2px #EAEAEA;
-  border-radius: 5px;
+  border-top: 1px solid #EAEAEA;
   cursor: pointer;
+  background-color: #fcfcfc;
 }
 
 #pages_items .item .item_info {
   height: 100%;
   overflow: hidden;
+}
+
+#pages_items .item .item_info h3 {
+  font-weight: normal;
+  margin-top: 7px;
+  margin-left: 5px;
+  display: inline-block;
+}
+
+#pages_items .item .tags {
+  vertical-align: top;
+  float: right;
+  display: inline-block;
+  margin-top: 7px;
+  margin-right: 5px;
+}
+
+#pages_items .item .tag {
+  vertical-align: top;
+  padding: 5px;
+  display: inline-block;
+  height: 12px;
+  box-shadow: 0 0 1px 1px #EAEAEA;
+}
+
+
+#pages_items .item .tag .not-clickable {
+  cursor: default;
+}
+
+#pages_items .item .tag img.clickable {
+  opacity: 0.3;
+}
+
+#pages_items .item .tag img.clickable.focus {
+  display: inline-block;
+  opacity: 1;
+}
+
+#pages_items .item .tag img.clickable.focus:hover {
+	background: #FECD57;
 }
 
 div#mask,
@@ -461,12 +501,10 @@ div#urlBgMask {
 
 #terms_snippets_viewer .item {
   margin: 0px 2px 0px 2px;
-  box-shadow: 0 0 1px 2px #EAEAEA;
-  border-radius: 5px;
+  border-top: 1px solid #EAEAEA;
 }
 
 #terms_snippets_viewer .item p {
-  background: #efefef;
   font-weight: normal;
   padding: 2px;
 }
@@ -477,11 +515,13 @@ div#urlBgMask {
   color: #000;
 }
 
-#terms_snippets_viewer .item p em.positive {
+#terms_snippets_viewer.seedcrawler .item p em.Positive,
+#terms_snippets_viewer.seedcrawler .item p em.Relevant {
   color: rgb(19, 72, 186);
 }
 
-#terms_snippets_viewer .item p em.negative {
+#terms_snippets_viewer.seedcrawler .item p em.Negative,
+#terms_snippets_viewer.seedcrawler .item p em.Irrelevant {
   color: rgb(244, 68, 110);
 }
 
@@ -505,7 +545,8 @@ div#urlBgMask {
   background-color: #fcfcfc;
 }
 
-#submit_query {
+#submit_query,
+#submit_filter {
 	background: url("../img/search.png") no-repeat scroll center center #FECD57;
   vertical-align: top;
   display: inline-block;
@@ -518,7 +559,8 @@ div#urlBgMask {
 	border: 2px solid #fff;
 }
 
-#submit_query:hover {
+#submit_query:hover,
+#submit_filter:hover {
   border: 2px solid #2F5BB7;
 }
 
