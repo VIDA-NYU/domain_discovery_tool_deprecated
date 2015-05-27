@@ -297,10 +297,10 @@ CrawlerVis.prototype.updatePagesStatsSeedCrawler = function() {
   this.statslist.setMaxBarTotal(maxWidth);
 
   // Updates buttons used to update pages landscape.
-  var newPages = stats['Relevant']['New'] + stats['Relevant']['New'] + stats['Neutral']['New'];
+  // For seed crawler, update button is always available;
   d3.select('#pages_landscape_update')
-    .classed('enabled', newPages > 0)
-    .classed('disabled', newPages == 0);
+    .classed('enabled', true)
+    .classed('disabled', false);
 };
 
 
