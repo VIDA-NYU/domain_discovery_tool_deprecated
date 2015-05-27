@@ -270,6 +270,10 @@ p {
   text-align: right;
 }
 
+#last_update_info_box.seedcrawler {
+  margin-left: 228px;
+}
+
 #pages_landscape_buttons {
   margin-right: 10px;
 }

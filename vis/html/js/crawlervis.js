@@ -98,7 +98,7 @@ CrawlerVis.prototype.initUICrawler = function() {
   this.initWordlist();
   this.initStatslist();
   this.initFilterStatslist();
-  this.initPagesLandscape();
+  this.initPagesLandscape(true);
   this.initTagsGallery([
     {'label': 'Positive', 'tag': 'Positive', 'clickable': false},
     {'label': 'Negative', 'tag': 'Negative', 'clickable': false},
@@ -118,7 +118,7 @@ CrawlerVis.prototype.initUISeedCrawler = function() {
   this.initWordlist();
   this.initStatslist();
   this.initFilterStatslist();
-  this.initPagesLandscape();
+  this.initPagesLandscape(false);
   this.initTagsGallery([
     {'label': 'Relevant', 'tag': 'Irrelevant', 'clickable': true},
     {'label': 'Irrelevant', 'tag': 'Irrelevant', 'clickable': true},
@@ -311,7 +311,7 @@ CrawlerVis.prototype.initWordlist = function() {
 
 
 // Initializes pages landscape.
-CrawlerVis.prototype.initPagesLandscape = function() {
+CrawlerVis.prototype.initPagesLandscape = function(showBoostButton) {
   var vis = this;
   this.pagesLandscape = new PagesLandscape('#pages_landscape');
 
@@ -335,28 +335,30 @@ CrawlerVis.prototype.initPagesLandscape = function() {
     });
 
 
-  // Registers action for click on boost button.
-  d3.select('#pages_landscape_boost')
-    .on('mouseover', function() {
-      Utils.showTooltip();
-    })
-    .on('mousemove', function() {
-      Utils.updateTooltip('Boost selected pages');
-    })
-    .on('mouseout', function() {
-      Utils.hideTooltip();
-    })
-    .on('click', function() {
-      if (!d3.select(this).classed('enabled')) {
-        return;
-      }
-      // Boosts selected pages (items in the gallery).
-      var selectedPages = vis.pagesGallery.getItems().map(function(item) {
-        // TODO(cesar): use Page Id, not URL.
-        return item.url;
+  if (showBoostButton) {
+    // Registers action for click on boost button.
+    d3.select('#pages_landscape_boost')
+      .on('mouseover', function() {
+        Utils.showTooltip();
+      })
+      .on('mousemove', function() {
+        Utils.updateTooltip('Boost selected pages');
+      })
+      .on('mouseout', function() {
+        Utils.hideTooltip();
+      })
+      .on('click', function() {
+        if (!d3.select(this).classed('enabled')) {
+          return;
+        }
+        // Boosts selected pages (items in the gallery).
+        var selectedPages = vis.pagesGallery.getItems().map(function(item) {
+          // TODO(cesar): use Page Id, not URL.
+          return item.url;
+        });
+        DataAccess.boostPages(selectedPages);
       });
-      DataAccess.boostPages(selectedPages);
-    });
+  }
 };
 
 
