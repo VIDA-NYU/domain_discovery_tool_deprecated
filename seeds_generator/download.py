@@ -25,13 +25,27 @@ def get_downloaded_urls(inputfile):
   urls = [url.strip() for url in urls]
   return urls
 
-def download(inputfile, parallel=False, cb=None):
+def download(inputfile, es_index = "memex", es_doc_type = "page", es_host="http://localhost"):
+  parts = es_host.split(':')
+  if len(parts) == 2:
+    es_host = parts[0]
+  elif len(parts) == 3:
+    es_host = parts[1]
+
+  es_host = es_host.strip('/')
+
+  print es_host
+
   query = ""
   with open('conf/queries.txt', 'r') as f:
     for line in f:
       query = line.strip();
 
-  comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar Download " + inputfile + ' "' + query +'"';
+  comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar Download " \
+         + inputfile + ' "' + query +'" ' + es_index + " " + es_doc_type + " " + es_host;
+
+  print comm
+
   p=Popen(comm, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT)
   output, errors = p.communicate()
   print output
