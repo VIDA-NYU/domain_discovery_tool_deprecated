@@ -15,7 +15,6 @@ import org.apache.commons.codec.binary.Base64;
 
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.client.Client;
 
 
@@ -24,16 +23,19 @@ import org.elasticsearch.action.index.IndexResponse;
 public class Download_URL implements Runnable {
     String url = "";
     String query = "";
-    public static Client client = new TransportClient()
-	.addTransportAddress(new InetSocketTransportAddress(System.getenv("ELASTICSEARCH_SERVER") != null ?  System.getenv("ELASTICSEARCH_SERVER"):"localhost", 9300));
+    String es_index = "memex";
+    String es_doc_type = "page";
+    String es_host = "";
+    Client client = null;
 
-    public Download_URL(String url, String query){
+    public Download_URL(String url, String query, String es_index, String es_doc_type, Client client){
 	this.url = url;
 	this.query = query;
-    }
-
-    public static void close(){
-	Download_URL.client.close();
+	this.client = client;
+	if(!es_index.isEmpty())
+	    this.es_index = es_index;
+	if(!es_doc_type.isEmpty())
+	    this.es_doc_type = es_doc_type;
     }
 
     public void run() {
@@ -64,7 +66,7 @@ public class Download_URL implements Runnable {
 			content_text = extract.process(responseBody);
 		    }
 
-		    IndexResponse indexresponse = this.client.prepareIndex("memex", "page")
+		    IndexResponse indexresponse = this.client.prepareIndex(this.es_index, this.es_doc_type)
 			.setSource(XContentFactory.jsonBuilder()
 				   .startObject()
 				   .field("url", request.getURI())
