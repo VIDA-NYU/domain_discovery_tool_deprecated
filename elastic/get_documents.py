@@ -1,12 +1,11 @@
 #!/usr/bin/python
 from pyelasticsearch import ElasticSearch
-import sys
-from os import environ
+from pprint import pprint
 
-def get_documents(urls):
-    host =  environ['ELASTICSEARCH_SERVER'] if environ.get('ELASTICSEARCH_SERVER') else 'http://localhost:9200'
-    es = ElasticSearch(host)
-        
+def get_documents(urls, es_index='memex', es_doc_type='page', es=None):
+    if es is None:
+        es = ElasticSearch('http://localhost:9200/')
+
     if len(urls) > 0:
         results = {}
 
@@ -21,9 +20,10 @@ def get_documents(urls):
             }
         
             res = es.search(query, 
-                            index=environ['ELASTICSEARCH_INDEX'] if environ.get('ELASTICSEARCH_INDEX') else 'memex', 
-                            doc_type=environ['ELASTICSEARCH_DOC_TYPE'] if environ.get('ELASTICSEARCH_DOC_TYPE') else 'page')
+                            index=es_index,
+                            doc_type=es_doc_type)
             hits = res['hits']
+
             try:
                 results[url] = hits['hits'][0]['fields']['text'][0]
             except KeyError, e:
@@ -41,19 +41,12 @@ def get_documents(urls):
 #   ["url", "x", "y", "tag", "retrieved"],
 #   ...
 # ]
-def get_most_recent_documents( \
-    opt_maxNumberOfPages = 1000, opt_filter = None, es_index = 'memex', es_doc_type = 'page', es = None):
+def get_most_recent_documents(opt_maxNumberOfPages = 1000, fields = [], opt_filter = None, es_index = 'memex', es_doc_type = 'page', es = None):
     if es is None:
-        host = environ['ELASTICSEARCH_SERVER'] \
-        if environ.get('ELASTICSEARCH_SERVER') else 'http://localhost:9200'
-        es = ElasticSearch(host)
-        
+        es = ElasticSearch('http://localhost:9200')
+
     # TODO(Yamuna): apply filter if it is None. Otherwise, match_all.
-    query = { \
-      "query": {
-        "match_all": {}
-      },
-      "fields": ["url", "x", "y", "tag", "retrieved"],
+    query = { 
       "size": opt_maxNumberOfPages,
       "sort": [
         {
@@ -64,29 +57,30 @@ def get_most_recent_documents( \
       ]
     }
 
-    res = es.search( \
-    query, index = es_index, doc_type = es_doc_type, size = opt_maxNumberOfPages)
+    if opt_filter is None:
+        query["query"] = {
+            "match_all": {}
+        }
+    else:
+        query["query"] = {
+            "query_string": {
+                "fields" : ['text'],
+                "query": ' and  '.join(opt_filter.split(' ')),
+            }
+        }
 
-    hits = res['hits']
+    if len(fields) > 0:
+        query["fields"] = fields
 
-    docs = ["", 0, 0, [], 0] * len(hits['hits'])
-    for i, hit in enumerate(hits['hits']):
-      doc = docs[i]
-      fields = hit['fields']
-      if 'url' in fields:
-        doc[0] = fields['url']
-      if 'x' in fields:
-        doc[1] = fields['x']
-      if 'y' in fields:
-        doc[2] = fields['y']
-      if 'tag' in fields:
-        doc[3] = fields['tag'].split(';')
-      if 'retrieved' in fields:
-        doc[4] = fields['retrieved']
+    res = es.search(query, index = es_index, doc_type = es_doc_type)
 
-    return docs
+    hits = res['hits']['hits']
 
+    results = []
+    for hit in hits:
+        results.append(hit['fields'])
 
+    return results
 
 if __name__ == "__main__":
     urls = []
