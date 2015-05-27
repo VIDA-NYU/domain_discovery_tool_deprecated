@@ -33,8 +33,7 @@ class CrawlerModelAdapter:
   # ]
   def getAvailableCrawlers(self):
     crawlers = self._crawlerModel.getAvailableCrawlers()
-    crawlers = sorted(crawlers, key = lambda c: (c['domain_name'], c['timestamp']))
-    return [{'id': c['id'], 'name': c['domain_name'], 'creation': c['timestamp']} for c in crawlers]
+    return sorted(crawlers, key = lambda c: (c['name'], c['creation']))
 
 
 
@@ -112,7 +111,7 @@ class CrawlerModelAdapter:
 
 
   # Adds tag to page (if applyTagFlag is True) or removes tag from page (if applyTagFlag is False).
-  def setPagesTag(self, page, tag, applyTagFlag):
+  def setPagesTag(self, pages, tag, applyTagFlag):
     pages = CrawlerModelAdapter.extractListParam(pages)
     applyTagFlag =  CrawlerModelAdapter.extractBooleanParam(applyTagFlag)
     self._crawlerModel.setPagesTag(pages, tag, applyTagFlag)
