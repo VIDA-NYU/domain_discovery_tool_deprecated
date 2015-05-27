@@ -445,6 +445,9 @@ CrawlerVis.prototype.initPagesGallery = function() {
   this.pagesGallery.setCbIsTagRemovable(function(tag) {
     return vis.tagsGallery.isTagRemovable.call(vis.tagsGallery, tag);
   });
+  this.pagesGallery.setCbGetExistingTags(function() {
+    return vis.tagsGallery.getApplicableTags.call(vis.tagsGallery);
+  });
 };
 
 

@@ -246,3 +246,15 @@ TagsGallery.prototype.applyOrRemoveTag = function(tag, actionType, opt_pages) {
     __sig__.emit(__sig__.tag_action_clicked, tag, actionType, opt_pages);
   }
 };
+
+
+
+/**
+ * Returns applicable tags.
+ */
+TagsGallery.prototype.getApplicableTags = function() {
+  var gallery = this;
+  return this.items.filter(function(tag) {
+    return gallery.isTagApplicable(tag);
+  });
+};

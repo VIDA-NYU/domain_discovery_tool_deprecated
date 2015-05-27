@@ -76,6 +76,14 @@ PagesGallery.prototype.setCbIsTagRemovable = function(cb) {
 
 
 /**
+ * Sets a callback to get all existing tags that can be applied to a page.
+ */
+PagesGallery.prototype.setCbGetExistingTags = function(cb) {
+  this.cbGetExistingTags = cb;
+};
+
+
+/**
  * Updates gallery.
  */
 PagesGallery.prototype.update = function() {
@@ -152,6 +160,7 @@ PagesGallery.prototype.update = function() {
     .html(function(item, i) {
       return gallery.getItemInfo(item, i) + '<div class="snippet"></div>';
     });
+  var existingTags = this.cbGetExistingTags ? this.cbGetExistingTags() : [];
   items.each(function(item, i) {
     // Creates tags.
     var tagsElem = d3.select(this).select('.tags').selectAll('span.tag')
@@ -205,6 +214,36 @@ PagesGallery.prototype.update = function() {
       .html(function(tag, i) {
         return tag;
       });
+
+    // Creates/updates select box to apply new tag.
+    var selectBox = d3.select(this).select('.selectTag');
+    var defaultOption = 'Add tag...';
+    selectBox.on('change', function() {
+      var tag = d3.select(this).node().value;
+      if (tag != defaultOption) {
+        // Adds tag to item.
+        __sig__.emit(__sig__.tag_individual_page_action_clicked, tag, 'Apply', item);
+      }
+    });
+
+    // Removes all options.
+    selectBox.selectAll('option').remove();
+
+    // List shows only new tags.
+    var itemTags = {};
+    item.tags.forEach(function(tag) {
+      itemTags[tag] = true;
+    });
+    var newTags = existingTags.filter(function(tag) {
+      return !(tag in itemTags);
+    });
+    var tagList = [defaultOption].concat(newTags);
+
+    var options = selectBox.selectAll('option').data(tagList, function(tag) { return tag; });
+    options.enter().append('option');
+    options
+      .attr('value', function(d) { return d; })
+      .text(function(d) { return d; });
   });
   // Creates snippet with urlive plugin.
   newItems.each(function(item, i) {
@@ -223,7 +262,8 @@ PagesGallery.prototype.update = function() {
  * such as url, tags and container for snippet.
  */
 PagesGallery.prototype.getItemInfo = function(item, i) {
-  return '<h3>' + item.url + '</h3>' + '<span class="tags"></span>';
+  return '<h3>' + item.url + '</h3>'
+    + '<span class="tags"><select class="selectTag"></select></span>';
 };
 
 

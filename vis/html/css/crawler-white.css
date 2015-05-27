@@ -484,6 +484,11 @@ div.tooltip {
 	background: #FECD57;
 }
 
+#pages_items .item .selectTag {
+  margin-top: 3px;
+}
+
+
 div#mask,
 div#urlBgMask {
   display: none;
