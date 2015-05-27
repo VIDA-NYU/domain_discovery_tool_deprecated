@@ -159,8 +159,10 @@ var DataAccess = (function() {
   };
   // Adds tag to multiple pages.
   pub.setPagesTag = function(pages, tag, applyTagFlag) {
-    runQueryForCurrentCrawler(
-      '/setPagesTag', {'pages': pages.join('|'), 'tag': tag, 'applyTagFlag': applyTagFlag});
+    if (pages.length > 0) {
+      runQueryForCurrentCrawler(
+        '/setPagesTag', {'pages': pages.join('|'), 'tag': tag, 'applyTagFlag': applyTagFlag});
+    }
   };
   // Adds tag to term.
   pub.setTermTag = function(term, tag, applyTagFlag) {
