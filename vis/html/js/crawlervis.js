@@ -98,7 +98,7 @@ CrawlerVis.prototype.initUICrawler = function() {
   this.initWordlist();
   this.initStatslist();
   this.initFilterStatslist();
-  this.initPagesLandscape();
+  this.initPagesLandscape(true);
   this.initTagsGallery([
     {'label': 'Positive', 'tag': 'Positive', 'clickable': false},
     {'label': 'Negative', 'tag': 'Negative', 'clickable': false},
@@ -118,7 +118,7 @@ CrawlerVis.prototype.initUISeedCrawler = function() {
   this.initWordlist();
   this.initStatslist();
   this.initFilterStatslist();
-  this.initPagesLandscape();
+  this.initPagesLandscape(false);
   this.initTagsGallery([
     {'label': 'Relevant', 'tag': 'Irrelevant', 'clickable': true},
     {'label': 'Irrelevant', 'tag': 'Irrelevant', 'clickable': true},
@@ -297,10 +297,10 @@ CrawlerVis.prototype.updatePagesStatsSeedCrawler = function() {
   this.statslist.setMaxBarTotal(maxWidth);
 
   // Updates buttons used to update pages landscape.
-  var newPages = stats['Relevant']['New'] + stats['Relevant']['New'] + stats['Neutral']['New'];
+  // For seed crawler, update button is always available;
   d3.select('#pages_landscape_update')
-    .classed('enabled', newPages > 0)
-    .classed('disabled', newPages == 0);
+    .classed('enabled', true)
+    .classed('disabled', false);
 };
 
 
@@ -311,7 +311,7 @@ CrawlerVis.prototype.initWordlist = function() {
 
 
 // Initializes pages landscape.
-CrawlerVis.prototype.initPagesLandscape = function() {
+CrawlerVis.prototype.initPagesLandscape = function(showBoostButton) {
   var vis = this;
   this.pagesLandscape = new PagesLandscape('#pages_landscape');
 
@@ -335,28 +335,30 @@ CrawlerVis.prototype.initPagesLandscape = function() {
     });
 
 
-  // Registers action for click on boost button.
-  d3.select('#pages_landscape_boost')
-    .on('mouseover', function() {
-      Utils.showTooltip();
-    })
-    .on('mousemove', function() {
-      Utils.updateTooltip('Boost selected pages');
-    })
-    .on('mouseout', function() {
-      Utils.hideTooltip();
-    })
-    .on('click', function() {
-      if (!d3.select(this).classed('enabled')) {
-        return;
-      }
-      // Boosts selected pages (items in the gallery).
-      var selectedPages = vis.pagesGallery.getItems().map(function(item) {
-        // TODO(cesar): use Page Id, not URL.
-        return item.url;
+  if (showBoostButton) {
+    // Registers action for click on boost button.
+    d3.select('#pages_landscape_boost')
+      .on('mouseover', function() {
+        Utils.showTooltip();
+      })
+      .on('mousemove', function() {
+        Utils.updateTooltip('Boost selected pages');
+      })
+      .on('mouseout', function() {
+        Utils.hideTooltip();
+      })
+      .on('click', function() {
+        if (!d3.select(this).classed('enabled')) {
+          return;
+        }
+        // Boosts selected pages (items in the gallery).
+        var selectedPages = vis.pagesGallery.getItems().map(function(item) {
+          // TODO(cesar): use Page Id, not URL.
+          return item.url;
+        });
+        DataAccess.boostPages(selectedPages);
       });
-      DataAccess.boostPages(selectedPages);
-    });
+  }
 };
 
 
@@ -503,9 +505,37 @@ CrawlerVis.prototype.onTagClicked = function(tag) {
 
 
 // Responds to clicked tag action.
-CrawlerVis.prototype.onTagActionClicked = function(tag, action) {
-  // TODO(cesar): Tag selected pages on landscape.
-  console.log('tag action clicked: ', tag, action);
+CrawlerVis.prototype.onTagActionClicked = function(tag, action, opt_items) {
+  // If items is empty array, applies action to selected pages in the landscape.
+  if (!opt_items || opt_items.length == 0) {
+    opt_items = this.pagesLandscape.getSelectedItems();
+  }
+  // Apply or remove tag from urls.
+  var applyTagFlag = 'action' == 'Apply';
+  var urls = [];
+  for (var i in opt_items) {
+    var item = opt_items[i];
+    var tags = item.tags;
+
+    // Removes tag when the tag is present for item, and applies only when tag is not present for
+    // item.
+    var isTagPresent = item.tags.some(function(itemTag) {
+      return itemTag == tag;
+    });
+    if ((applyTagFlag && !isTagPresent) || (!applyTagFlag && isTagPresent)) {
+      urls.push(item.url);
+
+      // Updates tag list for items.
+      if (applyTagFlag) {
+        tags.append(tag);
+      } else {
+        tags.splice(tags.indexOf(tag), 1);
+      }
+    }
+  }
+  DataAccess.setPagesTag(urls, tag, applyTagFlag);
+  this.pagesLandscape.update();
+  this.pagesGallery.update();
 };
 
 

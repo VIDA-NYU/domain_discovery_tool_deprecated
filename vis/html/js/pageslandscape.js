@@ -244,6 +244,31 @@ PagesLandscape.prototype.onPageLabelsChanged = function() {
 
 
 /**
+ * Returns selected items.
+ */
+PagesLandscape.prototype.getSelectedItems = function() {
+  var items = this.pagesData;
+  var indexOfSelectedItems = this.getSelectedItemsIndex();
+  return indexOfSelectedItems.map(function(index) {
+    return items[index];
+  });
+};
+
+
+/**
+ * Returns index of selected items.
+ */
+PagesLandscape.prototype.getSelectedItemsIndex = function() {
+  // Retrieves selected pages.
+  var lassoItems = this.lasso.items()[0];
+  var indexOfSelectedItems = d3.range(lassoItems.length).filter(function(index) {
+    return d3.select(lassoItems[index]).classed('selected');
+  });
+  return indexOfSelectedItems;
+};
+
+
+/**
  * Given array of pages, creates a random position in the plane for each page to simulate a
  * 2D projection. 
  *
@@ -271,10 +296,6 @@ PagesLandscape.prototype.lassoDraw = function() {
 };
 
 PagesLandscape.prototype.lassoEnd = function() {
-  // Retrieves selected pages.
-  var lassoItems = this.lasso.items()[0];
-  var indexOfSelectedItems = d3.range(lassoItems.length).filter(function(index) {
-    return d3.select(lassoItems[index]).classed('selected');
-  });
+  var indexOfSelectedItems = this.getSelectedItemsIndex();
   __sig__.emit(__sig__.brushed_pages_changed, indexOfSelectedItems);
 };

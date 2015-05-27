@@ -119,8 +119,6 @@ PagesGallery.prototype.update = function() {
       .on('mouseout', function(item, i) {
         Utils.hideTooltip();
       });
-  //newItems
-  //  .append('img');
   newItems
     .append('div')
     .attr('id', function(item, i) {
@@ -142,36 +140,66 @@ PagesGallery.prototype.update = function() {
     .classed('negative', function(item, i) {
       return item.label === 'negative';
     });
-
-  //items.selectAll('img')
-  //  .attr('src', function(item, i) {
-  //    return item.thumbnail;
-  //  });
-  items.selectAll('div.item_info')
+  newItems.selectAll('div.item_info')
     .html(function(item, i) {
-      return gallery.getItemInfo(item, i);
+      return gallery.getItemInfo(item, i) + '<div class="snippet"></div>';
     });
   items.each(function(item, i) {
+    // Creates tags.
+    var tagsElem = d3.select(this).select('.tags').selectAll('span.tag')
+      .data(item.tags, function(tag, i) { return tag; });
+    tagsElem
+      .enter()
+      .append('span')
+      .classed('tag', true);
+    tagsElem.exit().remove();
+
+    // Remove button.
+    var w = 12;
+    var actionType = 'Remove';
+    var button = tagsElem.selectAll('img').data(function(tag, i) { return [tag]; });
+    button.enter().append('img')
+      .attr('actionType', actionType)
+      .attr('src', 'img/remove.png')
+      .attr('width', w + 'px')
+      .classed('clickable', true)
+      .on('click', function(tag, i) {
+        // Removes tag from item.
+        __sig__.emit(__sig__.tag_action_clicked, tag, actionType, [item]);
+      })
+      .on('mouseover', function(tag, i) {
+        d3.select(this).classed('focus', true);
+      })
+      .on('mouseout', function(tag, i) {
+        d3.select(this).classed('focus', false);
+      });
+
+    // Tag text.
+    var text = tagsElem.selectAll('span').data(function(tag, i) { return [tag]; });
+    text.enter().append('span')
+      .classed('not-clickable', true)
+      .html(function(tag, i) {
+        return tag;
+      });
+  });
+  // Creates snippet with urlive plugin.
+  newItems.each(function(item, i) {
     var elemId = '#item_info-' + i;
-    var elem = $(elemId);
-    elem.urlive({
-        container: elemId,
+    var containerId = elemId + ' .snippet';
+    $(elemId).urlive({
+        container: containerId,
+        url: item.url,
     });
   });
-
-  // Updates visibility of buttons according to number of items in the gallery.
-  d3.selectAll('.pages_items_button')
-    .style('visibility', (gallery.items.length == 0) ? 'hidden' : null);
 };
 
 
 /**
  * Builds html content with info about an item in the gallery,
- * such as url, number of pages in the cluster etc.
+ * such as url, tags and container for snippet.
  */
 PagesGallery.prototype.getItemInfo = function(item, i) {
-  // TODO Add more details about page.
-  return '<p>' + item.url + '</p>';
+  return '<h3>' + item.url + '</h3>' + '<span class="tags"></span>';
 };
 
 
@@ -179,16 +207,12 @@ PagesGallery.prototype.getItemInfo = function(item, i) {
  * Handles click in an item.
  */
 PagesGallery.prototype.onItemClick = function(item, i, isShiftKeyPressed, anchorPos) {
-  // TODO.
-  console.log('itemClicked ' + i);
   if (isShiftKeyPressed) {
     var url = item.url;
     if (url.indexOf('http') !== 0) {
       url = 'http://' + url;
     }
     this.setPagePreviewEnabled(true, url, anchorPos);
-  } else {
-    __sig__.emit(__sig__.pages_labels_changed);
   }
 };
 
