@@ -5,7 +5,7 @@
 	    "store" : true
 	},
 	"_id" : {
-	    "path" : "id"
+	    "path" : "index"
         },
 	"properties" : {
             "domain_name" : {
@@ -16,9 +16,6 @@
 	    },
 	    "index" : {
 		"type" : "string"
-	    },
-	    "id" : {
-		"type" : "float"
 	    }
 	}
     }
