@@ -59,6 +59,8 @@ CrawlerVis.prototype.initSignalSlotsCrawler = function() {
   SigSlots.connect(__sig__.tag_focus, this, this.onTagFocus);
   SigSlots.connect(__sig__.tag_clicked, this, this.onTagClicked);
   SigSlots.connect(__sig__.tag_action_clicked, this, this.onTagActionClicked);
+  SigSlots.connect(
+    __sig__.tag_individual_page_action_clicked, this, this.onTagIndividualPageActionClicked);
 
   SigSlots.connect(__sig__.brushed_pages_changed, this, this.onBrushedPagesChanged);
   SigSlots.connect(__sig__.filter_enter, this, this.runFilter);
@@ -85,6 +87,8 @@ CrawlerVis.prototype.initSignalSlotsSeedCrawler = function() {
   SigSlots.connect(__sig__.tag_focus, this, this.onTagFocus);
   SigSlots.connect(__sig__.tag_clicked, this, this.onTagClicked);
   SigSlots.connect(__sig__.tag_action_clicked, this, this.onTagActionClicked);
+  SigSlots.connect(
+    __sig__.tag_individual_page_action_clicked, this, this.onTagIndividualPageActionClicked);
 
   SigSlots.connect(__sig__.brushed_pages_changed, this, this.onBrushedPagesChanged);
   SigSlots.connect(__sig__.query_enter, this, this.runQuery);
@@ -99,13 +103,60 @@ CrawlerVis.prototype.initUICrawler = function() {
   this.initStatslist();
   this.initFilterStatslist();
   this.initPagesLandscape(true);
-  this.initTagsGallery([
-    {'label': 'Positive', 'tag': 'Positive', 'clickable': false},
-    {'label': 'Negative', 'tag': 'Negative', 'clickable': false},
-    {'label': 'Explored', 'tag': 'Explored', 'clickable': false},
-    {'label': 'Boosted', 'tag': 'Boosted', 'clickable': false},
-    {'label': 'Exploited', 'tag': 'Exploited', 'clickable': false},
-  ]);
+  this.initTagsGallery(
+    [
+      'Relevant',
+      'Irrelevant',
+      'Neutral',
+      'Positive',
+      'Negative',
+      'Explored',
+      'Boosted',
+      'Exploited',
+    ],
+    {
+      'Relevant': {
+        applicable: true,
+        removable: true,
+        negate: ['Irrelevant'],
+      },
+      'Irrelevant': {
+        applicable: true,
+        removable: true,
+        negate: ['Relevant'],
+      },
+      'Neutral': {
+        isVirtual: true,
+        applicable: true,
+        removable: false,
+        negate: ['Relevant', 'Irrelevant'],
+      },
+      'Positive': {
+        applicable: false,
+        removable: false,
+        negate: [],
+      },
+      'Negative': {
+        applicable: false,
+        removable: false,
+        negate: [],
+      },
+      'Explored': {
+        applicable: false,
+        removable: false,
+        negate: [],
+      },
+      'Exploited': {
+        applicable: false,
+        removable: false,
+        negate: [],
+      },
+      'Boosted': {
+        applicable: false,
+        removable: false,
+        negate: [],
+      },
+    });
   this.initPagesGallery();
   this.initTermsSnippetsViewer();
   this.initFilterButton();
@@ -119,11 +170,30 @@ CrawlerVis.prototype.initUISeedCrawler = function() {
   this.initStatslist();
   this.initFilterStatslist();
   this.initPagesLandscape(false);
-  this.initTagsGallery([
-    {'label': 'Relevant', 'tag': 'Irrelevant', 'clickable': true},
-    {'label': 'Irrelevant', 'tag': 'Irrelevant', 'clickable': true},
-    {'label': 'Neutral', 'tag': 'Neutral', 'clickable': true},
-  ]);
+  this.initTagsGallery(
+    [
+      'Relevant',
+      'Irrelevant',
+      'Neutral',
+    ],
+    {
+      'Relevant': {
+        applicable: true,
+        removable: true,
+        negate: ['Irrelevant'],
+      },
+      'Irrelevant': {
+        applicable: true,
+        removable: true,
+        negate: ['Relevant'],
+      },
+      'Neutral': {
+        isVirtual: true,
+        applicable: true,
+        removable: false,
+        negate: ['Relevant', 'Irrelevant'],
+      },
+    });
   this.initPagesGallery();
   this.initTermsSnippetsViewer();
   this.initFilterButton();
@@ -363,14 +433,18 @@ CrawlerVis.prototype.initPagesLandscape = function(showBoostButton) {
 
 
 // Initializes tags gallery.
-CrawlerVis.prototype.initTagsGallery = function(predefinedTags) {
-  this.tagsGallery = new TagsGallery('#tags_items', predefinedTags);
+CrawlerVis.prototype.initTagsGallery = function(predefinedTags, tagsLogic) {
+  this.tagsGallery = new TagsGallery('#tags_items', predefinedTags, tagsLogic);
 };
 
 
 // Initializes pages gallery (snippets for selected pages).
 CrawlerVis.prototype.initPagesGallery = function() {
+  var vis = this;
   this.pagesGallery = new PagesGallery('#pages_items');
+  this.pagesGallery.setCbIsTagRemovable(function(tag) {
+    return vis.tagsGallery.isTagRemovable.call(vis.tagsGallery, tag);
+  });
 };
 
 
@@ -511,7 +585,7 @@ CrawlerVis.prototype.onTagActionClicked = function(tag, action, opt_items) {
     opt_items = this.pagesLandscape.getSelectedItems();
   }
   // Apply or remove tag from urls.
-  var applyTagFlag = 'action' == 'Apply';
+  var applyTagFlag = action == 'Apply';
   var urls = [];
   for (var i in opt_items) {
     var item = opt_items[i];
@@ -527,15 +601,23 @@ CrawlerVis.prototype.onTagActionClicked = function(tag, action, opt_items) {
 
       // Updates tag list for items.
       if (applyTagFlag) {
-        tags.append(tag);
+        tags.push(tag);
       } else {
         tags.splice(tags.indexOf(tag), 1);
       }
     }
   }
-  DataAccess.setPagesTag(urls, tag, applyTagFlag);
+  if (urls.length > 0) {
+    DataAccess.setPagesTag(urls, tag, applyTagFlag);
+  }
   this.pagesLandscape.update();
   this.pagesGallery.update();
+};
+
+
+// Responds to clicked tag action for individual page.
+CrawlerVis.prototype.onTagIndividualPageActionClicked = function(tag, action, item) {
+  this.tagsGallery.applyOrRemoveTag(tag, action, [item]);
 };
 
 
