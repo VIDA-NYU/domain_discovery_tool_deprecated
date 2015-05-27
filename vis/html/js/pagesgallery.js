@@ -68,6 +68,14 @@ PagesGallery.prototype.addItems = function(items) {
 
 
 /**
+ * Sets a callback to test whether a tag is removable.
+ */
+PagesGallery.prototype.setCbIsTagRemovable = function(cb) {
+  this.cbIsTagRemovable = cb;
+};
+
+
+/**
  * Updates gallery.
  */
 PagesGallery.prototype.update = function() {
@@ -162,16 +170,32 @@ PagesGallery.prototype.update = function() {
       .attr('actionType', actionType)
       .attr('src', 'img/remove.png')
       .attr('width', w + 'px')
-      .classed('clickable', true)
+      .classed('clickable', function(tag, i) {
+        var isRemovable = gallery.cbIsTagRemovable(tag);
+        return isRemovable;
+      })
+      .classed('not-clickable', function(tag, i) {
+        var isRemovable = gallery.cbIsTagRemovable(tag);
+        return !isRemovable;
+      })
       .on('click', function(tag, i) {
-        // Removes tag from item.
-        __sig__.emit(__sig__.tag_action_clicked, tag, actionType, [item]);
+        var isRemovable = gallery.cbIsTagRemovable(tag);
+        if (isRemovable) {
+          // Removes tag from item.
+          __sig__.emit(__sig__.tag_individual_page_action_clicked, tag, actionType, item);
+        }
       })
       .on('mouseover', function(tag, i) {
-        d3.select(this).classed('focus', true);
+        var isRemovable = gallery.cbIsTagRemovable(tag);
+        if (isRemovable) {
+          d3.select(this).classed('focus', true);
+        }
       })
       .on('mouseout', function(tag, i) {
-        d3.select(this).classed('focus', false);
+        var isRemovable = gallery.cbIsTagRemovable(tag);
+        if (isRemovable) {
+          d3.select(this).classed('focus', false);
+        }
       });
 
     // Tag text.
@@ -223,51 +247,6 @@ PagesGallery.prototype.onItemClick = function(item, i, isShiftKeyPressed, anchor
 PagesGallery.prototype.onItemDoubleClick = function(item, i) {
   // TODO.
   console.log('itemDoubleClicked ' + i);
-};
-
-
-/**
- * Handles click in 'set all positive' button.
- */
-PagesGallery.prototype.setAllPositive = function() {
-  if (this.items.length == 0) {
-    return;
-  }
-  for (var i in this.items) {
-    this.items[i].label = 'positive';
-  }
-  this.update();
-  __sig__.emit(__sig__.pages_labels_changed);
-};
-
-
-/**
- * Handles click in 'set all negative' button.
- */
-PagesGallery.prototype.setAllNegative = function() {
-  if (this.items.length == 0) {
-    return;
-  }
-  for (var i in this.items) {
-    this.items[i].label = 'negative';
-  }
-  this.update();
-  __sig__.emit(__sig__.pages_labels_changed);
-};
-
-
-/**
- * Handles click in 'set all neutral' button.
- */
-PagesGallery.prototype.setAllNeutral = function() {
-  if (this.items.length == 0) {
-    return;
-  }
-  for (var i in this.items) {
-    this.items[i].label = undefined;
-  }
-  this.update();
-  __sig__.emit(__sig__.pages_labels_changed);
 };
 
 

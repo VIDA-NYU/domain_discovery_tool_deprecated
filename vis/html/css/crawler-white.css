@@ -252,14 +252,31 @@ p {
   fill: #bbb;
 }
 
-#pages_landscape circle.Positive,
+#pages_landscape circle.Positive {
+  stroke: #0D49A9;
+  stroke-width: 2;
+  fill-opacity: 0;
+}
+
+#pages_landscape circle.Negative {
+  stroke: rgb(203, 50, 103);
+  stroke-width: 2;
+  fill-opacity: 0;
+}
+
 #pages_landscape circle.Relevant {
   fill: #4B8DF8;
 }
 
-#pages_landscape circle.Negative,
 #pages_landscape circle.Irrelevant {
   fill: rgb(244, 68, 110);
+}
+
+#pages_landscape circle.Positive.Relevant,
+#pages_landscape circle.Positive.Irrelevant,
+#pages_landscape circle.Negative.Relevant,
+#pages_landscape circle.Negative.Irrelevant {
+  fill-opacity: 1;
 }
 
 #last_update_info_box {
@@ -448,6 +465,10 @@ div.tooltip {
 
 #pages_items .item .tag .not-clickable {
   cursor: default;
+}
+
+#pages_items .item .tag img.not-clickable {
+  opacity: 0;
 }
 
 #pages_items .item .tag img.clickable {
