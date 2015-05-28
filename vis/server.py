@@ -141,7 +141,7 @@ class Page:
   #   ]
   # }
   @cherrypy.expose
-  def getPages(self, opt_maxNumberOfPages = None):
+  def getPages(self, opt_maxNumberOfPages = 1000):
     res = self._crawler.getPages(opt_maxNumberOfPages)
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
