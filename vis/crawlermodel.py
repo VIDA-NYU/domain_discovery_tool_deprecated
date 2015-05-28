@@ -41,7 +41,7 @@ class CrawlerModel:
     # TODO(Yamuna): Query Elastic Search or other internal structure to return name, Id and time of
     # creation of available crawlers.
     domains = get_available_domains(self.es)
-    return [{'id': d['index'], 'name', d['domain_name'], 'creation': d['timestamp']} for d in domains]
+    return [{'id': d['index'], 'name': d['domain_name'], 'creation': d['timestamp']} for d in domains]
 
 
 
@@ -55,7 +55,7 @@ class CrawlerModel:
     # TODO(Yamuna): Query Elastic Search or other internal structure to return name, Id and time of
     # creation of available crawlers.
     domains = get_available_domains(self.es)
-    return [{'id': d['index'], 'name', d['domain_name'], 'creation': d['timestamp']} for d in domains]
+    return [{'id': d['index'], 'name': d['domain_name'], 'creation': d['timestamp']} for d in domains]
 
 
   # Changes the active crawler to be monitored.
