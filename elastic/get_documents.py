@@ -2,7 +2,7 @@
 from pyelasticsearch import ElasticSearch
 from pprint import pprint
 
-def get_documents(urls, es_index='memex', es_doc_type='page', es=None):
+def get_documents(urls, fields=["text"], es_index='memex', es_doc_type='page', es=None):
     if es is None:
         es = ElasticSearch('http://localhost:9200/')
 
@@ -16,25 +16,27 @@ def get_documents(urls, es_index='memex', es_doc_type='page', es=None):
                         "url": url
                     }
                 },
-                "fields": ["text"]
+                "fields": fields
             }
         
             res = es.search(query, 
                             index=es_index,
                             doc_type=es_doc_type)
-            hits = res['hits']
 
-            try:
-                results[url] = hits['hits'][0]['fields']['text'][0]
-            except KeyError, e:
-                print url, e, " not found in database"
-            except IndexError, e:
-                print url, e, " not found in database"
+            
+            hits = res['hits']['hits'][0]
 
-        return results
+            if not hits.get('fields') is None:
+                hits = hits['fields']
+                record = {}
+                for field in fields:
+                    if(not hits.get(field) is None):
+                        record[field] = hits[field][0]
+                results[url] = record           
+            
+    return results
 
-
-
+            
 # Returns most recent documents in the format:
 # [
 #   ["url", "x", "y", "tag", "retrieved"],
