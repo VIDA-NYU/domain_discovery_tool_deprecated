@@ -2,43 +2,52 @@ This repository contains the Domain Discovery Tool (DDT) project. The DDT tool h
 
 To install it, you need:
 
-1) install git
+1) Install git
+
     sudo apt-get install git
 
 2) Install Java, like the OpenJDK such as java-7-openjdk
+
     sudo apt-get install openjdk-7-jdk
 
 3) Install maven
+
    sudo apt-get install maven2
 
 4) Make sure python 2.7 is installed
 
-5) virtualenv
+5) Install virtualenv
+
     sudo pip2 install virtualenv
 
-6) install fabrick
+6) Install fabric
+
     pip2 install fabric
 
-7) install scipy
+7) Install scipy
+
     sudo apt-get install python-scipy
 
-8) install elasticsearch
+8) Install elasticsearch
+
     wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.5.2.deb
     sudo dpkg -i elasticsearch-1.5.2.deb
     rm elasticsearch-1.5.2.deb
 
 9) Start elasticsearch, for now:
+
     sudo /etc/init.d/elasticsearch start
 
 10) On this directory (domain_discovery_tool), type:
+
     sudo fab setup
 
-    It will take some time to proceed, download everything you need, check 
-    that things are properly installed, and stop.
+It will take some time to proceed, download everything you need, check that things are properly installed, and stop.
 
 11) Run the program:
+
     fab runvis
 
 12) Open a web browser and connect to the vis server at the following url:
-    http://localhost:8084/seedcrawler
 
+    http://localhost:8084/seedcrawler
