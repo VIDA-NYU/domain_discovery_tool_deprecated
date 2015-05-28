@@ -1,4 +1,7 @@
 import java.io.IOException;
+import java.util.Date;
+import java.util.TimeZone;
+import java.text.SimpleDateFormat;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -66,6 +69,10 @@ public class Download_URL implements Runnable {
 			content_text = extract.process(responseBody);
 		    }
 
+		    SimpleDateFormat date_format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+		    date_format.setTimeZone(TimeZone.getTimeZone("UTC"));
+		    String timestamp = date_format.format(new Date()); 
+
 		    IndexResponse indexresponse = this.client.prepareIndex(this.es_index, this.es_doc_type)
 			.setSource(XContentFactory.jsonBuilder()
 				   .startObject()
@@ -74,6 +81,7 @@ public class Download_URL implements Runnable {
 				   .field("text", content_text)
 				   .field("length", content_length)
 				   .field("query", this.query)
+				   .field("retrieved", timestamp)
 				   .endObject()
 				   )
 			.execute()
