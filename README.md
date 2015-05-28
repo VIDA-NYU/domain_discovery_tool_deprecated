@@ -10,9 +10,9 @@ To install it, you need:
 
     sudo apt-get install openjdk-7-jdk
 
-3) Install maven
+3) Install Maven
 
-   sudo apt-get install maven2
+    sudo apt-get install maven2
 
 4) Make sure python 2.7 is installed
 
