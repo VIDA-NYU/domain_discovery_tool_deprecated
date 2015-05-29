@@ -67,6 +67,6 @@ Run the app using the Docker image that you just built:
 
     docker run -i -p 8084:8084 -t domain_discovery_tool /bin/sh -c 'cd /domain_discovery_tool; fab runvis'
 
-To see the app running, go to http://localhost:8084/seedcrawler
+To see the app running, go to:
 
     http://localhost:8084/seedcrawler
