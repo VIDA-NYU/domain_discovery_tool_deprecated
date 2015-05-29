@@ -81,6 +81,7 @@ CrawlerVis.prototype.initSignalSlotsSeedCrawler = function() {
   SigSlots.connect(__sig__.terms_summary_fetched, this, this.onLoadedTermsSummary);
   SigSlots.connect(__sig__.term_focus, this, this.onTermFocus);
   SigSlots.connect(__sig__.term_toggle, this, this.onTermToggle);
+
   SigSlots.connect(__sig__.terms_snippets_loaded, this, this.onLoadedTermsSnippets);
   SigSlots.connect(__sig__.pages_loaded, this, this.onLoadedPages);
 
@@ -486,42 +487,48 @@ CrawlerVis.prototype.onTermFocus = function(term, onFocus) {
 // Responds to toggle of a term.
 // Term format:
 // {'word': term, 'tags': [], ...}
-CrawlerVis.prototype.onTermToggle = function(term, enabled) {
+CrawlerVis.prototype.onTermToggle = function(term, shiftClick) {
   var vis = this;
 
-  // State machine: Neutral -> Positive -> Negative -> Neutral.
-  var tags = term['tags'];
-  var isPositive = tags.indexOf('Positive') != -1;
-  var isNegative = tags.indexOf('Negative') != -1;
+  if (shiftClick) {
+    // Responds to shift click on a term: adds word to query list.
+    var boxElem = d3.select('#query_box').node();
+    boxElem.value += ' ' + term['word'];
+  } else {
+    // State machine: Neutral -> Positive -> Negative -> Neutral.
+    var tags = term['tags'];
+    var isPositive = tags.indexOf('Positive') != -1;
+    var isNegative = tags.indexOf('Negative') != -1;
 
-  if (isPositive) {
-    // It was positive, so it turns negative.
-    DataAccess.setTermTag(term['word'], 'Positive', false);
-    DataAccess.setTermTag(term['word'], 'Negative', true);
+    if (isPositive) {
+      // It was positive, so it turns negative.
+      DataAccess.setTermTag(term['word'], 'Positive', false);
+      DataAccess.setTermTag(term['word'], 'Negative', true);
 
-    // Removes tag 'Positive' from tags array, adds 'Negative'.
-    tags.splice(tags.indexOf('Positive'), 1);
-    tags.push('Negative');
+      // Removes tag 'Positive' from tags array, adds 'Negative'.
+      tags.splice(tags.indexOf('Positive'), 1);
+      tags.push('Negative');
+    }
+    else if (isNegative) {
+      // It was Negative, so it turns Neutral.
+      DataAccess.setTermTag(term['word'], 'Negative', false);
+
+      // Removes tag 'Negative' from tags array.
+      tags.splice(tags.indexOf('Negative'), 1);
+    }
+    else {
+      // It was Neutral, so it turns Negative.
+      DataAccess.setTermTag(term['word'], 'Positive', true);
+
+      // Adds tag 'Positive' to tags array.
+      tags.push('Positive');
+    }
+    // Updates wordlist.
+    vis.wordlist.update();
+
+    // Triggers update of snippets to update its tags.
+    __sig__.emit(__sig__.term_focus, term['word'], true);
   }
-  else if (isNegative) {
-    // It was Negative, so it turns Neutral.
-    DataAccess.setTermTag(term['word'], 'Negative', false);
-
-    // Removes tag 'Negative' from tags array.
-    tags.splice(tags.indexOf('Negative'), 1);
-  }
-  else {
-    // It was Neutral, so it turns Negative.
-    DataAccess.setTermTag(term['word'], 'Positive', true);
-
-    // Adds tag 'Positive' to tags array.
-    tags.push('Positive');
-  }
-  // Updates wordlist.
-  vis.wordlist.update();
-
-  // Triggers update of snippets to update its tags.
-  __sig__.emit(__sig__.term_focus, term['word'], true);
 };
 
 

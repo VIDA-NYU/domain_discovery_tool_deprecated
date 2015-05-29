@@ -113,21 +113,6 @@ Wordlist.prototype.update = function() {
         .classed('Negative', isNegative);
     });
 
-    // Interaction rectangle.
-    rows.selectAll('rect.interaction').data(function(d, i) { return [d]; })
-      .enter().append('rect').classed('interaction', true)
-        .attr('width', width)
-        .attr('height', rowHeight)
-        .on('click', function(d) {
-            __sig__.emit(__sig__.term_toggle, d, true);
-        })
-        .on('mouseover', function(d) {
-            __sig__.emit(__sig__.term_focus, d['word'], true);
-        })
-        .on('mouseout', function(d) {
-            __sig__.emit(__sig__.term_focus, d['word'], false);
-        });
-
     // Right bars (negative frequency bars).
     var negBars = rows.selectAll('g.bar.neg').data(function(d) { return [d]; });
     negBars.enter().append('g')
@@ -177,4 +162,35 @@ Wordlist.prototype.update = function() {
           .attr('x', 0)
           .attr('width', width);
     });
+
+    // Interaction rectangle.
+    rows.selectAll('rect.interaction').data(function(d, i) { return [d]; })
+      .enter().append('rect').classed('interaction', true)
+        .attr('width', width)
+        .attr('height', rowHeight)
+        .on('click', function(d, i) {
+          wordlist.onItemClick(d, i, d3.event.shiftKey);
+        })
+        .on('mouseover', function(d, i) {
+          wordlist.onItemFocus(d, i, d3.event.shiftKey, true);
+        })
+        .on('mouseout', function(d, i) {
+          wordlist.onItemFocus(d, i, d3.event.shiftKey, false);
+        });
+};
+
+
+/**
+ * Handles click in an item.
+ */
+Wordlist.prototype.onItemClick = function(item, i, isShiftKeyPressed) {
+  __sig__.emit(__sig__.term_toggle, item, isShiftKeyPressed);
+};
+
+
+/**
+ * Handles mouse focus on an item.
+ */
+Wordlist.prototype.onItemFocus = function(item, i, isShiftKeyPressed, onFocus) {
+  __sig__.emit(__sig__.term_focus, item['word'], onFocus);
 };

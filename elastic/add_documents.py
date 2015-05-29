@@ -138,8 +138,8 @@ def update_document(entries, es_index='memex', es_doc_type='page', es=None):
         es = ElasticSearch('http://localhost:9200/')
 
     es.bulk([es.update_op(doc, id=doc['url'], upsert=True) for doc in entries],
-            index=os.environ['ELASTICSEARCH_INDEX'] if os.environ.get('ELASTICSEARCH_INDEX') else 'memex', 
-            doc_type=os.environ['ELASTICSEARCH_DOC_TYPE'] if os.environ.get('ELASTICSEARCH_DOC_TYPE') else 'page')
+            index=es_index, 
+            doc_type=es_doc_type)
 
 if __name__ == "__main__":
     if len(sys.argv)>1:
