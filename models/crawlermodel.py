@@ -22,7 +22,7 @@ from elastic.get_config import get_available_domains
 from elastic.search_documents import get_context, term_search, search, range
 from elastic.add_documents import update_document
 from elastic.get_mtermvectors import getTermStatistics
-from elastic.get_documents import get_most_recent_documents
+from elastic.get_documents import get_most_recent_documents, get_documents
 from ranking import tfidf, rank, extract_terms
 
 
@@ -183,8 +183,6 @@ class CrawlerModel:
           # Page does not have tags.
           neutral = neutral + 1
 
-    print 'neutral ', neutral
-
     return { \
       'Relevant': relevant,
       'Irrelevant': irrelevant,
@@ -295,11 +293,36 @@ class CrawlerModel:
   def setPagesTag(self, pages, tag, applyTagFlag):
     # TODO(Yamuna): Apply tag to page and update in elastic search. Suggestion: concatenate tags
     # with semi colon, removing repetitions.
+
+    results = get_documents(pages, ['tag'], self._activeCrawlerIndex, 'page', self.es)
+    
+    entries = []
     if applyTagFlag:
       print '\n\napplied tag ' + tag + ' to pages' + str(pages) + '\n\n'
+      for page in pages:
+        entry = {}
+        if len(results) == 0 or results.get(page) is None:
+          entry['url'] = page
+          entry['tag'] = tag
+        elif tag not in results.get(page)['tag']:
+          entry['url'] = page
+          entry['tag'] = results.get(page)['tag'] + ';' + tag
+        if entry:
+          entries.append(entry)
     else:
       print '\n\nremoved tag ' + tag + ' from pages' + str(pages) + '\n\n'
+      for page in pages:
+        entry = {}
+        if len(results) > 0 and not results.get(page) is None:
+          if tag in results.get(page)['tag']:
+            entry['url'] = page
+            tags = results.get(page)['tag'].split(';')
+            tags.remove(tag)
+            entry['tag'] = ';'.join(tags)
+        if entry:
+          entries.append(entry)
 
+    update_document(entries, self._activeCrawlerIndex, 'page', self.es)
 
 
   # Adds tag to terms (if applyTagFlag is True) or removes tag from terms (if applyTagFlag is
