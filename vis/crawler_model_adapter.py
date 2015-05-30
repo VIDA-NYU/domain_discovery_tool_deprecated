@@ -82,6 +82,12 @@ class CrawlerModelAdapter:
 
 
 
+  # Sets limit to pages returned by @getPages.
+  def setPagesCountCap(self, pagesCap):
+    self._crawlerModel.setPagesCountCap(pagesCap)
+
+
+
   # Returns most recent downloaded pages.
   # Returns dictionary in the format:
   # {
@@ -92,8 +98,8 @@ class CrawlerModelAdapter:
   #             [url3, x, y, tags],
   #   ]
   # }
-  def getPages(self, opt_maxNumberOfPages = None):
-    return self._crawlerModel.getPages(opt_maxNumberOfPages)
+  def getPages(self):
+    return self._crawlerModel.getPages()
 
 
 
