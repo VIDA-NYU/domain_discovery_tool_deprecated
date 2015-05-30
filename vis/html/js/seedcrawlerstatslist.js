@@ -32,9 +32,11 @@ Statslist.prototype.addEntries = function(entries) {
 };
 
 
-Statslist.prototype.setEntries = function(entries) {
+Statslist.prototype.setEntries = function(entries, lazyUpdate) {
     this.entries = entries;
-    this.update();
+    if (!lazyUpdate) {
+      this.update();
+    }
 };
 
 
@@ -63,16 +65,9 @@ Statslist.prototype.update = function() {
         .classed('rowsContainer', true)
         .attr('transform', 'translate(' + svgMargin.left + ', ' + svgMargin.top + ')');
     
-    // Number of pages per entry.
-    // TODO(cesar): Make this flexible.
-    var nPages = this.entries.map(function(d) {
-        return d['Relevant'] + d['Irrelevant'] + d['Neutral'];
-    });
-    statslist.nPagesPerEntry = {};
-    for (var i in nPages) {
-      statslist.nPagesPerEntry[statslist.entries[i]['name']] = nPages[i];   
-    }
-    statslist.nPagesTotal = nPages.reduce(function(prev, cur) { return prev + cur; }, 0);
+    // Total number of pages.
+    statslist.nPagesTotal =
+      this.entries.reduce(function(prev, d) { return prev + d['Total']; }, 0);
     
     var titleRow = svg.selectAll('g.titleRow').data(['titleRow']);
     titleRow
@@ -119,50 +114,45 @@ Statslist.prototype.update = function() {
     var barsContainers = rows.selectAll('g.bar').data(function(d) { return [d]; });
     barsContainers.enter().append('g')
         .classed('bar', true)
-        .classed('positive', function(d) { return d['label'] == 'positive'; })
-        .classed('negative', function(d) { return d['label'] == 'negative'; })
+        .classed('Relevant', function(d) { return d['label'] == 'Relevant'; })
+        .classed('Irrelevant', function(d) { return d['label'] == 'Irrelevant'; })
+        .classed('Neutral', function(d) { return d['label'] == 'Neutral'; })
         .attr('transform', 'translate(' + (svgMargin.left + maxWordTextWidth) + ', 0)');
     
     // TODO(cesar): Make this flexible.
     barsContainers.each(function(d, i) {
-        // Rectangle for number of relevant pages.
-        var rectExplored = d3.select(this).selectAll('rect.Relevant').data(['rect']);
-        rectExplored.enter().append('rect')
-            .classed('Relevant', true)
+        // Rectangle for number of pages until last update.
+        var cl1 = d['label'];
+        var cl2 = 'Previous';
+        var rectPreviousPages =
+          d3.select(this).selectAll('rect' + '.' + cl1 + '.' + cl2).data(['rect']);
+        rectPreviousPages.enter().append('rect')
+            .classed(cl1, true)
+            .classed(cl2, true)
             .attr('y', 0.5 * (rowHeight - barHeight))
             .attr('height', barHeight);
-        var widthExplored = barScale(d['Relevant']);
-        var xExplored = 0;
-        rectExplored
+        var wPrevious = barScale(d['Until Last Update']);
+        var xPrevious = 0;
+        rectPreviousPages
           .transition(transitionDuration)
-          .attr('x', xExplored)
-          .attr('width', widthExplored);
+          .attr('x', xPrevious)
+          .attr('width', wPrevious);
         
-        // Rectangle for number of irrelevant pages.
-        var rectExploited = d3.select(this).selectAll('rect.Irrelevant').data(['rect']);
-        rectExploited.enter().append('rect')
-            .classed('Irrelevant', true)
+        // Rectangle for number of new pages.
+        var cl2 = 'New';
+        var rectNewPages =
+          d3.select(this).selectAll('rect' + '.' + cl1 + '.' + cl2).data(['rect']);
+        rectNewPages.enter().append('rect')
+            .classed(cl1, true)
+            .classed(cl2, true)
             .attr('y', 0.5 * (rowHeight - barHeight))
             .attr('height', barHeight);
-        var widthExploited = barScale(d['Irrelevant']);
-        var xExploited = widthExplored;
-        rectExploited
-          .transition(transitionDuration)
-          .attr('x', xExploited)
-          .attr('width', widthExploited);
-        
-        // Rectangle for number of neutral pages.
-        var rectNew = d3.select(this).selectAll('rect.Neutral').data(['rect']);
-        rectNew.enter().append('rect')
-            .classed('Neutral', true)
-            .attr('y', 0.5 * (rowHeight - barHeight))
-            .attr('height', barHeight);
-        var widthNew = barScale(d['Neutral']);
-        var xNew = widthExplored + widthExploited;
-        rectNew
+        var wNew = barScale(d['New']);
+        var xNew = wPrevious;
+        rectNewPages
           .transition(transitionDuration)
           .attr('x', xNew)
-          .attr('width', widthNew);
+          .attr('width', wNew);
     });
 
     // Interaction rectangle.
@@ -178,11 +168,84 @@ Statslist.prototype.update = function() {
             Utils.showTooltip();
         })
         .on('mousemove', function(d, i) {
-            var t = numberFormat(statslist.nPagesPerEntry[d['name']]) + ' ' + d['label']
+            var t = numberFormat(d['Total']) + ' ' + d['label']
               + ' pages out of ' + numberFormat(statslist.nPagesTotal) + ' crawled';
             Utils.updateTooltip(t);
         })
         .on('mouseout', function(d, i) {
             Utils.hideTooltip();
         });
+
+    // Bar and number for new pages.
+    var entriesCompTopMargin = 6 * svgMargin.top + (statslist.entries.length + 1) * rowHeight;
+    
+    svg = svg.selectAll('g.compRows').data(['g.compRows']);
+    svg.enter().append('g')
+        .classed('compRows', true);
+    svg
+        .attr('transform', 'translate(0,' + entriesCompTopMargin + ')');
+    
+    var neutralNew = 0;
+    statslist.entries.forEach(function(entry) {
+      if (entry['label'] == 'Neutral') {
+        neutralNew = entry['New'];
+      }
+    });
+    var compRows = svg.selectAll('g.compRow').data([{'label': 'New', 'v': neutralNew}]);
+    compRows.enter().append('g')
+        .classed('compRow', true)
+        .attr('transform', function(d, i) {
+            return 'translate(0, '
+            + (i * 2 * rowHeight) + ')'; 
+        });
+    
+    var groups = ['Neutral'];
+    // Information about number of new pages.
+    compRows.each(function(d, i) {
+        var container = d3.select(this);
+        var className = d['label'];
+        var barH = 0.5 * barHeight;
+        var titleH = 5;
+        var titleY = 10;
+        var rowH = barH + 5;
+        var maxW = barScale.range()[1];
+
+        var titleText = d['label'] + ' pages';
+        d3.select(this).selectAll('text.title').data(['text'])
+            .enter().append('text')
+            .classed('title', true)
+            .attr('y', titleY)
+            .text(titleText);
+        
+        for (var index in groups) {
+            var group = groups[index];
+            var gRect = d3.select(this).selectAll('g.bar.' + group).data(['g.bar']);
+            gRect.enter().append('g')
+                .classed('bar', true)
+                .classed(group, true)
+                .attr('transform', 'translate(' + (svgMargin.left + maxWordTextWidth) + ', ' + (titleH + index * rowH) + ')');
+            var rect = gRect.selectAll('rect' + '.' + className + '.' + group).data(['rect']);
+            rect.enter().append('rect')
+                .classed(className, true)
+                .classed(group, true)
+                .attr('y', rowH)
+                .attr('height', barH);
+            var w = barScale(d['v']);
+            rect
+                .transition(transitionDuration)
+                .attr('width', w);
+            
+            // Count.
+            var pagesCount = gRect.selectAll('text.numericalData').data(['text']);
+            pagesCount
+                .enter().append('text')
+                .classed('numericalData', true)
+                .classed(className, true)
+                .attr('x', -10)
+                .attr('y', rowH + titleY);
+            pagesCount
+                .text(d['v']);
+        }        
+    });
+
 };

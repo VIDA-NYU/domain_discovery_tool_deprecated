@@ -66,7 +66,7 @@ p {
 
 #seed_crawler_info {
   text-align: left;
-  height: 360px;
+  height: 300px;
 }
 
 #crawler_info {
@@ -150,6 +150,11 @@ p {
   user-select: none;
 }
 
+.statslist.seedcrawler {
+  width: 100%;
+  height: 200px;
+}
+
 .statslist {
   width: 100%;
   height: 300px;
@@ -186,9 +191,15 @@ p {
     mask: url(#mask-stripe);
 }
 
+.statslist svg rect.Neutral,
 .statslist svg rect.New {
     stroke: lightgray;
     fill-opacity: 0.2;
+}
+
+.statslist svg rect.Neutral.New {
+    stroke: lightgray;
+    mask: url(#mask-stripe);
 }
 
 .statslist svg g.row {
@@ -560,6 +571,10 @@ div#urlBgMask {
   text-align: left;
 }
 
+#query_panel {
+  height: 468px;
+}
+
 #filter_panel {
   height: 468px;
 }
@@ -573,6 +588,10 @@ div#urlBgMask {
   padding: 0;
   border: 1px solid #999;
   background-color: #fcfcfc;
+}
+
+#query_box {
+  margin-bottom: 40px;
 }
 
 #submit_query,
@@ -603,6 +622,25 @@ div#urlBgMask {
     width: 0px;
 }
 
+#filter_cap {
+  height: 40px;
+  margin-bottom: 40px;
+}
+
+#filter_cap > * {
+  display: inline-block;
+  padding-left: 5px;
+}
+
+#filter_cap h3 {
+  font-size: 16px;
+  font-weight: normal;
+}
+
+#filter_cap select {
+	top-margin: 5px;
+  width: 180px;
+}
 /*
 
 

@@ -20,15 +20,15 @@ var DataAccess = (function() {
   var termsSummary = undefined;
 
   // Processes loaded pages summaries.
-  var onPagesSummaryUntilLastUpdateLoaded = function(summary) {
-    __sig__.emit(__sig__.previous_pages_summary_fetched, summary);
+  var onPagesSummaryUntilLastUpdateLoaded = function(summary, isFilter) {
+    __sig__.emit(__sig__.previous_pages_summary_fetched, summary, isFilter);
   };
 
   // Processes loaded pages summaries.
-  var onNewPagesSummaryLoaded = function(summary) {
+  var onNewPagesSummaryLoaded = function(summary, isFilter) {
     loadingSummary = false;
     lastSummary = moment().unix();
-    __sig__.emit(__sig__.new_pages_summary_fetched, summary);
+    __sig__.emit(__sig__.new_pages_summary_fetched, summary, isFilter);
   };
 
   // Processes loaded pages.
@@ -88,18 +88,24 @@ var DataAccess = (function() {
   //  });
 
   // Loads new pages summary.
-  pub.loadNewPagesSummary = function() {
+  pub.loadNewPagesSummary = function(isFilter) {
     if (!loadingSummary && currentCrawler !== undefined) {
       loadingSummary = true;
       runQueryForCurrentCrawler(
-        '/getPagesSummary', {'opt_ts1': lastUpdate}, onNewPagesSummaryLoaded);
+        '/getPagesSummary', {'opt_ts1': lastUpdate},
+        function(summary) {
+          onNewPagesSummaryLoaded(summary, isFilter);
+        });
     }
   };
   // Loads pages summary until last pages update.
-  pub.loadPagesSummaryUntilLastUpdate = function() {
+  pub.loadPagesSummaryUntilLastUpdate = function(isFilter) {
     if (currentCrawler !== undefined) {
       runQueryForCurrentCrawler(
-        '/getPagesSummary', {'opt_ts2': lastUpdate}, onPagesSummaryUntilLastUpdateLoaded);
+        '/getPagesSummary', {'opt_ts2': lastUpdate, 'opt_applyFilter': isFilter},
+        function(summary) {
+          onPagesSummaryUntilLastUpdateLoaded(summary, isFilter);
+        });
     }
   };
   // Returns public interface.
@@ -169,9 +175,15 @@ var DataAccess = (function() {
     runQueryForCurrentCrawler(
       '/setTermsTag', {'terms': term, 'tag': tag, 'applyTagFlag': applyTagFlag});
   };
+  // Sets limit of number of pages loaded.
+  pub.setPagesCountCap = function(cap) {
+    runQueryForCurrentCrawler(
+      '/setPagesCountCap', {'pagesCap': cap});
+  };
 
   // Fetches new pages summaries every n seconds.
-  window.setInterval(pub.loadNewPagesSummary, REFRESH_EVERY_N_MILLISECONDS);
+  window.setInterval(function() {pub.loadNewPagesSummary(false);}, REFRESH_EVERY_N_MILLISECONDS);
+  window.setInterval(function() {pub.loadNewPagesSummary(true);}, REFRESH_EVERY_N_MILLISECONDS);
 
   return pub;
 }());
