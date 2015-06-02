@@ -130,6 +130,13 @@ class Page:
 
 
 
+  # Sets limit to pages returned by @getPages.
+  @cherrypy.expose
+  def setPagesCountCap(self, pagesCap):
+    self._crawler.setPagesCountCap(pagesCap)
+
+
+
   # Returns most recent downloaded pages.
   # Returns dictionary in the format:
   # {
@@ -141,8 +148,8 @@ class Page:
   #   ]
   # }
   @cherrypy.expose
-  def getPages(self, opt_maxNumberOfPages = 1000):
-    res = self._crawler.getPages(opt_maxNumberOfPages)
+  def getPages(self):
+    res = self._crawler.getPages()
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
 

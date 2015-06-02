@@ -32,6 +32,7 @@ class CrawlerModel:
     self.es = None
     self._activeCrawlerIndex = None
     self._filter = None
+    self._pagesCap = int(10E2)
 
     # TODO(Yamuna): delete when not returning random data anymore.
     self._randomTerms = {
@@ -231,6 +232,13 @@ class CrawlerModel:
     # extract.getTopTerms(opt_maxNumberOfTerms)
     return 9 * self._randomTerms.values()
 
+  # Sets limit to pages returned by @getPages.
+  def setPagesCountCap(self, pagesCap):
+    # TODO(Yamuna): The cap is just cached, and should be used in getPages (always) and getPagesSummary
+    # (when the optional flag is set to True). Check those methods signatures.
+
+    self._pagesCap = int(pagesCap)
+
   # Returns most recent downloaded pages.
   # Returns dictionary in the format:
   # {
@@ -241,10 +249,10 @@ class CrawlerModel:
   #             [url3, x, y, tags],
   #   ]
   # }
-  def getPages(self, opt_maxNumberOfPages = 1000):
+  def getPages(self):
     # results are in the format:
     # [["url", "x", "y", "tag", "retrieved"], ... ]
-    hits = get_most_recent_documents(opt_maxNumberOfPages, ["url", "x", "y", "tag", "retrieved"], 
+    hits = get_most_recent_documents(self._pagesCap, ["url", "x", "y", "tag", "retrieved"], 
                                      self._filter, self._activeCrawlerIndex, es_doc_type = 'page', \
                                      es = self.es)
 
@@ -302,7 +310,6 @@ class CrawlerModel:
   def setPagesTag(self, pages, tag, applyTagFlag):
     # TODO(Yamuna): Apply tag to page and update in elastic search. Suggestion: concatenate tags
     # with semi colon, removing repetitions.
-
     results = get_documents(pages, ['tag'], self._activeCrawlerIndex, 'page', self.es)
     
     entries = []

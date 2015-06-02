@@ -23,6 +23,10 @@ CrawlerVis.buildForCrawler = function() {
     'Positive': {'Exploited': 0, 'Explored': 0, 'New': 0, 'Total': 0},
     'Negative': {'Exploited': 0, 'Explored': 0, 'New': 0, 'Total': 0},
   };
+  vis.filterStats = {
+    'Positive': {'Exploited': 0, 'Explored': 0, 'New': 0, 'Total': 0},
+    'Negative': {'Exploited': 0, 'Explored': 0, 'New': 0, 'Total': 0},
+  };
   return vis;
 };
 
@@ -36,6 +40,11 @@ CrawlerVis.buildForSeedCrawler = function() {
   vis.initSignalSlotsSeedCrawler.call(vis);
   vis.initUISeedCrawler.call(vis);
   vis.stats = {
+    'Relevant': {'Until Last Update': 0, 'New': 0, 'Total': 0},
+    'Irrelevant': {'Until Last Update': 0, 'New': 0, 'Total': 0},
+    'Neutral': {'Until Last Update': 0, 'New': 0, 'Total': 0},
+  };
+  vis.filterStats = {
     'Relevant': {'Until Last Update': 0, 'New': 0, 'Total': 0},
     'Irrelevant': {'Until Last Update': 0, 'New': 0, 'Total': 0},
     'Neutral': {'Until Last Update': 0, 'New': 0, 'Total': 0},
@@ -161,6 +170,7 @@ CrawlerVis.prototype.initUICrawler = function() {
   this.initPagesGallery();
   this.initTermsSnippetsViewer();
   this.initFilterButton();
+  this.createSelectForFilterPageCap();
 };
 
 
@@ -199,6 +209,7 @@ CrawlerVis.prototype.initUISeedCrawler = function() {
   this.initTermsSnippetsViewer();
   this.initFilterButton();
   this.initQueryWebButton();
+  this.createSelectForFilterPageCap();
 };
 
 
@@ -237,7 +248,10 @@ CrawlerVis.prototype.loadAvailableCrawlers = function() {
 CrawlerVis.prototype.setActiveCrawler = function(crawlerId) {
   // Changes active crawler and forces update.
   DataAccess.setActiveCrawler(crawlerId);
-  DataAccess.update();
+
+  // Applies filter and cap.
+  var terms = d3.select('#filter_box').node().value;
+  this.applyFilter(terms);
 };
 
 
@@ -251,15 +265,18 @@ CrawlerVis.prototype.initStatslist = function() {
 // Initializes statistics resulting from filter: number of positive/negative pages,
 // exploited/explored/pending for visualization.
 CrawlerVis.prototype.initFilterStatslist = function() {
-  this.queryStatslist = new Statslist('filter_statslist');
+  this.filterStatslist = new Statslist('filter_statslist');
 };
 
 
 // Responds to loaded new pages summary signal (crawler vis).
-CrawlerVis.prototype.onLoadedNewPagesSummaryCrawler = function(summary) {
+CrawlerVis.prototype.onLoadedNewPagesSummaryCrawler = function(summary, isFilter) {
+  var stats = isFilter ? this.filterStats : this.stats;
+  var statslist = isFilter ? this.filterStatslist : this.statslist;
+
   // All explored and exploited pages are reported as new pages.
-  var pos = this.stats['Positive'];
-  var neg = this.stats['Negative'];
+  var pos = stats['Positive'];
+  var neg = stats['Negative'];
   pos['New'] =
       summary['Positive']['Exploited']
     + summary['Positive']['Explored'];
@@ -268,28 +285,14 @@ CrawlerVis.prototype.onLoadedNewPagesSummaryCrawler = function(summary) {
     + summary['Negative']['Explored'];
 
   // Updates UI element that reports pages statistics.
-  this.updatePagesStatsCrawler();
-};
-
-
-// Responds to loaded new pages summary signal.
-CrawlerVis.prototype.onLoadedNewPagesSummarySeedCrawler = function(summary) {
-  var stats = this.stats;
-  for (var t in summary) {
-    // t is in {Relevant, Irrelevant, Neutral}.
-    stats[t]['New'] = summary[t];
-    // Computes total.
-    stats[t]['Total'] = stats[t]['Until Last Update'] + stats[t]['New'];
-  }
-
-  // Updates UI element that reports pages statistics.
-  this.updatePagesStatsSeedCrawler();
+  this.updatePagesStatsCrawler(stats, statslist);
 };
 
 
 // Responds to loaded pages summary until last update (crawler vis).
-CrawlerVis.prototype.onLoadedPreviousPagesSummaryCrawler = function(summary) {
-  var stats = this.stats;
+CrawlerVis.prototype.onLoadedPreviousPagesSummaryCrawler = function(summary, isFilter) {
+  var stats = isFilter ? this.filterStats : this.stats;
+  var statslist = isFilter ? this.filterStatslist : this.statslist;
 
   for (var t in {'Positive': 1, 'Negative': 1}) {
     stats[t]['Explored'] = summary[t]['Explored'];
@@ -300,32 +303,16 @@ CrawlerVis.prototype.onLoadedPreviousPagesSummaryCrawler = function(summary) {
   }
 
   // Updates UI element that reports pages statistics.
-  this.updatePagesStatsCrawler();
-};
-
-
-// Responds to loaded pages summary until last update (seed crawler vis).
-CrawlerVis.prototype.onLoadedPreviousPagesSummarySeedCrawler = function(summary) {
-  var stats = this.stats;
-
-  for (var t in stats) {
-    // Stores statistics until last update.
-    stats[t]['Until Last Update'] = summary[t];
-    // Computes total.
-    stats[t]['Total'] = stats[t]['Until Last Update'] + stats[t]['New'];
-  }
-
-  // Updates UI element that reports pages statistics.
-  this.updatePagesStatsSeedCrawler();
+  this.updatePagesStatsCrawler(stats, statslist);
 };
 
 
 // Updates UI element that reports pages statistics.
-CrawlerVis.prototype.updatePagesStatsCrawler = function() {
-  var pos = this.stats['Positive'];
-  var neg = this.stats['Negative'];
+CrawlerVis.prototype.updatePagesStatsCrawler = function(stats, statslist) {
+  var pos = stats['Positive'];
+  var neg = stats['Negative'];
 
-  this.statslist.setEntries([
+  statslist.setEntries([
     {'name': 'Positive pages', 'Explored': pos['Explored'], 'Exploited': pos['Exploited'], 'New': pos['New'], 'label': 'Positive'},
     {'name': 'Negative pages', 'Explored': neg['Explored'], 'Exploited': neg['Exploited'], 'New': neg['New'], 'label': 'Negative'},
   ]);
@@ -334,7 +321,7 @@ CrawlerVis.prototype.updatePagesStatsCrawler = function() {
   var maxWidth = Math.max(
     pos['Explored'] + pos['Exploited'] + pos['New'],
     neg['Explored'] + neg['Exploited'] + neg['New']);
-  this.statslist.setMaxBarTotal(maxWidth);
+  statslist.setMaxBarTotal(maxWidth);
 
 
   // Updates buttons used to update pages landscape.
@@ -345,10 +332,43 @@ CrawlerVis.prototype.updatePagesStatsCrawler = function() {
 };
 
 
-// Updates UI element that reports pages statistics for seed crawler.
-CrawlerVis.prototype.updatePagesStatsSeedCrawler = function() {
-  var stats = this.stats;
+// Responds to loaded new pages summary signal.
+CrawlerVis.prototype.onLoadedNewPagesSummarySeedCrawler = function(summary, isFilter) {
+  var stats = isFilter ? this.filterStats : this.stats;
+  var statslist = isFilter ? this.filterStatslist : this.statslist;
 
+  for (var t in summary) {
+    // t is in {Relevant, Irrelevant, Neutral}.
+    stats[t]['New'] = summary[t];
+    // Computes total.
+    stats[t]['Total'] = stats[t]['Until Last Update'] + stats[t]['New'];
+  }
+
+  // Updates UI element that reports pages statistics.
+  this.updatePagesStatsSeedCrawler(stats, statslist);
+};
+
+
+// Responds to loaded pages summary until last update (seed crawler vis).
+CrawlerVis.prototype.onLoadedPreviousPagesSummarySeedCrawler = function(summary, isFilter) {
+  var stats = isFilter ? this.filterStats : this.stats;
+  var statslist = isFilter ? this.filterStatslist : this.statslist;
+
+  for (var t in stats) {
+    // t is in {Relevant, Irrelevant, Neutral}.
+    // Stores statistics until last update.
+    stats[t]['Until Last Update'] = summary[t];
+    // Computes total.
+    stats[t]['Total'] = stats[t]['Until Last Update'] + stats[t]['New'];
+  }
+
+  // Updates UI element that reports pages statistics.
+  this.updatePagesStatsSeedCrawler(stats, statslist);
+};
+
+
+// Updates UI element that reports pages statistics for seed crawler.
+CrawlerVis.prototype.updatePagesStatsSeedCrawler = function(stats, statslist) {
   var entries = [];
   for (var t in stats) {
     // t is in {Relevant, Irrelevant, Neutral}.
@@ -360,12 +380,15 @@ CrawlerVis.prototype.updatePagesStatsSeedCrawler = function() {
       'label': t,
     });
   }
+  var lazyUpdate = true;
+  statslist.setEntries(entries, lazyUpdate);
+
 
   // Sets maximum bar width for Positive/Negative pages.
   var maxWidth = Math.max(
     stats['Neutral']['Total'], 
     Math.max(stats['Relevant']['Total'], stats['Irrelevant']['Total']));
-  this.statslist.setMaxBarTotal(maxWidth);
+  statslist.setMaxBarTotal(maxWidth);
 
   // Updates buttons used to update pages landscape.
   // For seed crawler, update button is always available;
@@ -568,7 +591,11 @@ CrawlerVis.prototype.onLoadedPages = function(pagesData) {
     .html('(last update: ' + lastUpdate + ')');
 
   // Fetches statistics for until last update happened.
-  DataAccess.loadPagesSummaryUntilLastUpdate();
+  DataAccess.loadPagesSummaryUntilLastUpdate(false);
+  DataAccess.loadPagesSummaryUntilLastUpdate(true);
+
+  // Clears pages gallery.
+  this.pagesGallery.clear();
 
   return pages;
 };
@@ -667,6 +694,7 @@ CrawlerVis.prototype.initQueryWebButton = function() {
  * Initializes filter button.
  */
 CrawlerVis.prototype.initFilterButton = function() {
+  var vis = this;
   d3.select('#submit_filter')
     .on('click', function() {
       var value = d3.select('#filter_box').node().value;
@@ -677,11 +705,40 @@ CrawlerVis.prototype.initFilterButton = function() {
 };
 
 
+// Creates select to limit number of pages to load.
+CrawlerVis.prototype.createSelectForFilterPageCap = function() {
+  var vis = this;
+  var selectBox = d3.select('#filter_cap_select').on('change', function() {
+    vis.applyFilter();
+  });
+  var getElementValue = function(d) {
+    return d;
+  };
+  // Some options.
+  var data = [10, 50, 100, 500, 1000, 2000];
+  var options = selectBox.selectAll('option').data(data);
+  options.enter().append('option');
+  options
+    .attr('value', getElementValue)
+    .text(function(d, i) {
+      return d;
+    });
+};
+
+
+/**
+ * Applies query (useful for seed crawler vis).
+ */
+CrawlerVis.prototype.applyQuery = function(terms) {
+  DataAccess.queryWeb(terms);
+};
+
+
 /**
  * Runs query (useful for seed crawler vis).
  */
 CrawlerVis.prototype.runQuery = function(terms) {
-  DataAccess.queryWeb(terms);
+  this.applyQuery(terms);
 
   // Appends terms to history of queries.
   this.queriesList =
@@ -690,12 +747,24 @@ CrawlerVis.prototype.runQuery = function(terms) {
 
 
 /**
- * Runs filter.
+ * Applies filter.
  */
-CrawlerVis.prototype.runFilter = function(terms) {
+CrawlerVis.prototype.applyFilter = function(terms) {
+  // Sets cap.
+  var cap = d3.select('#filter_cap_select').node().value;
+  DataAccess.setPagesCountCap(cap);
+
   // Applies filter and issues an update automatically.
   DataAccess.applyFilter(terms);
   DataAccess.update();
+};
+
+
+/**
+ * Runs filter.
+ */
+CrawlerVis.prototype.runFilter = function(terms) {
+  this.applyFilter(terms);
 
   // Appends terms to history of filters.
   this.filtersList =
