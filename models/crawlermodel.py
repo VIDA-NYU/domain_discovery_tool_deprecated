@@ -218,9 +218,18 @@ class CrawlerModel:
     # TODO(Yamuna): Query Elastic Search (schema self._activeCrawlerId) for terms ranked by highest
     # tf-idf, and return top opt_maxNumberOfTerms, with tf_idf for term occurring in relevant and
     # irrelevant pages.
+    
+    # rel_urls = term_search('tag', 'Relevant', self._activeCrawlerIndex, 'page', self.es)
+    # tfidf = tfidf.tfidf(rel_urls)
+    # sorted_rel_tfidf = tfidf.getTopTerms(opt_maxNumberOfTerms)
+
+    # rel_urls = term_search('tag', 'Relevant', self._activeCrawlerIndex, 'page', self.es)
+    # tfidf = tfidf.tfidf(rel_urls)
+    # sorted_rel_tfidf = tfidf.getTopTerms(opt_maxNumberOfTerms)
+ 
+    # extract = extract_terms.extract_terms(tfidf)
+    # extract.getTopTerms(opt_maxNumberOfTerms)
     return 9 * self._randomTerms.values()
-
-
 
   # Returns most recent downloaded pages.
   # Returns dictionary in the format:
