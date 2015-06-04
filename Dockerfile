@@ -27,9 +27,15 @@ RUN git clone https://github.com/ViDA-NYU/domain_discovery_tool.git && \
 RUN wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.5.2.deb && \
   dpkg -i elasticsearch-1.5.2.deb && rm elasticsearch-1.5.2.deb
 
+RUN sudo /usr/share/elasticsearch/bin/plugin -install mobz/elasticsearch-head
+
+RUN pip install pyelasticsearch
+RUN pip install requests
+
 # Expose Domain Discovery Tool port
 EXPOSE 8084
 
 # Expose ElasticSearch ports
 EXPOSE 9200
 EXPOSE 9300
+
