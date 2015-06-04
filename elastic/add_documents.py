@@ -133,11 +133,11 @@ def add_document(entries, es_index='memex', es_doc_type='page', es=None):
             index = es_index,
             doc_type= es_doc_type)
 
-def update_document(entries, es_index='memex', es_doc_type='page', es=None):
+def update_document(entries, id_field='url', es_index='memex', es_doc_type='page', es=None):
     if es is None:
         es = ElasticSearch('http://localhost:9200/')
-
-    es.bulk([es.update_op(doc, id=doc['url'], upsert=True) for doc in entries],
+    
+    es.bulk([es.update_op(doc, id=doc[id_field], upsert=True) for doc in entries],
             index=es_index, 
             doc_type=es_doc_type)
 
