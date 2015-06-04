@@ -106,10 +106,10 @@ def get_context(terms, es_index='memex', es_doc_type='page', es=None):
         print query
         res = es.search(query, index=es_index, doc_type=es_doc_type, size=500)
         hits = res['hits']
-        print 'Document found: %d' % hits['total']
+
         highlights = []
         for hit in hits['hits']:
-            highlights.append(hit['highlight']['text'])
+            highlights.append(hit['highlight']['text'][0])
         return highlights
 
 def range(field, from_val, to_val, ret_fields=[], epoch=None, es_index='memex', es_doc_type='page', es=None):
