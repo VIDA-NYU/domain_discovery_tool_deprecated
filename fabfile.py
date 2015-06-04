@@ -99,7 +99,7 @@ def install_nltk_data():
     "Install data files for NLTK."
     with lcd(PROJ_ROOT), shell_env(NLTK_DATA=env['nltk_data']):
         local("if [ ! -d {nltk_data} ]; then mkdir {nltk_data}; fi".format(**env))
-        local('if [ ! -d {nltk_data}/chunkers ]; then {python} -m nltk.downloader -d {nltk_data} stopwords; fi'.format(**env))
+        local('if [ ! -d {nltk_data}/chunkers ]; then {python} -m nltk.downloader -d {nltk_data} stopwords brown; fi'.format(**env))
 
 
 def compile_seeds_generator():
