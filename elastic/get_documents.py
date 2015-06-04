@@ -1,19 +1,18 @@
 #!/usr/bin/python
 from pyelasticsearch import ElasticSearch
-from pprint import pprint
 
-def get_documents(urls, fields=["text"], es_index='memex', es_doc_type='page', es=None):
+def get_documents(terms, term_field, fields=["text"], es_index='memex', es_doc_type='page', es=None):
     if es is None:
         es = ElasticSearch('http://localhost:9200/')
 
-    if len(urls) > 0:
+    if len(terms) > 0:
         results = {}
 
-        for url in urls:
+        for term in terms:
             query = {
                 "query": {
                     "term": {
-                        "url": url
+                        term_field: term
                     }
                 },
                 "fields": fields
@@ -23,16 +22,16 @@ def get_documents(urls, fields=["text"], es_index='memex', es_doc_type='page', e
                             index=es_index,
                             doc_type=es_doc_type)
 
-            
-            hits = res['hits']['hits'][0]
+            if res['hits']['hits']:
+                hits = res['hits']['hits'][0]
 
-            if not hits.get('fields') is None:
-                hits = hits['fields']
-                record = {}
-                for field in fields:
-                    if(not hits.get(field) is None):
-                        record[field] = hits[field][0]
-                results[url] = record           
+                if not hits.get('fields') is None:
+                    hits = hits['fields']
+                    record = {}
+                    for field in fields:
+                        if(not hits.get(field) is None):
+                            record[field] = hits[field][0]
+                    results[term] = record           
             
     return results
 
@@ -47,16 +46,15 @@ def get_most_recent_documents(opt_maxNumberOfPages = 1000, fields = [], opt_filt
     if es is None:
         es = ElasticSearch('http://localhost:9200')
 
-    # TODO(Yamuna): apply filter if it is None. Otherwise, match_all.
     query = { 
-      "size": opt_maxNumberOfPages,
-      "sort": [
-        {
-          "retrieved": {
-            "order": "desc"
-          }
-        }
-      ]
+        "size": opt_maxNumberOfPages,
+        "sort": [
+            {
+                "retrieved": {
+                    "order": "desc"
+                }
+            }
+        ]
     }
 
     if opt_filter is None:
@@ -75,7 +73,6 @@ def get_most_recent_documents(opt_maxNumberOfPages = 1000, fields = [], opt_filt
         query["fields"] = fields
 
     res = es.search(query, index = es_index, doc_type = es_doc_type)
-
     hits = res['hits']['hits']
 
     results = []
