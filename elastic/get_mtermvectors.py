@@ -29,7 +29,10 @@ def terms_from_es_json(doc, rm_stopwords=True, pos_tags=[]):
 
     for k in valid_words:
         try:
-            terms[k] = tfidf(docterms[k]["term_freq"], docterms[k]["doc_freq"], n_doc)
+            terms[k] = {'tfidf':tfidf(docterms[k]["term_freq"], docterms[k]["doc_freq"], n_doc),
+                        'tf': docterms[k]["term_freq"],
+                        'ttf': docterms[k]["ttf"],
+            }
         except KeyError:
             print k, " ", docterms[k]
 
@@ -37,31 +40,54 @@ def terms_from_es_json(doc, rm_stopwords=True, pos_tags=[]):
 
 def getTermStatistics(all_hits, es_index='memex', es_doc_type='page', es=None):
     if es is None:
-        es = ElasticSearch('http://localhost:9200/')
+        es = Elasticsearch('http://localhost:9200/')
 
-    tfidfs = []
+    stats = []
     docs = []
 
+    ttf = {}
     for i in range(0, len(all_hits), 100):
         hits = all_hits[i:i+100]
 
         term_res = es.mtermvectors(index=es_index,
-                                doc_type=es_doc_type,
-                                term_statistics=True, 
-                                fields=['text'], 
-                                ids=hits)
+                                   doc_type=es_doc_type,
+                                   term_statistics=True, 
+                                   fields=['text'], 
+                                   ids=hits)
+
         #pprint.pprint(term_res['docs'])
+
         for doc in term_res['docs']:
             #pprint.pprint(doc)
             if doc.get('term_vectors'):
                 if 'text' in doc['term_vectors']:
                     docs.append(doc['_id'])
-                    tfidfs.append(terms_from_es_json(doc))
+                    res = terms_from_es_json(doc)
+                    stats.append(res)
+                    for k in res.keys():
+                        ttf[k] = res[k]['ttf']
             #else:
              #   pprint.pprint(doc)
         #pprint.pprint(tfidfs)
     
-    v = DictVectorizer()
+    tfidfs = []
+    for stat in stats:
+        tfidf={}
+        for k in stat.keys():
+            tfidf[k] =stat[k]['tfidf']
+        tfidfs.append(tfidf)
 
-    return [v.fit_transform(tfidfs), v.get_feature_names()]
+    tfs = []
+    for stat in stats:
+        tf={}
+        for k in stat.keys():
+            tf[k] =stat[k]['tf']
+        tfs.append(tf)
+    
+    v_tfidf = DictVectorizer()
+    v_tf = DictVectorizer()
+    
+    result = [v_tfidf.fit_transform(tfidfs), v_tf.fit_transform(tfs), ttf, v_tfidf.get_feature_names()]
+
+    return result
 
