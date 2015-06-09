@@ -112,7 +112,7 @@ def get_context(terms, es_index='memex', es_doc_type='page', es=None):
             highlights.append(hit['highlight']['text'][0])
         return highlights
 
-def range(field, from_val, to_val, ret_fields=[], epoch=None, es_index='memex', es_doc_type='page', es=None):
+def range(field, from_val, to_val, ret_fields=[], epoch=None, pagesCount = 200, es_index='memex', es_doc_type='page', es=None):
     if es is None:
         es = ElasticSearch("http://localhost:9200")
 
@@ -125,15 +125,15 @@ def range(field, from_val, to_val, ret_fields=[], epoch=None, es_index='memex', 
         "query" : { 
             "range" : { 
                 field : {
-                    "from": from_val,
-                    "to": to_val
+                    "gt": from_val,
+                    "lte": to_val
                 }
             },
         },
         "fields": ret_fields
     }
 
-    res = es.search(query, index=es_index, doc_type=es_doc_type, size=500)
+    res = es.search(query, index=es_index, doc_type=es_doc_type, size=pagesCount)
     hits = res['hits']['hits']
 
     results=[]
