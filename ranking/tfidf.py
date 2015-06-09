@@ -24,7 +24,6 @@ class tfidf:
         return [self.corpus[i] for i in sortedAvgIndices[0:top]]
 
     def getIndex(self, terms):
-
         index = []
         for term in terms:
             if term.strip() in self.corpus:
@@ -47,8 +46,9 @@ class tfidf:
         return [self.corpus[x] for x in indices]
 
     def process(self, documents, es_index = 'memex', es_doc_type = 'page', es = None):
-        [data_tfidf, data_tf, data_ttf, corpus] = getTermStatistics(documents, es_index, es_doc_type, es)
+        [data_tfidf, data_tf, data_ttf, corpus, urls] = getTermStatistics(documents, es_index, es_doc_type, es)
         self.tfidfArray = data_tfidf
         self.tfArray = data_tf
         self.ttf = data_ttf
         self.corpus = corpus
+        self.documents = urls
