@@ -29,10 +29,11 @@ def terms_from_es_json(doc, rm_stopwords=True, pos_tags=[]):
 
     for k in valid_words:
         try:
-            terms[k] = {'tfidf':tfidf(docterms[k]["term_freq"], docterms[k]["doc_freq"], n_doc),
-                        'tf': docterms[k]["term_freq"],
-                        'ttf': docterms[k]["ttf"],
-            }
+            if docterms[k]["ttf"] > 1:
+                terms[k] = {'tfidf':tfidf(docterms[k]["term_freq"], docterms[k]["doc_freq"], n_doc),
+                            'tf': docterms[k]["term_freq"],
+                            'ttf': docterms[k]["ttf"],
+                        }
         except KeyError:
             print k, " ", docterms[k]
 
@@ -55,10 +56,7 @@ def getTermStatistics(all_hits, es_index='memex', es_doc_type='page', es=None):
                                    fields=['text'], 
                                    ids=hits)
 
-        #pprint.pprint(term_res['docs'])
-
         for doc in term_res['docs']:
-            #pprint.pprint(doc)
             if doc.get('term_vectors'):
                 if 'text' in doc['term_vectors']:
                     docs.append(doc['_id'])
@@ -66,9 +64,6 @@ def getTermStatistics(all_hits, es_index='memex', es_doc_type='page', es=None):
                     stats.append(res)
                     for k in res.keys():
                         ttf[k] = res[k]['ttf']
-            #else:
-             #   pprint.pprint(doc)
-        #pprint.pprint(tfidfs)
     
     tfidfs = []
     for stat in stats:
@@ -86,8 +81,8 @@ def getTermStatistics(all_hits, es_index='memex', es_doc_type='page', es=None):
     
     v_tfidf = DictVectorizer()
     v_tf = DictVectorizer()
-    
-    result = [v_tfidf.fit_transform(tfidfs), v_tf.fit_transform(tfs), ttf, v_tfidf.get_feature_names()]
+
+    result = [v_tfidf.fit_transform(tfidfs), v_tf.fit_transform(tfs), ttf, v_tfidf.get_feature_names(), docs]
 
     return result
 
