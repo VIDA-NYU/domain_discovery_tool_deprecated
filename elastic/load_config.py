@@ -6,12 +6,10 @@ from pprint import pprint
 from add_documents import add_document
 
 
-def load_config(config_file, es_index='config', es_doc_type='domains', es_host=None):
-    es = None
-    if es_host is None:
+def load_config(config_file, es_index='config', es_doc_type='domains', es=None):
+
+    if es is None:
         es = ElasticSearch('http://localhost:9200/')
-    else:
-        es = ElasticSearch(es_host)
 
     with open(config_file) as data_file:
         data = json.load(data_file)
@@ -44,9 +42,9 @@ if __name__ == "__main__":
     else:
         es_doc_type = 'domains'
 
+    es = None
     if len(sys.argv)>4:    
         es_host = sys.argv[4]
-    else:
-        es_host = ('http://localhost:9200/')
-    
-    load_config(config_file, es_index, es_doc_type, es_host)
+        es = ElasticSearch(es_host)
+        
+    load_config(config_file, es_index, es_doc_type, es)
