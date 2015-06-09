@@ -47,11 +47,11 @@ def download(inputfile, es_index = "memex", es_doc_type = "page", es_host="http:
   print comm
 
   p=Popen(comm, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT)
-  output, errors = p.communicate()
-  print output
-  if not (errors == None):
-    print '*' * 80, '\n\n\n'  
-    print errors
+  # output, errors = p.communicate()
+  # print output
+  # if not (errors == None):
+  #   print '*' * 80, '\n\n\n'  
+  #   print errors
   
 def main(argv):
   if len(argv) != 1:
