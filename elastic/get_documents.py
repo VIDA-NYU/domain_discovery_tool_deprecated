@@ -17,7 +17,7 @@ def get_documents(terms, term_field, fields=["text"], es_index='memex', es_doc_t
                 },
                 "fields": fields
             }
-        
+            
             res = es.search(query, 
                             index=es_index,
                             doc_type=es_doc_type)
@@ -42,7 +42,7 @@ def get_documents(terms, term_field, fields=["text"], es_index='memex', es_doc_t
 #   ["url", "x", "y", "tag", "retrieved"],
 #   ...
 # ]
-def get_most_recent_documents(opt_maxNumberOfPages = 1000, fields = [], opt_filter = None, es_index = 'memex', es_doc_type = 'page', es = None):
+def get_most_recent_documents(opt_maxNumberOfPages = 200, fields = [], opt_filter = None, es_index = 'memex', es_doc_type = 'page', es = None):
     if es is None:
         es = ElasticSearch('http://localhost:9200')
 
