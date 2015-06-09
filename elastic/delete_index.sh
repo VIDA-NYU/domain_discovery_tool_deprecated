@@ -8,10 +8,17 @@ fi
 
 if [ $# -gt 1 ]
 then
-    ELASTIC=$2
+    TYPE=$2
+else
+    TYPE=page
+fi
+
+if [ $# -gt 2 ]
+then
+    ELASTIC=$3
 else
     ELASTIC=http://localhost:9200
 fi
 echo $INDEX
 
-curl -XDELETE "$ELASTIC/$INDEX/"; echo
+curl -XDELETE "$ELASTIC/$INDEX/$TYPE"; echo
