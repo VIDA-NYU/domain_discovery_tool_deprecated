@@ -228,7 +228,9 @@ class CrawlerModel:
     pos_urls = term_search('tag', ['Relevant'], self._activeCrawlerIndex, self._docType, self.es)
     pos_urls_found = True
     if len(pos_urls) == 0:
-      pos_urls = get_all_ids(self._activeCrawlerIndex, self._docType, self.es)
+      #pos_urls = get_all_ids(self._activeCrawlerIndex, self._docType, self.es)
+      p_urls = get_most_recent_documents(fields=['url'], es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=self.es)
+      pos_urls = [record['url'][0] for record in p_urls]
       pos_urls_found = False
 
     if len(pos_urls) > 1:
@@ -250,7 +252,7 @@ class CrawlerModel:
       neg_urls = term_search('tag', ['Irrelevant'], self._activeCrawlerIndex, self._docType, self.es)
       neg_freq = {}
       if len(neg_urls) > 1:
-        pprint(neg_urls)
+
         tfidf_neg = tfidf.tfidf(neg_urls, self._activeCrawlerIndex, self._docType, es_server)
         ttfs_neg = tfidf_neg.getTtf()
         total_neg_tf = np.sum(ttfs_neg.values())
@@ -292,9 +294,14 @@ class CrawlerModel:
                                        self._filter, self._activeCrawlerIndex, self._docType, \
                                        self.es)
 
+    last_downloaded_url_epoch = None
     docs = []
     for i, hit in enumerate(hits):
-      doc = ["", 0, 0, [], 0]
+      if last_downloaded_url_epoch is None:
+        if not hit.get('retrieved') is None:
+          last_downloaded_url_epoch = hit['retrieved'][0]
+
+      doc = ["", 0, 0, []]
       if not hit.get('url') is None:
         doc[0] = hit['url'][0]
       if not hit.get('x') is None:
@@ -303,26 +310,22 @@ class CrawlerModel:
         doc[2] = hit['y'][0]
       if not hit.get('tag') is None:
         doc[3] = hit['tag'][0].split(';')
-      if not hit.get('retrieved') is None:
-        doc[4] = hit['retrieved'][0]
-      docs.append(doc)
 
-    # Gets last downloaded url epoch from top result (most recent one).
-    last_downloaded_url_epoch = 0
+      docs.append(doc)                                                                                                                     
+
     if len(docs) > 0:
-      last_downloaded_url_epoch = docs[0][4]
-
       # Prepares results: computes projection.
-      # TODO(Yamuna): Update x, y for pages after projection is done.
+      # Update x, y for pages after projection is done.
       projectionData = self.projectPages(docs)
+      
+      format = '%Y-%m-%dT%H:%M:%S.%f'
+      if '+' in last_downloaded_url_epoch:
+        format = '%Y-%m-%dT%H:%M:%S.%f+0000'
 
-      # TODO(Yamuna): Fill x and y returned by projection.
-      #crawlermodeladapter.runpcasklearn(pos_data, pc_count)
+      last_download_epoch = CrawlerModel.convert_to_epoch(datetime.strptime(last_downloaded_url_epoch, format))
 
-      last_download_epoch = CrawlerModel.convert_to_epoch(datetime.strptime(last_downloaded_url_epoch, '%Y-%m-%dT%H:%M:%S.%f'))
       return {\
-              'last_downloaded_url_epoch': last_download_epoch,
-              #'pages': [page[:4] for page in docs]
+              'last_downloaded_url_epoch':  last_download_epoch,
               'pages': projectionData
             }
     else:
@@ -333,8 +336,6 @@ class CrawlerModel:
     # TODO(Yamuna): Issue boostPages on running crawler defined by active crawlerId.
     i = 0
     print 3 * '\n', 'boosted pages', str(pages), 3 * '\n'
-
-
 
   # Fetches snippets for a given term.
   def getTermSnippets(self, term):
@@ -440,8 +441,6 @@ class CrawlerModel:
     
     download("results.txt", self._activeCrawlerIndex, self._docType, os.environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in os.environ else 'http://localhost:9200')
 
-
-
   # Applies a filter to crawler results, e.g. 'ebola disease'
   def applyFilter(self, terms):
     # The filter is just cached, and should be used in getPages (always) and getPagesSummary
@@ -459,6 +458,7 @@ class CrawlerModel:
     
     # TODO(Yamuna): compute tfidf for pages, compute projection, fill x, y.
     urls = [page[0] for page in pages]
+
     [data,_,_,_,urls] = self.term_tfidf(urls)
     
     pca_count = 2
