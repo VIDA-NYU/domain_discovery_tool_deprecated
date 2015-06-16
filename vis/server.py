@@ -74,6 +74,19 @@ class Page:
     self._crawler.setActiveCrawler(crawlerId)
 
 
+  @cherrypy.expose
+  def getAvailableProjectionAlgorithms(self):
+    res = self._crawler.getAvailableProjectionAlgorithms()
+    cherrypy.response.headers["Content-Type"] = "application/json;"
+    return json.dumps(res)
+
+
+
+  # Changes the active crawler to be monitored.
+  @cherrypy.expose
+  def setActiveProjectionAlg(self, algId):
+    self._crawler.setActiveProjectionAlg(algId)
+
 
   # Submits a web query for a list of terms, e.g. 'ebola disease'
   @cherrypy.expose
@@ -181,24 +194,6 @@ class Page:
   @cherrypy.expose
   def setTermsTag(self, terms, tag, applyTagFlag):
     self._crawler.setTermsTag(terms, tag, applyTagFlag)
-
-
-
-
-  # TODO(Yamuna): from here on we need to discuss the best strategy.
-  ##########
-  ##########
-  ##########
-  ##########
-  ##########
-  ##########
-  ##########
-  ##########
-
-
-
-
-
 
   # Extracts terms with current labels state.
   @cherrypy.expose

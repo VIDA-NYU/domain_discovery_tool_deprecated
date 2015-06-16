@@ -84,6 +84,8 @@ CrawlerVis.prototype.initSignalSlotsSeedCrawler = function() {
   // TODO(cesar): review function calls to see if all slots/UI elements are created correctly.
   SigSlots.connect(
     __sig__.available_crawlers_list_loaded, this, this.createSelectForAvailableCrawlers);
+  SigSlots.connect(
+    __sig__.available_proj_alg_list_loaded, this, this.createSelectForAvailableProjectionAlgorithms);
   SigSlots.connect(__sig__.new_pages_summary_fetched, this, this.onLoadedNewPagesSummarySeedCrawler);
   SigSlots.connect(
     __sig__.previous_pages_summary_fetched, this, this.onLoadedPreviousPagesSummarySeedCrawler);
@@ -109,6 +111,7 @@ CrawlerVis.prototype.initSignalSlotsSeedCrawler = function() {
 // Initial components setup for seed crawler use.
 CrawlerVis.prototype.initUICrawler = function() {
   this.loadAvailableCrawlers();
+  this.loadAvailableProjectionAlgorithms();
   this.initWordlist();
   this.initStatslist();
   this.initFilterStatslist();
@@ -177,6 +180,7 @@ CrawlerVis.prototype.initUICrawler = function() {
 // Initial components setup for crawler use.
 CrawlerVis.prototype.initUISeedCrawler = function() {
   this.loadAvailableCrawlers();
+  this.loadAvailableProjectionAlgorithms();
   this.initWordlist();
   this.initStatslist();
   this.initFilterStatslist();
@@ -252,6 +256,43 @@ CrawlerVis.prototype.setActiveCrawler = function(crawlerId) {
   // Applies filter and cap.
   var terms = d3.select('#filter_box').node().value;
   this.applyFilter(terms);
+};
+
+
+// Creates select with available projection algorithms.
+CrawlerVis.prototype.createSelectForAvailableProjectionAlgorithms = function(data) {
+  var vis = this;
+  var selectBox = d3.select('#selectProjectionAlgorithm').on('change', function() {
+    var algId = d3.select(this).node().value;
+    vis.setActiveProjectionAlg(algId);
+  });
+  var getElementValue = function(d) {
+    return d.name;
+  };
+  var options = selectBox.selectAll('option').data(data);
+  options.enter().append('option');
+  options
+    .attr('value', getElementValue)
+    .text(function(d, i) {
+      return d.name;
+    });
+
+  // Manually triggers change of value.
+  var algId = getElementValue(data[0]);
+  vis.setActiveProjectionAlg(algId);
+};
+
+
+// Loads list of available projection algorithms.
+CrawlerVis.prototype.loadAvailableProjectionAlgorithms = function() {
+  DataAccess.loadAvailableProjectionAlgorithms();
+};
+
+
+// Sets active projection algorithm.
+CrawlerVis.prototype.setActiveProjectionAlg = function(algId) {
+  // Changes active crawler and forces update.
+  DataAccess.setActiveProjectionAlg(algId);
 };
 
 

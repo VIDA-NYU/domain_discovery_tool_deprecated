@@ -80,6 +80,14 @@ p {
   font-size: 12px;
 }
 
+#selectProjectionAlgorithm {
+  -webkit-appearance: menulist-button;
+  margin-top: 10px;
+  margin-left: 10px;
+  height: 30px;
+  font-size: 12px;
+}
+
 #wordlist {
   width: 100%;
   height: 365px;

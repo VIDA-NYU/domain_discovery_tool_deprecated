@@ -13,6 +13,7 @@
 var SigSlots = (function() {
   ////// Signals definition is centralized here.
   __sig__.available_crawlers_list_loaded = function(crawlers) {};
+  __sig__.available_proj_alg_list_loaded = function(proj_alg) {};
   __sig__.new_pages_summary_fetched = function(summary, isFilter) {};
   __sig__.previous_pages_summary_fetched = function(summary, isFilter) {};
   __sig__.terms_summary_fetched = function(summary) {};

@@ -12,6 +12,7 @@ var DataAccess = (function() {
   var lastUpdate = 0;
   var lastSummary = 0;
   var currentCrawler = undefined;
+  var currentProjAlg = undefined;
   var loadingSummary = false;
   var updating = false;
   var loadingPages = false;
@@ -58,6 +59,11 @@ var DataAccess = (function() {
     __sig__.emit(__sig__.available_crawlers_list_loaded, crawlers);
   };
 
+  // Processes loaded list of available projection algorithms.
+  var onAvailableProjAlgLoaded = function(proj_alg) {
+    __sig__.emit(__sig__.available_proj_alg_list_loaded, proj_alg);
+  };
+
   // Processes loaded term snippets.
   var onLoadedTermsSnippets = function(snippetsData) {
     __sig__.emit(__sig__.terms_snippets_loaded, snippetsData);
@@ -75,6 +81,13 @@ var DataAccess = (function() {
   // Runs async post query for current crawler.
   var runQueryForCurrentCrawler = function(query, args, onCompletion, doneCb) {
     if (currentCrawler !== undefined) {
+      runQuery(query, args, onCompletion, doneCb);
+    }
+  };
+
+  // Runs async post query for current crawler.
+  var runQueryForCurrentProjAlg = function(query, args, onCompletion, doneCb) {
+    if (currentProjAlg !== undefined) {
       runQuery(query, args, onCompletion, doneCb);
     }
   };
@@ -117,6 +130,16 @@ var DataAccess = (function() {
   pub.setActiveCrawler = function(crawlerId) {
     currentCrawler = crawlerId;
     runQuery('/setActiveCrawler', {'crawlerId': crawlerId});
+  };
+  // Returns public interface.
+  // Gets available crawlers from backend.
+  pub.loadAvailableProjectionAlgorithms = function() {
+    runQuery('/getAvailableProjectionAlgorithms', {}, onAvailableProjAlgLoaded);
+  };
+  // Sets current crawler Id.
+  pub.setActiveProjectionAlg = function(algId) {
+    currentProjAlg = algId;
+    runQuery('/setActiveProjectionAlg', {'algId': algId});
   };
   // Queries the web for terms (used in Seed Crawler mode).
   pub.queryWeb = function(terms) {
