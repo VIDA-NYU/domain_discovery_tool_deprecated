@@ -2,6 +2,7 @@ import math
 import time
 import os
 from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE
 import numpy as np
 from random import random, randint
 from pprint import pprint
@@ -32,9 +33,13 @@ class CrawlerModel:
   def __init__(self):
     self.es = None
     self._activeCrawlerIndex = None
+    self._activeProjectionAlg = None
     self._docType = None
     self._filter = None
     self._pagesCap = int(10E2)
+    self.projectionsAlg = {'PCA': self.pca,
+                           't-SNE': self.tsne
+                         }
 
     # TODO(Yamuna): delete when not returning random data anymore.
     self._randomTerms = {
@@ -54,7 +59,6 @@ class CrawlerModel:
   #   ...
   # ]
   def getAvailableCrawlers(self):
-    # TODO(Yamuna): Fix to point to correct elastic search.
     # Initializes elastic search.
     self.es = ElasticSearch( \
     os.environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in os.environ else 'http://localhost:9200')
@@ -64,7 +68,8 @@ class CrawlerModel:
     return \
     [{'id': d['index'], 'name': d['domain_name'], 'creation': d['timestamp']} for d in domains]
 
-
+  def getAvailableProjectionAlgorithms(self):
+    return [{'name': key} for key in self.projectionsAlg.keys()]
 
   # Returns a list of available seed crawlers in the format:
   # [
@@ -87,6 +92,9 @@ class CrawlerModel:
   def setActiveCrawler(self, crawlerId):
     self._activeCrawlerIndex = crawlerId
     self._filter = None
+
+  def setActiveProjectionAlg(self, algId):
+    self._activeProjectionAlg = algId
 
   # Returns number of pages downloaded between ts1 and ts2 for active crawler.
   # ts1 and ts2 are Unix epochs (seconds after 1970).
@@ -223,8 +231,10 @@ class CrawlerModel:
     es_server = Elasticsearch( \
     os.environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in os.environ else 'http://localhost:9200')
 
+    pos_terms = term_search('tag', ['Positive'], self._activeCrawlerIndex, 'terms', self.es)
+    neg_terms = term_search('tag', ['Negative'], self._activeCrawlerIndex, 'terms', self.es)
+    
     terms = []
-
     pos_urls = term_search('tag', ['Relevant'], self._activeCrawlerIndex, self._docType, self.es)
     pos_urls_found = True
     if len(pos_urls) == 0:
@@ -237,7 +247,14 @@ class CrawlerModel:
       
       tfidf_pos = tfidf.tfidf(pos_urls, self._activeCrawlerIndex, self._docType, es_server)
       extract_terms_h = extract_terms.extract_terms(tfidf_pos)
-      top_terms = extract_terms_h.getTopTerms(opt_maxNumberOfTerms)
+      
+      top_terms = []
+      if pos_terms:
+        [ranked_terms, scores] = extract_terms_h.results(pos_terms)
+        top_terms = [ term for term in ranked_terms if (term not in neg_terms)]
+        top_terms = top_terms[0:opt_maxNumberOfTerms]
+      else:
+        top_terms = extract_terms_h.getTopTerms(opt_maxNumberOfTerms)
 
       tags = get_documents(top_terms, 'term', ['tag'], self._activeCrawlerIndex, 'terms', self.es)
 
@@ -316,8 +333,9 @@ class CrawlerModel:
     if len(docs) > 0:
       # Prepares results: computes projection.
       # Update x, y for pages after projection is done.
-      projectionData = self.projectPages(docs)
-      
+
+      projectionData = self.projectPages(docs, self._activeProjectionAlg)
+
       format = '%Y-%m-%dT%H:%M:%S.%f'
       if '+' in last_downloaded_url_epoch:
         format = '%Y-%m-%dT%H:%M:%S.%f+0000'
@@ -450,17 +468,19 @@ class CrawlerModel:
 
 
   # Projects pages.
-  def projectPages(self, pages):
-    return self.pcaProjectPages(pages)
+  def projectPages(self, pages, projectionType='TSNE'):
+    return self.projectionsAlg[projectionType](pages)
     
-  # Projects pages with PCA.
-  def pcaProjectPages(self, pages):
+  # Projects pages with PCA
+  def pca(self, pages):
     
-    # TODO(Yamuna): compute tfidf for pages, compute projection, fill x, y.
     urls = [page[0] for page in pages]
-
     [data,_,_,_,urls] = self.term_tfidf(urls)
     
+    #Convert to binary
+    data = data.astype(bool)
+    data = data.astype(int)
+
     pca_count = 2
     pcadata = CrawlerModel.runPCASKLearn(data, pca_count)
 
@@ -477,6 +497,32 @@ class CrawlerModel:
       print 'INDEX OUT OF BOUNDS ',i
     return pages
 
+  # Projects pages with TSNE
+  def tsne(self, pages):
+    
+    urls = [page[0] for page in pages]
+    [data,_,_,_,urls] = self.term_tfidf(urls)
+
+    #Convert to binary
+    data = data.astype(bool)
+    data = data.astype(int)
+    
+    tsne_count = 2
+    tsnedata = CrawlerModel.runTSNESKLearn(data, tsne_count)
+
+    try:
+      results = []
+      i = 0
+      for page in pages:
+        if page[0] in urls:
+          page[1] = tsnedata[1][i][0]
+          page[2] = tsnedata[1][i][1]
+          i = i + 1
+          results.append(page)
+    except IndexError:
+      print 'INDEX OUT OF BOUNDS ',i
+    return pages
+
   def term_tfidf(self, urls):
     es_server = Elasticsearch( \
     os.environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in os.environ else 'http://localhost:9200')
@@ -487,8 +533,14 @@ class CrawlerModel:
   @staticmethod
   def runPCASKLearn(X, pc_count = None):
     pca = PCA(n_components=pc_count)
-    pca.fit(X)
-    return [pca.explained_variance_ratio_.tolist(), pca.transform(X).tolist()]
+    #pca.fit(X)
+    #return [pca.explained_variance_ratio_.tolist(), pca.fit_transform(X).tolist()]
+    return [None, pca.fit_transform(X).tolist()]
+
+  @staticmethod
+  def runTSNESKLearn(X, pc_count = None):
+    tsne = TSNE(n_components=pc_count, random_state=0, metric='cosine')
+    return [None, tsne.fit_transform(X).tolist()]
 
   @staticmethod
   def convert_to_epoch(dt):
