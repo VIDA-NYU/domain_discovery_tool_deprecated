@@ -1,0 +1,12 @@
+{
+    "terms" : {
+	"_id" : {
+            "path" : "term"
+        },
+	"properties" : {
+	    "term" : {"type" : "string"},
+	    "tf" : {"type" : "integer"},
+	    "tag" : {"type" : "string"}
+	}
+    }
+}
