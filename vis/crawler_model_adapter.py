@@ -41,6 +41,9 @@ class CrawlerModelAdapter:
   def setActiveCrawler(self, crawlerId):
     self._crawlerModel.setActiveCrawler(crawlerId)
 
+  # Changes the active projection algorithm to be monitored.
+  def setActiveProjectionAlg(self, algId):
+    self._crawlerModel.setActiveProjectionAlg(algId)
 
 
   # Submits a web query for a list of terms, e.g. 'ebola disease'
@@ -80,13 +83,9 @@ class CrawlerModelAdapter:
   def getTermsSummary(self):
     return self._crawlerModel.getTermsSummaryCrawler()
 
-
-
   # Sets limit to pages returned by @getPages.
   def setPagesCountCap(self, pagesCap):
     self._crawlerModel.setPagesCountCap(pagesCap)
-
-
 
   # Returns most recent downloaded pages.
   # Returns dictionary in the format:
@@ -143,14 +142,16 @@ class SeedCrawlerModelAdapter(CrawlerModelAdapter):
 
   # Returns a list of available seed crawlers sorted by name, creation date, in the format:
   # [
-  #   {'id': crawlerId, 'name': crawlerName, 'creation': epochInSecondsOfFirstDownloadedURL},
-  #   {'id': crawlerId, 'name': crawlerName, 'creation': epochInSecondsOfFirstDownloadedURL},
+  #   {'name': crawlerName, 'creation': epochInSecondsOfFirstDownloadedURL},
+  #   {'name': crawlerName, 'creation': epochInSecondsOfFirstDownloadedURL},
   #   ...
   # ]
   def getAvailableCrawlers(self):
     crawlers = self._crawlerModel.getAvailableSeedCrawlers()
     return sorted(crawlers, key = lambda c: (c['name'], c['creation']))
 
+  def getAvailableProjectionAlgorithms(self):
+    return self._crawlerModel.getAvailableProjectionAlgorithms()
 
 
   # Returns number of pages downloaded between ts1 and ts2 for active crawler.
