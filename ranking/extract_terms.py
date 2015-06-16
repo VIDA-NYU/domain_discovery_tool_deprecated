@@ -13,9 +13,11 @@ class extract_terms:
         
     def results(self,query_terms):
         
-        [_, _, d] = self.table.getTfidfArray()
+        [urls, corpus, d] = self.table.getTfidfArray()
+        
+        d = d.toarray()
 
-        query_index = self.table.getIndex(query_terms)
+        query_index = self.getIndex(corpus, query_terms)
 
         #Normalise the data
         col_sum_d = np.sum(d,axis=0)    
@@ -25,7 +27,7 @@ class extract_terms:
 
         # documents other than the relevant documents
         index = [x for x in range(0,len(data)) if x not in query_index]
-
+        
         subquery_data = data[query_index,:]
         other_data = data[index,:]
 
@@ -52,6 +54,16 @@ class extract_terms:
 
         ranked_scores = [score[rank_index[i]] for i in range(0, len(score))]
         return [ranked_terms,ranked_scores]
+
+    def getIndex(self, corpus, query_terms):
+        indices = []
+        for term in query_terms:
+            try:
+                indices.append(corpus.index(term))
+            except ValueError:
+                pass
+        return indices
+        
 
 def main(argv):
     if len(argv) != 2:
