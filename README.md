@@ -65,6 +65,7 @@ Create an image using the Dockerfile. Run the following command in the root fold
 
 Run the app using the Docker image that you just built:
 
+    docker run -i -p 8084:8084 -p 9200:9200 -t domain_discovery_tool /domain_discovery_tool/run_demo.sh
 	sudo docker run -i -p 8084:8084 -t domain_discovery_tool /bin/sh -c 'service elasticsearch start; cd domain_discovery_tool/elastic && sleep 10 && bash create_config_index.sh && cd .. && fab runvis'
 
 To see the app running, go to:
