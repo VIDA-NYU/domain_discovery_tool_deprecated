@@ -250,12 +250,11 @@ CrawlerVis.prototype.loadAvailableCrawlers = function() {
 
 // Sets active crawler.
 CrawlerVis.prototype.setActiveCrawler = function(crawlerId) {
-  // Changes active crawler and forces update.
-  DataAccess.setActiveCrawler(crawlerId);
-
-  // Applies filter and cap.
-  var terms = d3.select('#filter_box').node().value;
-  this.applyFilter(terms);
+    // Changes active crawler and forces update.
+    DataAccess.setActiveCrawler(crawlerId);
+    
+    d3.select('#filter_box').node().value = "";
+    DataAccess.update();
 };
 
 
