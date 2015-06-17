@@ -646,23 +646,17 @@ div#urlBgMask {
 }
 
 #filter_cap select {
-	top-margin: 5px;
-  width: 180px;
+    top-margin: 5px;
+    width: 180px;
 }
+
+.urlive-title, .urlive-description {display:block}
+
+
+
+
+
 /*
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #terms_panel {
   width: 540px;
