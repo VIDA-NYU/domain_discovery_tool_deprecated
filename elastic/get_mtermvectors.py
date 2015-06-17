@@ -47,8 +47,8 @@ def getTermStatistics(all_hits, es_index='memex', es_doc_type='page', es=None):
     docs = []
 
     ttf = {}
-    for i in range(0, len(all_hits), 100):
-        hits = all_hits[i:i+100]
+    for i in range(0, len(all_hits), 10):
+        hits = all_hits[i:i+10]
 
         term_res = es.mtermvectors(index=es_index,
                                    doc_type=es_doc_type,
