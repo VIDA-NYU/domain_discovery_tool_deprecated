@@ -9,3 +9,8 @@ config.conf
 class
 results.txt
 *.pyc
+*~
+*.#*
+*#*
+*.bak
+*log
