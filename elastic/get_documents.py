@@ -1,12 +1,15 @@
 #!/usr/bin/python
 from pyelasticsearch import ElasticSearch
+from pprint import pprint
+from os import environ
 
 def get_documents(terms, term_field, fields=["text"], es_index='memex', es_doc_type='page', es=None):
     if es is None:
         es = ElasticSearch('http://localhost:9200/')
 
+    results = {}
+
     if len(terms) > 0:
-        results = {}
 
         for term in terms:
             query = {
@@ -35,13 +38,34 @@ def get_documents(terms, term_field, fields=["text"], es_index='memex', es_doc_t
             
     return results
 
+
+def get_more_like_this(urls, pageCount=200, es_index='memex', es_doc_type='page', es=None):
+    if es is None:
+        es = ElasticSearch('http://localhost:9200/')
+        
+    docs = [{"_index": es_index, "_type": es_doc_type, "_id": url} for url in urls]
+
+    stopwords = []
+    with open(environ['DDT_HOME']+'/elastic/stopwords.txt', 'r') as f:
+        stopwords = [word.strip() for word in f.readlines()] 
+
+    query = {
+        "query":{
+            "more_like_this": {
+                "fields" : ["text"],
+                "docs": docs,
+                "min_term_freq": 1,
+                "stop_words": stopwords
+            }
+        },
+        "fields": ["url"],
+        "size": pageCount
+    }
+
+    res = es.search(query=query, index = es_index, doc_type = es_doc_type)
             
-# Returns most recent documents in the format:
-# [
-#   ["url", "x", "y", "tag", "retrieved"],
-#   ["url", "x", "y", "tag", "retrieved"],
-#   ...
-# ]
+    return [hit['_id'] for hit in res['hits']['hits']]
+
 def get_most_recent_documents(opt_maxNumberOfPages = 200, fields = [], opt_filter = None, es_index = 'memex', es_doc_type = 'page', es = None):
     if es is None:
         es = ElasticSearch('http://localhost:9200')
@@ -81,7 +105,7 @@ def get_most_recent_documents(opt_maxNumberOfPages = 200, fields = [], opt_filte
 
     return results
 
-def get_all_ids(es_index = 'memex', es_doc_type = 'page', es = None):
+def get_all_ids(pageCount = 100000, es_index = 'memex', es_doc_type = 'page', es = None):
     if es is None:
         es = ElasticSearch('http://localhost:9200')
 
@@ -92,7 +116,7 @@ def get_all_ids(es_index = 'memex', es_doc_type = 'page', es = None):
         "fields": ['url']
     }
     
-    res = es.search(query, index = es_index, doc_type = es_doc_type, size = 100000)
+    res = es.search(query, index = es_index, doc_type = es_doc_type, size = pageCount)
     hits = res['hits']['hits']
     
     urls = []
