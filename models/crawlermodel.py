@@ -1,33 +1,33 @@
-import math
 import time
-import os
+from datetime import datetime
+from pprint import pprint
+
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
+
 import numpy as np
 from random import random, randint
-from pprint import pprint
+
 from subprocess import call
 from subprocess import Popen
 from subprocess import PIPE
+
 from os import chdir, listdir, environ
 from os.path import isfile, join, exists
-import shutil
-import sys
-from datetime import datetime
 
-from seeds_generator.download import download, decode
-from seeds_generator.concat_nltk import get_bag_of_words
 
 from pyelasticsearch import ElasticSearch
 from elasticsearch import Elasticsearch
+
+from seeds_generator.download import download, decode
+from seeds_generator.concat_nltk import get_bag_of_words
 from elastic.get_config import get_available_domains
 from elastic.search_documents import get_context, term_search, search, range
 from elastic.add_documents import add_document, update_document
 from elastic.get_mtermvectors import getTermStatistics
-from elastic.get_documents import get_most_recent_documents, get_documents, get_all_ids
+from elastic.get_documents import get_most_recent_documents, get_documents, get_all_ids, get_more_like_this
+from elastic.aggregations import get_significant_terms
 from ranking import tfidf, rank, extract_terms
-
-
 
 class CrawlerModel:
   def __init__(self):
@@ -61,8 +61,8 @@ class CrawlerModel:
   def getAvailableCrawlers(self):
     # Initializes elastic search.
     self.es = ElasticSearch( \
-    os.environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in os.environ else 'http://localhost:9200')
-    self._docType = os.environ['ELASTICSEARCH_DOC_TYPE'] if 'ELASTICSEARCH_DOC_TYPE' in os.environ else 'page'
+    environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in environ else 'http://localhost:9200')
+    self._docType = environ['ELASTICSEARCH_DOC_TYPE'] if 'ELASTICSEARCH_DOC_TYPE' in environ else 'page'
 
     domains = get_available_domains(self.es)
     return \
@@ -80,8 +80,8 @@ class CrawlerModel:
   def getAvailableSeedCrawlers(self):
     # Initializes elastic search.
     self.es = ElasticSearch( \
-    os.environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in os.environ else 'http://localhost:9200')
-    self._docType = os.environ['ELASTICSEARCH_DOC_TYPE'] if 'ELASTICSEARCH_DOC_TYPE' in os.environ else 'page'
+    environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in environ else 'http://localhost:9200')
+    self._docType = environ['ELASTICSEARCH_DOC_TYPE'] if 'ELASTICSEARCH_DOC_TYPE' in environ else 'page'
 
     domains = get_available_domains(self.es)
     return \
@@ -229,59 +229,75 @@ class CrawlerModel:
   def getTermsSummarySeedCrawler(self, opt_maxNumberOfTerms = 50):
 
     es_server = Elasticsearch( \
-    os.environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in os.environ else 'http://localhost:9200')
+    environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in environ else 'http://localhost:9200')
 
     pos_terms = term_search('tag', ['Positive'], self._activeCrawlerIndex, 'terms', self.es)
     neg_terms = term_search('tag', ['Negative'], self._activeCrawlerIndex, 'terms', self.es)
     
     terms = []
     pos_urls = term_search('tag', ['Relevant'], self._activeCrawlerIndex, self._docType, self.es)
-    pos_urls_found = True
-    if len(pos_urls) == 0:
-      #pos_urls = get_all_ids(self._activeCrawlerIndex, self._docType, self.es)
-      p_urls = get_most_recent_documents(fields=['url'], es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=self.es)
-      pos_urls = [record['url'][0] for record in p_urls]
-      pos_urls_found = False
 
+    if self._filter is None:
+      urls = []
+      if len(pos_urls) > 0:
+        urls = get_more_like_this(pos_urls, 500,  self._activeCrawlerIndex, self._docType, self.es)
+      else:
+        urls = get_all_ids(1000, self._activeCrawlerIndex, self._docType, self.es)
+            
+      if len(urls) > 1:
+      
+        tfidf_all = tfidf.tfidf(urls, self._activeCrawlerIndex, self._docType, es_server)
+        extract_terms_all = extract_terms.extract_terms(tfidf_all)
+      
+        top_terms = []
+        if pos_terms:
+          [ranked_terms, scores] = extract_terms_all.results(pos_terms)
+          top_terms = [ term for term in ranked_terms if (term not in neg_terms)]
+          top_terms = top_terms[0:opt_maxNumberOfTerms]
+        else:
+          top_terms = extract_terms_all.getTopTerms(opt_maxNumberOfTerms)
+    else:
+      filter_terms = self._filter.split(' ')
+      top_terms = get_significant_terms(filter_terms, termCount=opt_maxNumberOfTerms, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=self.es)
+
+    tags = get_documents(top_terms, 'term', ['tag'], self._activeCrawlerIndex, 'terms', self.es)
+
+    pos_freq = {}
     if len(pos_urls) > 1:
-      
       tfidf_pos = tfidf.tfidf(pos_urls, self._activeCrawlerIndex, self._docType, es_server)
-      extract_terms_h = extract_terms.extract_terms(tfidf_pos)
-      
-      top_terms = []
-      if pos_terms:
-        [ranked_terms, scores] = extract_terms_h.results(pos_terms)
-        top_terms = [ term for term in ranked_terms if (term not in neg_terms)]
-        top_terms = top_terms[0:opt_maxNumberOfTerms]
-      else:
-        top_terms = extract_terms_h.getTopTerms(opt_maxNumberOfTerms)
+      [_,corpus,ttfs_pos] = tfidf_pos.getTfArray()
+      total_pos_tf = np.sum(ttfs_pos.toarray(), axis=0)
+      total_pos = np.sum(total_pos_tf)
+      pos_freq={}
+      for key in top_terms:
+        try:
+          pos_freq[key] = (float(total_pos_tf[corpus.index(key)])/total_pos)
+        except ValueError:
+          pos_freq[key] = 0
+    else:
+      pos_freq = { key: 0 for key in top_terms }      
 
-      tags = get_documents(top_terms, 'term', ['tag'], self._activeCrawlerIndex, 'terms', self.es)
+    neg_urls = term_search('tag', ['Irrelevant'], self._activeCrawlerIndex, self._docType, self.es)
+    neg_freq = {}
+    if len(neg_urls) > 1:
+      tfidf_neg = tfidf.tfidf(neg_urls, self._activeCrawlerIndex, self._docType, es_server)
+      [_,corpus,ttfs_neg] = tfidf_neg.getTfArray()
+      total_neg_tf = np.sum(ttfs_neg.toarray(), axis=0)
+      total_neg = np.sum(total_neg_tf)
+      neg_freq={}
+      for key in top_terms:
+        try:
+          neg_freq[key] = (float(total_neg_tf[corpus.index(key)])/total_neg)
+        except ValueError:
+          neg_freq[key] = 0
+    else:
+      neg_freq = { key: 0 for key in top_terms }      
 
-      pos_freq = {}
-      if pos_urls_found:
-        ttfs_pos = tfidf_pos.getTtf()
-        total_pos_tf = np.sum(ttfs_pos.values())
-        pos_freq = { key: 0 if ttfs_pos.get(key) is None else (float(ttfs_pos.get(key))/total_pos_tf) for key in top_terms }      
-      else:
-        pos_freq = { key: 0 for key in top_terms }      
-
-      neg_urls = term_search('tag', ['Irrelevant'], self._activeCrawlerIndex, self._docType, self.es)
-      neg_freq = {}
-      if len(neg_urls) > 1:
-
-        tfidf_neg = tfidf.tfidf(neg_urls, self._activeCrawlerIndex, self._docType, es_server)
-        ttfs_neg = tfidf_neg.getTtf()
-        total_neg_tf = np.sum(ttfs_neg.values())
-        neg_freq = { key: 0 if ttfs_neg.get(key) is None else (float(ttfs_neg.get(key))/total_neg_tf) for key in top_terms }      
-      else:
-        neg_freq = { key: 0 for key in top_terms }      
-
-      for term in top_terms:
-        entry = [term, pos_freq[term], neg_freq[term], []]
-        if not tags.get(term) is None:
-          entry[3] = tags[term]['tag'].split(';')
-        terms.append(entry)
+    for term in top_terms:
+      entry = [term, pos_freq[term], neg_freq[term], []]
+      if not tags.get(term) is None:
+        entry[3] = tags[term]['tag'].split(';')
+      terms.append(entry)
 
     return terms
 
@@ -300,7 +316,7 @@ class CrawlerModel:
   #   ]
   # }
   def getPages(self):
-
+    
     if self._filter is None:
       hits = get_most_recent_documents(fields=["url", "x", "y", "tag", "retrieved"], 
                                        es_index=self._activeCrawlerIndex,
@@ -310,7 +326,7 @@ class CrawlerModel:
       hits = get_most_recent_documents(self._pagesCap, ["url", "x", "y", "tag", "retrieved"], 
                                        self._filter, self._activeCrawlerIndex, self._docType, \
                                        self.es)
-
+    
     last_downloaded_url_epoch = None
     docs = []
     for i, hit in enumerate(hits):
@@ -457,7 +473,7 @@ class CrawlerModel:
     print output
     print errors
     
-    download("results.txt", self._activeCrawlerIndex, self._docType, os.environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in os.environ else 'http://localhost:9200')
+    download("results.txt", self._activeCrawlerIndex, self._docType, environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in environ else 'http://localhost:9200')
 
   # Applies a filter to crawler results, e.g. 'ebola disease'
   def applyFilter(self, terms):
@@ -525,7 +541,7 @@ class CrawlerModel:
 
   def term_tfidf(self, urls):
     es_server = Elasticsearch( \
-    os.environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in os.environ else 'http://localhost:9200')
+    environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in environ else 'http://localhost:9200')
 
     [data, data_tf, data_ttf , corpus, urls] = getTermStatistics(urls, self._activeCrawlerIndex, self._docType, es_server)
     return [data.toarray(), data_tf, data_ttf, corpus, urls]
