@@ -158,7 +158,7 @@ PagesGallery.prototype.update = function() {
     });
   newItems.selectAll('div.item_info')
     .html(function(item, i) {
-      return gallery.getItemInfo(item, i) + '<div class="snippet"></div>';
+      return '<div class="snippet"></div>' + gallery.getItemInfo(item, i);
     });
   var existingTags = this.cbGetExistingTags ? this.cbGetExistingTags() : [];
   items.each(function(item, i) {
