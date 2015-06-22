@@ -269,6 +269,7 @@ p {
 
 #pages_landscape circle {
   fill: #bbb;
+  stroke-width: 1;
 }
 
 #pages_landscape circle.Positive {
@@ -285,10 +286,12 @@ p {
 
 #pages_landscape circle.Relevant {
   fill: #4B8DF8;
+  stroke-width: 1;
 }
 
 #pages_landscape circle.Irrelevant {
   fill: rgb(244, 68, 110);
+  stroke-width: 1;
 }
 
 #pages_landscape circle.Positive.Relevant,
