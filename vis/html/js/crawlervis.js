@@ -292,6 +292,8 @@ CrawlerVis.prototype.loadAvailableProjectionAlgorithms = function() {
 CrawlerVis.prototype.setActiveProjectionAlg = function(algId) {
   // Changes active crawler and forces update.
   DataAccess.setActiveProjectionAlg(algId);
+
+    DataAccess.update();
 };
 
 
