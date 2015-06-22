@@ -158,7 +158,7 @@ PagesGallery.prototype.update = function() {
     });
   newItems.selectAll('div.item_info')
     .html(function(item, i) {
-      return '<div class="snippet"></div>' + gallery.getItemInfo(item, i);
+      return '<span class="tags"><select class="selectTag"></select></span>' + '<div class="snippet"></div>' + gallery.getItemInfo(item, i);
     });
   var existingTags = this.cbGetExistingTags ? this.cbGetExistingTags() : [];
   items.each(function(item, i) {
@@ -262,8 +262,7 @@ PagesGallery.prototype.update = function() {
  * such as url, tags and container for snippet.
  */
 PagesGallery.prototype.getItemInfo = function(item, i) {
-  return '<h3>' + item.url + '</h3>'
-    + '<span class="tags"><select class="selectTag"></select></span>';
+  return '<h3>' + item.url + '</h3>';
 };
 
 
