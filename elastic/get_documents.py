@@ -115,16 +115,20 @@ def get_all_ids(pageCount = 100000, es_index = 'memex', es_doc_type = 'page', es
         },
         "fields": ['url']
     }
-    
-    res = es.search(query, index = es_index, doc_type = es_doc_type, size = pageCount)
-    hits = res['hits']['hits']
-    
-    urls = []
-    for hit in hits:
-        urls.append(hit['fields']['url'][0])
 
-    return urls
-
+    try:
+        res = es.search(query, index = es_index, doc_type = es_doc_type, size = pageCount)
+        hits = res['hits']['hits']
+    
+        urls = []
+        for hit in hits:
+            urls.append(hit['fields']['url'][0])
+            
+        return urls
+    except IndexMissingException:
+        print 'Index Missing ', es_index
+        return []
+        
 if __name__ == "__main__":
     urls = []
     with open(environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/results.txt', 'r') as f:
