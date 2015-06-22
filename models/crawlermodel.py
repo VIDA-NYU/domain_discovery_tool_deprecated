@@ -4,6 +4,7 @@ from pprint import pprint
 
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
+from sklearn.cluster import KMeans
 
 import numpy as np
 from random import random, randint
@@ -27,7 +28,7 @@ from elastic.add_documents import add_document, update_document
 from elastic.get_mtermvectors import getTermStatistics
 from elastic.get_documents import get_most_recent_documents, get_documents, get_all_ids, get_more_like_this
 from elastic.aggregations import get_significant_terms
-from ranking import tfidf, rank, extract_terms
+from ranking import tfidf, rank, extract_terms, word2vec
 
 class CrawlerModel:
   def __init__(self):
@@ -38,7 +39,8 @@ class CrawlerModel:
     self._filter = None
     self._pagesCap = int(10E2)
     self.projectionsAlg = {'PCA': self.pca,
-                           't-SNE': self.tsne
+                           't-SNE': self.tsne,
+                           'K-Means': self.kmeans,
                          }
 
     # TODO(Yamuna): delete when not returning random data anymore.
@@ -237,6 +239,8 @@ class CrawlerModel:
     terms = []
     pos_urls = term_search('tag', ['Relevant'], self._activeCrawlerIndex, self._docType, self.es)
 
+    top_terms = []
+
     if self._filter is None:
       urls = []
       if len(pos_urls) > 0:
@@ -249,7 +253,6 @@ class CrawlerModel:
         tfidf_all = tfidf.tfidf(urls, self._activeCrawlerIndex, self._docType, es_server)
         extract_terms_all = extract_terms.extract_terms(tfidf_all)
       
-        top_terms = []
         if pos_terms:
           [ranked_terms, scores] = extract_terms_all.results(pos_terms)
           top_terms = [ term for term in ranked_terms if (term not in neg_terms)]
@@ -259,6 +262,9 @@ class CrawlerModel:
     else:
       filter_terms = self._filter.split(' ')
       top_terms = get_significant_terms(filter_terms, termCount=opt_maxNumberOfTerms, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=self.es)
+
+    if not top_terms:  
+      return []
 
     tags = get_documents(top_terms, 'term', ['tag'], self._activeCrawlerIndex, 'terms', self.es)
 
@@ -346,7 +352,7 @@ class CrawlerModel:
 
       docs.append(doc)                                                                                                                     
 
-    if len(docs) > 0:
+    if len(docs) > 1:
       # Prepares results: computes projection.
       # Update x, y for pages after projection is done.
 
@@ -458,7 +464,7 @@ class CrawlerModel:
       update_document(update_entries, 'term', self._activeCrawlerIndex, 'terms', self.es)
 
   # Submits a web query for a list of terms, e.g. 'ebola disease'
-  def queryWeb(self, terms, max_url_count = 1000):
+  def queryWeb(self, terms, max_url_count = 500):
     # TODO(Yamuna): Issue query on the web: results are stored in elastic search, nothing returned
     # here.
     
@@ -491,11 +497,17 @@ class CrawlerModel:
   def pca(self, pages):
     
     urls = [page[0] for page in pages]
-    [data,_,_,_,urls] = self.term_tfidf(urls)
-    
+    #[data,_,_,_,urls] = self.term_tfidf(urls)
+
+    es_server = Elasticsearch( \
+    environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in environ else 'http://localhost:9200')
+
+    w2v = word2vec.word2vec(urls, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=es_server)
+    [urls, data] = w2v.get_word2vec()
+
     #Convert to binary
-    data = data.astype(bool)
-    data = data.astype(int)
+    #data = data.astype(bool)
+    #data = data.astype(int)
 
     pca_count = 2
     pcadata = CrawlerModel.runPCASKLearn(data, pca_count)
@@ -517,11 +529,17 @@ class CrawlerModel:
   def tsne(self, pages):
     
     urls = [page[0] for page in pages]
-    [data,_,_,_,urls] = self.term_tfidf(urls)
+    #[data,_,_,_,urls] = self.term_tfidf(urls)
 
     #Convert to binary
-    data = data.astype(bool)
-    data = data.astype(int)
+    #data = data.astype(bool)
+    #data = data.astype(int)
+
+    es_server = Elasticsearch( \
+    environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in environ else 'http://localhost:9200')
+
+    w2v = word2vec.word2vec(urls, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=es_server)
+    [urls, data] = w2v.get_word2vec()
     
     tsne_count = 2
     tsnedata = CrawlerModel.runTSNESKLearn(data, tsne_count)
@@ -533,6 +551,39 @@ class CrawlerModel:
         if page[0] in urls:
           page[1] = tsnedata[1][i][0]
           page[2] = tsnedata[1][i][1]
+          i = i + 1
+          results.append(page)
+    except IndexError:
+      print 'INDEX OUT OF BOUNDS ',i
+    return pages
+
+  # Projects pages with KMeans
+  def kmeans(self, pages):
+    
+    urls = [page[0] for page in pages]
+
+    #[data,_,_,_,urls] = self.term_tfidf(urls)
+
+    #Convert to binary
+    #data = data.astype(bool)
+    #data = data.astype(int)
+
+    es_server = Elasticsearch( \
+    environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in environ else 'http://localhost:9200')
+
+    w2v = word2vec.word2vec(urls, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=es_server)
+    [urls, data] = w2v.get_word2vec()
+
+    k = 5
+    kmeansdata = CrawlerModel.runKMeansSKLearn(data, k)
+    
+    try:
+      results = []
+      i = 0
+      for page in pages:
+        if page[0] in urls:
+          page[1] = kmeansdata[1][i][0]
+          page[2] = kmeansdata[1][i][1]
           i = i + 1
           results.append(page)
     except IndexError:
@@ -557,6 +608,20 @@ class CrawlerModel:
   def runTSNESKLearn(X, pc_count = None):
     tsne = TSNE(n_components=pc_count, random_state=0, metric='cosine')
     return [None, tsne.fit_transform(X).tolist()]
+
+  @staticmethod
+  def runKMeansSKLearn(X, k = None):
+    kmeans = KMeans(n_clusters=k)
+    clusters = kmeans.fit_predict(X).tolist()
+    cluster_distance = kmeans.fit_transform(X).tolist()
+    coords = []
+    i = 0
+    for cluster in clusters:
+      coord = [cluster+cluster_distance[i][cluster], cluster+cluster_distance[i][cluster]]
+      coords.append(coord)
+      i = i + 1
+
+    return [None, coords]
 
   @staticmethod
   def convert_to_epoch(dt):
