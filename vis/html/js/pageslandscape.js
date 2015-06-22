@@ -21,6 +21,7 @@ var PagesLandscape = function(parentContainerId) {
   this.parentContainerId = parentContainerId;
   this.pagesData = [];
   this.zoomScale = 1.0;
+  this.zoom  = false;
   this.circlesRadius = 5;
 
   // Registers buttons for reranking and extracting terms.
@@ -120,12 +121,12 @@ PagesLandscape.prototype.update = function() {
       .call(xAxisGrid);
   */
 
-  var useZoom = false;
+  var useZoom = true;
   if (useZoom) {
     if (!this.zoom) {
       this.zoomed = function() {
         // Zoom available only when shift is clicked.
-        if (Utils.isKeyPressed(16)) {
+        if (Utils.isKeyPressed(90)) {
           var t = d3.event.translate;
           //t = [0, 0];
           svg.attr('transform', 'translate(' + t + ')scale(' + d3.event.scale + ')');
@@ -135,6 +136,8 @@ PagesLandscape.prototype.update = function() {
         }
       };
       this.zoom = d3.behavior.zoom()
+	  .translate([0,0])
+	  .scale(2)
           .scaleExtent([1, 10])
           .on('zoom', landscape.zoomed);
     }
@@ -222,7 +225,7 @@ PagesLandscape.prototype.update = function() {
       .on('start', function(l) { return landscape.lassoStart.call(landscape, l); })
       .on('draw', function(l) { return landscape.lassoDraw.call(landscape, l); })
       .on('end', function(l) { return landscape.lassoEnd.call(landscape, l); })
-      .isEnabled(function(l) { return !Utils.isKeyPressed(16); });
+      .isEnabled(function(l) { return !Utils.isKeyPressed(90); });
 
     svg.call(this.lasso);
   }
