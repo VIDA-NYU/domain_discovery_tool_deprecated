@@ -49,8 +49,9 @@ var DataAccess = (function() {
   var onMaybeUpdateComplete = function() {
     updating = loadingPages || loadingTerms;
     if (!updating) {
-      __sig__.emit(__sig__.pages_loaded, pages);
-      __sig__.emit(__sig__.terms_summary_fetched, termsSummary);
+	__sig__.emit(__sig__.pages_loaded, pages);
+	__sig__.emit(__sig__.terms_summary_fetched, termsSummary);
+	Utils.setWaitCursorEnabled(false)
     }
   };
 
@@ -151,6 +152,9 @@ var DataAccess = (function() {
   };
   // Loads pages (complete data, including URL, x and y position etc) and terms.
   pub.update = function() {
+
+    Utils.setWaitCursorEnabled(true)
+
     if (!updating && currentCrawler !== undefined) {
       updating = true;
 
