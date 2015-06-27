@@ -141,6 +141,12 @@ def update_document(entries, id_field='url', es_index='memex', es_doc_type='page
             index=es_index, 
             doc_type=es_doc_type)
 
+def refresh(es_index='memex', es_doc_type='page', es=None):
+    if es is None:
+        es = ElasticSearch('http://localhost:9200/')
+
+    es.refresh(es_index)
+
 if __name__ == "__main__":
     if len(sys.argv)>1:
         inputfile = sys.argv[1]
