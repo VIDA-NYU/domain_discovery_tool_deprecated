@@ -1,4 +1,3 @@
-import time
 from datetime import datetime
 from pprint import pprint
 
@@ -24,7 +23,7 @@ from seeds_generator.download import download, decode
 from seeds_generator.concat_nltk import get_bag_of_words
 from elastic.get_config import get_available_domains
 from elastic.search_documents import get_context, term_search, search, range
-from elastic.add_documents import add_document, update_document
+from elastic.add_documents import add_document, update_document, refresh
 from elastic.get_mtermvectors import getTermStatistics
 from elastic.get_documents import get_most_recent_documents, get_documents, get_all_ids, get_more_like_this
 from elastic.aggregations import get_significant_terms
@@ -389,13 +388,24 @@ class CrawlerModel:
   # Adds tag to pages (if applyTagFlag is True) or removes tag from pages (if applyTagFlag is
   # False).
   def setPagesTag(self, pages, tag, applyTagFlag):
+
     entries = []
     if applyTagFlag:
       print '\n\napplied tag ' + tag + ' to pages' + str(pages) + '\n\n'
+      results = get_documents(pages, 'url', ['tag'], self._activeCrawlerIndex, self._docType, self.es)
       for page in pages:
         entry = {}
         entry['url'] = page
-        entry['tag'] = tag
+        if len(results) > 0:
+          if not results.get(page) is None:
+            if results.get(page)['tag']:
+              entry['tag'] = results.get(page)['tag'] +';'+tag
+            else:
+              entry['tag'] = tag
+          else:
+            entry['tag'] = tag
+        else:
+          entry['tag'] = tag
         entries.append(entry)
     else:
       results = get_documents(pages, 'url', ['tag'], self._activeCrawlerIndex, self._docType, self.es)
@@ -405,12 +415,21 @@ class CrawlerModel:
         if len(results) > 0 and not results.get(page) is None:
           if tag in results.get(page)['tag']:
             entry['url'] = page
-            entry['tag'] = ""
+            tags = list(set(results.get(page)['tag'].split(';')))
+            tags.remove(tag)
+            entry['tag'] = ';'.join(tags)
             entries.append(entry)
 
     if entries:
-      update_document(entries, 'url', self._activeCrawlerIndex, self._docType, self.es)
-
+      update_try = 0
+      while (update_try < 10):
+        try:
+          update_document(entries, 'url', self._activeCrawlerIndex, self._docType, self.es)
+          break
+        except BulkError:
+          update_try = update_try + 1
+    
+    refresh(self._activeCrawlerIndex, self.es)
 
   # Adds tag to terms (if applyTagFlag is True) or removes tag from terms (if applyTagFlag is
   # False).
@@ -611,15 +630,15 @@ class CrawlerModel:
 
   @staticmethod
   def runKMeansSKLearn(X, k = None):
-    kmeans = KMeans(n_clusters=k)
+    kmeans = KMeans(n_clusters=k, n_jobs=-1)
     clusters = kmeans.fit_predict(X).tolist()
     cluster_distance = kmeans.fit_transform(X).tolist()
+    cluster_centers = kmeans.cluster_centers_
+
     coords = []
-    i = 0
     for cluster in clusters:
-      coord = [cluster+cluster_distance[i][cluster], cluster+cluster_distance[i][cluster]]
+      coord = [cluster_centers[cluster,0], cluster_centers[cluster, 1]]
       coords.append(coord)
-      i = i + 1
 
     return [None, coords]
 
