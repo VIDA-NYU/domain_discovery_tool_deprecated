@@ -17,7 +17,7 @@ import time
 
 PROJ_ROOT = os.path.dirname(env.real_fabfile)
 env.project_name = 'domain_discovery_tool'
-env.python = 'python' if 'VIRTUAL_ENV' in os.environ else 'bin/python'
+env.python = 'python' if 'VIRTUAL_ENV' in os.environ else '/venv/bin/python'
 env.elastic = os.environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in os.environ else 'http://localhost:9200'
 env.nltk_data = PROJ_ROOT+'/nltk_data';
 env.pythonpath = PROJ_ROOT+'/seeds_generator:.';
@@ -81,14 +81,14 @@ def runvis():
 def create_elastic_mappings():
     "Making sure elastic mappings are created"
     with lcd(PROJ_ROOT + '/elastic'):
-        local('virtualenv .')
+        local('virtualenv /venv')
         local('if sh ./create_index.sh {elastic}|grep :200; then sh ./put_mapping.sh {elastic}; fi'.format(**env))
 
 def make_virtual_env():
     "Make a virtual environment for local dev use"
     with lcd(PROJ_ROOT):
-        local('virtualenv .')
-        local('./bin/pip install -r requirements.txt')
+        local('virtualenv /venv.')
+        local('/venv/bin/pip install -r requirements.txt')
 
 def install_node_packages():
     "Install requirements from NPM."
@@ -119,7 +119,7 @@ def symlink_packages():
         except ImportError:
             missing.append(req)
             continue
-        with lcd(os.path.join(PROJ_ROOT, 'lib', 'python2.7', 'site-packages')):
+        with lcd('/venv/lib/python2.7/site-packages'):
             local('ln -f -s {}'.format(os.path.dirname(module.__file__)))
     if missing:
         abort('Missing python packages: {}'.format(', '.join(missing)))
