@@ -1,12 +1,9 @@
 #!/usr/bin/python
-from elasticsearch import ElasticSearch
-import sys
 from os import environ
 
-es_server = 'http://localhost:9200/'
-if environ.get('ELASTICSEARCH_SERVER'):
-    es_server = environ['ELASTICSEARCH_SERVER']
-es = ElasticSearch(es_server)
+from config import es as default_es
+
+es = default_es
 
 query = {
     "query": {

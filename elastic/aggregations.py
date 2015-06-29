@@ -1,13 +1,11 @@
 #!/usr/bin/python
-from pyelasticsearch import ElasticSearch
-from pprint import pprint
-from os import getcwd, environ
+from os import environ
+from config import es as default_es
 
 def get_significant_terms(terms, field='text', fields=['text'], termCount = 50, es_index='memex', es_doc_type='page', es=None):
     if es is None:
-        es = ElasticSearch("http://localhost:9200")
-    
-    stopwords = []
+        es = default_es
+
     with open(environ['DDT_HOME']+'/elastic/stopwords.txt', 'r') as f:
         stopwords = [word.strip() for word in f.readlines()]
 

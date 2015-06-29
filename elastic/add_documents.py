@@ -1,7 +1,4 @@
 #!/usr/bin/python
-from pyelasticsearch import ElasticSearch
-
-#from tika import tika
 
 from datetime import datetime
 import urlparse
@@ -18,6 +15,8 @@ from tempfile import mkstemp
 from subprocess import Popen, PIPE, STDOUT
 
 import time
+
+from config import es as default_es
 
 def boilerpipe(html):
     try:
@@ -127,7 +126,7 @@ def extract_text(doc, url):
     
 def add_document(entries, es_index='memex', es_doc_type='page', es=None):
     if es is None:
-        es = ElasticSearch('http://localhost:9200/')
+        es = default_es
 
     es.bulk([es.index_op(doc) for doc in entries],
             index = es_index,
@@ -135,11 +134,17 @@ def add_document(entries, es_index='memex', es_doc_type='page', es=None):
 
 def update_document(entries, id_field='url', es_index='memex', es_doc_type='page', es=None):
     if es is None:
-        es = ElasticSearch('http://localhost:9200/')
-    
+        es = default_es
+
     es.bulk([es.update_op(doc, id=doc[id_field], upsert=True) for doc in entries],
             index=es_index, 
             doc_type=es_doc_type)
+
+def refresh(es_index='memex', es_doc_type='page', es=None):
+    if es is None:
+        es = default_es
+
+    es.refresh(es_index)
 
 if __name__ == "__main__":
     if len(sys.argv)>1:

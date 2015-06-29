@@ -14,7 +14,7 @@ echo "Using ElasticSearch at $ELASTICSEARCH_SERVER"
 # setup demo indexes
 echo "Setting up demo data..."
 cd /domain_discovery_tool/elastic
-./create_config_index.sh
+./create_config_index.sh $ELASTICSEARCH_SERVER
 
 ./create_index.sh ebola $ELASTICSEARCH_SERVER
 ./put_mapping.sh ebola page mapping.json $ELASTICSEARCH_SERVER
