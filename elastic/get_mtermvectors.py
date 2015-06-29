@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 from sklearn.feature_extraction import DictVectorizer
 import nltk
-import sys
-import pprint
 import math
-from os import environ
-from elasticsearch import Elasticsearch
+
+from config import es as default_es
 
 ENGLISH_STOPWORDS = set(nltk.corpus.stopwords.words('english'))
 
@@ -41,7 +39,7 @@ def terms_from_es_json(doc, rm_stopwords=True, pos_tags=[]):
 
 def getTermStatistics(all_hits, es_index='memex', es_doc_type='page', es=None):
     if es is None:
-        es = Elasticsearch('http://localhost:9200/')
+        es = default_es
 
     stats = []
     docs = []

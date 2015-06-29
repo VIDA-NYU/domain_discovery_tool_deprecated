@@ -1,15 +1,12 @@
 #!/usr/bin/python
-from pyelasticsearch import ElasticSearch
 import sys
-import urllib2
 import base64
-from os import environ
-from pprint import pprint
 from datetime import datetime
-        
+from config import es as default_es
+
 def search(field, queryStr, es_index='memex', es_doc_type='page', es=None):
     if es is None:
-        es = ElasticSearch("http://localhost:9200")
+        es = default_es
 
     if len(queryStr) > 0:
         query = {
@@ -31,7 +28,7 @@ def search(field, queryStr, es_index='memex', es_doc_type='page', es=None):
 
 def term_search(field, queryStr, es_index='memex', es_doc_type='page', es=None):
     if es is None:
-        es = ElasticSearch("http://localhost:9200")
+        es = default_es
 
     if len(queryStr) > 0:
         query = {
@@ -56,7 +53,7 @@ def term_search(field, queryStr, es_index='memex', es_doc_type='page', es=None):
 
 def get_image(url, es_index='memex', es_doc_type='page', es=None):
     if es is None:
-        es = ElasticSearch("http://localhost:9200")
+        es = default_es
 
     if url:
         query = {
@@ -83,7 +80,7 @@ def get_image(url, es_index='memex', es_doc_type='page', es=None):
 
 def get_context(terms, es_index='memex', es_doc_type='page', es=None):
     if es is None:
-        es = ElasticSearch("http://localhost:9200")
+        es = default_es
 
     if len(terms) > 0:
         query = {
@@ -114,7 +111,7 @@ def get_context(terms, es_index='memex', es_doc_type='page', es=None):
 
 def range(field, from_val, to_val, ret_fields=[], epoch=None, pagesCount = 200, es_index='memex', es_doc_type='page', es=None):
     if es is None:
-        es = ElasticSearch("http://localhost:9200")
+        es = default_es
 
     if not (epoch is None):
         if epoch:

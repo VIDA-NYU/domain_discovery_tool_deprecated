@@ -1,11 +1,10 @@
 #!/usr/bin/python
-from pyelasticsearch import ElasticSearch
-from pprint import pprint
 from os import environ
+from config import es as default_es
 
 def get_documents(terms, term_field, fields=["text"], es_index='memex', es_doc_type='page', es=None):
     if es is None:
-        es = ElasticSearch('http://localhost:9200/')
+        es = default_es
 
     results = {}
 
@@ -41,11 +40,10 @@ def get_documents(terms, term_field, fields=["text"], es_index='memex', es_doc_t
 
 def get_more_like_this(urls, pageCount=200, es_index='memex', es_doc_type='page', es=None):
     if es is None:
-        es = ElasticSearch('http://localhost:9200/')
-        
+        es = default_es
+
     docs = [{"_index": es_index, "_type": es_doc_type, "_id": url} for url in urls]
 
-    stopwords = []
     with open(environ['DDT_HOME']+'/elastic/stopwords.txt', 'r') as f:
         stopwords = [word.strip() for word in f.readlines()] 
 
@@ -68,7 +66,7 @@ def get_more_like_this(urls, pageCount=200, es_index='memex', es_doc_type='page'
 
 def get_most_recent_documents(opt_maxNumberOfPages = 200, fields = [], opt_filter = None, es_index = 'memex', es_doc_type = 'page', es = None):
     if es is None:
-        es = ElasticSearch('http://localhost:9200')
+        es = default_es
 
     query = { 
         "size": opt_maxNumberOfPages,
@@ -107,7 +105,7 @@ def get_most_recent_documents(opt_maxNumberOfPages = 200, fields = [], opt_filte
 
 def get_all_ids(pageCount = 100000, es_index = 'memex', es_doc_type = 'page', es = None):
     if es is None:
-        es = ElasticSearch('http://localhost:9200')
+        es = default_es
 
     query = {
         "query": {

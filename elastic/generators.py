@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-from elasticsearch import Elasticsearch
 from elasticsearch.helpers import scan
 import math
 
