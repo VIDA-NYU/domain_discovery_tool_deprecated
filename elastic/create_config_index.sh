@@ -2,9 +2,9 @@
 
 if [ $# -eq 0 ]
 then
-    ELASTIC=$2
-else
     ELASTIC=http://localhost:9200
+else
+    ELASTIC=$1
 fi
 
 ./create_index.sh config $ELASTIC
