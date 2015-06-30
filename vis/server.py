@@ -52,7 +52,9 @@ class Page:
     self._crawler = SeedCrawlerModelAdapter()
     return open(os.path.join(self._HTML_DIR, u"seedcrawlervis.html"))
 
-
+  @cherrypy.expose
+  def index(self):
+    return self.seedcrawler()
 
   # Returns a list of available crawlers in the format:
   # [
