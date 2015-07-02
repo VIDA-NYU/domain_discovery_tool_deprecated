@@ -14,15 +14,28 @@ echo "Using ElasticSearch at $ELASTICSEARCH_SERVER"
 # setup demo indexes
 echo "Setting up demo data..."
 cd /domain_discovery_tool/elastic
-./create_config_index.sh
+echo "Creating config index"
+./create_config_index.sh $ELASTICSEARCH_SERVER
+echo "Done"
 
+echo "Creating ebola index"
 ./create_index.sh ebola $ELASTICSEARCH_SERVER
+echo "Done"
+echo "Putting ebola page mapping"
 ./put_mapping.sh ebola page mapping.json $ELASTICSEARCH_SERVER
+echo "Done"
+echo "Putting ebola terms mapping"
 ./put_mapping.sh ebola terms mapping_terms.json $ELASTICSEARCH_SERVER
-
+echo "Done"
+echo "Putting gun control index"
 ./create_index.sh gun_control $ELASTICSEARCH_SERVER
+echo "Done"
+echo "Putting gun control page mapping"
 ./put_mapping.sh gun_control page mapping.json $ELASTICSEARCH_SERVER
+echo "Done"
+echo "Putting gun control terms mapping"
 ./put_mapping.sh gun_control terms mapping_terms.json $ELASTICSEARCH_SERVER
+echo "Done"
 
 # run server
 echo "Running server..."

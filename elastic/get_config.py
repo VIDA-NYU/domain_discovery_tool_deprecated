@@ -1,11 +1,10 @@
-from pyelasticsearch import ElasticSearch
-from pprint import pprint
 from datetime import datetime
+from config import es as default_es
 
 def get_available_domains(es=None):
     if es is None:
-        es = ElasticSearch("http://localhost:9200")
-        
+        es = default_es
+
     query = {
         "query": {
             "match_all": {}
