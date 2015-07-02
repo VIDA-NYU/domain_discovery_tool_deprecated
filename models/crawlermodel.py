@@ -368,8 +368,9 @@ class CrawlerModel:
               'last_downloaded_url_epoch':  last_download_epoch,
               'pages': projectionData
             }
+
     else:
-      return {}
+      return {'pages': []}
 
   # Boosts set of pages: crawler exploits outlinks for the given set of pages in active crawler.
   def boostPages(self, pages):

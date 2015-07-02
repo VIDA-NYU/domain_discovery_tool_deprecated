@@ -3,12 +3,190 @@
 
 <html>
   <head>
-    <title>Seed Crawler</title>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <title>Domain Discovery Tool</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://bootflat.github.io/bootflat/css/bootflat.css">
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+
+    <!-- Material Design for Bootstrap -->
+    <!--
+    <link href="https://fezvrasta.github.io/bootstrap-material-design/dist/css/roboto.min.css" rel="stylesheet">
+    <link href="https://fezvrasta.github.io/bootstrap-material-design/dist/css/material-fullpalette.min.css" rel="stylesheet">
+    <link href="https://fezvrasta.github.io/bootstrap-material-design/dist/css/ripples.min.css" rel="stylesheet">
+    -->
+
     <link type="text/css" rel="stylesheet" href="css/d3.slider.css" media="all">
     <link type="text/css" rel="stylesheet" href="css/jquery-ui.css" media="all">
     <link type="text/css" rel="stylesheet" href="css/jquery.urlive.css" media="all">
     <link type="text/css" rel="stylesheet" href="css/crawler-white.css" media="all">
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- Left panel -->
+      <div class="col-md-3" id="left_panel">
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title"><span class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;Crawler</h4>
+          </div>
+          <div class="panel-body">
+            <select id="selectCrawler" style="max-width:100%"></select>
+          </div>
+        </div>
+
+
+        <div class="panel panel-default">
+          
+          <div class="panel-heading">
+            <h4 class="panel-title"><span class="glyphicon glyphicon-globe"></span>&nbsp;&nbsp;Web Search</h4>
+          </div>
+
+          <div class="panel-body">
+            
+            <div id="seed_crawler_info">
+              
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search on the Web..." id="query_box" list="query_box_previous_queries">
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-warning" data-type="last" id="submit_query"><span class="glyphicon glyphicon-search"></span></button>
+                </span>
+              </div>
+              
+              <datalist id='query_box_previous_queries'></datalist>
+
+              <div id="statslist" class="statslist seedcrawler">
+                <svg>
+                  <defs>
+                    <pattern id="pattern-stripe" 
+                      width="4" height="4" 
+                      patternUnits="userSpaceOnUse"
+                      patternTransform="rotate(45)">
+                      <rect width="3" height="6" transform="translate(0,0)" fill="white"></rect>
+                    </pattern>
+                    <mask id="mask-stripe">
+                      <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-stripe)" />
+                    </mask>      
+                  </defs>
+                </svg> 
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="panel panel-default">
+
+          <div class="panel-heading">
+            <h4 class="panel-title"><span class="glyphicon glyphicon-filter"></span>&nbsp;&nbsp;Filter Results</h4>
+          </div>
+
+          <div class="panel-body">
+
+            
+            <div id="filter_panel">
+              
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Filter pages..." id="filter_box" list="filter_box_previous_filters">
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-warning" data-type="last" id="submit_filter"><span class="glyphicon glyphicon-search"></button>
+                </span>
+              </div>
+              <!--
+              <input type="text" id="filter_box" class="query_input" list="filter_box_ous_filters"></input><span id="submit_filter"></span>
+               -->
+
+              <datalist id='filter_box_previous_filters'></datalist>
+              <div id="filter_cap"><span>Cap:</span><span><select id="filter_cap_select"></select><span></div>
+              <div id="filter_statslist" class="statslist">
+                <svg>
+                  <defs>
+                    <pattern id="pattern-stripe" 
+                      width="4" height="4" 
+                      patternUnits="userSpaceOnUse"
+                      patternTransform="rotate(45)">
+                      <rect width="3" height="6" transform="translate(0,0)" fill="white"></rect>
+                    </pattern>
+                    <mask id="mask-stripe">
+                      <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-stripe)" />
+                    </mask>      
+                  </defs>
+                </svg> 
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Middle panel -->
+      <div class="col-md-6" id="middle_panel">
+
+        <div class="row">
+          
+          <div class="col-md-12">
+            <div class="row" style="margin-bottom:5px">
+              
+              <div style="float:left;padding: 0 7px;">
+                Projection Algorithm:<select id="selectProjectionAlgorithm"></select>
+              </div>
+
+              <div style="float:right">
+                <span id="last_update_info_box" class="noselect seedcrawler"></span>
+                <span id="pages_landscape_buttons" class="control_buttons">
+                  <span id="pages_landscape_update" class="btn btn-warning disabled pages_landscape_button noselect">
+                    <span class="glyphicon glyphicon-refresh"></span>
+                  </span>
+                </span>
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div id="pages_landscape_container">
+                <div id="pages_landscape" class="noselect"></div>
+              </div>
+            </div>
+           
+          </div>
+
+        </div>
+
+
+        <div class="row">
+          
+          <!-- <h5>Tags:</h5> -->
+          <div id="tags_items"></div>
+          <div id="pages_panel">
+            <div id="pages_items"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right panel -->
+      <div class="col-md-3" id="right_panel">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title"><span class="glyphicon glyphicon-align-center"></span>&nbsp;&nbsp;Terms</h4>
+          </div>
+          <div class="panel-body">
+            <div id="wordlist" class="seedcrawler noselect"></div>
+            <div id="terms_snippets_viewer" class="terms_interface seedcrawler"></div>
+          </div>
+        </div>
+        
+      </div>
+
+    </div>
+
+    <div id="mask"></div>
+    <div id="urlBgMask"></div>
 
     <script type="text/javascript" src="js/libs/d3.v3.5.5.min.js"></script>
     <script type="text/javascript" src="js/libs/d3.layout.cloud.js"></script>
@@ -33,93 +211,12 @@
     <!--script type="text/javascript" src="js/termsgallery.js"></script-->
     <script type="text/javascript" src="js/utils.js"></script>
     <script type="text/javascript" src="js/wordlist.js"></script>
-  </head>
-
-  <body>
-    <div id="page_container">
-      <!-- Left panel -->
-      <div id="left_panel">
-        <div>
-          Crawler: <select id="selectCrawler"></select>
-        </div>
-        <div id="seed_crawler_info">
-          Query terms:<input type="text" id="query_box" class="query_input" list="query_box_previous_queries"></input><span id="submit_query"></span>
-          <datalist id='query_box_previous_queries'></datalist>
-          <div id="statslist" class="statslist seedcrawler">
-            <svg>
-              <defs>
-                <pattern id="pattern-stripe" 
-                  width="4" height="4" 
-                  patternUnits="userSpaceOnUse"
-                  patternTransform="rotate(45)">
-                  <rect width="3" height="6" transform="translate(0,0)" fill="white"></rect>
-                </pattern>
-                <mask id="mask-stripe">
-                  <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-stripe)" />
-                </mask>      
-              </defs>
-            </svg> 
-          </div>
-        </div>
-
-        <div id="filter_panel">
-          Filter:<input type="text" id="filter_box" class="query_input" list="filter_box_previous_filters"></input><span id="submit_filter"></span>
-          <datalist id='filter_box_previous_filters'></datalist>
-          <div id="filter_cap"><h3>Cap:</h3><span><select id="filter_cap_select"></select><span></div>
-          <div id="filter_statslist" class="statslist">
-            <svg>
-              <defs>
-                <pattern id="pattern-stripe" 
-                  width="4" height="4" 
-                  patternUnits="userSpaceOnUse"
-                  patternTransform="rotate(45)">
-                  <rect width="3" height="6" transform="translate(0,0)" fill="white"></rect>
-                </pattern>
-                <mask id="mask-stripe">
-                  <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-stripe)" />
-                </mask>      
-              </defs>
-            </svg> 
-          </div>
-        </div>
-
-      </div>
-      <!-- Middle panel -->
-      <div id="middle_panel">
-        Pages<span id="last_update_info_box" class="noselect seedcrawler"></span>
-        <span id="pages_landscape_buttons" class="control_buttons">
-          <span id="pages_landscape_update" class="button-img disabled pages_landscape_button noselect">
-            <img src="img/reload.png" width="22px">
-          </span>
-        </span>
-        Tags
-        <div id="pages_landscape_container">
-          <div id="pages_landscape" class="noselect"></div>
-          <div id="tags_items"></div>
-        </div>
-	<div>
-          Projection Algorithms:<select id="selectProjectionAlgorithm"></select>
-        </div>
-        <div id="pages_panel">
-          <div id="pages_items"></div>
-        </div>
-
-      </div>
-      <!-- Right panel -->
-      <div id="right_panel">
-        Terms
-        <div id="wordlist" class="seedcrawler noselect"></div>
-        <div id="terms_snippets_viewer" class="terms_interface seedcrawler"></div>
-      </div>
-    </div>
-    <div id="mask"></div>
-    <div id="urlBgMask"></div>
-
     <script>
       // Initializes main app class after page is loaded.
       window.onload = function() {
         CrawlerVis.buildForSeedCrawler();
       };
     </script>
+
   </body>
 </html>

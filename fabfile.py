@@ -21,7 +21,7 @@ env.python = 'python' if 'VIRTUAL_ENV' in os.environ else 'bin/python'
 env.elastic = os.environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in os.environ else 'http://localhost:9200'
 env.nltk_data = PROJ_ROOT+'/nltk_data';
 env.pythonpath = PROJ_ROOT+'/seeds_generator:.';
-
+env.word2vec = PROJ_ROOT+'/ranking'
 
 @task
 def setup():
@@ -37,6 +37,7 @@ def setup():
     make_settings()
     make_virtual_env()
     install_nltk_data()
+    download_word2vec_file()
     compile_seeds_generator()
     symlink_packages()
     #install_node_packages()
@@ -101,6 +102,12 @@ def install_nltk_data():
         local("if [ ! -d {nltk_data} ]; then mkdir {nltk_data}; fi".format(**env))
         local('if [ ! -d {nltk_data}/chunkers ]; then {python} -m nltk.downloader -d {nltk_data} stopwords brown; fi'.format(**env))
 
+def download_word2vec_file():
+    "Download file that contains word2vec data"
+    print '\nDownloading word2vec file D_cbow_pdw_8B.pkl to ' + env['word2vec']+'\n'
+    with lcd(env['word2vec']), shell_env(PYTHONPATH=env['pythonpath']):
+        if (not os.path.isfile(env['word2vec']+'/D_cbow_pdw_8B.pkl')):
+            local('wget https://s3.amazonaws.com/vida-nyu/DDT/D_cbow_pdw_8B.pkl')
 
 def compile_seeds_generator():
     "Compile the sees generator."

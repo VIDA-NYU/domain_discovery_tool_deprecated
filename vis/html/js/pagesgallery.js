@@ -97,6 +97,7 @@ PagesGallery.prototype.update = function() {
   var newItems = items
     .enter()
       .append('div')
+      .classed('well', true)
       .classed('noselect', true)
       .classed('item', true)
       .on('dblclick', function(item, i) {
@@ -158,7 +159,7 @@ PagesGallery.prototype.update = function() {
     });
   newItems.selectAll('div.item_info')
     .html(function(item, i) {
-      return '<span class="tags"><select class="selectTag"></select></span>' + '<div class="snippet"></div>' + gallery.getItemInfo(item, i);
+      return '<div class="snippet"></div>' + gallery.getItemInfo(item, i);
     });
   var existingTags = this.cbGetExistingTags ? this.cbGetExistingTags() : [];
   items.each(function(item, i) {
@@ -262,7 +263,8 @@ PagesGallery.prototype.update = function() {
  * such as url, tags and container for snippet.
  */
 PagesGallery.prototype.getItemInfo = function(item, i) {
-  return '<h3>' + item.url + '</h3>';
+  return '<span class="item-url"><a target="_blank" href="'+item.url+'"">'+item.url+'</a></span>'
+    + '<span class="tags"><select class="selectTag"></select></span>';
 };
 
 
@@ -315,7 +317,8 @@ PagesGallery.prototype.setPagePreviewEnabled = function(enabled, url, anchorPos)
 
     // TODO: should keep track of width defined in css.
     var iframeWidth = 800;
-    var top = anchorPos[1];
+    //var top = anchorPos[1];
+    var top = '50';
     var left = anchorPos[0] - iframeWidth / 2;
     left = Math.max(0, Math.min(left, window.innerWidth - iframeWidth - 20));
 

@@ -28,9 +28,9 @@ RUN wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1
 RUN sudo /usr/share/elasticsearch/bin/plugin -install mobz/elasticsearch-head
 
 # Setup domain discovery tool using Github repository (master branch)
-RUN git clone -b ahmadia/refactor_es_hardcodes https://github.com/ahmadia/domain_discovery_tool.git
+RUN git clone https://github.com/ViDA-NYU/domain_discovery_tool.git
 RUN cd /domain_discovery_tool && fab setup
-RUN cd /domain_discovery_tool && git pull
+
 # Expose Domain Discovery Tool port
 EXPOSE 8084
 

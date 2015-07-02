@@ -292,8 +292,6 @@ CrawlerVis.prototype.loadAvailableProjectionAlgorithms = function() {
 CrawlerVis.prototype.setActiveProjectionAlg = function(algId) {
   // Changes active crawler and forces update.
   DataAccess.setActiveProjectionAlg(algId);
-
-    DataAccess.update();
 };
 
 
@@ -796,11 +794,9 @@ CrawlerVis.prototype.applyFilter = function(terms) {
   var cap = d3.select('#filter_cap_select').node().value;
   DataAccess.setPagesCountCap(cap);
 
-  if (!!terms){
-      // Applies filter and issues an update automatically.
-      DataAccess.applyFilter(terms);
-      DataAccess.update();
-  }
+  // Applies filter and issues an update automatically.
+  DataAccess.applyFilter(terms);
+  DataAccess.update();
 };
 
 
