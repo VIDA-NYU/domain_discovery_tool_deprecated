@@ -3,7 +3,7 @@ from ConfigParser import ConfigParser
 import json
 import os
 from crawler_model_adapter import *
-
+from threading import Lock
 
 class Page:
   @staticmethod
@@ -30,6 +30,7 @@ class Page:
   def __init__(self):
     # Folder with html content.
     self._HTML_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), u"html")
+    self.lock = Lock()
 
 
   # Access to topics visualization.
@@ -188,7 +189,9 @@ class Page:
   # False).
   @cherrypy.expose
   def setPagesTag(self, pages, tag, applyTagFlag):
+    self.lock.acquire()
     self._crawler.setPagesTag(pages, tag, applyTagFlag)
+    self.lock.release()
 
 
   # Adds tag to terms (if applyTagFlag is True) or removes tag from terms (if applyTagFlag is

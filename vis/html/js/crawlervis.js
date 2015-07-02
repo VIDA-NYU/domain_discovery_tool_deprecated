@@ -796,9 +796,11 @@ CrawlerVis.prototype.applyFilter = function(terms) {
   var cap = d3.select('#filter_cap_select').node().value;
   DataAccess.setPagesCountCap(cap);
 
-  // Applies filter and issues an update automatically.
-  DataAccess.applyFilter(terms);
-  DataAccess.update();
+  if (!!terms){
+      // Applies filter and issues an update automatically.
+      DataAccess.applyFilter(terms);
+      DataAccess.update();
+  }
 };
 
 
