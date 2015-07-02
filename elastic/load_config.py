@@ -1,15 +1,14 @@
 import json
 import sys
-from pyelasticsearch import ElasticSearch
 from datetime import datetime
-from pprint import pprint
 from add_documents import add_document
 
+from config import es as default_es
 
 def load_config(config_file, es_index='config', es_doc_type='domains', es=None):
 
     if es is None:
-        es = ElasticSearch('http://localhost:9200/')
+        es = default_es
 
     with open(config_file) as data_file:
         data = json.load(data_file)
@@ -45,6 +44,7 @@ if __name__ == "__main__":
     es = None
     if len(sys.argv)>4:    
         es_host = sys.argv[4]
+        from pyelasticsearch import ElasticSearch
         es = ElasticSearch(es_host)
         
     load_config(config_file, es_index, es_doc_type, es)
