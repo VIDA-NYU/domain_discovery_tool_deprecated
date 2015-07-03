@@ -34,15 +34,17 @@ var DataAccess = (function() {
 
   // Processes loaded pages.
   var onPagesLoaded = function(loadedPages) {
-    pages = loadedPages;
-    lastUpdate = loadedPages['last_downloaded_url_epoch'];
-    loadingPages = false;
+      pages = loadedPages;
+      lastUpdate = loadedPages['last_downloaded_url_epoch'];
+      loadingPages = false;
+      document.getElementById("status_panel").innerHTML = 'Processing pages...Done';
   };
 
   // Processes loaded terms summaries.
   var onTermsSummaryLoaded = function(summary) {
-    termsSummary = summary;
-    loadingTerms = false;
+      termsSummary = summary;
+      loadingTerms = false;
+      document.getElementById("status_panel").innerHTML = 'Processing terms...Done';
   };
 
   // Processes loaded pages and terms.
@@ -51,7 +53,11 @@ var DataAccess = (function() {
     if (!updating) {
 	__sig__.emit(__sig__.pages_loaded, pages);
 	__sig__.emit(__sig__.terms_summary_fetched, termsSummary);
-	Utils.setWaitCursorEnabled(false)
+
+	if (pages['pages'].length == 0)
+	    document.getElementById("status_panel").innerHTML = 'No pages found';
+
+	Utils.setWaitCursorEnabled(false);
     }
   };
 
@@ -60,6 +66,12 @@ var DataAccess = (function() {
     __sig__.emit(__sig__.available_crawlers_list_loaded, crawlers);
   };
 
+  // Called when queryweb is done
+  var onQueryWebDone = function() {
+      Utils.setWaitCursorEnabled(false);
+      document.getElementById("status_panel").innerHTML = 'Downloading pages...see page summary for real-time page download status';
+  };
+ 
   // Processes loaded list of available projection algorithms.
   var onAvailableProjAlgLoaded = function(proj_alg) {
     __sig__.emit(__sig__.available_proj_alg_list_loaded, proj_alg);
@@ -144,7 +156,9 @@ var DataAccess = (function() {
   };
   // Queries the web for terms (used in Seed Crawler mode).
   pub.queryWeb = function(terms) {
-    runQueryForCurrentCrawler('/queryWeb', {'terms': terms});
+      Utils.setWaitCursorEnabled(true);
+      document.getElementById("status_panel").innerHTML = 'Querying the Web...';
+      runQueryForCurrentCrawler('/queryWeb', {'terms': terms}, onQueryWebDone);
   };
   // Applies filter to returned pages and pages result.
   pub.applyFilter = function(terms) {
@@ -152,9 +166,11 @@ var DataAccess = (function() {
   };
   // Loads pages (complete data, including URL, x and y position etc) and terms.
   pub.update = function() {
+    Utils.setWaitCursorEnabled(true);
 
-    Utils.setWaitCursorEnabled(true)
-
+      document.getElementById("status_panel").innerHTML = 'Processing pages and terms...';
+   
+      
     if (!updating && currentCrawler !== undefined) {
       updating = true;
 
