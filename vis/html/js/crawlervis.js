@@ -790,6 +790,9 @@ CrawlerVis.prototype.runQuery = function(terms) {
  * Applies filter.
  */
 CrawlerVis.prototype.applyFilter = function(terms) {
+    
+  document.getElementById("status_panel").innerHTML = 'Applying filter...';
+  
   // Sets cap.
   var cap = d3.select('#filter_cap_select').node().value;
   DataAccess.setPagesCountCap(cap);
