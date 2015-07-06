@@ -96,7 +96,10 @@ class Page:
   def queryWeb(self, terms):
     self._crawler.queryWeb(terms)
 
-
+  # Add crawler
+  @cherrypy.expose
+  def addCrawler(self, index_name):
+    self._crawler.addCrawler(index_name)
 
   # Applies a filter to crawler results, e.g. 'ebola disease'
   @cherrypy.expose

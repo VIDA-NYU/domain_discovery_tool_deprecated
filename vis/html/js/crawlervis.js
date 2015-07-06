@@ -57,6 +57,8 @@ CrawlerVis.buildForSeedCrawler = function() {
 CrawlerVis.prototype.initSignalSlotsCrawler = function() {
   SigSlots.connect(
     __sig__.available_crawlers_list_loaded, this, this.createSelectForAvailableCrawlers);
+  SigSlots.connect(
+    __sig__.available_crawlers_list_reloaded, this, this.reloadSelectForAvailableCrawlers);
   SigSlots.connect(__sig__.new_pages_summary_fetched, this, this.onLoadedNewPagesSummaryCrawler);
   SigSlots.connect(
     __sig__.previous_pages_summary_fetched, this, this.onLoadedPreviousPagesSummaryCrawler);
@@ -85,6 +87,8 @@ CrawlerVis.prototype.initSignalSlotsSeedCrawler = function() {
   SigSlots.connect(
     __sig__.available_crawlers_list_loaded, this, this.createSelectForAvailableCrawlers);
   SigSlots.connect(
+    __sig__.available_crawlers_list_reloaded, this, this.reloadSelectForAvailableCrawlers);
+  SigSlots.connect(
     __sig__.available_proj_alg_list_loaded, this, this.createSelectForAvailableProjectionAlgorithms);
   SigSlots.connect(__sig__.new_pages_summary_fetched, this, this.onLoadedNewPagesSummarySeedCrawler);
   SigSlots.connect(
@@ -103,6 +107,7 @@ CrawlerVis.prototype.initSignalSlotsSeedCrawler = function() {
     __sig__.tag_individual_page_action_clicked, this, this.onTagIndividualPageActionClicked);
 
   SigSlots.connect(__sig__.brushed_pages_changed, this, this.onBrushedPagesChanged);
+  SigSlots.connect(__sig__.add_crawler, this, this.runAddCrawler);
   SigSlots.connect(__sig__.query_enter, this, this.runQuery);
   SigSlots.connect(__sig__.filter_enter, this, this.runFilter);
 };
@@ -213,6 +218,7 @@ CrawlerVis.prototype.initUISeedCrawler = function() {
   this.initTermsSnippetsViewer();
   this.initFilterButton();
   this.initQueryWebButton();
+  this.initAddCrawlerButton();
   this.createSelectForFilterPageCap();
 };
 
@@ -239,6 +245,37 @@ CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
   // Manually triggers change of value.
   var crawlerId = getElementValue(data[0]);
   vis.setActiveCrawler(crawlerId);
+};
+
+// Reload select with available crawlers.
+CrawlerVis.prototype.reloadSelectForAvailableCrawlers = function(data) {
+    var vis = this;
+    var selectBox = d3.select('#selectCrawler');
+
+    var getElementValue = function(d) {
+	return d.id;
+    };
+    var options = selectBox.selectAll('option').data(data);
+    options.enter().append('option');
+    options
+	.attr('value', getElementValue)
+	.text(function(d, i) {
+	    // TODO(cesar): Builds string with crawler's name and creation date.
+	    return d.name + ' (' + Utils.parseFullDate(d.creation) + ')';
+	});
+
+    $(document).ready(function() {
+	// Generate the index name from the entered crawler name
+	var index_name = d3.select('#crawler_index_name').node().value;
+	var crawlerId = index_name.toLowerCase().split(' ').join("_");
+	$("#selectCrawler option[value="+crawlerId+"]").prop('selected', true);
+    });
+
+    // Generate the index name from the entered crawler name
+    var index_name = d3.select('#crawler_index_name').node().value;
+    var crawlerId = index_name.toLowerCase().split(' ').join("_");
+    vis.setActiveCrawler(crawlerId);
+    document.getElementById("status_panel").innerHTML = 'Added new crawler - ' + index_name;
 };
 
 
@@ -717,6 +754,17 @@ CrawlerVis.prototype.onBrushedPagesChanged = function(indexOfSelectedItems) {
 
 
 /**
+ * Initializes addc crawler button 
+ */
+CrawlerVis.prototype.initAddCrawlerButton = function() {
+  d3.select('#submit_add_crawler')
+    .on('click', function() {
+      var value = d3.select('#crawler_index_name').node().value;
+      __sig__.emit(__sig__.add_crawler, value);
+    });
+};
+
+/**
  * Initializes query web button (useful for seed crawler vis).
  */
 CrawlerVis.prototype.initQueryWebButton = function() {
@@ -773,6 +821,13 @@ CrawlerVis.prototype.applyQuery = function(terms) {
   DataAccess.queryWeb(terms);
 };
 
+/**
+ * Add crawler
+ */
+CrawlerVis.prototype.addCrawler = function(index_name) {
+  DataAccess.addCrawler(index_name);
+};
+
 
 /**
  * Runs query (useful for seed crawler vis).
@@ -783,6 +838,13 @@ CrawlerVis.prototype.runQuery = function(terms) {
   // Appends terms to history of queries.
   this.queriesList =
     this.appendToHistory('#query_box_previous_queries', this.queriesList, terms);
+};
+
+/**
+ * Runs query (useful for seed crawler vis).
+ */
+CrawlerVis.prototype.runAddCrawler = function(index_name) {
+  this.addCrawler(index_name);
 };
 
 

@@ -50,7 +50,9 @@ class CrawlerModelAdapter:
   def queryWeb(self, terms):
     self._crawlerModel.queryWeb(terms)
 
-
+  # Add crawler
+  def addCrawler(self, index_name):
+    self._crawlerModel.addCrawler(index_name)
 
   # Applies a filter to crawler results, e.g. 'ebola disease'
   def applyFilter(self, terms):

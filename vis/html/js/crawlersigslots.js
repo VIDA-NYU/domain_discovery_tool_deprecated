@@ -13,6 +13,7 @@
 var SigSlots = (function() {
   ////// Signals definition is centralized here.
   __sig__.available_crawlers_list_loaded = function(crawlers) {};
+  __sig__.available_crawlers_list_reloaded = function(crawlers) {};
   __sig__.available_proj_alg_list_loaded = function(proj_alg) {};
   __sig__.new_pages_summary_fetched = function(summary, isFilter) {};
   __sig__.previous_pages_summary_fetched = function(summary, isFilter) {};
@@ -27,6 +28,7 @@ var SigSlots = (function() {
   __sig__.tag_individual_page_action_clicked = function(tag, actionType, page) {};
   __sig__.brushed_pages_changed = function(pagesIndices) {};
 
+  __sig__.add_crawler = function(index_name) {};
   __sig__.query_enter = function(terms) {};
   __sig__.filter_enter = function(terms) {};
 

@@ -66,6 +66,16 @@ var DataAccess = (function() {
     __sig__.emit(__sig__.available_crawlers_list_loaded, crawlers);
   };
 
+  // Reloads list of available crawlers.
+  var onAvailableCrawlersReLoaded = function(crawlers) {
+    __sig__.emit(__sig__.available_crawlers_list_reloaded, crawlers);
+  };
+
+  // Reloads the select crawlers when the new crawler is added
+  var onCrawlerAdded = function(){
+      pub.reloadAvailableCrawlers()
+  }
+
   // Called when queryweb is done
   var onQueryWebDone = function() {
       Utils.setWaitCursorEnabled(false);
@@ -139,6 +149,13 @@ var DataAccess = (function() {
   pub.loadAvailableCrawlers = function() {
     runQuery('/getAvailableCrawlers', {}, onAvailableCrawlersLoaded);
   };
+
+  // Returns public interface.
+  // Gets available crawlers from backend.
+  pub.reloadAvailableCrawlers = function() {
+    runQuery('/getAvailableCrawlers', {}, onAvailableCrawlersReLoaded);
+  };
+
   // Sets current crawler Id.
   pub.setActiveCrawler = function(crawlerId) {
     currentCrawler = crawlerId;
@@ -160,6 +177,13 @@ var DataAccess = (function() {
       document.getElementById("status_panel").innerHTML = 'Querying the Web...';
       runQueryForCurrentCrawler('/queryWeb', {'terms': terms}, onQueryWebDone);
   };
+
+  // Add new crawler
+  pub.addCrawler = function(index_name) {
+      document.getElementById("status_panel").innerHTML = 'Adding new crawler - ' + index_name;
+      runQueryForCurrentCrawler('/addCrawler', {'index_name': index_name}, onCrawlerAdded);
+  }
+
   // Applies filter to returned pages and pages result.
   pub.applyFilter = function(terms) {
     runQueryForCurrentCrawler('/applyFilter', {'terms': terms});

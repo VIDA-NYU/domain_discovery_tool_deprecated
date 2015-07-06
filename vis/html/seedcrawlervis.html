@@ -27,16 +27,35 @@
   </head>
 
   <body>
-    <div class="container">
+    <div class="container-fluid">
       <!-- Left panel -->
       <div class="col-md-3" id="left_panel">
+
+	<div class="panel panel-default">
+	  <!-- Message Panel -->
+	  <div class="panel-heading">
+            <h4 class="panel-title"><span class="glyphicon glyphicon-comment"></span>&nbsp;&nbsp;Status</h4>
+	  </div>
+	  
+	  <div class="panel-body">
+	    <div id="status_panel"></div>
+	  </div>
+	</div>
 
         <div class="panel panel-default">
           <div class="panel-heading">
             <h4 class="panel-title"><span class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;Crawler</h4>
           </div>
           <div class="panel-body">
-            <select id="selectCrawler" style="max-width:100%"></select>
+            <select id="selectCrawler" style="max-width:100%"></select><br><br>
+	    <label for="crawler_index_name">Enter Crawler Name:</label><br>
+
+            <div class="input-group">
+	      <input  type="text" class="form-control" id="crawler_index_name" maxlength="50">
+              <span class="input-group-btn">
+		<button type="button" class="btn btn-warning" data-type="last" id="submit_add_crawler">Add</button>
+              </span>
+	    </div>
           </div>
         </div>
 
@@ -123,16 +142,6 @@
           </div>
         </div>
 
-	<div class="panel panel-default">
-	  <!-- Message Panel -->
-	  <div class="panel-heading">
-            <h4 class="panel-title"><span class="glyphicon glyphicon-comment"></span>&nbsp;&nbsp;Status</h4>
-	  </div>
-	  
-	  <div class="panel-body">
-	    <div id="status_panel"></div>
-	  </div>
-	</div>
       </div>
 
 
