@@ -5,24 +5,20 @@ from add_documents import add_document
 
 from config import es as default_es
 
-def load_config(config_file, es_index='config', es_doc_type='domains', es=None):
+def load_config(entries, es_index='config', es_doc_type='domains', es=None):
 
     if es is None:
         es = default_es
 
-    with open(config_file) as data_file:
-        data = json.load(data_file)
-
-    entries = data['entries']
     updated_entries = []
     for entry in entries:
         if entry.get('timestamp') is None:
             entry['timestamp'] = datetime.utcnow()
         updated_entries.append(entry)
 
-    print updated_entries
-
     add_document(updated_entries, es_index, es_doc_type, es)
+
+    es.refresh(es_index)
 
 if __name__ == "__main__":
 
@@ -48,3 +44,4 @@ if __name__ == "__main__":
         es = ElasticSearch(es_host)
         
     load_config(config_file, es_index, es_doc_type, es)
+
