@@ -28,6 +28,8 @@ from elastic.add_documents import add_document, update_document, refresh
 from elastic.get_mtermvectors import getTermStatistics
 from elastic.get_documents import get_most_recent_documents, get_documents, get_all_ids, get_more_like_this
 from elastic.aggregations import get_significant_terms
+from elastic.create_index import create_index
+from elastic.load_config import load_config
 from ranking import tfidf, rank, extract_terms, word2vec
 
 class CrawlerModel:
@@ -484,6 +486,20 @@ class CrawlerModel:
     if update_entries:
       update_document(update_entries, 'term', self._activeCrawlerIndex, 'terms', self.es)
 
+  # Add crawler
+  def addCrawler(self, index_name):
+    es_server = Elasticsearch( \
+    environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in environ else 'http://localhost:9200')
+    create_index(index_name, es_server)
+    
+    index = '_'.join(index_name.lower().split(' '))
+    entry = { "domain_name": index_name.title(),
+              "index": index
+            }
+    
+    load_config([entry])
+
+    
   # Submits a web query for a list of terms, e.g. 'ebola disease'
   def queryWeb(self, terms, max_url_count = 500):
     # TODO(Yamuna): Issue query on the web: results are stored in elastic search, nothing returned
