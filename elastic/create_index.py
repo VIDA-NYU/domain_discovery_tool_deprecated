@@ -21,7 +21,8 @@ def create_index(es_index='memex', es=None):
                 }
             }
     
-    es_index = '_'.join(es_index.lower().split(' '))
+    fields = es_index.lower().split(' ')
+    es_index = '_'.join([item for item in fields if item not in ''])
 
     res = es.indices.create(index=es_index, body=mappings, ignore=400)
     

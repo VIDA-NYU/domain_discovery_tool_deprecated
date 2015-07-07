@@ -267,16 +267,29 @@ CrawlerVis.prototype.reloadSelectForAvailableCrawlers = function(data) {
     $(document).ready(function() {
 	// Generate the index name from the entered crawler name
 	var index_name = d3.select('#crawler_index_name').node().value;
-	var crawlerId = index_name.toLowerCase().split(' ').join("_");
+	var words = index_name.toLowerCase().split(' ');
+	for(var i = words.length; i--;) {
+          if(words[i] === '') {
+              words.splice(i, 1);
+          }
+	}
+	var crawlerId = words.join("_");
 	$("#selectCrawler option[value="+crawlerId+"]").prop('selected', true);
     });
 
     // Generate the index name from the entered crawler name
     var index_name = d3.select('#crawler_index_name').node().value;
-    var crawlerId = index_name.toLowerCase().split(' ').join("_");
+    var words = index_name.toLowerCase().split(' ');
+    for(var i = words.length; i--;) {
+        if(words[i] === '') {
+            words.splice(i, 1);
+        }
+    }
+    var crawlerId = words.join("_");
     vis.setActiveCrawler(crawlerId);
     document.getElementById("status_panel").innerHTML = 'Added new crawler - ' + index_name;
 };
+
 
 
 // Loads list of available crawlers.

@@ -492,7 +492,9 @@ class CrawlerModel:
     environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in environ else 'http://localhost:9200')
     create_index(index_name, es_server)
     
-    index = '_'.join(index_name.lower().split(' '))
+    fields = index_name.lower().split(' ')
+    index = '_'.join([item for item in fields if item not in ''])
+    index_name = ' '.join([item for item in fields if item not in ''])
     entry = { "domain_name": index_name.title(),
               "index": index
             }
