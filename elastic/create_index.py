@@ -1,8 +1,7 @@
-from elasticsearch import Elasticsearch
 from os import environ
 import json
 
-from config import es as default_es
+from config import es_elastic as default_es
 
 def create_index(es_index='memex', es=None):
     if es is None:
