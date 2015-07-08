@@ -9,6 +9,5 @@ fi
 
 ./create_index.sh config $ELASTIC
 ./put_mapping.sh config domains config.json $ELASTIC
-python load_config.py 
 
 
