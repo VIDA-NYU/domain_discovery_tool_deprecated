@@ -30,11 +30,17 @@ from elastic.get_documents import get_most_recent_documents, get_documents, get_
 from elastic.aggregations import get_significant_terms
 from elastic.create_index import create_index
 from elastic.load_config import load_config
+from elastic.create_config_index import create_config_index
+from elastic.config import es, es_elastic, es_doc_type
+
 from ranking import tfidf, rank, extract_terms, word2vec
+
+
 
 class CrawlerModel:
   def __init__(self):
     self.es = None
+    self.es_elastic = None
     self._activeCrawlerIndex = None
     self._activeProjectionAlg = None
     self._docType = None
@@ -54,6 +60,8 @@ class CrawlerModel:
       'Epidemy': ['Epidemy', 100, 100, []],
     }
 
+    create_config_index()
+
 
 
   # Returns a list of available crawlers in the format:
@@ -64,9 +72,9 @@ class CrawlerModel:
   # ]
   def getAvailableCrawlers(self):
     # Initializes elastic search.
-    self.es = ElasticSearch( \
-    environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in environ else 'http://localhost:9200')
-    self._docType = environ['ELASTICSEARCH_DOC_TYPE'] if 'ELASTICSEARCH_DOC_TYPE' in environ else 'page'
+    self.es = es
+    self.es_elastic = es_elastic
+    self._docType = es_doc_type
 
     domains = get_available_domains(self.es)
     return \
@@ -83,9 +91,9 @@ class CrawlerModel:
   # ]
   def getAvailableSeedCrawlers(self):
     # Initializes elastic search.
-    self.es = ElasticSearch( \
-    environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in environ else 'http://localhost:9200')
-    self._docType = environ['ELASTICSEARCH_DOC_TYPE'] if 'ELASTICSEARCH_DOC_TYPE' in environ else 'page'
+    self.es = es
+    self.es_elastic = es_elastic
+    self._docType = es_doc_type
 
     domains = get_available_domains(self.es)
     return \
@@ -156,7 +164,6 @@ class CrawlerModel:
   #   'Neutral': numNeutralPages,
   # }
   def getPagesSummarySeedCrawler(self, opt_ts1 = None, opt_ts2 = None, opt_applyFilter = False):
-
     # If ts1 not specified, sets it to -Infinity.
     if opt_ts1 is None:
       now = time.localtime(0)
@@ -232,9 +239,6 @@ class CrawlerModel:
   # ]
   def getTermsSummarySeedCrawler(self, opt_maxNumberOfTerms = 50):
 
-    es_server = Elasticsearch( \
-    environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in environ else 'http://localhost:9200')
-
     pos_terms = term_search('tag', ['Positive'], self._activeCrawlerIndex, 'terms', self.es)
     neg_terms = term_search('tag', ['Negative'], self._activeCrawlerIndex, 'terms', self.es)
     
@@ -252,7 +256,7 @@ class CrawlerModel:
             
       if len(urls) > 1:
       
-        tfidf_all = tfidf.tfidf(urls, self._activeCrawlerIndex, self._docType, es_server)
+        tfidf_all = tfidf.tfidf(urls, self._activeCrawlerIndex, self._docType, self.es_elastic)
         extract_terms_all = extract_terms.extract_terms(tfidf_all)
       
         if pos_terms:
@@ -272,7 +276,7 @@ class CrawlerModel:
 
     pos_freq = {}
     if len(pos_urls) > 1:
-      tfidf_pos = tfidf.tfidf(pos_urls, self._activeCrawlerIndex, self._docType, es_server)
+      tfidf_pos = tfidf.tfidf(pos_urls, self._activeCrawlerIndex, self._docType, self.es_elastic)
       [_,corpus,ttfs_pos] = tfidf_pos.getTfArray()
       total_pos_tf = np.sum(ttfs_pos.toarray(), axis=0)
       total_pos = np.sum(total_pos_tf)
@@ -288,7 +292,7 @@ class CrawlerModel:
     neg_urls = term_search('tag', ['Irrelevant'], self._activeCrawlerIndex, self._docType, self.es)
     neg_freq = {}
     if len(neg_urls) > 1:
-      tfidf_neg = tfidf.tfidf(neg_urls, self._activeCrawlerIndex, self._docType, es_server)
+      tfidf_neg = tfidf.tfidf(neg_urls, self._activeCrawlerIndex, self._docType, self.es_elastic)
       [_,corpus,ttfs_neg] = tfidf_neg.getTfArray()
       total_neg_tf = np.sum(ttfs_neg.toarray(), axis=0)
       total_neg = np.sum(total_neg_tf)
@@ -382,6 +386,7 @@ class CrawlerModel:
 
   # Fetches snippets for a given term.
   def getTermSnippets(self, term):
+
     tags = get_documents(term, 'term', ['tag'], self._activeCrawlerIndex, 'terms', self.es)
     tag = []
     if tags:
@@ -488,9 +493,8 @@ class CrawlerModel:
 
   # Add crawler
   def addCrawler(self, index_name):
-    es_server = Elasticsearch( \
-    environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in environ else 'http://localhost:9200')
-    create_index(index_name, es_server)
+
+    create_index(index_name, self.es_elastic)
     
     fields = index_name.lower().split(' ')
     index = '_'.join([item for item in fields if item not in ''])
@@ -498,7 +502,7 @@ class CrawlerModel:
     entry = { "domain_name": index_name.title(),
               "index": index
             }
-    
+
     load_config([entry])
 
     
@@ -538,10 +542,7 @@ class CrawlerModel:
     urls = [page[0] for page in pages]
     #[data,_,_,_,urls] = self.term_tfidf(urls)
 
-    es_server = Elasticsearch( \
-    environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in environ else 'http://localhost:9200')
-
-    w2v = word2vec.word2vec(urls, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=es_server)
+    w2v = word2vec.word2vec(urls, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=self.es_elastic)
     [urls, data] = w2v.get_word2vec()
 
     #Convert to binary
@@ -574,10 +575,7 @@ class CrawlerModel:
     #data = data.astype(bool)
     #data = data.astype(int)
 
-    es_server = Elasticsearch( \
-    environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in environ else 'http://localhost:9200')
-
-    w2v = word2vec.word2vec(urls, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=es_server)
+    w2v = word2vec.word2vec(urls, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=self.es_elastic)
     [urls, data] = w2v.get_word2vec()
     
     tsne_count = 2
@@ -607,10 +605,7 @@ class CrawlerModel:
     #data = data.astype(bool)
     #data = data.astype(int)
 
-    es_server = Elasticsearch( \
-    environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in environ else 'http://localhost:9200')
-
-    w2v = word2vec.word2vec(urls, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=es_server)
+    w2v = word2vec.word2vec(urls, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=self.es_elastic)
     [urls, data] = w2v.get_word2vec()
 
     k = 5
@@ -630,10 +625,8 @@ class CrawlerModel:
     return pages
 
   def term_tfidf(self, urls):
-    es_server = Elasticsearch( \
-    environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in environ else 'http://localhost:9200')
 
-    [data, data_tf, data_ttf , corpus, urls] = getTermStatistics(urls, self._activeCrawlerIndex, self._docType, es_server)
+    [data, data_tf, data_ttf , corpus, urls] = getTermStatistics(urls, self._activeCrawlerIndex, self._docType, self.es_elastic)
     return [data.toarray(), data_tf, data_ttf, corpus, urls]
 
   @staticmethod
