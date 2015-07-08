@@ -6,7 +6,6 @@ python2.7
 /build
 /nltk_data
 config.conf
-class
 results.txt
 *.pyc
 *~
@@ -14,3 +13,6 @@ results.txt
 *#*
 *.bak
 *log
+*.class
+*.jar
+seeds_generator/target/*
