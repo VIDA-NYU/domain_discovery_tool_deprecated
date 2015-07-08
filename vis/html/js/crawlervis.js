@@ -230,64 +230,71 @@ CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
     var crawlerId = d3.select(this).node().value;
     vis.setActiveCrawler(crawlerId);
   });
-  var getElementValue = function(d) {
-    return d.id;
-  };
-  var options = selectBox.selectAll('option').data(data);
-  options.enter().append('option');
-  options
-    .attr('value', getElementValue)
-    .text(function(d, i) {
-      // TODO(cesar): Builds string with crawler's name and creation date.
-      return d.name + ' (' + Utils.parseFullDate(d.creation) + ')';
-    });
-
-  // Manually triggers change of value.
-  var crawlerId = getElementValue(data[0]);
-  vis.setActiveCrawler(crawlerId);
+  if (data.length > 0) {
+      var getElementValue = function(d) {
+	  return d.id;
+      };
+  
+      var options = selectBox.selectAll('option').data(data);
+      options.enter().append('option');
+      options
+	  .attr('value', getElementValue)
+	  .text(function(d, i) {
+	      // TODO(cesar): Builds string with crawler's name and creation date.
+	      return d.name + ' (' + Utils.parseFullDate(d.creation) + ')';
+	  });
+      
+      // Manually triggers change of value.
+      var crawlerId = getElementValue(data[0]);
+      vis.setActiveCrawler(crawlerId);
+  }
+  else document.getElementById("status_panel").innerHTML = 'No crawlers found'
 };
 
 // Reload select with available crawlers.
 CrawlerVis.prototype.reloadSelectForAvailableCrawlers = function(data) {
-    var vis = this;
-    var selectBox = d3.select('#selectCrawler');
-
-    var getElementValue = function(d) {
-	return d.id;
-    };
-    var options = selectBox.selectAll('option').data(data);
-    options.enter().append('option');
-    options
-	.attr('value', getElementValue)
-	.text(function(d, i) {
-	    // TODO(cesar): Builds string with crawler's name and creation date.
-	    return d.name + ' (' + Utils.parseFullDate(d.creation) + ')';
-	});
-
-    $(document).ready(function() {
-	// Generate the index name from the entered crawler name
-	var index_name = d3.select('#crawler_index_name').node().value;
-	var words = index_name.toLowerCase().split(' ');
-	for(var i = words.length; i--;) {
+  if (data.length > 0) {
+      var vis = this;
+      var selectBox = d3.select('#selectCrawler');
+      var getElementValue = function(d) {
+	  return d.id;
+      };
+      
+      var options = selectBox.selectAll('option').data(data);
+      options.enter().append('option');
+      options
+	  .attr('value', getElementValue)
+	  .text(function(d, i) {
+	      // TODO(cesar): Builds string with crawler's name and creation date.
+	      return d.name + ' (' + Utils.parseFullDate(d.creation) + ')';
+	  });
+      
+      $(document).ready(function() {
+	  // Generate the index name from the entered crawler name
+	  var index_name = d3.select('#crawler_index_name').node().value;
+	  var words = index_name.toLowerCase().split(' ');
+	  for(var i = words.length; i--;) {
+              if(words[i] === '') {
+		  words.splice(i, 1);
+              }
+	  }
+	  var crawlerId = words.join("_");
+	  $("#selectCrawler option[value="+crawlerId+"]").prop('selected', true);
+      });
+      
+      // Generate the index name from the entered crawler name
+      var index_name = d3.select('#crawler_index_name').node().value;
+      var words = index_name.toLowerCase().split(' ');
+      for(var i = words.length; i--;) {
           if(words[i] === '') {
               words.splice(i, 1);
           }
-	}
-	var crawlerId = words.join("_");
-	$("#selectCrawler option[value="+crawlerId+"]").prop('selected', true);
-    });
+      }
+      var crawlerId = words.join("_");
+      vis.setActiveCrawler(crawlerId);
+      document.getElementById("status_panel").innerHTML = 'Added new crawler - ' + index_name;
 
-    // Generate the index name from the entered crawler name
-    var index_name = d3.select('#crawler_index_name').node().value;
-    var words = index_name.toLowerCase().split(' ');
-    for(var i = words.length; i--;) {
-        if(words[i] === '') {
-            words.splice(i, 1);
-        }
-    }
-    var crawlerId = words.join("_");
-    vis.setActiveCrawler(crawlerId);
-    document.getElementById("status_panel").innerHTML = 'Added new crawler - ' + index_name;
+  } else  document.getElementById("status_panel").innerHTML = 'No crawlers found'
 };
 
 
@@ -857,7 +864,9 @@ CrawlerVis.prototype.runQuery = function(terms) {
  * Runs query (useful for seed crawler vis).
  */
 CrawlerVis.prototype.runAddCrawler = function(index_name) {
-  this.addCrawler(index_name);
+    if (index_name === "")
+	document.getElementById("status_panel").innerHTML = 'Enter a valid crawler name';
+    else this.addCrawler(index_name);
 };
 
 
