@@ -512,13 +512,17 @@ class CrawlerModel:
     with open('conf/queries.txt','w') as f:
       f.write(terms)
 
-    comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar BingSearch -t " + str(max_url_count)
-    p=Popen(comm, shell=True, stdout=PIPE)
+    comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar BingSearch -t " + str(max_url_count) + \
+           " -i " + self._activeCrawlerIndex + \
+           " -d " + self._docType
+           #" -s " + environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in environ else 'http://localhost:9200'
+
+    p=Popen(comm, shell=True, stderr=PIPE)
     output, errors = p.communicate()
     print output
     print errors
     
-    download("results.txt", self._activeCrawlerIndex, self._docType, environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in environ else 'http://localhost:9200')
+    #download("results.txt", self._activeCrawlerIndex, self._docType, environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in environ else 'http://localhost:9200')
 
   # Applies a filter to crawler results, e.g. 'ebola disease'
   def applyFilter(self, terms):
