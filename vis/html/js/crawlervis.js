@@ -272,6 +272,12 @@ CrawlerVis.prototype.reloadSelectForAvailableCrawlers = function(data) {
       // Generate the index name from the entered crawler name
       var index_name = d3.select('#crawler_index_name').node().value;
 
+      // If just one crawler exists then select that
+      if (data.length === 1){
+	  var crawlerId = getElementValue(data[0]);
+	  vis.setActiveCrawler(crawlerId);
+      }
+      
       document.getElementById("status_panel").innerHTML = 'Added new crawler - ' + index_name;
 
   } else  document.getElementById("status_panel").innerHTML = 'No crawlers found'
