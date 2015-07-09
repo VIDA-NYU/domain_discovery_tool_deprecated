@@ -76,12 +76,6 @@ var DataAccess = (function() {
       pub.reloadAvailableCrawlers()
   }
 
-  // Called when queryweb is done
-  var onQueryWebDone = function() {
-      Utils.setWaitCursorEnabled(false);
-      document.getElementById("status_panel").innerHTML = 'Downloading pages...see page summary for real-time page download status';
-  };
- 
   // Processes loaded list of available projection algorithms.
   var onAvailableProjAlgLoaded = function(proj_alg) {
     __sig__.emit(__sig__.available_proj_alg_list_loaded, proj_alg);
@@ -173,9 +167,8 @@ var DataAccess = (function() {
   };
   // Queries the web for terms (used in Seed Crawler mode).
   pub.queryWeb = function(terms) {
-      Utils.setWaitCursorEnabled(true);
-      document.getElementById("status_panel").innerHTML = 'Querying the Web...';
-      runQueryForCurrentCrawler('/queryWeb', {'terms': terms}, onQueryWebDone);
+      document.getElementById("status_panel").innerHTML = 'Querying the Web...see page summary for real-time page download status';
+      runQueryForCurrentCrawler('/queryWeb', {'terms': terms});
   };
 
   // Add new crawler
