@@ -54,7 +54,7 @@ var DataAccess = (function() {
 	__sig__.emit(__sig__.pages_loaded, pages);
 	__sig__.emit(__sig__.terms_summary_fetched, termsSummary);
 
-	if (pages['pages'].length == 0)
+	if (pages['pages'].length === 0)
 	    document.getElementById("status_panel").innerHTML = 'No pages found';
 
 	Utils.setWaitCursorEnabled(false);
