@@ -97,7 +97,7 @@ var DataAccess = (function() {
 
   // Runs async post query for current crawler.
   var runQueryForCurrentCrawler = function(query, args, onCompletion, doneCb) {
-    if (currentCrawler !== undefined) {
+    if (currentCrawler !== undefined || query === "/addCrawler") {
       runQuery(query, args, onCompletion, doneCb);
     }
   };
@@ -156,7 +156,7 @@ var DataAccess = (function() {
     runQuery('/setActiveCrawler', {'crawlerId': crawlerId});
   };
   // Returns public interface.
-  // Gets available crawlers from backend.
+  // Gets available projection algorithms.
   pub.loadAvailableProjectionAlgorithms = function() {
     runQuery('/getAvailableProjectionAlgorithms', {}, onAvailableProjAlgLoaded);
   };
@@ -181,6 +181,7 @@ var DataAccess = (function() {
   pub.applyFilter = function(terms) {
     runQueryForCurrentCrawler('/applyFilter', {'terms': terms});
   };
+
   // Loads pages (complete data, including URL, x and y position etc) and terms.
   pub.update = function() {
     Utils.setWaitCursorEnabled(true);

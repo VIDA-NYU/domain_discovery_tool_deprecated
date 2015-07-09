@@ -6,6 +6,7 @@ es - an Elasticsearch instance connected to es_server
 '''
 
 from pyelasticsearch import ElasticSearch
+from elasticsearch import Elasticsearch
 from os import environ
 
 
@@ -16,4 +17,11 @@ else:
 
 print "ElasticSearch endpoint: %s" % es_server
 es = ElasticSearch(es_server)
+es_elastic = Elasticsearch(es_server)
+
+if environ.get('ELASTICSEARCH_DOC_TYPE'):
+    es_doc_type = environ['ELASTICSEARCH_DOC_TYPE']
+else:
+    es_doc_type = 'page'
+
 

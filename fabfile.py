@@ -33,7 +33,6 @@ def setup():
     """
     if os.getenv('VIRTUAL_ENV') or hasattr(sys, 'real_prefix'):
         abort(red('Deactivate any virtual environments before continuing.'))
-    create_elastic_mappings()
     make_settings()
     make_virtual_env()
     install_nltk_data()
@@ -79,11 +78,12 @@ def runvis():
                 DDT_HOME=PROJ_ROOT):
         local('{python} vis/server.py'.format(**env))
 
-def create_elastic_mappings():
-    "Making sure elastic mappings are created"
-    with lcd(PROJ_ROOT + '/elastic'):
-        local('virtualenv .')
-        local('if sh ./create_index.sh {elastic}|grep :200; then sh ./put_mapping.sh {elastic}; fi'.format(**env))
+@task
+def install_dependencies():
+    make_virtual_env()
+    symlink_packages()
+    install_nltk_data()
+    download_word2vec_file()
 
 def make_virtual_env():
     "Make a virtual environment for local dev use"
@@ -105,10 +105,11 @@ def install_nltk_data():
 def download_word2vec_file():
     "Download file that contains word2vec data"
     print '\nDownloading word2vec file D_cbow_pdw_8B.pkl to ' + env['word2vec']+'\n'
+    local("if [ ! -d {word2vec} ]; then mkdir {word2vec}; fi".format(**env))
     with lcd(env['word2vec']), shell_env(PYTHONPATH=env['pythonpath']):
         if (not os.path.isfile(env['word2vec']+'/D_cbow_pdw_8B.pkl')):
             local('wget https://s3.amazonaws.com/vida-nyu/DDT/D_cbow_pdw_8B.pkl')
-
+@task
 def compile_seeds_generator():
     "Compile the sees generator."
     with lcd(PROJ_ROOT+'/seeds_generator'):
