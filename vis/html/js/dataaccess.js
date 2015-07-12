@@ -48,7 +48,7 @@ var DataAccess = (function() {
   };
 
   // Processes loaded pages and terms.
-  var onMaybeUpdateComplete = function() {
+  var onMaybeUpdateCompleteOld = function() {
     updating = loadingPages || loadingTerms;
     if (!updating) {
 	__sig__.emit(__sig__.pages_loaded, pages);
@@ -60,6 +60,24 @@ var DataAccess = (function() {
 	Utils.setWaitCursorEnabled(false);
     }
   };
+
+  // Processes loaded pages and terms.
+  var onMaybeUpdateComplete = function() {
+      updating = loadingPages || loadingTerms;
+      if (!loadingPages) {
+	  __sig__.emit(__sig__.pages_loaded, pages);
+	  
+	  if (pages['pages'].length === 0)
+	      document.getElementById("status_panel").innerHTML = 'No pages found';
+	  
+	  Utils.setWaitCursorEnabled(false);
+      }
+      
+      if (!loadingTerms) {
+      	__sig__.emit(__sig__.terms_summary_fetched, termsSummary);
+      }
+  };
+
 
   // Processes loaded list of available crawlers.
   var onAvailableCrawlersLoaded = function(crawlers) {
