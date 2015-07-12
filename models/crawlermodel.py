@@ -25,7 +25,7 @@ from seeds_generator.concat_nltk import get_bag_of_words
 from elastic.get_config import get_available_domains
 from elastic.search_documents import get_context, term_search, search, range
 from elastic.add_documents import add_document, update_document, refresh
-from elastic.get_mtermvectors import getTermStatistics
+from elastic.get_mtermvectors import getTermStatistics, getTermFrequency
 from elastic.get_documents import get_most_recent_documents, get_documents, get_all_ids, get_more_like_this
 from elastic.aggregations import get_significant_terms
 from elastic.create_index import create_index
@@ -35,9 +35,10 @@ from elastic.config import es, es_elastic, es_doc_type
 
 from ranking import tfidf, rank, extract_terms, word2vec
 
-
-
 class CrawlerModel:
+
+  w2v = word2vec.word2vec()
+
   def __init__(self):
     self.es = None
     self.es_elastic = None
@@ -45,7 +46,8 @@ class CrawlerModel:
     self._activeProjectionAlg = None
     self._docType = None
     self._filter = None
-    self._pagesCap = int(10E2)
+    self._pagesCap = 500
+    self._pagesCapTerms = 1000
     self.projectionsAlg = {'PCA': self.pca,
                            't-SNE': self.tsne,
                            'K-Means': self.kmeans,
@@ -61,9 +63,7 @@ class CrawlerModel:
     }
 
     create_config_index()
-
-
-
+    
   # Returns a list of available crawlers in the format:
   # [
   #   {'id': crawlerId, 'name': crawlerName, 'creation': epochInSecondsOfFirstDownloadedURL},
@@ -185,7 +185,7 @@ class CrawlerModel:
                                           self.es)
     else:
       results = \
-      range('retrieved',opt_ts1, opt_ts2, ['url','tag'], True, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=self.es)
+      range('retrieved',opt_ts1, opt_ts2, ['url','tag'], True, self._pagesCap, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=self.es)
 
     relevant = 0
     irrelevant = 0
@@ -250,13 +250,13 @@ class CrawlerModel:
     if self._filter is None:
       urls = []
       if len(pos_urls) > 0:
-        urls = get_more_like_this(pos_urls, 500,  self._activeCrawlerIndex, self._docType, self.es)
+        urls = get_more_like_this(pos_urls, self._pagesCapTerms,  self._activeCrawlerIndex, self._docType, self.es)
       else:
-        urls = get_all_ids(1000, self._activeCrawlerIndex, self._docType, self.es)
+        urls = get_all_ids(self._pagesCapTerms, self._activeCrawlerIndex, self._docType, self.es)
             
       if len(urls) > 1:
       
-        tfidf_all = tfidf.tfidf(urls, self._activeCrawlerIndex, self._docType, self.es_elastic)
+        tfidf_all = tfidf.tfidf(urls, self.w2v, self._activeCrawlerIndex, self._docType, self.es_elastic)
         extract_terms_all = extract_terms.extract_terms(tfidf_all)
       
         if pos_terms:
@@ -276,7 +276,7 @@ class CrawlerModel:
 
     pos_freq = {}
     if len(pos_urls) > 1:
-      tfidf_pos = tfidf.tfidf(pos_urls, self._activeCrawlerIndex, self._docType, self.es_elastic)
+      tfidf_pos = tfidf.tfidf(pos_urls, self.w2v, self._activeCrawlerIndex, self._docType, self.es_elastic)
       [_,corpus,ttfs_pos] = tfidf_pos.getTfArray()
       total_pos_tf = np.sum(ttfs_pos.toarray(), axis=0)
       total_pos = np.sum(total_pos_tf)
@@ -292,7 +292,7 @@ class CrawlerModel:
     neg_urls = term_search('tag', ['Irrelevant'], self._activeCrawlerIndex, self._docType, self.es)
     neg_freq = {}
     if len(neg_urls) > 1:
-      tfidf_neg = tfidf.tfidf(neg_urls, self._activeCrawlerIndex, self._docType, self.es_elastic)
+      tfidf_neg = tfidf.tfidf(neg_urls, self.w2v, self._activeCrawlerIndex, self._docType, self.es_elastic)
       [_,corpus,ttfs_neg] = tfidf_neg.getTfArray()
       total_neg_tf = np.sum(ttfs_neg.toarray(), axis=0)
       total_neg = np.sum(total_neg_tf)
@@ -328,9 +328,9 @@ class CrawlerModel:
   #   ]
   # }
   def getPages(self):
-    
+
     if self._filter is None:
-      hits = get_most_recent_documents(fields=["url", "x", "y", "tag", "retrieved"], 
+      hits = get_most_recent_documents(opt_maxNumberOfPages=self._pagesCap, fields=["url", "x", "y", "tag", "retrieved"], 
                                        es_index=self._activeCrawlerIndex,
                                        es_doc_type=self._docType,
                                        es=self.es)
@@ -534,6 +534,8 @@ class CrawlerModel:
     # (when the optional flag is set to True). Check those methods signatures.
     if terms:
       self._filter = terms
+    else:
+      self._filter = None
 
 
   # Projects pages.
@@ -546,8 +548,7 @@ class CrawlerModel:
     urls = [page[0] for page in pages]
     #[data,_,_,_,urls] = self.term_tfidf(urls)
 
-    w2v = word2vec.word2vec(urls, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=self.es_elastic)
-    [urls, data] = w2v.get_word2vec()
+    [urls, data] = CrawlerModel.w2v.process(urls, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=self.es_elastic)
 
     #Convert to binary
     #data = data.astype(bool)
@@ -579,8 +580,7 @@ class CrawlerModel:
     #data = data.astype(bool)
     #data = data.astype(int)
 
-    w2v = word2vec.word2vec(urls, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=self.es_elastic)
-    [urls, data] = w2v.get_word2vec()
+    [urls, data] = CrawlerModel.w2v.process(urls, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=self.es_elastic)
     
     tsne_count = 2
     tsnedata = CrawlerModel.runTSNESKLearn(data, tsne_count)
@@ -609,12 +609,11 @@ class CrawlerModel:
     #data = data.astype(bool)
     #data = data.astype(int)
 
-    w2v = word2vec.word2vec(urls, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=self.es_elastic)
-    [urls, data] = w2v.get_word2vec()
+    [urls, data] = CrawlerModel.w2v.process(urls, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=self.es_elastic)
 
     k = 5
     kmeansdata = CrawlerModel.runKMeansSKLearn(data, k)
-    
+
     try:
       results = []
       i = 0
@@ -630,7 +629,7 @@ class CrawlerModel:
 
   def term_tfidf(self, urls):
 
-    [data, data_tf, data_ttf , corpus, urls] = getTermStatistics(urls, self._activeCrawlerIndex, self._docType, self.es_elastic)
+    [data, data_tf, data_ttf , corpus, urls] = getTermStatistics(urls, self.w2v, self._activeCrawlerIndex, self._docType, self.es_elastic)
     return [data.toarray(), data_tf, data_ttf, corpus, urls]
 
   @staticmethod
