@@ -7,6 +7,7 @@
 
 
 var CrawlerVis = function() {
+    var currentCrawler = undefined;
 };
 
 
@@ -228,6 +229,7 @@ CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
   var vis = this;
   var selectBox = d3.select('#selectCrawler').on('change', function() {
     var crawlerId = d3.select(this).node().value;
+    vis.currentCrawler = crawlerId;
     vis.setActiveCrawler(crawlerId);
   });
   if (data.length > 0) {
@@ -254,6 +256,7 @@ CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
 // Reload select with available crawlers.
 CrawlerVis.prototype.reloadSelectForAvailableCrawlers = function(data) {
   if (data.length > 0) {
+      var currentCrawler = d3.select('#selectCrawler').node().value
       var vis = this;
       var selectBox = d3.select('#selectCrawler');
       var getElementValue = function(d) {
@@ -268,6 +271,13 @@ CrawlerVis.prototype.reloadSelectForAvailableCrawlers = function(data) {
 	      // TODO(cesar): Builds string with crawler's name and creation date.
 	      return d.name + ' (' + Utils.parseFullDate(d.creation) + ')';
 	  });
+
+
+      $(document).ready(function() {
+	  // Generate the index name from the entered crawler name
+	  $("#selectCrawler option[value="+currentCrawler+"]").prop('selected', true);
+      });
+
       
       // Generate the index name from the entered crawler name
       var index_name = d3.select('#crawler_index_name').node().value;
@@ -276,7 +286,7 @@ CrawlerVis.prototype.reloadSelectForAvailableCrawlers = function(data) {
       if (data.length === 1){
 	  var crawlerId = getElementValue(data[0]);
 	  vis.setActiveCrawler(crawlerId);
-      }
+      } 
       
       document.getElementById("status_panel").innerHTML = 'Added new crawler - ' + index_name;
 
@@ -293,6 +303,9 @@ CrawlerVis.prototype.loadAvailableCrawlers = function() {
 
 // Sets active crawler.
 CrawlerVis.prototype.setActiveCrawler = function(crawlerId) {
+    $("#wordlist").html("");
+    this.termsSnippetsViewer.clear();
+
     // Changes active crawler and forces update.
     DataAccess.setActiveCrawler(crawlerId);
     
@@ -861,15 +874,19 @@ CrawlerVis.prototype.runAddCrawler = function(index_name) {
  */
 CrawlerVis.prototype.applyFilter = function(terms) {
     
-  document.getElementById("status_panel").innerHTML = 'Applying filter...';
   
   // Sets cap.
   var cap = d3.select('#filter_cap_select').node().value;
   DataAccess.setPagesCountCap(cap);
 
-  // Applies filter and issues an update automatically.
   DataAccess.applyFilter(terms);
-  DataAccess.update();
+
+  if (terms != undefined && terms != ""){
+      document.getElementById("status_panel").innerHTML = 'Applying filter...';
+
+      // Applies filter and issues an update automatically.
+      DataAccess.update();
+  }
 };
 
 
