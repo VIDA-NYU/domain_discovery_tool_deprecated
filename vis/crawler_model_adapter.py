@@ -54,6 +54,10 @@ class CrawlerModelAdapter:
   def addCrawler(self, index_name):
     self._crawlerModel.addCrawler(index_name)
 
+  # Create model
+  def createModel(self):
+    return self._crawlerModel.createModel()
+
   # Applies a filter to crawler results, e.g. 'ebola disease'
   def applyFilter(self, terms):
     self._crawlerModel.applyFilter(terms)

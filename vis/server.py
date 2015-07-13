@@ -101,6 +101,11 @@ class Page:
   def addCrawler(self, index_name):
     self._crawler.addCrawler(index_name)
 
+  # Create model
+  @cherrypy.expose
+  def createModel(self):
+    return self._crawler.createModel()
+    
   # Applies a filter to crawler results, e.g. 'ebola disease'
   @cherrypy.expose
   def applyFilter(self, terms):
