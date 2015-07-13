@@ -13,8 +13,11 @@ from subprocess import call
 from subprocess import Popen
 from subprocess import PIPE
 
-from os import chdir, listdir, environ
-from os.path import isfile, join, exists
+import linecache
+from sys import exc_info
+from os import chdir, listdir, environ, makedirs, rename, chmod
+from os.path import isfile, join, exists, isdir
+from zipfile import ZipFile
 
 
 from pyelasticsearch import ElasticSearch
@@ -34,6 +37,8 @@ from elastic.create_config_index import create_config_index
 from elastic.config import es, es_elastic, es_doc_type
 
 from ranking import tfidf, rank, extract_terms, word2vec
+
+import urllib2
 
 class CrawlerModel:
 
@@ -107,6 +112,89 @@ class CrawlerModel:
 
   def setActiveProjectionAlg(self, algId):
     self._activeProjectionAlg = algId
+
+  def encode(self, url):
+    return urllib2.quote(url).replace("/", "%2F")
+
+  def createModel(self):
+    if (not isdir("data")):
+      makedirs("data/"+self._activeCrawlerIndex)
+    else: 
+      if (not isdir("data/"+self._activeCrawlerIndex)):
+        makedirs("data/"+self._activeCrawlerIndex +"/training_data/positive")
+        makedirs("data/"+self._activeCrawlerIndex +"/training_data/negative")
+      else:
+        if (not isdir("data/"+self._activeCrawlerIndex +"/training_data")):
+          makedirs("data/"+self._activeCrawlerIndex +"/training_data/positive")
+          makedirs("data/"+self._activeCrawlerIndex +"/training_data/negative")
+
+    if (not isdir("data/"+self._activeCrawlerIndex +"/training_data/positive")):
+      makedirs("data/"+self._activeCrawlerIndex +"/training_data/positive")
+    if (not isdir("data/"+self._activeCrawlerIndex +"/training_data/negative")):
+      makedirs("data/"+self._activeCrawlerIndex +"/training_data/negative")
+
+    pos_urls = term_search('tag', ['relevant'], self._activeCrawlerIndex, 'page', self.es) 
+    neg_urls = term_search('tag', ['irrelevant'], self._activeCrawlerIndex, 'page', self.es) 
+    
+    pos_html = get_documents(pos_urls, 'url', ["html"], self._activeCrawlerIndex, self._docType)
+    neg_html = get_documents(neg_urls, 'url', ["html"], self._activeCrawlerIndex, self._docType)
+
+    with open("data/"+self._activeCrawlerIndex +"/seeds.txt", 'w') as s:
+      for url in pos_html:
+        print "data/"+self._activeCrawlerIndex +"/training_data/positive/" + self.encode(url.encode('utf8'))
+        try:
+          s.write(url.encode('utf8') + '\n')
+          with open("data/"+self._activeCrawlerIndex +"/training_data/positive/" + self.encode(url.encode('utf8')), 'w') as f:
+            f.write(pos_html[url]['html'])
+
+        except IOError:
+          _, exc_obj, tb = exc_info()
+          f = tb.tb_frame
+          lineno = tb.tb_lineno
+          filename = f.f_code.co_filename
+          linecache.checkcache(filename)
+          line = linecache.getline(filename, lineno, f.f_globals)
+          print 'EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename, lineno, line.strip(), exc_obj)
+
+    for url in neg_html:
+      try:
+        with open("data/"+self._activeCrawlerIndex +"/training_data/negative/" + self.encode(url.encode('utf8')), 'w') as f:
+          f.write(neg_html[url]['html'])
+      except IOError:
+        _, exc_obj, tb = exc_info()
+        f = tb.tb_frame
+        lineno = tb.tb_lineno
+        filename = f.f_code.co_filename
+        linecache.checkcache(filename)
+        line = linecache.getline(filename, lineno, f.f_globals)
+        print 'EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename, lineno, line.strip(), exc_obj)
+        
+    if (not isdir("vis/html/models")):
+      makedirs("vis/html/models")
+    
+    comm = environ['ACHE_HOME']+"/build/install/ache/bin/ache buildModel -t data/" + self._activeCrawlerIndex + "/training_data -o vis/html/models -c $ACHE_HOME/config/sample_config/stoplist.txt"
+
+    p=Popen(comm, shell=True, stderr=PIPE)
+    output, errors = p.communicate()
+    print output
+    print errors
+
+    with ZipFile("vis/html/models/" + self._activeCrawlerIndex + "_model.zip", "w") as modelzip:
+      if (isfile("vis/html/models/pageclassifier.features")):
+        rename("vis/html/models/pageclassifier.features", "vis/html/models/"+self._activeCrawlerIndex+ "_pageclassifier.features")
+        modelzip.write("vis/html/models/"+self._activeCrawlerIndex+ "_pageclassifier.features", self._activeCrawlerIndex+ "_pageclassifier.features")
+        
+      if (isfile("vis/html/models/pageclassifier.model")):
+        rename("vis/html/models/pageclassifier.model", "vis/html/models/"+self._activeCrawlerIndex+ "_pageclassifier.model")
+        modelzip.write("vis/html/models/"+self._activeCrawlerIndex+ "_pageclassifier.model", self._activeCrawlerIndex+ "_pageclassifier.model")
+      
+      if (isfile("data/"+self._activeCrawlerIndex +"/seeds.txt")):
+        modelzip.write("data/"+self._activeCrawlerIndex +"/seeds.txt", self._activeCrawlerIndex + "_seeds.txt")
+        
+    chmod("vis/html/models/" + self._activeCrawlerIndex + "_model.zip", 0o777)
+
+    return "models/" + self._activeCrawlerIndex + "_model.zip"
+
 
   # Returns number of pages downloaded between ts1 and ts2 for active crawler.
   # ts1 and ts2 are Unix epochs (seconds after 1970).
@@ -519,15 +607,12 @@ class CrawlerModel:
     comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar BingSearch -t " + str(max_url_count) + \
            " -i " + self._activeCrawlerIndex + \
            " -d " + self._docType
-           #" -s " + environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in environ else 'http://localhost:9200'
 
     p=Popen(comm, shell=True, stderr=PIPE)
     output, errors = p.communicate()
     print output
     print errors
     
-    #download("results.txt", self._activeCrawlerIndex, self._docType, environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in environ else 'http://localhost:9200')
-
   # Applies a filter to crawler results, e.g. 'ebola disease'
   def applyFilter(self, terms):
     # The filter is just cached, and should be used in getPages (always) and getPagesSummary

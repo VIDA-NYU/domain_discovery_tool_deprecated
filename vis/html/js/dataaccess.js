@@ -78,6 +78,13 @@ var DataAccess = (function() {
       }
   };
 
+ // Signals model creation completion
+ var onModelCreated = function(model_file) {
+     Utils.setWaitCursorEnabled(false);
+     document.getElementById("status_panel").innerHTML = 'Building crawler model...Done';
+     var url = model_file;    
+     window.open(url,'Download');  
+ }
 
   // Processes loaded list of available crawlers.
   var onAvailableCrawlersLoaded = function(crawlers) {
@@ -259,7 +266,12 @@ var DataAccess = (function() {
     runQueryForCurrentCrawler(
       '/setPagesCountCap', {'pagesCap': cap});
   };
-
+  // Generate data to build crawler model
+  pub.createModelData = function(crawlerId){
+      Utils.setWaitCursorEnabled(true);
+      runQueryForCurrentCrawler(
+	  '/createModel', {}, onModelCreated);
+  }
   // Fetches new pages summaries every n seconds.
   window.setInterval(function() {pub.loadNewPagesSummary(false);}, REFRESH_EVERY_N_MILLISECONDS);
   window.setInterval(function() {pub.loadNewPagesSummary(true);}, REFRESH_EVERY_N_MILLISECONDS);

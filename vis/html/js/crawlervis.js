@@ -179,6 +179,7 @@ CrawlerVis.prototype.initUICrawler = function() {
   this.initPagesGallery();
   this.initTermsSnippetsViewer();
   this.initFilterButton();
+  this.initModelButton();
   this.createSelectForFilterPageCap();
 };
 
@@ -218,6 +219,7 @@ CrawlerVis.prototype.initUISeedCrawler = function() {
   this.initPagesGallery();
   this.initTermsSnippetsViewer();
   this.initFilterButton();
+  this.initModelButton();
   this.initQueryWebButton();
   this.initAddCrawlerButton();
   this.createSelectForFilterPageCap();
@@ -811,6 +813,21 @@ CrawlerVis.prototype.initFilterButton = function() {
   this.filtersList = [];
 };
 
+/**
+ * Initializes filter button.
+ */
+CrawlerVis.prototype.initModelButton = function() {
+    var vis = this;
+    d3.select('#build_model')
+	.on('click', function() {
+	    vis.createModelData();
+	});
+};
+
+CrawlerVis.prototype.createModelData = function() {
+    document.getElementById("status_panel").innerHTML = 'Building crawler model...';
+    DataAccess.createModelData();
+}
 
 // Creates select to limit number of pages to load.
 CrawlerVis.prototype.createSelectForFilterPageCap = function() {
