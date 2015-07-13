@@ -17,7 +17,8 @@
         "term_vector": "yes"
       },
       "html": {
-        "type": "binary"
+        "type": "string",
+	"index": "not_analyzed"
       },
       "query": {
         "type": "string"
