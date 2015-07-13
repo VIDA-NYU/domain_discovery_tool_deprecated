@@ -77,7 +77,7 @@ public class Download_URL implements Runnable {
 			.setSource(XContentFactory.jsonBuilder()
 				   .startObject()
 				   .field("url", request.getURI())
-				   .field("html", Base64.encodeBase64(responseBody.getBytes()))
+				   .field("html", responseBody)
 				   .field("text", content_text)
 				   .field("length", content_length)
 				   .field("query", this.query)
