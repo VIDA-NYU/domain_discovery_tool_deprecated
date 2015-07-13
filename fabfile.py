@@ -59,22 +59,40 @@ def make_settings():
                                "tools.staticdir.root = {0}/{1}".format(
                                    PROJ_ROOT,'vis/html')),
 
+        settings_file = 'config.conf'
+        local('if [ ! -f {0} ]; then cp {1} {0}; fi'.format(
+            settings_file, 'config.conf-in'))
+
 @task
 def runserver():
     "Run the development server"
     with lcd(PROJ_ROOT), \
       shell_env(NLTK_DATA=env['nltk_data'],
                 PYTHONPATH=env['pythonpath'],
+                ACHE_HOME=env['ache'],
                 DDT_HOME=PROJ_ROOT):
         local('{python} models/seed_crawler_model.py'.format(**env))
         #local('{python} manage.py runserver --traceback'.format(**env))
 
+def readConf():
+    with open('config.conf', 'r') as f:
+        for line in f:
+            line = line.rstrip() #removes trailing whitespace and '\n' chars
+            
+            if "=" not in line: continue #skips blanks and comments w/o =
+            if line.startswith("#"): continue #skips comments which contain =
+            
+            k, v = line.split("=", 1)
+            env[k] = v
+
 @task
 def runvis():
+    readConf()
     "Run the development server"
     with lcd(PROJ_ROOT), \
       shell_env(NLTK_DATA=env['nltk_data'],
                 PYTHONPATH=env['pythonpath'],
+                ACHE_HOME=env['ache'],
                 DDT_HOME=PROJ_ROOT):
         local('{python} vis/server.py'.format(**env))
 
