@@ -34,7 +34,7 @@ from elastic.aggregations import get_significant_terms
 from elastic.create_index import create_index
 from elastic.load_config import load_config
 from elastic.create_config_index import create_config_index
-from elastic.config import es, es_elastic, es_doc_type
+from elastic.config import es, es_elastic, es_doc_type, es_server
 
 from ranking import tfidf, rank, extract_terms, word2vec
 
@@ -117,21 +117,17 @@ class CrawlerModel:
     return urllib2.quote(url).replace("/", "%2F")
 
   def createModel(self):
-    if (not isdir("data")):
-      makedirs("data/"+self._activeCrawlerIndex)
-    else: 
-      if (not isdir("data/"+self._activeCrawlerIndex)):
-        makedirs("data/"+self._activeCrawlerIndex +"/training_data/positive")
-        makedirs("data/"+self._activeCrawlerIndex +"/training_data/negative")
-      else:
-        if (not isdir("data/"+self._activeCrawlerIndex +"/training_data")):
-          makedirs("data/"+self._activeCrawlerIndex +"/training_data/positive")
-          makedirs("data/"+self._activeCrawlerIndex +"/training_data/negative")
 
-    if (not isdir("data/"+self._activeCrawlerIndex +"/training_data/positive")):
-      makedirs("data/"+self._activeCrawlerIndex +"/training_data/positive")
-    if (not isdir("data/"+self._activeCrawlerIndex +"/training_data/negative")):
-      makedirs("data/"+self._activeCrawlerIndex +"/training_data/negative")
+    data_dir = environ["DDT_HOME"] + "/data/"
+    data_crawler  = data_dir + self._activeCrawlerIndex
+    data_training = data_crawler + "/training_data/"
+    data_negative = data_crawler + "/training_data/negative/"
+    data_positive = data_crawler + "/training_data/positive/"
+
+    if (not isdir(data_positive)):
+      makedirs(data_positive)
+    if (not isdir(data_negative)):
+      makedirs(data_negative)
 
     pos_urls = term_search('tag', ['relevant'], self._activeCrawlerIndex, 'page', self.es) 
     neg_urls = term_search('tag', ['irrelevant'], self._activeCrawlerIndex, 'page', self.es) 
@@ -139,12 +135,15 @@ class CrawlerModel:
     pos_html = get_documents(pos_urls, 'url', ["html"], self._activeCrawlerIndex, self._docType)
     neg_html = get_documents(neg_urls, 'url', ["html"], self._activeCrawlerIndex, self._docType)
 
-    with open("data/"+self._activeCrawlerIndex +"/seeds.txt", 'w') as s:
+    seeds_file = data_crawler +"/seeds.txt"
+    print "Seeds path ", seeds_file
+    with open(seeds_file, 'w') as s:
       for url in pos_html:
-        print "data/"+self._activeCrawlerIndex +"/training_data/positive/" + self.encode(url.encode('utf8'))
         try:
+          file_positive = data_positive + self.encode(url.encode('utf8'))
+          print file_positive
           s.write(url.encode('utf8') + '\n')
-          with open("data/"+self._activeCrawlerIndex +"/training_data/positive/" + self.encode(url.encode('utf8')), 'w') as f:
+          with open(file_positive, 'w') as f:
             f.write(pos_html[url]['html'])
 
         except IOError:
@@ -158,7 +157,8 @@ class CrawlerModel:
 
     for url in neg_html:
       try:
-        with open("data/"+self._activeCrawlerIndex +"/training_data/negative/" + self.encode(url.encode('utf8')), 'w') as f:
+        file_negative = data_negative + self.encode(url.encode('utf8'))
+        with open(file_negative, 'w') as f:
           f.write(neg_html[url]['html'])
       except IOError:
         _, exc_obj, tb = exc_info()
@@ -168,30 +168,38 @@ class CrawlerModel:
         linecache.checkcache(filename)
         line = linecache.getline(filename, lineno, f.f_globals)
         print 'EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename, lineno, line.strip(), exc_obj)
-        
-    if (not isdir("vis/html/models")):
-      makedirs("vis/html/models")
     
-    comm = environ['ACHE_HOME']+"/build/install/ache/bin/ache buildModel -t data/" + self._activeCrawlerIndex + "/training_data -o vis/html/models -c $ACHE_HOME/config/sample_config/stoplist.txt"
+    models_dir = environ["DDT_HOME"] + "/vis/html/models/"
+    crawlermodel_dir = models_dir + self._activeCrawlerIndex
+    
+    if (not isdir(models_dir)):
+      makedirs(models_dir)
 
-    p=Popen(comm, shell=True, stderr=PIPE)
+    if (not isdir(crawlermodel_dir)):
+      makedirs(crawlermodel_dir)
+
+    ache_home = environ['ACHE_HOME']
+    comm = ache_home + "/bin/ache buildModel -t " + data_training + " -o "+ crawlermodel_dir + " -c " + ache_home + "/config/stoplist.txt"
+    p = Popen(comm, shell=True, stderr=PIPE)
     output, errors = p.communicate()
     print output
     print errors
 
-    with ZipFile("vis/html/models/" + self._activeCrawlerIndex + "_model.zip", "w") as modelzip:
-      if (isfile("vis/html/models/pageclassifier.features")):
-        rename("vis/html/models/pageclassifier.features", "vis/html/models/"+self._activeCrawlerIndex+ "_pageclassifier.features")
-        modelzip.write("vis/html/models/"+self._activeCrawlerIndex+ "_pageclassifier.features", self._activeCrawlerIndex+ "_pageclassifier.features")
-        
-      if (isfile("vis/html/models/pageclassifier.model")):
-        rename("vis/html/models/pageclassifier.model", "vis/html/models/"+self._activeCrawlerIndex+ "_pageclassifier.model")
-        modelzip.write("vis/html/models/"+self._activeCrawlerIndex+ "_pageclassifier.model", self._activeCrawlerIndex+ "_pageclassifier.model")
+    zip_filename = models_dir + self._activeCrawlerIndex + "_model.zip"
+    with ZipFile(zip_filename, "w") as modelzip:
+      if (isfile(crawlermodel_dir + "/pageclassifier.features")):
+        print "zipping file: "+crawlermodel_dir + "/pageclassifier.features"
+        modelzip.write(crawlermodel_dir + "/pageclassifier.features", "pageclassifier.features")
       
-      if (isfile("data/"+self._activeCrawlerIndex +"/seeds.txt")):
-        modelzip.write("data/"+self._activeCrawlerIndex +"/seeds.txt", self._activeCrawlerIndex + "_seeds.txt")
-        
-    chmod("vis/html/models/" + self._activeCrawlerIndex + "_model.zip", 0o777)
+      if (isfile(crawlermodel_dir + "/pageclassifier.model")):
+        print "zipping file: "+crawlermodel_dir + "/pageclassifier.model"
+        modelzip.write(crawlermodel_dir + "/pageclassifier.model", "pageclassifier.model")
+      
+      if (isfile(data_crawler +"/seeds.txt")):
+        print "zipping file: "+data_crawler +"/seeds.txt"
+        modelzip.write(data_crawler +"/seeds.txt", self._activeCrawlerIndex + "_seeds.txt")
+
+    chmod(zip_filename, 0o777)
 
     return "models/" + self._activeCrawlerIndex + "_model.zip"
 
