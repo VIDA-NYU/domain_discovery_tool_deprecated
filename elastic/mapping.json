@@ -18,7 +18,7 @@
       },
       "html": {
         "type": "string",
-	"index": "not_analyzed"
+	      "index": "no"
       },
       "query": {
         "type": "string"
