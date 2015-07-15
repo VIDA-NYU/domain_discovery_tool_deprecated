@@ -19,6 +19,7 @@ PROJ_ROOT = os.path.dirname(env.real_fabfile)
 env.project_name = 'domain_discovery_tool'
 env.python = 'python' if 'VIRTUAL_ENV' in os.environ else 'bin/python'
 env.elastic = os.environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in os.environ else 'http://localhost:9200'
+env.ache = os.environ['ACHE_HOME'] if 'ACHE_HOME' in os.environ else '~/ache'
 env.nltk_data = PROJ_ROOT+'/nltk_data';
 env.pythonpath = PROJ_ROOT+'/seeds_generator:.';
 env.word2vec = PROJ_ROOT+'/ranking'
@@ -74,20 +75,8 @@ def runserver():
         local('{python} models/seed_crawler_model.py'.format(**env))
         #local('{python} manage.py runserver --traceback'.format(**env))
 
-def readConf():
-    with open('config.conf', 'r') as f:
-        for line in f:
-            line = line.rstrip() #removes trailing whitespace and '\n' chars
-            
-            if "=" not in line: continue #skips blanks and comments w/o =
-            if line.startswith("#"): continue #skips comments which contain =
-            
-            k, v = line.split("=", 1)
-            env[k] = v
-
 @task
 def runvis():
-    readConf()
     "Run the development server"
     with lcd(PROJ_ROOT), \
       shell_env(NLTK_DATA=env['nltk_data'],
