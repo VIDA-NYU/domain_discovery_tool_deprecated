@@ -27,6 +27,13 @@ RUN wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1
   rm elasticsearch-1.5.2.deb &&\
   /usr/share/elasticsearch/bin/plugin -install mobz/elasticsearch-head
 
+# Install ACHE and set env variable
+RUN wget https://github.com/ViDA-NYU/ache/releases/download/0.3.0/ache-0.3.0.tar &&\
+  tar -xvf ache-0.3.0.tar &&\
+  rm ache-0.3.0.tar  &&\
+  mv ache-0.3.0 ache
+ENV ACHE_HOME /ache
+
 # Expose Domain Discovery Tool port
 EXPOSE 8084
 
@@ -48,5 +55,5 @@ RUN fab compile_seeds_generator
 # Add remaining python source files
 ADD . /domain_discovery_tool
 
-# Creates vis server config file
+# Creates config files
 RUN fab make_settings
