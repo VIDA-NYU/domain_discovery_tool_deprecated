@@ -60,10 +60,6 @@ def make_settings():
                                "tools.staticdir.root = {0}/{1}".format(
                                    PROJ_ROOT,'vis/html')),
 
-        settings_file = 'config.conf'
-        local('if [ ! -f {0} ]; then cp {1} {0}; fi'.format(
-            settings_file, 'config.conf-in'))
-
 @task
 def runserver():
     "Run the development server"
