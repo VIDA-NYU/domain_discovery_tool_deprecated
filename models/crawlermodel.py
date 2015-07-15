@@ -614,7 +614,8 @@ class CrawlerModel:
 
     comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar BingSearch -t " + str(max_url_count) + \
            " -i " + self._activeCrawlerIndex + \
-           " -d " + self._docType
+           " -d " + self._docType + \
+           " -s " + es_server
 
     p=Popen(comm, shell=True, stderr=PIPE)
     output, errors = p.communicate()
