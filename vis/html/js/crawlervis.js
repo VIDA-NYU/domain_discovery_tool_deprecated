@@ -333,9 +333,9 @@ CrawlerVis.prototype.createSelectForAvailableProjectionAlgorithms = function(dat
     .text(function(d, i) {
       return d.name;
     });
-
+  $('#selectProjectionAlgorithm').val("PCA")
   // Manually triggers change of value.
-  var algId = getElementValue(data[0]);
+  var algId = "PCA";
   vis.setActiveProjectionAlg(algId);
 };
 
