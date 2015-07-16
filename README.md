@@ -23,6 +23,6 @@ To see the app running, go to:
 
     http://localhost:8084/seedcrawler
 
-Alternativaly, you can also specify an external ElasticSearch server address using an enviromente variable:
+Alternativaly, you can also specify an external ElasticSearch server address using an enviroment variable:
 
     docker run -p 8084:8084 -e "ELASTICSEARCH_SERVER=http://127.0.0.1:9200" -i -t domain_discovery_tool sh -c 'fab runvis'
