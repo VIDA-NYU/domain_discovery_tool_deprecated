@@ -4,62 +4,14 @@ This repository contains the Domain Discovery Tool (DDT) project. The DDT tool h
 
 ## Installing in your machine
 
-To install it, you need:
+To install DDT, you will need to have Python and Java installed. You will also need pip, fabric, virtualenv, ElasticSearch and [ACHE Crawler](https://github.com/ViDA-NYU/ache). 
+For a detailed description, you can follow the step-by-step commands in the  [Dockerfile](https://github.com/ViDA-NYU/domain_discovery_tool/blob/master/Dockerfile).
 
-1) Install git
-
-    sudo apt-get install git
-
-2) Install Java, like the OpenJDK such as java-7-openjdk
-
-    sudo apt-get install openjdk-7-jdk
-
-3) Install Maven
-
-    sudo apt-get install maven2
-
-4) Make sure python 2.7 is installed
-
-5) Install virtualenv
-
-    sudo pip2 install virtualenv
-
-6) Install fabric
-
-    pip2 install fabric
-
-7) Install scipy
-
-    sudo apt-get install python-scipy
-
-8) Install elasticsearch
-
-    wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.5.2.deb
-    sudo dpkg -i elasticsearch-1.5.2.deb
-    rm elasticsearch-1.5.2.deb
-
-9) Start elasticsearch, for now:
-
-    sudo /etc/init.d/elasticsearch start
-
-10) On this directory (domain_discovery_tool), type:
-
-    sudo fab setup
-
-It will take some time to proceed, download everything you need, check that things are properly installed, and stop.
-
-11) Run the program:
-
-    fab runvis
-
-12) Open a web browser and connect to the vis server at the following url:
-
-    http://localhost:8084/seedcrawler
-
+An easier and self contained way to run DDT is to build and run a docker image, as described bellow.
 
 ## Running using Docker
 
-Create an image using the Dockerfile. Run the following command in the root folder of this project:
+First, make sure you have Docker installed and running. Then, you can create an DDT image using the Dockerfile. Run the following command in the root folder of this project:
 
     docker build -t domain_discovery_tool .
 
@@ -70,3 +22,7 @@ Run the app using the Docker image that you just built:
 To see the app running, go to:
 
     http://localhost:8084/seedcrawler
+
+Alternativaly, you can also specify an external ElasticSearch server address using an enviromente variable:
+
+    docker run -p 8084:8084 -e "ELASTICSEARCH_SERVER=http://127.0.0.1:9200" -i -t domain_discovery_tool sh -c 'fab runvis'
