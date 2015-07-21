@@ -24,3 +24,6 @@ tools.staticdir.dir = img
 tools.staticdir.on = True
 tools.staticdir.dir = models
 
+[/bootflat-2.0.4]
+tools.staticdir.on = True
+tools.staticdir.dir = bootflat-2.0.4
