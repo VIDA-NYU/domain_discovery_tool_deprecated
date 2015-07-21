@@ -603,7 +603,7 @@ class CrawlerModel:
 
     
   # Submits a web query for a list of terms, e.g. 'ebola disease'
-  def queryWeb(self, terms, max_url_count = 500):
+  def queryWeb(self, terms, max_url_count = 100):
     # TODO(Yamuna): Issue query on the web: results are stored in elastic search, nothing returned
     # here.
     

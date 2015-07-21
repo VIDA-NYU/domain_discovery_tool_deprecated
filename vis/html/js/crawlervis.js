@@ -312,7 +312,6 @@ CrawlerVis.prototype.setActiveCrawler = function(crawlerId) {
     DataAccess.setActiveCrawler(crawlerId);
     
     d3.select('#filter_box').node().value = "";
-    DataAccess.update();
 };
 
 
