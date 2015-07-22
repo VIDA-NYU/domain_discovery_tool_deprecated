@@ -1,0 +1,33 @@
+package:
+    name: ddt
+    version: 2.3.0
+
+build:
+    number: 0
+    has_prefix_files:
+      - lib/ddt/vis/config.conf
+    
+source:
+    git_url: https://github.com/ViDA-NYU/domain_discovery_tool
+    git_tag: 2.3
+
+requirements:
+  build:
+    - cython >=0.22
+    - ddt-word2vec
+    - maven
+    - nltk
+  run:
+    - scipy
+    - cython >=0.22
+    - numexpr >=2.4
+    - scikit-learn >=0.16.1
+    - pyelasticsearch >=1.2
+    - nltk
+    - cherrypy
+    - requests
+    - ddt-word2vec
+
+
+#about:
+#    license: Apache?
