@@ -27,6 +27,7 @@ requirements:
     - cherrypy
     - requests
     - ddt-word2vec
+    - ache >=0.3.1
 
 
 #about:
