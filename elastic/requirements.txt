@@ -1,3 +1,0 @@
-pyelasticsearch==1.2
-cython
-git+git://github.com/kivy/pyjnius.git
