@@ -1,12 +1,12 @@
 from pickle import load
 import numpy as np
 from os import environ
-from pprint import pprint
 
 from elastic.get_mtermvectors import getTermFrequency
+from preprocess import TextPreprocess
 
 class word2vec:
-    def __init__(self, opt_docs = None, es_index = 'memex', es_doc_type = 'page', es = None):
+    def __init__(self, opt_docs = None, mapping=None, es_index = 'memex', es_doc_type = 'page', es = None):
         self.documents = opt_docs
         self.word2vec = None
 
@@ -14,7 +14,7 @@ class word2vec:
         self.word_vec = load(f)
 
         if opt_docs != None:
-            self.process(opt_docs, es_index, es_doc_type, es)
+            self.process(opt_docs, mapping, es_index, es_doc_type, es)
 
     def get_word2vec(self):
         return [self.documents,self.word2vec]
@@ -22,10 +22,10 @@ class word2vec:
     def get(self, word):
         return self.word_vec.get(word)
         
-    def process(self, documents, es_index = 'memex', es_doc_type = 'page', es = None):
+    def process(self, documents, mapping=None, es_index = 'memex', es_doc_type = 'page', es = None):
 
-        [data_tf, corpus, urls] = getTermFrequency(documents, self.word_vec, es_index, es_doc_type, es)
-        
+        [data_tf, corpus, urls] = getTermFrequency(documents, self.word_vec, mapping, es_index, es_doc_type, es)
+
         documents = urls
 
         word2vec_list_docs = []
@@ -42,5 +42,27 @@ class word2vec:
         self.documents = urls
         
         self.word2vec = np.array(word2vec_list_docs)
+
         return [self.documents,self.word2vec]
-        
+
+    def process_text(self, urls, documents):
+        tp = TextPreprocess()
+
+        word2vec_list_docs = []
+        final_urls = []
+        i = 0
+        for text in documents:
+            doc = tp.preprocess(text)
+
+            word_vec_doc = [self.word_vec[term] for term in doc.keys() if doc[term] > 5 and not self.word_vec.get(term) is None]
+            if word_vec_doc:
+                m_word_vec = np.array(word_vec_doc).mean(axis=0) 
+                word2vec_list_docs.append(m_word_vec.tolist())
+                final_urls.append(urls[i])
+                i = i + 1
+
+        self.documents = final_urls
+
+        self.word2vec = np.array(word2vec_list_docs)
+
+        return [self.documents,self.word2vec]
