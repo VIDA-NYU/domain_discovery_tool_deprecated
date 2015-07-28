@@ -15,7 +15,7 @@ from subprocess import PIPE
 
 import linecache
 from sys import exc_info
-from os import chdir, listdir, environ, makedirs, rename, chmod
+from os import chdir, listdir, environ, makedirs, rename, chmod, walk
 from os.path import isfile, join, exists, isdir
 from zipfile import ZipFile
 
@@ -201,7 +201,19 @@ class CrawlerModel:
       if (isfile(crawlermodel_dir + "/pageclassifier.model")):
         print "zipping file: "+crawlermodel_dir + "/pageclassifier.model"
         modelzip.write(crawlermodel_dir + "/pageclassifier.model", "pageclassifier.model")
-      
+
+      if (exists(data_crawler + "/training_data/positive")):
+        print "zipping file: "+ data_crawler + "/training_data/positive"
+        for (dirpath, dirnames, filenames) in walk(data_crawler + "/training_data/positive"):
+          for html_file in filenames:
+            modelzip.write(dirpath + "/" + html_file, "training_data/positive/" + html_file)
+
+      if (exists(data_crawler + "/training_data/negative")):
+        print "zipping file: "+ data_crawler + "/training_data/negative"
+        for (dirpath, dirnames, filenames) in walk(data_crawler + "/training_data/negative"):
+          for html_file in filenames:
+            modelzip.write(dirpath + "/" + html_file, "training_data/negative/" + html_file)
+        
       if (isfile(data_crawler +"/seeds.txt")):
         print "zipping file: "+data_crawler +"/seeds.txt"
         modelzip.write(data_crawler +"/seeds.txt", self._activeCrawlerIndex + "_seeds.txt")
