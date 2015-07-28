@@ -4,7 +4,7 @@ import base64
 from datetime import datetime
 from config import es as default_es
 
-def search(field, queryStr, es_index='memex', es_doc_type='page', es=None):
+def search(field, queryStr, fields = [], es_index='memex', es_doc_type='page', es=None):
     if es is None:
         es = default_es
 
@@ -16,17 +16,21 @@ def search(field, queryStr, es_index='memex', es_doc_type='page', es=None):
                     "query": ' and  '.join(queryStr[0:]),
                 }
             },
-            "fields": [field]
+            "fields": fields
         }
-        print query
-        res = es.search(query, index=es_index, doc_type=es_doc_type, size=500)
-        hits = res['hits']
-        urls = []
-        for hit in hits['hits']:
-            urls.append(hit['_id'])
-        return urls
 
-def term_search(field, queryStr, es_index='memex', es_doc_type='page', es=None):
+        res = es.search(body=query, fields=','.join(fields[0:]), index=es_index, doc_type=es_doc_type, size=500)
+        hits = res['hits']['hits']
+
+        results = []
+        for hit in hits:
+            fields = hit['fields']
+            fields['id'] = hit['_id']
+            results.append(fields)
+
+        return results
+
+def term_search(field, queryStr, fields=[], es_index='memex', es_doc_type='page', es=None):
     if es is None:
         es = default_es
 
@@ -40,16 +44,55 @@ def term_search(field, queryStr, es_index='memex', es_doc_type='page', es=None):
                     }
                 }
             },
-            "fields": ["url"]
+            "fields": fields
         }
-        print query
-        res = es.search(query, index=es_index, doc_type=es_doc_type, size=500)
 
-        hits = res['hits']
-        urls = []
-        for hit in hits['hits']:
-            urls.append(hit['_id'])
-        return urls
+        res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=500)
+        hits = res['hits']['hits']
+
+        results = []
+        for hit in hits:
+            fields = hit['fields']
+            fields['id'] = hit['_id']
+            results.append(fields)
+            
+        return results
+
+def multifield_term_search(s_fields, fields=[], es_index='memex', es_doc_type='page', es=None):
+    if es is None:
+        es = default_es
+        
+    queries = []
+    for k,v in s_fields.items():
+        query = {
+            "match": {
+                k: {
+                    "query": v,
+                    "minimum_should_match":"100%"
+                }
+            }
+        }
+        queries.append(query)
+        
+    query = {
+        "query" : {
+            "bool": {
+                "should": queries
+            }
+        },
+        "fields": fields
+    }
+    
+    res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=500)
+    hits = res['hits']['hits']
+    
+    results = []
+    for hit in hits:
+        fields = hit['fields']
+        fields['id'] = hit['_id']
+        results.append(fields)
+        
+    return results
 
 def get_image(url, es_index='memex', es_doc_type='page', es=None):
     if es is None:
@@ -64,7 +107,7 @@ def get_image(url, es_index='memex', es_doc_type='page', es=None):
             },
             "fields": ["thumbnail", "thumbnail_name"]
         }
-        res = es.search(query, index=es_index, doc_type=es_doc_type, size=500)
+        res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=500)
 
         hits = res['hits']['hits']
         if (len(hits) > 0):
@@ -100,8 +143,8 @@ def get_context(terms, es_index='memex', es_doc_type='page', es=None):
                 }
             }
         }
-        print query
-        res = es.search(query, index=es_index, doc_type=es_doc_type, size=500)
+
+        res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=500)
         hits = res['hits']
 
         highlights = []
@@ -111,12 +154,12 @@ def get_context(terms, es_index='memex', es_doc_type='page', es=None):
 
 def range(field, from_val, to_val, ret_fields=[], epoch=None, pagesCount = 200, es_index='memex', es_doc_type='page', es=None):
     if es is None:
-        es = default_es
+        es = default_es_elastic
 
     if not (epoch is None):
         if epoch:
-            from_val = datetime.utcfromtimestamp(long(from_val)).strftime('%Y-%m-%dT%H:%M:%S')
-            to_val = datetime.utcfromtimestamp(long(to_val)).strftime('%Y-%m-%dT%H:%M:%S')
+            from_val = datetime.utcfromtimestamp(long(from_val/1000)).strftime('%Y-%m-%dT%H:%M:%S')
+            to_val = datetime.utcfromtimestamp(long(to_val/1000)).strftime('%Y-%m-%dT%H:%M:%S')
             
     query = { 
         "query" : { 
@@ -130,12 +173,14 @@ def range(field, from_val, to_val, ret_fields=[], epoch=None, pagesCount = 200, 
         "fields": ret_fields
     }
 
-    res = es.search(query, index=es_index, doc_type=es_doc_type, size=pagesCount)
+    res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=pagesCount)
     hits = res['hits']['hits']
-
-    results=[]
+    
+    results = []
     for hit in hits:
-        results.append(hit['fields'])
+        fields = hit['fields']
+        fields['id'] = hit['_id']
+        results.append(fields)
 
     return results
 

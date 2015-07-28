@@ -1,21 +1,41 @@
 from os import environ
 import json
 
-from config import es_elastic as default_es
+from config import es as default_es
 
 def create_index(es_index='memex', es=None):
     if es is None:
         es = default_es
 
     json_page_data=open(environ['DDT_HOME']+'/elastic/mapping.json').read()
-    json_terms_data=open(environ['DDT_HOME']+'/elastic/mapping_terms.json').read()
 
     page_mappings = json.loads(json_page_data)
+
+    mappings = {"mappings": 
+                {
+                    "page": page_mappings["page"]
+                }
+            }
+    
+    fields = es_index.lower().split(' ')
+    es_index = '_'.join([item for item in fields if item not in ''])
+
+    res = es.indices.create(index=es_index, body=mappings, ignore=400)
+
+    es.indices.refresh(es_index)
+
+    return res
+
+def create_terms_index(es_index='ddt_terms', es=None):
+    if es is None:
+        es = default_es
+
+    json_terms_data=open(environ['DDT_HOME']+'/elastic/mapping_terms.json').read()
+
     terms_mappings = json.loads(json_terms_data)
 
     mappings = {"mappings": 
                 {
-                    "page": page_mappings["page"], 
                     "terms":terms_mappings["terms"]
                 }
             }
@@ -28,3 +48,27 @@ def create_index(es_index='memex', es=None):
     es.indices.refresh(es_index)
 
     return res
+
+def create_config_index(es_index='config', es=None):
+    if es is None:
+        es = default_es
+
+    json_config_data=open(environ['DDT_HOME']+'/elastic/config.json').read()
+
+    config_mappings = json.loads(json_config_data)
+
+    mappings = {"mappings": 
+                {
+                    "domains": config_mappings["domains"] 
+                }
+            }
+
+    fields = es_index.lower().split(' ')
+
+    es_index = '_'.join([item for item in fields if item not in ''])
+
+    res = es.indices.create(index=es_index, body=mappings, ignore=400)
+    
+    return res
+
+

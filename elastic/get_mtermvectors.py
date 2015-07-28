@@ -5,7 +5,7 @@ import math
 from sets import Set
 import time
 
-from config import es_elastic as default_es
+from config import es as default_es
 
 ENGLISH_STOPWORDS = set(nltk.corpus.stopwords.words('english'))
 
@@ -13,10 +13,10 @@ def tfidf(tf, df, n_doc):
     idf = math.log(n_doc / float(df))
     return tf * idf
 
-def terms_from_es_json(doc, w2v=None, rm_stopwords=True, pos_tags=[], termstatistics = False):
+def terms_from_es_json(doc, w2v=None, rm_stopwords=True, pos_tags=[], termstatistics = False, mapping=None):
     terms = {}
-    docterms = doc["term_vectors"]["text"]["terms"]
-    n_doc = doc["term_vectors"]["text"]["field_statistics"]["doc_count"]
+    docterms = doc["term_vectors"][mapping['text']]["terms"]
+    n_doc = doc["term_vectors"][mapping['text']]["field_statistics"]["doc_count"]
     valid_words = docterms.keys()
     
     if rm_stopwords:
@@ -43,7 +43,7 @@ def terms_from_es_json(doc, w2v=None, rm_stopwords=True, pos_tags=[], termstatis
     return terms
 
 
-def getTermFrequency(all_hits, w2v=None, es_index='memex', es_doc_type='page', es=None):
+def getTermFrequency(all_hits, w2v=None, mapping=None, es_index='memex', es_doc_type='page', es=None):
     if es is None:
         es = default_es
 
@@ -51,70 +51,51 @@ def getTermFrequency(all_hits, w2v=None, es_index='memex', es_doc_type='page', e
     stats = []
     corpus = []
 
-    count = 0
-    time_sum_for_method = 0
-    time_sum_for_process = 0
-
+    once = True
     for i in range(0, len(all_hits), 10):
-        count = count + 1
         hits = all_hits[i:i+10]
 
-        start = time.clock()
         term_res = es.mtermvectors(index=es_index,
                                    doc_type=es_doc_type,
-                                   fields=['text'], 
+                                   fields=mapping['text'], 
                                    ids=hits) 
-        
-        time_sum_for_method = time_sum_for_method + (time.clock() - start)
 
-        start = time.clock()
         for doc in term_res['docs']:
             if doc.get('term_vectors'):
-                if 'text' in doc['term_vectors']:
+                if mapping['text'] in doc['term_vectors']:
                     docs.append(doc['_id'])
-                    res = terms_from_es_json(doc=doc, w2v=w2v)
+                    res = terms_from_es_json(doc=doc, w2v=w2v, mapping=mapping)
                     stats.append(res)
                     corpus = corpus + res.keys()
-        time_sum_for_process = time_sum_for_process + (time.clock() - start)
 
     return [stats, Set(corpus), docs]
 
-def getTermStatistics(all_hits, w2v=None, es_index='memex', es_doc_type='page', es=None):
+def getTermStatistics(all_hits, w2v=None, mapping=None, es_index='memex', es_doc_type='page', es=None):
     if es is None:
         es = default_es
 
     stats = []
     docs = []
 
-    count = 0
-    time_sum_for_method = 0
-    time_sum_for_process = 0
-
     ttf = {}
     for i in range(0, len(all_hits), 10):
-        count = count + 1
         hits = all_hits[i:i+10]
 
-        start = time.clock()
         term_res = es.mtermvectors(index=es_index,
                                    doc_type=es_doc_type,
                                    term_statistics=True, 
-                                   fields=['text'], 
+                                   fields=mapping['text'], 
                                    ids=hits)
-        time_sum_for_method = time_sum_for_method + (time.clock() - start)
 
-        start = time.clock()
         for doc in term_res['docs']:
             if doc.get('term_vectors'):
-                if 'text' in doc['term_vectors']:
+                if mapping['text'] in doc['term_vectors']:
                     docs.append(doc['_id'])
-                    res = terms_from_es_json(doc=doc, w2v=w2v, termstatistics=True)
+                    res = terms_from_es_json(doc=doc, w2v=w2v, termstatistics=True, mapping=mapping)
                     stats.append(res)
                     for k in res.keys():
                         ttf[k] = res[k]['ttf']
-        time_sum_for_process = time_sum_for_process + (time.clock() - start)
-    
-    start = time.clock()
+
     tfidfs = []
     for stat in stats:
         tfidf={}
@@ -133,8 +114,6 @@ def getTermStatistics(all_hits, w2v=None, es_index='memex', es_doc_type='page', 
     v_tf = DictVectorizer()
 
     result = [v_tfidf.fit_transform(tfidfs), v_tf.fit_transform(tfs), ttf, v_tfidf.get_feature_names(), docs]
-
-    time_sum_for_process = time_sum_for_process + (time.clock() - start)
 
     return result
 

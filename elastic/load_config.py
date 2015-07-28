@@ -10,15 +10,7 @@ def load_config(entries, es_index='config', es_doc_type='domains', es=None):
     if es is None:
         es = default_es
 
-    updated_entries = []
-    for entry in entries:
-        if entry.get('timestamp') is None:
-            entry['timestamp'] = datetime.utcnow()
-        updated_entries.append(entry)
-
-    add_document(updated_entries, es_index, es_doc_type, es)
-
-    es.refresh(es_index)
+    add_document(entries, es_index, es_doc_type, es)
 
 if __name__ == "__main__":
 

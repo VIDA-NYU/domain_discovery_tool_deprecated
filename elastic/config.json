@@ -4,9 +4,6 @@
 	    "enabled" : true,
 	    "store" : true
 	},
-	"_id" : {
-	    "path" : "index"
-        },
 	"properties" : {
             "domain_name" : {
 		"type" : "string"
@@ -16,6 +13,28 @@
 	    },
 	    "index" : {
 		"type" : "string"
+	    },
+	    "doc_type": {
+		"type": "string"
+	    },
+	    "mapping":{
+		"properties": {
+		    "timestamp": {
+			"type": "string"
+		    },
+		    "text": {
+			"type": "string"
+		    },
+		    "html": {
+			"type": "string"
+		    },
+		    "tag":{
+			"type": "string"
+		    },
+		    "content-type":{
+			"type": "string"
+		    }
+		}
 	    }
 	}
     }

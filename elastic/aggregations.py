@@ -27,6 +27,6 @@ def get_significant_terms(terms, field='text', fields=['text'], termCount = 50, 
         },
         "size": 0
     }
-    res = es.search(query, index=es_index, doc_type=es_doc_type)
+    res = es.search(body=query, index=es_index, doc_type=es_doc_type, timeout=30)
     
     return [item['key'] for item in res['aggregations']['significantTerms']['buckets']]

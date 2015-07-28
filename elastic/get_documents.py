@@ -20,25 +20,23 @@ def get_documents(terms, term_field, fields=["text"], es_index='memex', es_doc_t
                 "fields": fields
             }
             
-            res = es.search(query, 
+            res = es.search(body=query, 
                             index=es_index,
                             doc_type=es_doc_type)
 
-            if res['hits']['hits']:
-                hits = res['hits']['hits'][0]
+            hits = res['hits']['hits'][0]
 
-                if not hits.get('fields') is None:
-                    hits = hits['fields']
-                    record = {}
-                    for field in fields:
-                        if(not hits.get(field) is None):
-                            record[field] = hits[field][0]
-                    results[term] = record           
+            record = {}
+            if not hits.get('fields') is None:
+                record = hits['fields']
+            record['id'] =hits['_id']
+
+            results[term] = record           
             
     return results
 
 
-def get_more_like_this(urls, pageCount=200, es_index='memex', es_doc_type='page', es=None):
+def get_more_like_this(urls, fields=[], pageCount=200, es_index='memex', es_doc_type='page', es=None):
     if es is None:
         es = default_es
 
@@ -56,15 +54,27 @@ def get_more_like_this(urls, pageCount=200, es_index='memex', es_doc_type='page'
                 "stop_words": stopwords
             }
         },
-        "fields": ["url"],
+        "fields": fields,
         "size": pageCount
     }
 
-    res = es.search(query=query, index = es_index, doc_type = es_doc_type)
-            
-    return [hit['_id'] for hit in res['hits']['hits']]
+    res = es.search(body=query, index = es_index, doc_type = es_doc_type)
+    hits = res['hits']['hits']
 
-def get_most_recent_documents(opt_maxNumberOfPages = 200, fields = [], opt_filter = None, es_index = 'memex', es_doc_type = 'page', es = None):
+    results = []
+    for hit in hits:
+        fields = hit['fields']
+        fields['id'] = hit['_id']
+        results.append(fields)
+ 
+    return results
+
+def get_most_recent_documents(opt_maxNumberOfPages = 200, mapping=None, fields = [], opt_filter = None, es_index = 'memex', es_doc_type = 'page', es = None):
+
+    if mapping == None:
+        print "No mappings found"
+        return []
+
     if es is None:
         es = default_es
 
@@ -72,21 +82,40 @@ def get_most_recent_documents(opt_maxNumberOfPages = 200, fields = [], opt_filte
         "size": opt_maxNumberOfPages,
         "sort": [
             {
-                "retrieved": {
+                mapping["timestamp"]: {
                     "order": "desc"
                 }
             }
         ]
     }
 
+    match_q = {
+        "match_all": {}
+    }
+            
+    if not mapping.get("content_type") is None:
+        match_q = {
+            "match": {
+                mapping["content_type"]: "text/html"
+            }
+        }
+
+
     if opt_filter is None:
         query["query"] = {
-            "match_all": {}
+            "filtered": {
+                "query": match_q,
+                "filter":{
+                    "exists": {
+                        "field": mapping['text']
+                    }
+                }
+            }
         }
     else:
         query["query"] = {
             "query_string": {
-                "fields" : ['text'],
+                "fields" : [mapping['text']],
                 "query": ' and  '.join(opt_filter.split(' ')),
             }
         }
@@ -94,12 +123,14 @@ def get_most_recent_documents(opt_maxNumberOfPages = 200, fields = [], opt_filte
     if len(fields) > 0:
         query["fields"] = fields
 
-    res = es.search(query, index = es_index, doc_type = es_doc_type)
+    res = es.search(body=query, index = es_index, doc_type = es_doc_type)
     hits = res['hits']['hits']
 
     results = []
     for hit in hits:
-        results.append(hit['fields'])
+        fields = hit['fields']
+        fields['id'] = hit['_id']
+        results.append(fields)
 
     return results
 
@@ -115,7 +146,7 @@ def get_all_ids(pageCount = 100000, es_index = 'memex', es_doc_type = 'page', es
     }
 
     try:
-        res = es.search(query, index = es_index, doc_type = es_doc_type, size = pageCount)
+        res = es.search(body=query, index = es_index, doc_type = es_doc_type, size = pageCount)
         hits = res['hits']['hits']
     
         urls = []
@@ -126,7 +157,21 @@ def get_all_ids(pageCount = 100000, es_index = 'memex', es_doc_type = 'page', es
     except IndexMissingException:
         print 'Index Missing ', es_index
         return []
+
+def get_documents_by_id(ids=[], fields=[], es_index = 'memex', es_doc_type = 'page', es = None):
+    if es is None:
+        es = default_es
         
+    results = []
+    for id in ids:
+        res = es.get(id=id, fields=fields, index = es_index, doc_type = es_doc_type)
+
+        if res.get('fields'):
+            fields = res['fields']
+            fields['id'] = res['_id']
+            results.append(fields)
+    return results
+
 if __name__ == "__main__":
     urls = []
     with open(environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/results.txt', 'r') as f:
