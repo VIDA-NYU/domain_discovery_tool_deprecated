@@ -19,6 +19,9 @@ PROJ_ROOT = os.path.dirname(env.real_fabfile)
 env.project_name = 'domain_discovery_tool'
 env.python = 'python' if 'VIRTUAL_ENV' in os.environ else 'bin/python'
 env.elastic = os.environ['ELASTICSEARCH_SERVER'] if 'ELASTICSEARCH_SERVER' in os.environ else 'http://localhost:9200'
+env.es_doc_type = os.environ['ELASTICSEARCH_DOC_TYPE'] if 'ELASTICSEARCH_DOC_TYPE' in os.environ else 'page'
+env.elastic_user = os.environ['ELASTICSEARCH_USER'] if not os.environ.get('ELASTICSEARCH_USER') is None else ''
+env.elastic_passwd = os.environ['ELASTICSEARCH_PASSWD'] if not os.environ.get('ELASTICSEARCH_PASSWD') is None else ''
 env.ache = os.environ['ACHE_HOME'] if 'ACHE_HOME' in os.environ else '~/ache'
 env.nltk_data = PROJ_ROOT+'/nltk_data';
 env.pythonpath = PROJ_ROOT+'/seeds_generator:.';
@@ -78,9 +81,14 @@ def runvis():
       shell_env(NLTK_DATA=env['nltk_data'],
                 PYTHONPATH=env['pythonpath'],
                 ACHE_HOME=env['ache'],
+                ELASTICSEARCH_SERVER=env['elastic'],
+                ELASTICSEARCH_USER=env['elastic_user'],
+                ELASTICSEARCH_PASSWD=env['elastic_passwd'],
+                ELASTICSEARCH_DOC_TYPE=env['es_doc_type'],
                 DDT_HOME=PROJ_ROOT):
         local('{python} vis/server.py'.format(**env))
-
+        print 'ORIG SHELL ', env['shell']
+  
 @task
 def install_dependencies():
     make_virtual_env()
@@ -103,7 +111,7 @@ def install_nltk_data():
     "Install data files for NLTK."
     with lcd(PROJ_ROOT), shell_env(NLTK_DATA=env['nltk_data']):
         local("if [ ! -d {nltk_data} ]; then mkdir {nltk_data}; fi".format(**env))
-        local('if [ ! -d {nltk_data}/chunkers ]; then {python} -m nltk.downloader -d {nltk_data} stopwords brown; fi'.format(**env))
+        local('if [ ! -d {nltk_data}/chunkers ]; then {python} -m nltk.downloader -d {nltk_data} stopwords brown punkt; fi'.format(**env))
 
 def download_word2vec_file():
     "Download file that contains word2vec data"
