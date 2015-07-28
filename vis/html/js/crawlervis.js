@@ -332,6 +332,7 @@ CrawlerVis.prototype.createSelectForAvailableProjectionAlgorithms = function(dat
     .text(function(d, i) {
       return d.name;
     });
+
   $('#selectProjectionAlgorithm').val("PCA")
   // Manually triggers change of value.
   var algId = "PCA";
@@ -718,6 +719,7 @@ CrawlerVis.prototype.onTagActionClicked = function(tag, action, opt_items) {
   if (!opt_items || opt_items.length == 0) {
     opt_items = this.pagesLandscape.getSelectedItems();
   }
+
   // Apply or remove tag from urls.
   var applyTagFlag = action == 'Apply';
   var urls = [];

@@ -5,6 +5,8 @@ import os
 from crawler_model_adapter import *
 from threading import Lock
 
+cherrypy.engine.timeout_monitor.unsubscribe()
+
 class Page:
   @staticmethod
   def getConfig():
