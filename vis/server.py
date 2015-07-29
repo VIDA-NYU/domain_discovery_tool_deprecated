@@ -56,6 +56,11 @@ class Page:
     return open(os.path.join(self._HTML_DIR, u"seedcrawlervis.html"))
 
   @cherrypy.expose
+  def release(self):
+    return open(os.path.join(self._HTML_DIR, u"release.html"))
+  
+
+  @cherrypy.expose
   def index(self):
     return self.seedcrawler()
 
