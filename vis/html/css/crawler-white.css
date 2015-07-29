@@ -1098,3 +1098,13 @@ h1 {
 }
 
 */
+
+.footer {
+    padding-top: 19px;
+    color: #777;
+    border-top: 1px solid #e5e5e5;
+    padding-right: 15px;
+    padding-left: 15px;
+    background-color: rgb(241, 242, 246); 
+    text-align: center;
+}

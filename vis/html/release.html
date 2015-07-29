@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<html>
+  <head>
+    <title>Domain Discovery Tool Release Notes</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="bootflat-2.0.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bootflat-2.0.4/css/bootflat.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+
+    <link type="text/css" rel="stylesheet" href="css/d3.slider.css" media="all">
+    <link type="text/css" rel="stylesheet" href="css/jquery-ui.css" media="all">
+    <link type="text/css" rel="stylesheet" href="css/jquery.urlive.css" media="all">
+    <link type="text/css" rel="stylesheet" href="css/crawler-white.css" media="all">
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <h1>Domain Discovery Tool v2.4.0 Release Notes</h1>
+      <h2>Features</h2>
+      <ul> 
+	<li>Ability to create a new domain</li>
+	<li>Query the web and output the downloaded pages to elasticsearch</li>
+	<li>The downloading of the pages can be seen in the page summary window below the web search component</li>
+	<li>Update option to update to new downloaded pages and re-rank terms</li>
+	<li>Visualize the page clustering projections on the multidimensional visualization (MDV) window</li>
+	<li>Currently supported projection methods are: PCA, t-SNE, K-Means</li>
+	<li>Allows lasso selection of the pages in the MDV window</li>
+	<li>Allows zoom in MDV window when key 'z' is kept pressed</li>
+	<li>The files selected in the MDV window are displayed with a short snippet from the page, an image and url in the pages panel below the MDV window</li>
+	<li>Shift+click on the page in the pages panel brings up a snapshot of the page</li>
+	<li>Clicking on the url in pages panel opens the page in a new tab</li>
+	<li>After inspecting the pages all selected pages can be tagged relevant or irrelevant as a group or individually</li>
+	<li>Ability to connect to exisiting corpora stored in elasticsearch</li>
+	<li>Filter the corpora for documents with specific query words</li>
+	<li>The number of filtered documents to be retrieved can be set using the pageCap</li>
+	<li>When documents are filtered, the terms retrieved reflect the significant terms in the filtered documents.</li>
+	<li>The update also retrieves the top 50 frequent terms in the pages that provide more insight into the content of the pages</li>
+	<li>The red and blue bars to the right and left of the term show a relative occurrence of the term in negative and positive pages. This facilitates selecting terms that are more discriminative</li>
+	<li>When the mouse is hovered over the word the snippets from pages that the selected term occurs in are displayed. This provides a context for the term </li>
+	<li>The terms can be tagged positive or negative by one-click and double-click respectively</li>
+	<li>After tagging when update is clicked the terms are re-ranked based on previous tagging</li>
+	<li>Shift+Click on the term to enter it into the web search</li>
+	<li>These results are stored on the back end to build page classifiers for crawlers</li>
+	<li>Clicking on the Model button builds the Ache crawler page classifier model, features and seeds files</li>
+	<li>It also outputs the annotated pages as training data. This can be used by any other crawler to build their respective models</li>
+	<li>Once the model is built it can be downloaded and saved to be further retrieved for starting a crawler</li>
+      </ul>
+    </div>
+  </body>
+
+</html>
