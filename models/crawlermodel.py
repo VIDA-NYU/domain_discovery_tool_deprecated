@@ -373,13 +373,14 @@ class CrawlerModel:
       if len(pos_urls) > 0:
         # If positive urls are available search for more documents like them
         urls = [field['id'] for field in get_more_like_this(pos_urls, ['url'], self._pagesCapTerms,  self._activeCrawlerIndex, self._docType,  self.es)]
-      
+        top_terms = get_significant_terms(urls, opt_maxNumberOfTerms, self._mapping,  self._activeCrawlerIndex, self._docType, self.es)
+
       if not urls:
         # If positive urls are not available then get the most recent documents
         urls = [field['id'] for field in get_most_recent_documents(self._pagesCapTerms, self._mapping, ['url'], self._filter, self._activeCrawlerIndex, self._docType, self.es)]
+        top_terms = get_significant_terms(urls, opt_maxNumberOfTerms, self._mapping, self._activeCrawlerIndex, self._docType, self.es)
 
       if len(urls) > 1:
-      
         tfidf_all = tfidf.tfidf(urls, self.w2v, self._mapping, self._activeCrawlerIndex, self._docType, self.es)
         extract_terms_all = extract_terms.extract_terms(tfidf_all)
       
@@ -387,14 +388,11 @@ class CrawlerModel:
           [ranked_terms, scores] = extract_terms_all.results(pos_terms)
           top_terms = [ term for term in ranked_terms if (term not in neg_terms)]
           top_terms = top_terms[0:opt_maxNumberOfTerms]
-        else:
-          top_terms = extract_terms_all.getTopTerms(opt_maxNumberOfTerms)
     else:
       filter_terms = self._filter.split(' ')
 
-      start=time.clock()
-
-      top_terms = get_significant_terms(filter_terms, field=self._mapping["text"], fields=[self._mapping["text"]], termCount=opt_maxNumberOfTerms, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=self.es)
+      ids = [field['id'] for field in search(self._mapping["text"], filter_terms, ["url"], self._activeCrawlerIndex, self._docType, self.es)]
+      top_terms = get_significant_terms(ids, opt_maxNumberOfTerms, mapping=self._mapping, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=self.es)
 
     if not top_terms:  
       return []
@@ -471,7 +469,6 @@ class CrawlerModel:
   # }
   def getPages(self):
 
-    start = time.clock()
     if self._filter is None:
       hits = get_most_recent_documents(opt_maxNumberOfPages=self._pagesCap, mapping=self._mapping, fields=["url", "x", "y", self._mapping["tag"], self._mapping["timestamp"], self._mapping["text"]], 
                                        es_index=self._activeCrawlerIndex,
