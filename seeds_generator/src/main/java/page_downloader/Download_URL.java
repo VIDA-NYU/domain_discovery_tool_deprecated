@@ -64,7 +64,7 @@ public class Download_URL implements Runnable {
 		    Integer content_length = (response.getFirstHeader("Content-Length") != null) ? Integer.valueOf(response.getFirstHeader("Content-Length").getValue()) : responseBody.length();
 		    String date = response.getFirstHeader("Date").getValue();
 		    String content_text = "";
-		    if(!content_type.contains("pdf")){
+		    if(content_type.contains("text/html")){
 			Extract extract = new Extract();
 			content_text = extract.process(responseBody);
 		    }
