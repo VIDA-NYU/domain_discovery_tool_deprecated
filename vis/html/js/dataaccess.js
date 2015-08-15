@@ -261,11 +261,19 @@ var DataAccess = (function() {
     runQueryForCurrentCrawler(
       '/setTermsTag', {'terms': term, 'tag': tag, 'applyTagFlag': applyTagFlag});
   };
+
   // Sets limit of number of pages loaded.
   pub.setPagesCountCap = function(cap) {
     runQueryForCurrentCrawler(
       '/setPagesCountCap', {'pagesCap': cap});
   };
+
+  // Set the time range for filtering pages retrieved 
+  pub.setDateTime = function(fromdate, todate){
+      runQueryForCurrentCrawler(
+	  '/setDateTime', {'fromDate': fromdate, 'toDate': todate});
+  };
+
   // Generate data to build crawler model
   pub.createModelData = function(crawlerId){
       Utils.setWaitCursorEnabled(true);

@@ -15,7 +15,7 @@
 var Wordlist = function(containerId) {
     this.containerId = containerId;  
     this.entries = [];
-    this.setMaxPosNegFreq(100, 100);
+    this.setMaxPosNegFreq(50, 50);
     this.update();
 };
 
@@ -46,10 +46,17 @@ Wordlist.prototype.setEntries = function(entries) {
 
 Wordlist.prototype.update = function() {
     var wordlist = this;
-    var maxWordTextWidth = 100;
     var rowHeight = 16;
     var barHeight = 6;
     var svgMargin = {'top': 5, 'left': 5, 'right': 5, 'bottom': 5};
+
+    var word_length = [];
+    $(this.entries).each(function( index, value ){
+	word_length.push(value["word"].length);
+    });
+    var maxWordTextWidth = Math.max.apply(Math, word_length) * 7;
+
+    console.log(maxWordTextWidth);
     
     var containerWidth = $('#' + wordlist.containerId).width();
     var width = containerWidth - svgMargin.left - svgMargin.right;
