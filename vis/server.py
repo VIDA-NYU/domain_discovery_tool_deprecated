@@ -119,7 +119,6 @@ class Page:
     self._crawler.applyFilter(terms)
 
 
-
   # Returns number of pages downloaded between ts1 and ts2 for active crawler.
   # ts1 and ts2 are Unix epochs (seconds after 1970).
   # If opt_applyFilter is True, the summary returned corresponds to the applied pages filter defined
@@ -159,14 +158,15 @@ class Page:
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
 
-
-
   # Sets limit to pages returned by @getPages.
   @cherrypy.expose
   def setPagesCountCap(self, pagesCap):
     self._crawler.setPagesCountCap(pagesCap)
 
-
+  # Set the date range to filter data
+  @cherrypy.expose
+  def setDateTime(self, fromDate=None, toDate=None):
+    self._crawler.setDateTime(fromDate, toDate)
 
   # Returns most recent downloaded pages.
   # Returns dictionary in the format:
