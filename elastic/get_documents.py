@@ -162,13 +162,24 @@ def get_documents_by_id(ids=[], fields=[], es_index = 'memex', es_doc_type = 'pa
     if es is None:
         es = default_es
         
-    results = []
-    for id in ids:
-        res = es.get(id=id, fields=fields, index = es_index, doc_type = es_doc_type)
+    query = {
+        "query": {
+            "ids": {
+                "values": ids
+            }
+        },
+        "fields": fields
+    } 
 
-        if res.get('fields'):
-            fields = res['fields']
-            fields['id'] = res['_id']
+    res = es.search(body=query, index = es_index, doc_type = es_doc_type, size=len(ids))
+
+    hits = res['hits']['hits']
+
+    results = []
+    for hit in hits: 
+        if hit.get('fields'):
+            fields = hit['fields']
+            fields['id'] = hit['_id']
             results.append(fields)
     return results
 

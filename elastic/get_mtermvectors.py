@@ -6,6 +6,7 @@ from sets import Set
 import time
 
 from config import es as default_es
+from elastic.get_documents import get_documents_by_id
 
 ENGLISH_STOPWORDS = set(nltk.corpus.stopwords.words('english'))
 
@@ -13,7 +14,7 @@ def tfidf(tf, df, n_doc):
     idf = math.log(n_doc / float(df))
     return tf * idf
 
-def terms_from_es_json(doc, w2v=None, rm_stopwords=True, pos_tags=[], termstatistics = False, mapping=None):
+def terms_from_es_json(doc, w2v=None, rm_stopwords=True, pos_tags=[], termstatistics = False, mapping=None, es=None):
     terms = {}
     docterms = doc["term_vectors"][mapping['text']]["terms"]
     n_doc = doc["term_vectors"][mapping['text']]["field_statistics"]["doc_count"]
@@ -23,8 +24,11 @@ def terms_from_es_json(doc, w2v=None, rm_stopwords=True, pos_tags=[], termstatis
         no_stopwords = [k for k in docterms.keys() if k not in ENGLISH_STOPWORDS and (len(k) > 2)]
         valid_words = no_stopwords
 
-    if not w2v is None:
+    if not w2v.word_vec is None:
         valid_words = [term for term in valid_words if not w2v.get(term) is None]
+    else:    
+        results = get_documents_by_id(valid_words, ["term"], "word_phrase_to_vec", "terms", es)
+        valid_words = [res["term"][0] for res in results]
 
     if len(pos_tags) > 0:
         tagged = nltk.pos_tag(docterms)
