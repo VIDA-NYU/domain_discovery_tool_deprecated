@@ -26,4 +26,8 @@ tools.staticdir.dir = models
 
 [/bootflat-2.0.4]
 tools.staticdir.on = True
-tools.staticdir.dir = bootflat-2.0.4
+tools.staticdir.dir = libs/bootflat-2.0.4
+
+[/bootstrap-datetimepicker-4.15.35]
+tools.staticdir.on = True
+tools.staticdir.dir = libs/bootstrap-datetimepicker-4.15.35
