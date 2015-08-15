@@ -93,6 +93,11 @@ class CrawlerModelAdapter:
   def setPagesCountCap(self, pagesCap):
     self._crawlerModel.setPagesCountCap(pagesCap)
 
+  # Set the date range to filter data
+  def setDateTime(self, fromDate=None, toDate=None):
+    self._crawlerModel.setDateTime(fromDate, toDate)
+
+
   # Returns most recent downloaded pages.
   # Returns dictionary in the format:
   # {
