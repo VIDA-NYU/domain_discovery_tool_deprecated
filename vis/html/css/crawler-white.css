@@ -1108,3 +1108,24 @@ h1 {
     background-color: rgb(241, 242, 246); 
     text-align: center;
 }
+
+.bootstrap-datetimepicker-widget.dropdown-menu {
+  background-color: #fff;
+  border: black;
+}
+
+.input-group-addon {
+  color: #fff;
+  background-color: #ffce54;
+  border-color: #96a0ad;
+}
+
+.dropdown-menu li a {
+  padding: 5px 20px;
+  color: #000;
+}
+
+.dropdown-menu li a:hover {
+  padding: 5px 20px;
+  color: #000;
+}

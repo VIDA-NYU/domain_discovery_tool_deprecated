@@ -5,7 +5,6 @@
  * @author Cesar Palomo <cesarpalomo@gmail.com> <cmp576@nyu.edu>
  */
 
-
 var CrawlerVis = function() {
     var currentCrawler = undefined;
 };
@@ -76,7 +75,7 @@ CrawlerVis.prototype.initSignalSlotsCrawler = function() {
 
   SigSlots.connect(__sig__.brushed_pages_changed, this, this.onBrushedPagesChanged);
   SigSlots.connect(__sig__.filter_enter, this, this.runFilter);
-
+    
   // TODO(Cesar): remove! not active for crawler.
   //SigSlots.connect(__sig__.term_toggle, this, this.onTermToggle);
 };
@@ -222,6 +221,8 @@ CrawlerVis.prototype.initUISeedCrawler = function() {
   this.initModelButton();
   this.initQueryWebButton();
   this.initAddCrawlerButton();
+  this.initFromCalendarButton();
+  this.initToCalendarButton();
   this.createSelectForFilterPageCap();
 };
 
@@ -830,6 +831,38 @@ CrawlerVis.prototype.createModelData = function() {
     DataAccess.createModelData();
 }
 
+/**
+ * Initializes calendar button.
+ */
+CrawlerVis.prototype.initFromCalendarButton = function() {
+    var vis = this;
+    $("#from_datetimepicker").datetimepicker({
+	icons:{
+	    time: "glyphicon glyphicon-time",
+	    date: "glyphicon glyphicon-calendar"
+	}
+    });
+    $("#from_datetimepicker").on("dp.change", function(e){
+	vis.applyFilter();
+    });
+};
+
+/**
+ * Initializes calendar button.
+ */
+CrawlerVis.prototype.initToCalendarButton = function() {    
+    var vis = this;
+    $('#to_datetimepicker').datetimepicker({
+	icons:{
+	    time: "glyphicon glyphicon-time",
+	    date: "glyphicon glyphicon-calendar"
+	}
+    });
+    $("#to_datetimepicker").on("dp.change", function(e){
+	vis.applyFilter();
+    });
+};
+
 // Creates select to limit number of pages to load.
 CrawlerVis.prototype.createSelectForFilterPageCap = function() {
   var vis = this;
@@ -849,7 +882,6 @@ CrawlerVis.prototype.createSelectForFilterPageCap = function() {
       return d;
     });
 };
-
 
 /**
  * Applies query (useful for seed crawler vis).
@@ -891,11 +923,15 @@ CrawlerVis.prototype.runAddCrawler = function(index_name) {
  * Applies filter.
  */
 CrawlerVis.prototype.applyFilter = function(terms) {
-    
-  
   // Sets cap.
   var cap = d3.select('#filter_cap_select').node().value;
   DataAccess.setPagesCountCap(cap);
+
+  var fromdate = d3.select('#fromdate').node().value;
+  var todate = d3.select('#todate').node().value;
+
+  if (fromdate != undefined && fromdate != null)
+      DataAccess.setDateTime(fromdate, todate)
 
   DataAccess.applyFilter(terms);
 
