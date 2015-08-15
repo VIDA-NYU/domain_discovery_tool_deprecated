@@ -30,6 +30,40 @@ def search(field, queryStr, fields = [], es_index='memex', es_doc_type='page', e
 
         return results
 
+def multifield_query_search(s_fields, pageCount=100, fields = [], es_index='memex', es_doc_type='page', es=None):
+    if es is None:
+        es = default_es
+
+    query = None
+    for field, value in s_fields.items():
+        if query is None:
+            query = "(" + field + ":" + value + ")"
+        else:
+            query = query + " AND " + "(" + field + ":" + value + ")"
+            
+    print '\n', query, '\n'
+
+    if not query is None:
+        query = {
+            "query": {
+                "query_string": {
+                    "query": query
+                }
+            },
+            "fields": fields
+        }
+
+        res = es.search(body=query, fields=','.join(fields[0:]), index=es_index, doc_type=es_doc_type, size=pageCount)
+        hits = res['hits']['hits']
+
+        results = []
+        for hit in hits:
+            fields = hit['fields']
+            fields['id'] = hit['_id']
+            results.append(fields)
+
+        return results
+
 def term_search(field, queryStr, fields=[], es_index='memex', es_doc_type='page', es=None):
     if es is None:
         es = default_es
@@ -57,6 +91,7 @@ def term_search(field, queryStr, fields=[], es_index='memex', es_doc_type='page'
             results.append(fields)
             
         return results
+
 
 def multifield_term_search(s_fields, fields=[], es_index='memex', es_doc_type='page', es=None):
     if es is None:
