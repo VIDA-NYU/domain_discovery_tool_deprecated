@@ -1,6 +1,5 @@
 import time
 from datetime import datetime
-from pprint import pprint
 
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
@@ -509,11 +508,6 @@ class CrawlerModel:
       self._toDate = long(CrawlerModel.convert_to_epoch(datetime.strptime(toDate, format)) * 1000)
     else:
       self._toDate = None
-
-    print str(self._fromDate) + ' TO ' + str(self._toDate)
-      
-
-    
       
 
   # Returns most recent downloaded pages.
