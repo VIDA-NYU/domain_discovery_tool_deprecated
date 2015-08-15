@@ -24,27 +24,27 @@ from elasticsearch import Elasticsearch
 from seeds_generator.download import download, decode
 from seeds_generator.concat_nltk import get_bag_of_words
 from elastic.get_config import get_available_domains, get_mapping
-from elastic.search_documents import get_context, term_search, search, multifield_term_search, range 
+from elastic.search_documents import get_context, term_search, search, multifield_term_search, range, multifield_query_search 
 from elastic.add_documents import add_document, update_document, refresh
 from elastic.get_mtermvectors import getTermStatistics, getTermFrequency
-from elastic.get_documents import get_most_recent_documents, get_documents, get_all_ids, get_more_like_this, get_documents_by_id
+from elastic.get_documents import get_most_recent_documents, get_documents, get_all_ids, get_more_like_this
 from elastic.aggregations import get_significant_terms
 from elastic.create_index import create_index, create_terms_index, create_config_index
 from elastic.load_config import load_config
 from elastic.create_index import create_config_index
 from elastic.config import es, es_doc_type, es_server
 
-from ranking import tfidf, rank, extract_terms, word2vec
+from ranking import tfidf, rank, extract_terms, word2vec, get_bigrams_trigrams
 
 import urllib2
 import json
 
 class CrawlerModel:
 
-  w2v = word2vec.word2vec()
+  w2v = word2vec.word2vec(from_es=False)
 
   def __init__(self):
-    self.es = None
+    self._es = None
     self._activeCrawlerIndex = None
     self._activeCrawlerId = None
     self._termsIndex = "ddt_terms"
@@ -52,7 +52,9 @@ class CrawlerModel:
     self._docType = None
     self._filter = None
     self._pagesCap = 100
-    self._pagesCapTerms = 50
+    self._fromDate = None
+    self._toDate = None
+    self._pagesCapTerms = 10
     self.projectionsAlg = {'PCA': self.pca,
                            't-SNE': self.tsne,
                            'K-Means': self.kmeans,
@@ -82,9 +84,9 @@ class CrawlerModel:
   # ]
   def getAvailableCrawlers(self):
     # Initializes elastic search.
-    self.es = es
+    self._es = es
 
-    self._domains = get_available_domains(self.es)
+    self._domains = get_available_domains(self._es)
 
     return \
     [{'id': k, 'name': d['domain_name'], 'creation': d['timestamp'], 'index': d['index'], 'doc_type': d['doc_type']} for k, d in self._domains]
@@ -100,9 +102,9 @@ class CrawlerModel:
   # ]
   def getAvailableSeedCrawlers(self):
     # Initializes elastic search.
-    self.es = es
+    self._es = es
     
-    self._domains = get_available_domains(self.es)
+    self._domains = get_available_domains(self._es)
     
     return \
     [{'id': k, 'name': d['domain_name'], 'creation': d['timestamp'], 'index': d['index'], 'doc_type': d['doc_type']} for k, d in self._domains.items()]
@@ -116,6 +118,10 @@ class CrawlerModel:
       self._mapping = self._domains[crawlerId]["mapping"]
       
     self._filter = None
+    self._fromDate = None
+    self._fromTime = "00:00"
+    self._toDate = None
+    self._toTime = "00:00"
 
   def setActiveProjectionAlg(self, algId):
     self._activeProjectionAlg = algId
@@ -136,8 +142,8 @@ class CrawlerModel:
     if (not isdir(data_negative)):
       makedirs(data_negative)
 
-    pos_urls = [field['url'][0] for field in term_search(self._mapping['tag'], ['relevant'], ['url'], self._activeCrawlerIndex, 'page', self.es)]
-    neg_urls = [field['url'][0] for field in term_search(self._mapping['tag'], ['irrelevant'], ['url'], self._activeCrawlerIndex, 'page', self.es)]
+    pos_urls = [field['url'][0] for field in term_search(self._mapping['tag'], ['relevant'], ['url'], self._activeCrawlerIndex, 'page', self._es)]
+    neg_urls = [field['url'][0] for field in term_search(self._mapping['tag'], ['irrelevant'], ['url'], self._activeCrawlerIndex, 'page', self._es)]
     
     pos_html = get_documents(pos_urls, 'url', [self._mapping["html"]], self._activeCrawlerIndex, self._docType)
     neg_html = get_documents(neg_urls, 'url', [self._mapping["html"]], self._activeCrawlerIndex, self._docType)
@@ -297,10 +303,10 @@ class CrawlerModel:
       # TODO(Yamuna): apply filter if it is None. Otherwise, match_all.
       results = get_most_recent_documents(self._pagesCap, self._mapping, ["url", self._mapping["tag"]], 
                                           self._filter, self._activeCrawlerIndex, self._docType,  \
-                                          self.es)
+                                          self._es)
     else:
       results = \
-      range(self._mapping["timestamp"], opt_ts1, opt_ts2, ['url',self._mapping['tag']], True, self._pagesCap, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=self.es)
+      range(self._mapping["timestamp"], opt_ts1, opt_ts2, ['url',self._mapping['tag']], True, self._pagesCap, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=self._es)
 
     relevant = 0
     irrelevant = 0
@@ -352,54 +358,81 @@ class CrawlerModel:
   #   [term, frequencyInRelevantPages, frequencyInIrrelevantPages, tags],
   #   ...
   # ]
-  def getTermsSummarySeedCrawler(self, opt_maxNumberOfTerms = 50):
+  def getTermsSummarySeedCrawler(self, opt_maxNumberOfTerms = 20):
     s_fields = {
       "tag": "Positive",
       "index": self._activeCrawlerIndex,
       "doc_type": self._docType
     }
-    pos_terms = [field['term'][0] for field in multifield_term_search(s_fields, ['term'], self._termsIndex, 'terms', self.es)]
+    pos_terms = [field['term'][0] for field in multifield_term_search(s_fields, ['term'], self._termsIndex, 'terms', self._es)]
 
     s_fields["tag"]="Negative"
-    neg_terms = [field['term'][0] for field in multifield_term_search(s_fields, ['term'], self._termsIndex, 'terms', self.es)]
+    neg_terms = [field['term'][0] for field in multifield_term_search(s_fields, ['term'], self._termsIndex, 'terms', self._es)]
     
-
-    pos_urls = [field['url'][0] for field in term_search(self._mapping['tag'], ['Relevant'], ['url'], self._activeCrawlerIndex, self._docType, self.es)]
+    pos_urls = [field['url'][0] for field in term_search(self._mapping['tag'], ['Relevant'], ['url'], self._activeCrawlerIndex, self._docType, self._es)]
     
     top_terms = []
+    top_bigrams = []
+    top_trigrams = []
 
     if self._filter is None:
       urls = []
       if len(pos_urls) > 0:
         # If positive urls are available search for more documents like them
-        urls = [field['id'] for field in get_more_like_this(pos_urls, ['url'], self._pagesCapTerms,  self._activeCrawlerIndex, self._docType,  self.es)]
-        top_terms = get_significant_terms(urls, opt_maxNumberOfTerms, self._mapping,  self._activeCrawlerIndex, self._docType, self.es)
+        results = get_more_like_this(pos_urls, ['url', self._mapping["text"]], self._pagesCapTerms,  self._activeCrawlerIndex, self._docType,  self._es)
+        urls = [field['id'] for field in results]
 
       if not urls:
         # If positive urls are not available then get the most recent documents
-        urls = [field['id'] for field in get_most_recent_documents(self._pagesCapTerms, self._mapping, ['url'], self._filter, self._activeCrawlerIndex, self._docType, self.es)]
-        top_terms = get_significant_terms(urls, opt_maxNumberOfTerms, self._mapping, self._activeCrawlerIndex, self._docType, self.es)
+        results = get_most_recent_documents(self._pagesCapTerms, self._mapping, ['url',self._mapping["text"]], self._filter, self._activeCrawlerIndex, self._docType, self._es)
+        urls = [field['id'] for field in results]
+        
+      if len(results) > 0:
+        text = [field[self._mapping["text"]][0] for field in results]
+        
+        if len(urls) > 0:
+          if pos_terms:
+            tfidf_all = tfidf.tfidf(urls, self.w2v, self._mapping, self._activeCrawlerIndex, self._docType, self._es)
+            extract_terms_all = extract_terms.extract_terms(tfidf_all)
+            [ranked_terms, scores] = extract_terms_all.results(pos_terms)
+            top_terms = [ term for term in ranked_terms if (term not in neg_terms)]
+            top_terms = top_terms[0:opt_maxNumberOfTerms]
+          else:
+            top_terms = get_significant_terms(urls, opt_maxNumberOfTerms, self._mapping,  self._activeCrawlerIndex, self._docType, self._es)
 
-      if len(urls) > 1:
-        tfidf_all = tfidf.tfidf(urls, self.w2v, self._mapping, self._activeCrawlerIndex, self._docType, self.es)
-        extract_terms_all = extract_terms.extract_terms(tfidf_all)
-      
-        if pos_terms:
-          [ranked_terms, scores] = extract_terms_all.results(pos_terms)
-          top_terms = [ term for term in ranked_terms if (term not in neg_terms)]
-          top_terms = top_terms[0:opt_maxNumberOfTerms]
+        if len(text) > 0:
+          [_,_,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(text, opt_maxNumberOfTerms, self.w2v, self._es)
+          top_bigrams = [term for term in top_bigrams if term[0].replace('_',' ') not in neg_terms]
+          top_trigrams = [term for term in top_trigrams if term[0].replace('_',' ') not in neg_terms]
+
     else:
       filter_terms = self._filter.split(' ')
+      if self._fromDate is None:
+        results = search(self._mapping["text"], filter_terms, ["url", self._mapping["text"]], self._activeCrawlerIndex, self._docType, self._es)
+      else:
+        s_fields = {
+          self._mapping["text"]: ' AND  '.join(filter_terms),
+          self._mapping["timestamp"]: "[" + str(self._fromDate) + " TO " + str(self._toDate) + "]" 
+        }
+        results = multifield_query_search(s_fields, 500, ["url", self._mapping["text"]], 
+                                          self._activeCrawlerIndex, 
+                                          self._docType,
+                                          self._es)
 
-      ids = [field['id'] for field in search(self._mapping["text"], filter_terms, ["url"], self._activeCrawlerIndex, self._docType, self.es)]
-      top_terms = get_significant_terms(ids, opt_maxNumberOfTerms, mapping=self._mapping, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=self.es)
-
+      ids = [field['id'] for field in results]
+      text = [field[self._mapping["text"]][0] for field in results]
+      top_terms = get_significant_terms(ids, opt_maxNumberOfTerms, mapping=self._mapping, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=self._es)
+      if len(text) > 0:
+        [_,_,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(text, opt_maxNumberOfTerms, self.w2v, self._es)
+        top_bigrams = [term for term in top_bigrams if term[0].replace('_', ' ') not in neg_terms]
+        top_trigrams = [term for term in top_trigrams if term[0].replace('_', ' ') not in neg_terms]
+          
     if not top_terms:  
       return []
 
     pos_freq = {}
     if len(pos_urls) > 1:
-      tfidf_pos = tfidf.tfidf(pos_urls, self.w2v, self._mapping, self._activeCrawlerIndex, self._docType, self.es)
+      tfidf_pos = tfidf.tfidf(pos_urls, self.w2v, self._mapping, self._activeCrawlerIndex, self._docType, self._es)
       [_,corpus,ttfs_pos] = tfidf_pos.getTfArray()
       total_pos_tf = np.sum(ttfs_pos.toarray(), axis=0)
       total_pos = np.sum(total_pos_tf)
@@ -412,10 +445,10 @@ class CrawlerModel:
     else:
       pos_freq = { key: 0 for key in top_terms }      
 
-    neg_urls = [field['url'][0] for field in term_search(self._mapping['tag'], ['Irrelevant'], ['url'], self._activeCrawlerIndex, self._docType, self.es)]
+    neg_urls = [field['url'][0] for field in term_search(self._mapping['tag'], ['Irrelevant'], ['url'], self._activeCrawlerIndex, self._docType, self._es)]
     neg_freq = {}
     if len(neg_urls) > 1:
-      tfidf_neg = tfidf.tfidf(neg_urls,  self.w2v, self._mapping, self._activeCrawlerIndex, self._docType,  self.es)
+      tfidf_neg = tfidf.tfidf(neg_urls,  self.w2v, self._mapping, self._activeCrawlerIndex, self._docType,  self._es)
       [_,corpus,ttfs_neg] = tfidf_neg.getTfArray()
       total_neg_tf = np.sum(ttfs_neg.toarray(), axis=0)
       total_neg = np.sum(total_neg_tf)
@@ -439,7 +472,7 @@ class CrawlerModel:
     results = []
     for term in top_terms:
       s_fields["term"] = term
-      res = multifield_term_search(s_fields, ['tag'], self._termsIndex, 'terms', self.es)
+      res = multifield_term_search(s_fields, ['tag'], self._termsIndex, 'terms', self._es)
       results.extend(res)
 
     tags = {result['id']: result['tag'][0] for result in results}    
@@ -449,13 +482,39 @@ class CrawlerModel:
       if tags and not tags.get(term) is None:
         entry[3] = tags[term].split(';')
       terms.append(entry)
+      
+    for term in top_bigrams:
+      entry = [term[0].replace('_', ' '), 0, 0, []]
+      terms.append(entry)
+
+    for term in top_trigrams:
+      entry = [term[0].replace('_', ' '), 0, 0, []]
+      terms.append(entry)
 
     return terms
-
 
   # Sets limit to pages returned by @getPages.
   def setPagesCountCap(self, pagesCap):
     self._pagesCap = int(pagesCap)
+    
+  # Set the date range to filter data
+  def setDateTime(self, fromDate=None, toDate=None):
+    format = '%m/%d/%Y %H:%M %p'
+    if fromDate:
+      self._fromDate = long(CrawlerModel.convert_to_epoch(datetime.strptime(fromDate, format)) * 1000)
+    else:
+      self._fromDate = None
+
+    if toDate:
+      self._toDate = long(CrawlerModel.convert_to_epoch(datetime.strptime(toDate, format)) * 1000)
+    else:
+      self._toDate = None
+
+    print str(self._fromDate) + ' TO ' + str(self._toDate)
+      
+
+    
+      
 
   # Returns most recent downloaded pages.
   # Returns dictionary in the format:
@@ -470,16 +529,31 @@ class CrawlerModel:
   def getPages(self):
 
     if self._filter is None:
-      hits = get_most_recent_documents(opt_maxNumberOfPages=self._pagesCap, mapping=self._mapping, fields=["url", "x", "y", self._mapping["tag"], self._mapping["timestamp"], self._mapping["text"]], 
-                                       es_index=self._activeCrawlerIndex,
-                                       es_doc_type=self._docType,
-                                       es=self.es)
+      if self._fromDate is None:
+        hits = get_most_recent_documents(opt_maxNumberOfPages=self._pagesCap, mapping=self._mapping, fields=["url", "x", "y", self._mapping["tag"], self._mapping["timestamp"], self._mapping["text"]], 
+                                         es_index=self._activeCrawlerIndex,
+                                         es_doc_type=self._docType,
+                                         es=self._es)
+      else:
+        hits = range(self._mapping["timestamp"], self._fromDate, self._toDate, ['url',"x", "y", self._mapping['tag'], self._mapping["timestamp"], self._mapping["text"]], True, self._pagesCap, 
+                     self._activeCrawlerIndex, 
+                     self._docType, 
+                     self._es)
     else:
-      hits = get_most_recent_documents(self._pagesCap, self._mapping, ["url", "x", "y", self._mapping["tag"], self._mapping["timestamp"],self._mapping["text"]], 
-                                       self._filter, self._activeCrawlerIndex, \
-                                       self._docType, \
-                                       self.es)
-
+      if self._fromDate is None:
+        hits = get_most_recent_documents(self._pagesCap, self._mapping, ["url", "x", "y", self._mapping["tag"], self._mapping["timestamp"],self._mapping["text"]], 
+                                         self._filter, self._activeCrawlerIndex, \
+                                         self._docType, \
+                                         self._es)
+      else:
+        s_fields = {
+          self._mapping["text"]: ' AND  '.join(self._filter.split(' ')),
+          self._mapping["timestamp"]: "[" + str(self._fromDate) + " TO " + str(self._toDate) + "]" 
+        }
+        hits = multifield_query_search(s_fields, self._pagesCap, ["url", "x", "y", self._mapping["tag"], self._mapping["timestamp"], self._mapping["text"]], 
+                                       self._activeCrawlerIndex, 
+                                       self._docType,
+                                       self._es)
 
     last_downloaded_url_epoch = None
     docs = []
@@ -541,7 +615,7 @@ class CrawlerModel:
   # Fetches snippets for a given term.
   def getTermSnippets(self, term):
 
-    #tags = get_documents(term, 'term', ['tag'], self._activeCrawlerIndex, 'terms', self.es)
+    #tags = get_documents(term, 'term', ['tag'], self._activeCrawlerIndex, 'terms', self._es)
 
 
     s_fields = {
@@ -550,20 +624,20 @@ class CrawlerModel:
       "doc_type": self._docType,
     }
 
-    tags = multifield_term_search(s_fields, ['tag'], self._termsIndex, 'terms', self.es)
+    tags = multifield_term_search(s_fields, ['tag'], self._termsIndex, 'terms', self._es)
     
     tag = []
     if tags:
       tag = tags[0]['tag'][0].split(';')
 
-    return {'term': term, 'tags': tag, 'context': get_context([term], self._activeCrawlerIndex, self._docType,  self.es)}
+    return {'term': term, 'tags': tag, 'context': get_context(term.split('_'), self._activeCrawlerIndex, self._docType,  self._es)}
 
   # Adds tag to pages (if applyTagFlag is True) or removes tag from pages (if applyTagFlag is
   # False).
   def setPagesTag(self, pages, tag, applyTagFlag):
 
     entries = {}
-    results = get_documents(pages, 'url', [self._mapping['tag']], self._activeCrawlerIndex, self._docType,  self.es)
+    results = get_documents(pages, 'url', [self._mapping['tag']], self._activeCrawlerIndex, self._docType,  self._es)
 
     if applyTagFlag:
       print '\n\napplied tag ' + tag + ' to pages' + str(pages) + '\n\n'
@@ -591,7 +665,7 @@ class CrawlerModel:
       update_try = 0
       while (update_try < 10):
         try:
-          update_document(entries, self._activeCrawlerIndex, self._docType, self.es)
+          update_document(entries, self._activeCrawlerIndex, self._docType, self._es)
           break
         except:
           update_try = update_try + 1
@@ -612,7 +686,7 @@ class CrawlerModel:
     tags = []
     for term in terms:
       s_fields["term"] = term
-      res = multifield_term_search(s_fields, ['tag'], self._termsIndex, 'terms', self.es)
+      res = multifield_term_search(s_fields, ['tag'], self._termsIndex, 'terms', self._es)
       tags.extend(res)
 
     results = {result['id']: result['tag'][0] for result in tags}
@@ -663,15 +737,15 @@ class CrawlerModel:
               update_entries[term] = entry
 
     if add_entries:
-      add_document(add_entries, self._termsIndex, 'terms', self.es)
+      add_document(add_entries, self._termsIndex, 'terms', self._es)
     
     if update_entries:
-      update_document(update_entries, self._termsIndex, 'terms', self.es)
+      update_document(update_entries, self._termsIndex, 'terms', self._es)
 
   # Add crawler
   def addCrawler(self, index_name):
 
-    create_index(index_name, self.es)
+    create_index(index_name, self._es)
     
     fields = index_name.lower().split(' ')
     index = '_'.join([item for item in fields if item not in ''])
@@ -726,7 +800,7 @@ class CrawlerModel:
     text = [page[5] for page in pages]
     #[data,_,_,_,urls] = self.term_tfidf(urls)
 
-    #[urls, data] = CrawlerModel.w2v.process(urls, self._mapping, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=self.es)
+    #[urls, data] = CrawlerModel.w2v.process(urls, self._mapping, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=self._es)
   
     [urls, data] = CrawlerModel.w2v.process_text(urls, text)
 
@@ -760,7 +834,7 @@ class CrawlerModel:
     #data = data.astype(bool)
     #data = data.astype(int)
 
-    #[urls, data] = CrawlerModel.w2v.process(urls, self._mapping, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=self.es)
+    #[urls, data] = CrawlerModel.w2v.process(urls, self._mapping, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=self._es)
     [urls, data] = CrawlerModel.w2v.process_text(urls, text)
     
     tsne_count = 2
@@ -791,7 +865,7 @@ class CrawlerModel:
     #data = data.astype(bool)
     #data = data.astype(int)
 
-    #[urls, data] = CrawlerModel.w2v.process(urls, self._mapping, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=self.es)
+    #[urls, data] = CrawlerModel.w2v.process(urls, self._mapping, es_index=self._activeCrawlerIndex, es_doc_type=self._docType, es=self._es)
     [urls, data] = CrawlerModel.w2v.process_text(urls, text)
 
     k = 5
@@ -812,7 +886,7 @@ class CrawlerModel:
 
   def term_tfidf(self, urls):
 
-    [data, data_tf, data_ttf , corpus, urls] = getTermStatistics(urls, self.w2v, self._mapping, self._activeCrawlerIndex, self._docType, self.es)
+    [data, data_tf, data_ttf , corpus, urls] = getTermStatistics(urls, self.w2v, self._mapping, self._activeCrawlerIndex, self._docType, self._es)
     return [data.toarray(), data_tf, data_ttf, corpus, urls]
 
   @staticmethod
