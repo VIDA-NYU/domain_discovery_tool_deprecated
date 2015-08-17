@@ -123,7 +123,6 @@ CrawlerVis.prototype.initUICrawler = function() {
   this.loadAvailableProjectionAlgorithms();
   this.initWordlist();
   this.initCustomWordlist(this.wordlist.maxWordTextWidth);
-  this.initCustomWordlistNeg(this.wordlist.maxWordTextWidth);
   this.initStatslist();
   this.initFilterStatslist();
   this.initPagesLandscape(true);
@@ -195,7 +194,6 @@ CrawlerVis.prototype.initUISeedCrawler = function() {
   this.loadAvailableProjectionAlgorithms();
   this.initWordlist();
   this.initCustomWordlist(this.wordlist.maxWordTextWidth);
-  this.initCustomWordlistNeg(this.wordlist.maxWordTextWidth);
   this.initStatslist();
   this.initFilterStatslist();
   this.initPagesLandscape(false);
@@ -320,7 +318,6 @@ CrawlerVis.prototype.setActiveCrawler = function(crawlerId) {
 
     this.initWordlist();
     this.initCustomWordlist(this.wordlist.maxWordTextWidth);
-    this.initCustomWordlistNeg(this.wordlist.maxWordTextWidth);
 
     this.termsSnippetsViewer.clear();
 
@@ -521,10 +518,6 @@ CrawlerVis.prototype.initCustomWordlist = function(maxWordTextWidth) {
     this.customwordlist = new Wordlist('customwordlist', maxWordTextWidth, false);
 };
 
-CrawlerVis.prototype.initCustomWordlistNeg = function(maxWordTextWidth) {
-    this.customwordlistneg = new Wordlist('customwordlistneg', maxWordTextWidth, false);
-};
-
 // Initializes pages landscape.
 CrawlerVis.prototype.initPagesLandscape = function(showBoostButton) {
   var vis = this;
@@ -622,13 +615,6 @@ CrawlerVis.prototype.onLoadedTermsSummary = function(summary) {
       this.customwordlist.update();
   }
 
-  if(this.customwordlistneg != undefined){
-      $("#customwordlistneg").html("");
-      if (this.wordlist.maxWordTextWidth > this.customwordlistneg.maxWordTextWidth)
-	  this.customwordlistneg.maxWordTextWidth = this.wordlist.maxWordTextWidth;
-      this.customwordlistneg.update();
-  }
-    
   // Resets terms snippets viewer.
   this.termsSnippetsViewer.clear();
 };
@@ -863,7 +849,7 @@ CrawlerVis.prototype.initAddTermButton = function() {
 	    Utils.hideTooltip();
 	})
 	.on('click', function() {
-	    var value = d3.select('#add_term_neg_box').node().value;
+	    var value = d3.select('#add_term_box').node().value;
 	    __sig__.emit(__sig__.add_neg_term, value);
 	});
 
@@ -984,8 +970,8 @@ CrawlerVis.prototype.addTerm = function(term) {
 };
 
 CrawlerVis.prototype.addNegTerm = function(term) {
-    $("#customwordlistneg").html("");
-    this.customwordlistneg.addEntries([{'word': term, 'posFreq': 0, 'negFreq': 0, 'tags': ["Negative"]}]);
+    $("#customwordlist").html("");
+    this.customwordlist.addEntries([{'word': term, 'posFreq': 0, 'negFreq': 0, 'tags': ["Negative"]}]);
     DataAccess.setTermTag(term, 'Negative', true);
 };
 
