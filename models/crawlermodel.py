@@ -1,5 +1,6 @@
 import time
 from datetime import datetime
+from dateutil import tz
 
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
@@ -498,17 +499,23 @@ class CrawlerModel:
     
   # Set the date range to filter data
   def setDateTime(self, fromDate=None, toDate=None):
-    format = '%m/%d/%Y %H:%M %p'
+    # Have to use %I instead of %H in order to use %p
+    format = '%m/%d/%Y %I:%M %p'
+    utc_zone = tz.tzutc()
+    local_zone = tz.tzlocal()
     if fromDate:
-      self._fromDate = long(CrawlerModel.convert_to_epoch(datetime.strptime(fromDate, format)) * 1000)
+      local = datetime.strptime(fromDate, format).replace(tzinfo=local_zone)
+      utc = local.astimezone(utc_zone)
+      self._fromDate = long(CrawlerModel.convert_to_epoch(utc) * 1000)
     else:
       self._fromDate = None
 
     if toDate:
-      self._toDate = long(CrawlerModel.convert_to_epoch(datetime.strptime(toDate, format)) * 1000)
+      local = datetime.strptime(toDate, format).replace(tzinfo=local_zone)
+      utc = local.astimezone(utc_zone)
+      self._toDate = long(CrawlerModel.convert_to_epoch(utc) * 1000)
     else:
       self._toDate = None
-      
 
   # Returns most recent downloaded pages.
   # Returns dictionary in the format:
@@ -584,11 +591,11 @@ class CrawlerModel:
         format = '%Y-%m-%dT%H:%M:%S.%f'
         if '+' in last_downloaded_url_epoch:
           format = '%Y-%m-%dT%H:%M:%S+0000'
-        last_download_epoch = CrawlerModel.convert_to_epoch(datetime.strptime(last_downloaded_url_epoch, format))
+        last_download_epoch = CrawlerModel.convert_to_epoch(datetime.strptime(last_downloaded_url_epoch, format).replace(tzinfo=tz.tzutc()))
       except ValueError:
         try:
           format = '%Y-%m-%d %H:%M:%S.%f'
-          last_download_epoch = CrawlerModel.convert_to_epoch(datetime.strptime(last_downloaded_url_epoch, format))
+          last_download_epoch = CrawlerModel.convert_to_epoch(datetime.strptime(last_downloaded_url_epoch, format).replace(tzinfo=tz.tzutc()))
         except ValueError:
           pass
 
@@ -911,7 +918,7 @@ class CrawlerModel:
 
   @staticmethod
   def convert_to_epoch(dt):
-    epoch = datetime.utcfromtimestamp(0)
+    epoch = datetime.utcfromtimestamp(0).replace(tzinfo=tz.tzutc())
     delta = dt - epoch
     return delta.total_seconds()
 
