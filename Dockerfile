@@ -58,4 +58,4 @@ ADD . /domain_discovery_tool
 # Creates config files
 RUN fab make_settings
 
-VOLUME ["/var/lib/elasticsearch/data"]
+VOLUME ["/var/lib/elasticsearch"]
