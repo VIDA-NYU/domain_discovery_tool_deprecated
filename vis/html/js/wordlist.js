@@ -19,7 +19,9 @@ var Wordlist = function(containerId, maxWordTextWidth, itemClickDisable) {
     if(maxWordTextWidth != undefined || maxWordTextWidth != null){
 	this.maxWordTextWidth = maxWordTextWidth;
     }
-    this.itemClickDisable = itemClickDisable;
+    this.itemClickDisable = true;
+    if(itemClickDisable != undefined)
+	this.itemClickDisable = itemClickDisable;
 };
 
 Wordlist.prototype.setMaxPosNegFreq = function(maxPosFreq, maxNegFreq) {
@@ -203,10 +205,9 @@ Wordlist.prototype.update = function() {
  * Handles click in an item.
  */
 Wordlist.prototype.onItemClick = function(item, i, isShiftKeyPressed) {
-  if (itemClickDisable != undefined || itemClickDisable != false)
-      __sig__.emit(__sig__.term_toggle, item, isShiftKeyPressed);
+    if (this.itemClickDisable === true)
+	__sig__.emit(__sig__.term_toggle, item, isShiftKeyPressed);
 };
-
 
 /**
  * Handles mouse focus on an item.
