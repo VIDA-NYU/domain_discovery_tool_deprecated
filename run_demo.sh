@@ -11,13 +11,6 @@ fi
 
 echo "Using ElasticSearch at $ELASTICSEARCH_SERVER"
 
-# setup config indexes
-echo "Setting up demo data..."
-cd /domain_discovery_tool/elastic
-echo "Creating config index"
-./create_config_index.sh $ELASTICSEARCH_SERVER
-echo "Done"
-
 # run server
 echo "Running server..."
 cd /domain_discovery_tool
