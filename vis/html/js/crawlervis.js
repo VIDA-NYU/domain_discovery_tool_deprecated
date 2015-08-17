@@ -75,6 +75,8 @@ CrawlerVis.prototype.initSignalSlotsCrawler = function() {
 
   SigSlots.connect(__sig__.brushed_pages_changed, this, this.onBrushedPagesChanged);
   SigSlots.connect(__sig__.filter_enter, this, this.runFilter);
+  SigSlots.connect(__sig__.add_term, this, this.runAddTerm);
+  SigSlots.connect(__sig__.add_neg_term, this, this.runAddNegTerm);
     
   // TODO(Cesar): remove! not active for crawler.
   //SigSlots.connect(__sig__.term_toggle, this, this.onTermToggle);
@@ -110,6 +112,8 @@ CrawlerVis.prototype.initSignalSlotsSeedCrawler = function() {
   SigSlots.connect(__sig__.add_crawler, this, this.runAddCrawler);
   SigSlots.connect(__sig__.query_enter, this, this.runQuery);
   SigSlots.connect(__sig__.filter_enter, this, this.runFilter);
+  SigSlots.connect(__sig__.add_term, this, this.runAddTerm);
+  SigSlots.connect(__sig__.add_neg_term, this, this.runAddNegTerm);
 };
 
 
@@ -118,6 +122,8 @@ CrawlerVis.prototype.initUICrawler = function() {
   this.loadAvailableCrawlers();
   this.loadAvailableProjectionAlgorithms();
   this.initWordlist();
+  this.initCustomWordlist(this.wordlist.maxWordTextWidth);
+  this.initCustomWordlistNeg(this.wordlist.maxWordTextWidth);
   this.initStatslist();
   this.initFilterStatslist();
   this.initPagesLandscape(true);
@@ -188,6 +194,8 @@ CrawlerVis.prototype.initUISeedCrawler = function() {
   this.loadAvailableCrawlers();
   this.loadAvailableProjectionAlgorithms();
   this.initWordlist();
+  this.initCustomWordlist(this.wordlist.maxWordTextWidth);
+  this.initCustomWordlistNeg(this.wordlist.maxWordTextWidth);
   this.initStatslist();
   this.initFilterStatslist();
   this.initPagesLandscape(false);
@@ -224,6 +232,7 @@ CrawlerVis.prototype.initUISeedCrawler = function() {
   this.initFromCalendarButton();
   this.initToCalendarButton();
   this.createSelectForFilterPageCap();
+  this.initAddTermButton();
 };
 
 
@@ -307,6 +316,12 @@ CrawlerVis.prototype.loadAvailableCrawlers = function() {
 // Sets active crawler.
 CrawlerVis.prototype.setActiveCrawler = function(crawlerId) {
     $("#wordlist").html("");
+    $("#customwordlist").html("");
+
+    this.initWordlist();
+    this.initCustomWordlist(this.wordlist.maxWordTextWidth);
+    this.initCustomWordlistNeg(this.wordlist.maxWordTextWidth);
+
     this.termsSnippetsViewer.clear();
 
     // Changes active crawler and forces update.
@@ -502,6 +517,13 @@ CrawlerVis.prototype.initWordlist = function() {
   this.wordlist = new Wordlist('wordlist');
 };
 
+CrawlerVis.prototype.initCustomWordlist = function(maxWordTextWidth) {
+    this.customwordlist = new Wordlist('customwordlist', maxWordTextWidth, false);
+};
+
+CrawlerVis.prototype.initCustomWordlistNeg = function(maxWordTextWidth) {
+    this.customwordlistneg = new Wordlist('customwordlistneg', maxWordTextWidth, false);
+};
 
 // Initializes pages landscape.
 CrawlerVis.prototype.initPagesLandscape = function(showBoostButton) {
@@ -593,6 +615,20 @@ CrawlerVis.prototype.onLoadedTermsSummary = function(summary) {
   var maxFreq = Math.max(maxPosFreq, maxNegFreq);
   this.wordlist.setMaxPosNegFreq(maxFreq, maxFreq);
 
+  if(this.customwordlist != undefined){
+      $("#customwordlist").html("");
+      if (this.wordlist.maxWordTextWidth > this.customwordlist.maxWordTextWidth)
+	  this.customwordlist.maxWordTextWidth = this.wordlist.maxWordTextWidth;
+      this.customwordlist.update();
+  }
+
+  if(this.customwordlistneg != undefined){
+      $("#customwordlistneg").html("");
+      if (this.wordlist.maxWordTextWidth > this.customwordlistneg.maxWordTextWidth)
+	  this.customwordlistneg.maxWordTextWidth = this.wordlist.maxWordTextWidth;
+      this.customwordlistneg.update();
+  }
+    
   // Resets terms snippets viewer.
   this.termsSnippetsViewer.clear();
 };
@@ -801,6 +837,39 @@ CrawlerVis.prototype.initQueryWebButton = function() {
 };
 
 
+CrawlerVis.prototype.initAddTermButton = function() {
+    d3.select('#add_term_button')
+	.on('mouseover', function() {
+	    Utils.showTooltip();
+	})
+	.on('mousemove', function() {
+	    Utils.updateTooltip('Add custom relevant terms');
+	})
+	.on('mouseout', function() {
+	    Utils.hideTooltip();
+	})
+	.on('click', function() {
+	    var value = d3.select('#add_term_box').node().value;
+	    __sig__.emit(__sig__.add_term, value);
+	});
+    d3.select('#add_term_neg_button')
+	.on('mouseover', function() {
+	    Utils.showTooltip();
+	})
+	.on('mousemove', function() {
+	    Utils.updateTooltip('Add custom irrelevant terms');
+	})
+	.on('mouseout', function() {
+	    Utils.hideTooltip();
+	})
+	.on('click', function() {
+	    var value = d3.select('#add_term_neg_box').node().value;
+	    __sig__.emit(__sig__.add_neg_term, value);
+	});
+
+};
+
+
 /**
  * Initializes filter button.
  */
@@ -821,6 +890,16 @@ CrawlerVis.prototype.initFilterButton = function() {
 CrawlerVis.prototype.initModelButton = function() {
     var vis = this;
     d3.select('#build_model')
+    .on('mouseover', function() {
+      Utils.showTooltip();
+    })
+    .on('mousemove', function() {
+      Utils.updateTooltip('Generate and download page classifier crawler model');
+    })
+    .on('mouseout', function() {
+      Utils.hideTooltip();
+    })
+
 	.on('click', function() {
 	    vis.createModelData();
 	});
@@ -898,6 +977,18 @@ CrawlerVis.prototype.addCrawler = function(index_name) {
 };
 
 
+CrawlerVis.prototype.addTerm = function(term) {
+    $("#customwordlist").html("");
+    this.customwordlist.addEntries([{'word': term, 'posFreq': 0, 'negFreq': 0, 'tags': ["Positive"]}]);
+    DataAccess.setTermTag(term, 'Positive', true);
+};
+
+CrawlerVis.prototype.addNegTerm = function(term) {
+    $("#customwordlistneg").html("");
+    this.customwordlistneg.addEntries([{'word': term, 'posFreq': 0, 'negFreq': 0, 'tags': ["Negative"]}]);
+    DataAccess.setTermTag(term, 'Negative', true);
+};
+
 /**
  * Runs query (useful for seed crawler vis).
  */
@@ -918,6 +1009,26 @@ CrawlerVis.prototype.runAddCrawler = function(index_name) {
     else this.addCrawler(index_name);
 };
 
+
+/**
+ * Run Add Term
+ */
+
+CrawlerVis.prototype.runAddTerm = function(term) {  
+    if (term === "")
+	document.getElementById("status_panel").innerHTML = 'Enter a valid term';
+    else this.addTerm(term);
+};
+
+/**
+ * Run Add Neg Term
+ */
+
+CrawlerVis.prototype.runAddNegTerm = function(term) {  
+    if (term === "")
+	document.getElementById("status_panel").innerHTML = 'Enter a valid term';
+    else this.addNegTerm(term);
+};
 
 /**
  * Applies filter.
