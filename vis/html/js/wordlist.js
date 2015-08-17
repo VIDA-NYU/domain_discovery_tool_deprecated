@@ -4,21 +4,23 @@
  * @author (cesarpalomo@gmail.com) Cesar Palomo
  */
 
-
-
 /**
  * Manages a list of terms present in crawled pages, including positive/negative/not-tagged.
  * Also shows frequency of words in positive/negative pages.
  *
  * @param containerId ID for parent element.
  */
-var Wordlist = function(containerId) {
+var Wordlist = function(containerId, maxWordTextWidth, itemClickDisable) {
     this.containerId = containerId;  
     this.entries = [];
     this.setMaxPosNegFreq(50, 50);
     this.update();
+    this.maxWordTextWidth = null;
+    if(maxWordTextWidth != undefined || maxWordTextWidth != null){
+	this.maxWordTextWidth = maxWordTextWidth;
+    }
+    this.itemClickDisable = itemClickDisable;
 };
-
 
 Wordlist.prototype.setMaxPosNegFreq = function(maxPosFreq, maxNegFreq) {
     this.maxPosFreq = maxPosFreq;
@@ -26,11 +28,17 @@ Wordlist.prototype.setMaxPosNegFreq = function(maxPosFreq, maxNegFreq) {
     this.update();
 };
 
-
 Wordlist.prototype.addEntries = function(entries) {
-    this.setEntries(this.entries.concat(entries));
+    var duplicate = false;
+    $(this.entries).each(function(index, value ){
+	if ($(entries).get(0)["word"] === value["word"]){
+	    duplicate = true;
+	}
+    });
+    if (duplicate === false)
+	this.setEntries(this.entries.concat(entries));
+    else this.setEntries(this.entries);
 };
-
 
 /**
  * E.gs. of entry expected format:
@@ -54,14 +62,18 @@ Wordlist.prototype.update = function() {
     $(this.entries).each(function( index, value ){
 	word_length.push(value["word"].length);
     });
-    var maxWordTextWidth = Math.max.apply(Math, word_length) * 7;
 
-    console.log(maxWordTextWidth);
-    
+    if(this.maxWordTextWidth === undefined || this.maxWordTextWidth === null) {
+	this.maxWordTextWidth = Math.max.apply(Math, word_length) * 7;
+    }else{
+	if((Math.max.apply(Math, word_length) * 7) > this.maxWordTextWidth)
+	    this.maxWordTextWidth = Math.max.apply(Math, word_length) * 7;
+    }
+
     var containerWidth = $('#' + wordlist.containerId).width();
     var width = containerWidth - svgMargin.left - svgMargin.right;
-    var maxBarWidth = 0.5 * (width - maxWordTextWidth);
-
+    var maxBarWidth = 0.5 * (width - this.maxWordTextWidth);
+    
     // Computes svg height.
     var svgHeight = svgMargin.top + svgMargin.bottom + rowHeight * this.entries.length;
 
@@ -104,7 +116,7 @@ Wordlist.prototype.update = function() {
       .enter().append('g')
         .classed('words', true)
         .attr('transform',
-              'translate(' + (maxBarWidth + 0.5 * maxWordTextWidth) + ',' + (0.5 * rowHeight) + ')')
+              'translate(' + (maxBarWidth + 0.5 * this.maxWordTextWidth) + ',' + (0.5 * rowHeight) + ')')
         .append('text')
         .classed('noselect', true)
         .text(function(d) { return d['word']; });
@@ -125,7 +137,7 @@ Wordlist.prototype.update = function() {
     negBars.enter().append('g')
         .classed('bar', true)
         .classed('neg', true)
-        .attr('transform', 'translate(' + (maxBarWidth + maxWordTextWidth) + ', 0)')
+        .attr('transform', 'translate(' + (maxBarWidth + this.maxWordTextWidth) + ', 0)')
       .append('rect')
         .classed('background', true)
         .attr('y', 0.5 * (rowHeight - barHeight))
@@ -191,7 +203,8 @@ Wordlist.prototype.update = function() {
  * Handles click in an item.
  */
 Wordlist.prototype.onItemClick = function(item, i, isShiftKeyPressed) {
-  __sig__.emit(__sig__.term_toggle, item, isShiftKeyPressed);
+  if (itemClickDisable != undefined || itemClickDisable != false)
+      __sig__.emit(__sig__.term_toggle, item, isShiftKeyPressed);
 };
 
 
