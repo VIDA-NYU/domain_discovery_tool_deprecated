@@ -44,11 +44,11 @@
 
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h4 class="panel-title"><span class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;Crawler</h4>
+            <h4 class="panel-title"><span class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;Domains</h4>
           </div>
           <div class="panel-body">
             <select id="selectCrawler" style="max-width:100%"></select><br><br>
-	    <label for="crawler_index_name">Enter Crawler Name:</label><br>
+	    <label for="crawler_index_name">Enter Domain Name:</label><br>
 
             <div class="input-group">
 	      <input  type="text" class="form-control" id="crawler_index_name" maxlength="50">
@@ -242,16 +242,12 @@
             <div id="wordlist" class="seedcrawler noselect"></div>
             <div id="customwordlist" class="seedcrawler noselect"></div>
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Enter Custom Relevant Term Here... " id="add_term_box">
               <span class="input-group-btn">
-                <button type="button" class="btn btn-warning" data-type="last" id="add_term_button">Add</button>
+                <button type="button" class="btn btn-warning" data-type="last" id="add_term_button"><font size="1.5"><b>Add Relevant</b></font></button>
               </span>
-            </div>
-	    <div id="customwordlistneg" class="seedcrawler noselect"></div>
-	    <div class="input-group">
-              <input type="text" class="form-control" placeholder="Enter Custom Irrelevant Term Here... " id="add_term_neg_box">
+              <input type="text" class="form-control" placeholder="Custom Term... " id="add_term_box">
               <span class="input-group-btn">
-                <button type="button" class="btn btn-warning" data-type="last" id="add_term_neg_button">Add</button>
+                <button type="button" class="btn btn-warning" data-type="last" id="add_term_neg_button" ><font size="1.5"><b>Add Irrelevant</b></font></button>
               </span>
             </div>
             <div id="terms_snippets_viewer" class="terms_interface seedcrawler"></div>
