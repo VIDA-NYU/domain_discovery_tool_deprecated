@@ -358,7 +358,7 @@ class CrawlerModel:
   #   [term, frequencyInRelevantPages, frequencyInIrrelevantPages, tags],
   #   ...
   # ]
-  def getTermsSummarySeedCrawler(self, opt_maxNumberOfTerms = 20):
+  def getTermsSummarySeedCrawler(self, opt_maxNumberOfTerms = 40):
     s_fields = {
       "tag": "Positive",
       "index": self._activeCrawlerIndex,
