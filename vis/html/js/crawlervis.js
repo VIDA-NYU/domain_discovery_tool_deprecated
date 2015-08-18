@@ -1024,11 +1024,18 @@ CrawlerVis.prototype.applyFilter = function(terms) {
   var cap = d3.select('#filter_cap_select').node().value;
   DataAccess.setPagesCountCap(cap);
 
-  var fromdate = d3.select('#fromdate').node().value;
-  var todate = d3.select('#todate').node().value;
+  var fromdate_local = new Date(d3.select('#fromdate').node().value);
+  var todate_local = new Date(d3.select('#todate').node().value);
 
-  if (fromdate != undefined && fromdate != null)
-      DataAccess.setDateTime(fromdate, todate)
+  if (fromdate_local != "Invalid Date")
+      var fromdate_utc = Utils.toUTC(fromdate_local);
+  else fromdate_utc = '';
+  if (todate_local != "Invalid Date")
+      var todate_utc = Utils.toUTC(todate_local);
+  else todate_utc = '';
+  
+  if (fromdate_utc != undefined && fromdate_utc != null)
+      DataAccess.setDateTime(fromdate_utc, todate_utc)
 
   DataAccess.applyFilter(terms);
 
@@ -1040,6 +1047,8 @@ CrawlerVis.prototype.applyFilter = function(terms) {
   }
 };
 
+CrawlerVis.prototype.toUTC = function(terms) {
+}
 
 /**
  * Runs filter.
