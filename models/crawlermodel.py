@@ -499,21 +499,14 @@ class CrawlerModel:
     
   # Set the date range to filter data
   def setDateTime(self, fromDate=None, toDate=None):
-    # Have to use %I instead of %H in order to use %p
-    format = '%m/%d/%Y %I:%M %p'
-    utc_zone = tz.tzutc()
-    local_zone = tz.tzlocal()
+    format = '%m/%d/%Y %H:%M %Z'
     if fromDate:
-      local = datetime.strptime(fromDate, format).replace(tzinfo=local_zone)
-      utc = local.astimezone(utc_zone)
-      self._fromDate = long(CrawlerModel.convert_to_epoch(utc) * 1000)
+      self._fromDate = long(CrawlerModel.convert_to_epoch(datetime.strptime(fromDate, format)) * 1000)
     else:
       self._fromDate = None
-
+      
     if toDate:
-      local = datetime.strptime(toDate, format).replace(tzinfo=local_zone)
-      utc = local.astimezone(utc_zone)
-      self._toDate = long(CrawlerModel.convert_to_epoch(utc) * 1000)
+      self._toDate = long(CrawlerModel.convert_to_epoch(datetime.strptime(toDate, format)) * 1000)
     else:
       self._toDate = None
 
@@ -591,11 +584,11 @@ class CrawlerModel:
         format = '%Y-%m-%dT%H:%M:%S.%f'
         if '+' in last_downloaded_url_epoch:
           format = '%Y-%m-%dT%H:%M:%S+0000'
-        last_download_epoch = CrawlerModel.convert_to_epoch(datetime.strptime(last_downloaded_url_epoch, format).replace(tzinfo=tz.tzutc()))
+        last_download_epoch = CrawlerModel.convert_to_epoch(datetime.strptime(last_downloaded_url_epoch, format))
       except ValueError:
         try:
           format = '%Y-%m-%d %H:%M:%S.%f'
-          last_download_epoch = CrawlerModel.convert_to_epoch(datetime.strptime(last_downloaded_url_epoch, format).replace(tzinfo=tz.tzutc()))
+          last_download_epoch = CrawlerModel.convert_to_epoch(datetime.strptime(last_downloaded_url_epoch, format))
         except ValueError:
           pass
 
@@ -918,7 +911,7 @@ class CrawlerModel:
 
   @staticmethod
   def convert_to_epoch(dt):
-    epoch = datetime.utcfromtimestamp(0).replace(tzinfo=tz.tzutc())
+    epoch = datetime.utcfromtimestamp(0)
     delta = dt - epoch
     return delta.total_seconds()
 
