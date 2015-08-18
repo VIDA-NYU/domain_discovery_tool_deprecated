@@ -33,6 +33,10 @@ var Utils = (function() {
   pub.parseDateTime = function(epochInSeconds) {
     return moment.unix(epochInSeconds).format('MM/DD/YY h:mm a');
   };
+  pub.toUTC = function(date) {
+      return (date.getUTCMonth()+1) + '/' + date.getUTCDate() + '/' + date.getUTCFullYear() + ' ' + date.getUTCHours() + ':' + date.getUTCMinutes() + ' UTC';
+  };  
+    
   pub.showTooltip = function() {
     maybeCreateTooltip();
     tooltipDiv.transition()
