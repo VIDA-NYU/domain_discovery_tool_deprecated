@@ -1,0 +1,9 @@
+#!/bin/bash
+
+export DDT_HOME=/Users/aahmadia/domain_discovery_tool
+export NLTK_DATA=$DDT_HOME/nltk_data
+export ACHE_HOME=$(dirname $(which ache))/../lib/ache/
+# ugly, but DDT doesn't really have a concept of installs
+export PYTHONPATH=$DDT_HOME:$PYTHONPATH
+
+python $DDT_HOME/vis/server.py
