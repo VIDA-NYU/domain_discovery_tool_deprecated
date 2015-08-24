@@ -4,6 +4,7 @@ channels:
   - memex
 
 dependencies:
+    - elasticsearch
     - supervisor
     - meld3
     - dateutil
