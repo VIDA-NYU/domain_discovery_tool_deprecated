@@ -55,6 +55,7 @@ $(CHERRY_PY_CONFIG_TARGET): vis/config.conf-in
 	sed "s#tools.staticdir.root = .#tools.staticdir.root = ${PWD}/vis/html#g" vis/config.conf-in > vis/config.conf
 
 $(GET_NLTK_DATA_TARGET): $(CONDA_ENV)
+	source activate ddt; \
 	python -m nltk.downloader -d ${PWD}/nltk_data stopwords brown punkt
 
 $(LINK_WORD2VEC_DATA_TARGET): $(CONDA_ENV)/data/D_cbow_pdw_8B.pkl
