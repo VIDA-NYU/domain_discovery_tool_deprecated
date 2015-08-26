@@ -153,8 +153,8 @@ p {
 #wordlist svg text {
   font: 12px sans-serif;
   fill: #444;
-  text-anchor: middle;
-  alignment-baseline: middle;
+  text-anchor: start;
+  alignment-baseline: start;
   font-weight: bold;
 }
 

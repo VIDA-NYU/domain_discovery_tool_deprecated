@@ -114,6 +114,7 @@ CrawlerVis.prototype.initSignalSlotsSeedCrawler = function() {
   SigSlots.connect(__sig__.filter_enter, this, this.runFilter);
   SigSlots.connect(__sig__.add_term, this, this.runAddTerm);
   SigSlots.connect(__sig__.add_neg_term, this, this.runAddNegTerm);
+  SigSlots.connect(__sig__.delete_term, this, this.runDeleteTerm);
 };
 
 
@@ -122,7 +123,6 @@ CrawlerVis.prototype.initUICrawler = function() {
   this.loadAvailableCrawlers();
   this.loadAvailableProjectionAlgorithms();
   this.initWordlist();
-  this.initCustomWordlist(this.wordlist.maxWordTextWidth);
   this.initStatslist();
   this.initFilterStatslist();
   this.initPagesLandscape(true);
@@ -193,7 +193,6 @@ CrawlerVis.prototype.initUISeedCrawler = function() {
   this.loadAvailableCrawlers();
   this.loadAvailableProjectionAlgorithms();
   this.initWordlist();
-  this.initCustomWordlist(this.wordlist.maxWordTextWidth);
   this.initStatslist();
   this.initFilterStatslist();
   this.initPagesLandscape(false);
@@ -314,10 +313,8 @@ CrawlerVis.prototype.loadAvailableCrawlers = function() {
 // Sets active crawler.
 CrawlerVis.prototype.setActiveCrawler = function(crawlerId) {
     $("#wordlist").html("");
-    $("#customwordlist").html("");
 
     this.initWordlist();
-    this.initCustomWordlist(this.wordlist.maxWordTextWidth);
 
     this.termsSnippetsViewer.clear();
 
@@ -514,10 +511,6 @@ CrawlerVis.prototype.initWordlist = function() {
   this.wordlist = new Wordlist('wordlist');
 };
 
-CrawlerVis.prototype.initCustomWordlist = function(maxWordTextWidth) {
-    this.customwordlist = new Wordlist('customwordlist', maxWordTextWidth, false);
-};
-
 // Initializes pages landscape.
 CrawlerVis.prototype.initPagesLandscape = function(showBoostButton) {
   var vis = this;
@@ -608,13 +601,6 @@ CrawlerVis.prototype.onLoadedTermsSummary = function(summary) {
   var maxFreq = Math.max(maxPosFreq, maxNegFreq);
   this.wordlist.setMaxPosNegFreq(maxFreq, maxFreq);
 
-  if(this.customwordlist != undefined){
-      $("#customwordlist").html("");
-      if (this.wordlist.maxWordTextWidth > this.customwordlist.maxWordTextWidth)
-	  this.customwordlist.maxWordTextWidth = this.wordlist.maxWordTextWidth;
-      this.customwordlist.update();
-  }
-
   // Resets terms snippets viewer.
   this.termsSnippetsViewer.clear();
 };
@@ -641,6 +627,10 @@ CrawlerVis.prototype.onTermToggle = function(term, shiftClick) {
   } else {
     // State machine: Neutral -> Positive -> Negative -> Neutral.
     var tags = term['tags'];
+
+    if (tags.indexOf("Custom") != -1)
+	return;
+
     var isPositive = tags.indexOf('Positive') != -1;
     var isNegative = tags.indexOf('Negative') != -1;
 
@@ -720,7 +710,6 @@ CrawlerVis.prototype.onLoadedPages = function(pagesData) {
 
   return pages;
 };
-
 
 // Responds to tag focus.
 CrawlerVis.prototype.onTagFocus = function(tag, onFocus) {
@@ -964,16 +953,19 @@ CrawlerVis.prototype.addCrawler = function(index_name) {
 
 
 CrawlerVis.prototype.addTerm = function(term) {
-    $("#customwordlist").html("");
-    this.customwordlist.addEntries([{'word': term, 'posFreq': 0, 'negFreq': 0, 'tags': ["Positive"]}]);
-    DataAccess.setTermTag(term, 'Positive', true);
+    this.wordlist.addEntries([{'word': term, 'posFreq': 0, 'negFreq': 0, 'tags': ["Positive", "Custom"]}]);
+    DataAccess.setTermTag(term, 'Positive;Custom', true);
 };
 
 CrawlerVis.prototype.addNegTerm = function(term) {
-    $("#customwordlist").html("");
-    this.customwordlist.addEntries([{'word': term, 'posFreq': 0, 'negFreq': 0, 'tags': ["Negative"]}]);
-    DataAccess.setTermTag(term, 'Negative', true);
+    this.wordlist.addEntries([{'word': term, 'posFreq': 0, 'negFreq': 0, 'tags': ["Negative", "Custom"]}]);
+    DataAccess.setTermTag(term, 'Negative;Custom', true);
 };
+
+CrawlerVis.prototype.deleteTerm = function(term) {
+    DataAccess.deleteTerm(term);
+};
+
 
 /**
  * Runs query (useful for seed crawler vis).
@@ -1014,6 +1006,14 @@ CrawlerVis.prototype.runAddNegTerm = function(term) {
     if (term === "")
 	document.getElementById("status_panel").innerHTML = 'Enter a valid term';
     else this.addNegTerm(term);
+};
+
+/**
+ * Run Delete Term
+ */
+
+CrawlerVis.prototype.runDeleteTerm = function(term) { 
+    this.deleteTerm(term);
 };
 
 /**

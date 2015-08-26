@@ -262,6 +262,11 @@ var DataAccess = (function() {
       '/setTermsTag', {'terms': term, 'tag': tag, 'applyTagFlag': applyTagFlag});
   };
 
+    
+  pub.deleteTerm = function(term) {
+      runQueryForCurrentCrawler('/deleteTerm', {'term': term});
+  }
+
   // Sets limit of number of pages loaded.
   pub.setPagesCountCap = function(cap) {
     runQueryForCurrentCrawler(

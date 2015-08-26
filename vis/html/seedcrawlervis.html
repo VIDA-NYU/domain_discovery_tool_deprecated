@@ -124,17 +124,7 @@
                       <span class="glyphicon glyphicon-calendar"></span>
                     </span>
                   </div>
-		  <!-- <div id="from_datetimepicker" class="input-group date col-sm-7" style="background-color:white"> -->
-		  <!--   <span><input data-format="dd/MM/yyyy hh:mm:ss" type="text"  class="form-control"></input></span> -->
-		  <!--   <span class="input-group-btn"> -->
-		  <!--     <span class="add-on btn btn-warning"> -->
-		  <!-- 	<i class="glyphicon glyphicon-calendar" data-time-icon="icon-time" data-date-icon="icon-calendar"> -->
-		  <!-- 	</i> -->
-		  <!--     </span> -->
-		  <!--   </span> -->
-		  <!-- </div> -->
 		</div>
-
 		<div class="form-group">
 		  <span class="col-sm-2 control-label">To:</span>
 		  <div class="input-group date col-sm-8" id='to_datetimepicker'>
@@ -143,16 +133,6 @@
                       <span class="glyphicon glyphicon-calendar"></span>
                     </span>
                   </div>
-
-		  <!-- <div id="to_datetimepicker" class="input-group date col-sm-7" style="background-color:white"> -->
-		  <!--   <input data-format="dd/MM/yyyy hh:mm:ss" type="text" class="form-control"></input> -->
-		  <!--   <span class="input-group-btn"> -->
-		  <!--     <span class="add-on btn btn-warning"> -->
-		  <!-- 	<i class="glyphicon glyphicon-calendar" data-time-icon="icon-time" data-date-icon="icon-calendar"> -->
-		  <!-- 	</i> -->
-		  <!--     </span> -->
-		  <!--   </span> -->
-		  <!-- </div> -->
 		</div>
 
 		<div class="form-group">
@@ -240,14 +220,18 @@
           </div>
           <div class="panel-body">
             <div id="wordlist" class="seedcrawler noselect"></div>
-            <div id="customwordlist" class="seedcrawler noselect"></div>
+	    <br><br>
             <div class="input-group">
               <span class="input-group-btn">
-                <button type="button" class="btn btn-warning" data-type="last" id="add_term_button"><font size="1.5"><b>Add Relevant</b></font></button>
+                <button type="button" class="btn btn-warning" data-type="last" id="add_term_button">
+		  <span class="glyphicon glyphicon-plus-sign"></span> Relevant
+		</button>
               </span>
               <input type="text" class="form-control" placeholder="Custom Term... " id="add_term_box">
               <span class="input-group-btn">
-                <button type="button" class="btn btn-warning" data-type="last" id="add_term_neg_button" ><font size="1.5"><b>Add Irrelevant</b></font></button>
+                <button type="button" class="btn btn-warning" data-type="last" id="add_term_neg_button" >
+		  <span class="glyphicon glyphicon-minus-sign"></span> Irrelevant
+		</button>
               </span>
             </div>
             <div id="terms_snippets_viewer" class="terms_interface seedcrawler"></div>
