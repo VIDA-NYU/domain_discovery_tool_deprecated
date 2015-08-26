@@ -140,7 +140,9 @@ class CrawlerModelAdapter:
     applyTagFlag =  CrawlerModelAdapter.extractBooleanParam(applyTagFlag)
     self._crawlerModel.setTermsTag(terms, tag, applyTagFlag)
 
-
+  # Delete terms from term window and from the ddt_terms index
+  def deleteTerm(self, term):
+    self._crawlerModel.deleteTerm(term)
 
 #
 # Overwrites default functionality to serve for seed crawler model use.
