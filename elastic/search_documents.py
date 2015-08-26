@@ -40,8 +40,6 @@ def multifield_query_search(s_fields, pageCount=100, fields = [], es_index='meme
             query = "(" + field + ":" + value + ")"
         else:
             query = query + " AND " + "(" + field + ":" + value + ")"
-            
-    print '\n', query, '\n'
 
     if not query is None:
         query = {
