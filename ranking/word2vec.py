@@ -34,7 +34,7 @@ class word2vec:
             return self.word_vec.get(word)
 
     def process(self, documents, mapping=None, es_index = 'memex', es_doc_type = 'page', es = None):
-        [data_tf, corpus, urls] = getTermFrequency(documents, self.word_vec, mapping, es_index, es_doc_type, es)
+        [data_tf, corpus, urls] = getTermFrequency(documents, mapping, es_index, es_doc_type, es)
         
         documents = urls
 

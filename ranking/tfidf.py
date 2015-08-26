@@ -2,13 +2,12 @@ import numpy as np
 from elastic.get_mtermvectors import getTermStatistics
 
 class tfidf:
-    def __init__(self, opt_docs = None, w2v=None, mapping=None, es_index = 'memex', es_doc_type = 'page', es = None):
+    def __init__(self, opt_docs = None, mapping=None, es_index = 'memex', es_doc_type = 'page', es = None):
         self.documents = opt_docs
         self.corpus = None
         self.tfidfArray = None
         self.tfArray = None
         self.ttf = None
-        self.w2v = w2v
         self.mapping = mapping
         if opt_docs != None:
           self.process(opt_docs, es_index, es_doc_type, es)
@@ -42,7 +41,7 @@ class tfidf:
         return [self.corpus[x] for x in indices]
 
     def process(self, documents, es_index = 'memex', es_doc_type = 'page', es = None):
-        [data_tfidf, data_tf, data_ttf, corpus, urls] = getTermStatistics(documents, self.w2v, self.mapping, es_index, es_doc_type, es)
+        [data_tfidf, data_tf, data_ttf, corpus, urls] = getTermStatistics(documents, self.mapping, es_index, es_doc_type, es)
         self.tfidfArray = data_tfidf
         self.tfArray = data_tf
         self.ttf = data_ttf
