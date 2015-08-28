@@ -36,7 +36,8 @@ ADD ./Makefile /ddt/Makefile
 
 # Install conda dependencies and download nltk data
 ADD ./environment.yml /ddt/environment.yml
-RUN make conda_env get_nltk_data
+RUN make conda_env
+RUN make get_nltk_data
 
 # Compile Java app
 ADD ./seeds_generator /ddt/seeds_generator
