@@ -4,6 +4,7 @@ body {
   background-color: rgb(241, 242, 246);
   margin-top:20px;
   color: #333;
+  padding-top: 70px;
 }
 h1, h2, h3, h4, h5, h6 {
   font-family: RobotoDraft,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif;
