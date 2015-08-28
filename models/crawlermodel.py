@@ -33,6 +33,7 @@ from elastic.create_index import create_index, create_terms_index, create_config
 from elastic.load_config import load_config
 from elastic.create_index import create_config_index
 from elastic.config import es, es_doc_type, es_server
+from elastic.delete import delete
 
 from ranking import tfidf, rank, extract_terms, word2vec, get_bigrams_trigrams
 
@@ -392,7 +393,7 @@ class CrawlerModel:
         
         if len(urls) > 0:
           if pos_terms:
-            tfidf_all = tfidf.tfidf(urls, self.w2v, self._mapping, self._activeCrawlerIndex, self._docType, self._es)
+            tfidf_all = tfidf.tfidf(urls, self._mapping, self._activeCrawlerIndex, self._docType, self._es)
             extract_terms_all = extract_terms.extract_terms(tfidf_all)
             [ranked_terms, scores] = extract_terms_all.results(pos_terms)
             top_terms = [ term for term in ranked_terms if (term not in neg_terms)]
@@ -426,13 +427,23 @@ class CrawlerModel:
         [_,_,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(text, opt_maxNumberOfTerms, self.w2v, self._es)
         top_bigrams = [term for term in top_bigrams if term[0].replace('_', ' ') not in neg_terms]
         top_trigrams = [term for term in top_trigrams if term[0].replace('_', ' ') not in neg_terms]
-          
+     
+    s_fields = {
+      "tag": "Custom",
+      "index": self._activeCrawlerIndex,
+      "doc_type": self._docType
+    }
+
+    custom_terms = [field['term'][0] for field in multifield_query_search(s_fields, 500, ['term'], self._termsIndex, 'terms', self._es)]
+
+    top_terms = custom_terms + top_terms
+
     if not top_terms:  
       return []
 
     pos_freq = {}
     if len(pos_urls) > 1:
-      tfidf_pos = tfidf.tfidf(pos_urls, self.w2v, self._mapping, self._activeCrawlerIndex, self._docType, self._es)
+      tfidf_pos = tfidf.tfidf(pos_urls, self._mapping, self._activeCrawlerIndex, self._docType, self._es)
       [_,corpus,ttfs_pos] = tfidf_pos.getTfArray()
       total_pos_tf = np.sum(ttfs_pos.toarray(), axis=0)
       total_pos = np.sum(total_pos_tf)
@@ -448,7 +459,7 @@ class CrawlerModel:
     neg_urls = [field['url'][0] for field in term_search(self._mapping['tag'], ['Irrelevant'], ['url'], self._activeCrawlerIndex, self._docType, self._es)]
     neg_freq = {}
     if len(neg_urls) > 1:
-      tfidf_neg = tfidf.tfidf(neg_urls,  self.w2v, self._mapping, self._activeCrawlerIndex, self._docType,  self._es)
+      tfidf_neg = tfidf.tfidf(neg_urls, self._mapping, self._activeCrawlerIndex, self._docType,  self._es)
       [_,corpus,ttfs_neg] = tfidf_neg.getTfArray()
       total_neg_tf = np.sum(ttfs_neg.toarray(), axis=0)
       total_neg = np.sum(total_neg_tf)
@@ -472,10 +483,10 @@ class CrawlerModel:
     results = []
     for term in top_terms:
       s_fields["term"] = term
-      res = multifield_term_search(s_fields, ['tag'], self._termsIndex, 'terms', self._es)
+      res = multifield_term_search(s_fields, ['tag', 'term'], self._termsIndex, 'terms', self._es)
       results.extend(res)
 
-    tags = {result['id']: result['tag'][0] for result in results}    
+    tags = {result['term'][0]: result['tag'][0] for result in results}    
 
     for term in top_terms:
       entry = [term, pos_freq[term], neg_freq[term], []]
@@ -696,7 +707,8 @@ class CrawlerModel:
               "term" : term,
               "tag" : tag,
               "index": self._activeCrawlerIndex,
-              "doc_type": self._docType
+              "doc_type": self._docType,
+              "_id" : term+'_'+self._activeCrawlerIndex+'_'+self._docType
             }
             add_entries.append(entry)
           else:
@@ -706,15 +718,16 @@ class CrawlerModel:
                 "term" : term,
                 "tag" : tag,
                 "index": self._activeCrawlerIndex,
-                "doc_type": self._docType
+                "doc_type": self._docType,
               }
-              update_entries[term] = entry
+              update_entries[term+'_'+self._activeCrawlerIndex+'_'+self._docType] = entry
         else:
           entry = {
             "term" : term,
             "tag" : tag,
             "index": self._activeCrawlerIndex,
-            "doc_type": self._docType
+            "doc_type": self._docType,
+            "_id": term+'_'+self._activeCrawlerIndex+'_'+self._docType
           }
           add_entries.append(entry)
     else:
@@ -728,13 +741,17 @@ class CrawlerModel:
                 "index": self._activeCrawlerIndex,
                 "doc_type": self._docType
               }
-              update_entries[term] = entry
+              update_entries[term+'_'+self._activeCrawlerIndex+'_'+self._docType] = entry
 
     if add_entries:
       add_document(add_entries, self._termsIndex, 'terms', self._es)
     
     if update_entries:
       update_document(update_entries, self._termsIndex, 'terms', self._es)
+
+  # Delete terms from term window and from the ddt_terms index
+  def deleteTerm(self,term):
+    delete([term+'_'+self._activeCrawlerIndex+'_'+self._docType], self._termsIndex, "terms", self._es)
 
   # Add crawler
   def addCrawler(self, index_name):
@@ -880,7 +897,7 @@ class CrawlerModel:
 
   def term_tfidf(self, urls):
 
-    [data, data_tf, data_ttf , corpus, urls] = getTermStatistics(urls, self.w2v, self._mapping, self._activeCrawlerIndex, self._docType, self._es)
+    [data, data_tf, data_ttf , corpus, urls] = getTermStatistics(urls, self._mapping, self._activeCrawlerIndex, self._docType, self._es)
     return [data.toarray(), data_tf, data_ttf, corpus, urls]
 
   @staticmethod

@@ -21,6 +21,7 @@ p, div {
   margin-bottom: 0;
   font-size: 16px;
   color: inherit;
+  height: 20px;
 }
 .panel-heading {
   border-radius: 2px 2px 0 0;
@@ -32,6 +33,14 @@ p, div {
   background-color: #f5f5f5;
   border-color: #ddd;
 }
+.panel-default>.panel-heading>.panel-title>.panel-heading-left{
+  float:left;
+}
+
+.panel-default>.panel-heading>.panel-title>.panel-heading-right{
+  float:right;
+}
+
 .form-search .btn {
   border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -47,6 +56,27 @@ p, div {
 .container-fluid {
     max-width: 1500px;
 }
+
+.status_box{  
+  border-radius: 1px;
+  background-color: rgba(246,187,66, 0.75);
+  border: 0;
+  box-shadow: 0 1px 6px 0 rgba(0,0,0,.12),0 1px 6px 0 rgba(0,0,0,.12);
+  width: 16em;
+  text-align:center;
+  position: fixed;
+  top: 40px;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%) 
+}
+.status_box>.status_panel{
+  border-radius: 1px;
+  margin: 2px
+}
+
+
+
 /*
 body {
   font: 14px Verdana;
@@ -142,7 +172,7 @@ p {
 
 #wordlist {
   width: 100%;
-  height: 370px;
+  height: 300px;
   overflow-y: scroll;
 }
 
@@ -153,8 +183,8 @@ p {
 #wordlist svg text {
   font: 12px sans-serif;
   fill: #444;
-  text-anchor: middle;
-  alignment-baseline: middle;
+  text-anchor: start;
+  alignment-baseline: start;
   font-weight: bold;
 }
 
@@ -589,6 +619,14 @@ div.tooltip {
   background-color: #fcfcfc;
 }
 */
+
+#pages_items
+{
+  height: 500px;
+  overflow-y: scroll;
+}
+
+
 #pages_items .item .item_info {
   height: 100%;
   overflow: hidden;
@@ -680,7 +718,7 @@ div#urlBgMask {
   margin-top: 8px;
   vertical-align: top;
   width: 100%;
-  /* height: 494px; */
+  height: 450px;
   overflow-y: scroll;
   font-size: 14px;
   padding-top: 10px;

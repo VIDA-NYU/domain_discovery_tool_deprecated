@@ -13,7 +13,7 @@
 var Wordlist = function(containerId, maxWordTextWidth, itemClickDisable) {
     this.containerId = containerId;  
     this.entries = [];
-    this.setMaxPosNegFreq(50, 50);
+    this.setMaxPosNegFreq(15, 15);
     this.update();
     this.maxWordTextWidth = null;
     if(maxWordTextWidth != undefined || maxWordTextWidth != null){
@@ -38,7 +38,7 @@ Wordlist.prototype.addEntries = function(entries) {
 	}
     });
     if (duplicate === false)
-	this.setEntries(this.entries.concat(entries));
+	this.setEntries(entries.concat(this.entries));
     else this.setEntries(this.entries);
 };
 
@@ -74,7 +74,7 @@ Wordlist.prototype.update = function() {
 
     var containerWidth = $('#' + wordlist.containerId).width();
     var width = containerWidth - svgMargin.left - svgMargin.right;
-    var maxBarWidth = 0.5 * (width - this.maxWordTextWidth);
+    var maxBarWidth = 30;
     
     // Computes svg height.
     var svgHeight = svgMargin.top + svgMargin.bottom + rowHeight * this.entries.length;
@@ -106,6 +106,7 @@ Wordlist.prototype.update = function() {
     posBars.enter().append('g')
         .classed('bar', true)
         .classed('pos', true)
+        .attr('transform', 'translate(' + (width - (maxBarWidth)) + ', 0)')
       .append('rect')
         .classed('background', true)
         .attr('y', 0.5 * (rowHeight - barHeight))
@@ -118,10 +119,26 @@ Wordlist.prototype.update = function() {
       .enter().append('g')
         .classed('words', true)
         .attr('transform',
-              'translate(' + (maxBarWidth + 0.5 * this.maxWordTextWidth) + ',' + (0.5 * rowHeight) + ')')
+              'translate(15,' + (0.5 * rowHeight) + ')')
         .append('text')
         .classed('noselect', true)
-        .text(function(d) { return d['word']; });
+        .text(function(d) { return d['word']; })
+        .on('click', function(d, i) {
+	    wordlist.onItemClick(d, i, d3.event.shiftKey);
+        })
+        .on('mouseover', function(d, i) {
+          wordlist.onItemFocus(d, i, d3.event.shiftKey, true);
+        })
+        .on('mouseout', function(d, i) {
+          wordlist.onItemFocus(d, i, d3.event.shiftKey, false);
+        });
+
+    // Container for word.
+    var circles = rows.selectAll('g.custom').data(function(d) { return [d]; });
+    circles
+	.enter().append('g')
+        .classed('custom', true);
+
 
     // Term should be classed according to its tags, e.g. Positive/Negative.
     words.each(function(d) {
@@ -132,6 +149,33 @@ Wordlist.prototype.update = function() {
       elm
         .classed('Positive', isPositive)
         .classed('Negative', isNegative);
+	
+    });
+    
+    circles.each(function(d) {
+	var tags = d['tags'];
+	var isCustom = tags.indexOf('Custom') != -1;
+	if (isCustom){
+	    var container = d3.select(this);
+	    container.append('image')
+		.attr('xlink:href', '/img/delete.jpg')
+		.attr('width', 15)
+		.attr('height', 15)
+		.attr('transform',
+	     	      'translate(0,-4)')
+	        .on('click', function(d, i) {
+		    wordlist.onDeleteClick(d, i);
+		})
+		.on('mouseover', function(d, i) {
+		    Utils.showTooltip();
+		})
+		.on('mousemove', function() {
+		    Utils.updateTooltip('Delete Term');
+		})
+		.on('mouseout', function() {
+		    Utils.hideTooltip();
+		});
+	}
     });
 
     // Right bars (negative frequency bars).
@@ -139,7 +183,7 @@ Wordlist.prototype.update = function() {
     negBars.enter().append('g')
         .classed('bar', true)
         .classed('neg', true)
-        .attr('transform', 'translate(' + (maxBarWidth + this.maxWordTextWidth) + ', 0)')
+        .attr('transform', 'translate(' + (width - (2 * maxBarWidth)) + ', 0)')
       .append('rect')
         .classed('background', true)
         .attr('y', 0.5 * (rowHeight - barHeight))
@@ -152,6 +196,7 @@ Wordlist.prototype.update = function() {
         .range([0, maxBarWidth]);
     
     // Adds left bars (aligned to right).
+
     barScale.domain([0, wordlist.maxPosFreq]);
     posBars.each(function(d, i) {
         var rect = d3.select(this).selectAll('rect.pos').data(['rect']);
@@ -162,9 +207,9 @@ Wordlist.prototype.update = function() {
         // Aligns left bar to right.
         var width = barScale(d['posFreq']);
         rect
-          .transition(transitionDuration)
-          .attr('x', maxBarWidth - width)
-          .attr('width', width);
+            .transition(transitionDuration)
+            .attr('x', 0)
+            .attr('width', width);
     });
    
     // Adds right bars (aligned to left).
@@ -180,24 +225,10 @@ Wordlist.prototype.update = function() {
         var width = barScale(d['negFreq']);
         rect
           .transition(transitionDuration)
-          .attr('x', 0)
+          .attr('x', maxBarWidth - width)
           .attr('width', width);
     });
 
-    // Interaction rectangle.
-    rows.selectAll('rect.interaction').data(function(d, i) { return [d]; })
-      .enter().append('rect').classed('interaction', true)
-        .attr('width', width)
-        .attr('height', rowHeight)
-        .on('click', function(d, i) {
-          wordlist.onItemClick(d, i, d3.event.shiftKey);
-        })
-        .on('mouseover', function(d, i) {
-          wordlist.onItemFocus(d, i, d3.event.shiftKey, true);
-        })
-        .on('mouseout', function(d, i) {
-          wordlist.onItemFocus(d, i, d3.event.shiftKey, false);
-        });
 };
 
 
@@ -215,3 +246,10 @@ Wordlist.prototype.onItemClick = function(item, i, isShiftKeyPressed) {
 Wordlist.prototype.onItemFocus = function(item, i, isShiftKeyPressed, onFocus) {
   __sig__.emit(__sig__.term_focus, item['word'], onFocus);
 };
+
+Wordlist.prototype.onDeleteClick = function(item, i) {
+    __sig__.emit(__sig__.delete_term, item['word']);
+    var removeWord = this.entries.indexOf(item);
+    this.entries.splice(removeWord,1);
+    this.update();
+}

@@ -1,8 +1,5 @@
 {
   "terms": {
-    "_id": {
-      "path": "term"
-    },
     "properties": {
       "term": {
         "type": "string"

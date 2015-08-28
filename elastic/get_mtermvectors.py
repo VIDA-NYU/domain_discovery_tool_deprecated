@@ -14,7 +14,7 @@ def tfidf(tf, df, n_doc):
     idf = math.log(n_doc / float(df))
     return tf * idf
 
-def terms_from_es_json(doc, w2v=None, rm_stopwords=True, pos_tags=[], termstatistics = False, mapping=None, es=None):
+def terms_from_es_json(doc, rm_stopwords=True, pos_tags=[], termstatistics = False, mapping=None, es=None):
     terms = {}
     docterms = doc["term_vectors"][mapping['text']]["terms"]
     n_doc = doc["term_vectors"][mapping['text']]["field_statistics"]["doc_count"]
@@ -23,12 +23,6 @@ def terms_from_es_json(doc, w2v=None, rm_stopwords=True, pos_tags=[], termstatis
     if rm_stopwords:
         no_stopwords = [k for k in docterms.keys() if k not in ENGLISH_STOPWORDS and (len(k) > 2)]
         valid_words = no_stopwords
-
-    if not w2v.word_vec is None:
-        valid_words = [term for term in valid_words if not w2v.get(term) is None]
-    else:    
-        results = get_documents_by_id(valid_words, ["term"], "word_phrase_to_vec", "terms", es)
-        valid_words = [res["term"][0] for res in results]
 
     if len(pos_tags) > 0:
         tagged = nltk.pos_tag(docterms)
@@ -47,7 +41,7 @@ def terms_from_es_json(doc, w2v=None, rm_stopwords=True, pos_tags=[], termstatis
     return terms
 
 
-def getTermFrequency(all_hits, w2v=None, mapping=None, es_index='memex', es_doc_type='page', es=None):
+def getTermFrequency(all_hits, mapping=None, es_index='memex', es_doc_type='page', es=None):
     if es is None:
         es = default_es
 
@@ -68,13 +62,13 @@ def getTermFrequency(all_hits, w2v=None, mapping=None, es_index='memex', es_doc_
             if doc.get('term_vectors'):
                 if mapping['text'] in doc['term_vectors']:
                     docs.append(doc['_id'])
-                    res = terms_from_es_json(doc=doc, w2v=w2v, mapping=mapping)
+                    res = terms_from_es_json(doc=doc, mapping=mapping)
                     stats.append(res)
                     corpus = corpus + res.keys()
 
     return [stats, Set(corpus), docs]
 
-def getTermStatistics(all_hits, w2v=None, mapping=None, es_index='memex', es_doc_type='page', es=None):
+def getTermStatistics(all_hits, mapping=None, es_index='memex', es_doc_type='page', es=None):
     if es is None:
         es = default_es
 
@@ -95,7 +89,7 @@ def getTermStatistics(all_hits, w2v=None, mapping=None, es_index='memex', es_doc
             if doc.get('term_vectors'):
                 if mapping['text'] in doc['term_vectors']:
                     docs.append(doc['_id'])
-                    res = terms_from_es_json(doc=doc, w2v=w2v, termstatistics=True, mapping=mapping)
+                    res = terms_from_es_json(doc=doc, termstatistics=True, mapping=mapping)
                     stats.append(res)
                     for k in res.keys():
                         ttf[k] = res[k]['ttf']

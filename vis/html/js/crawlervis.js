@@ -114,6 +114,7 @@ CrawlerVis.prototype.initSignalSlotsSeedCrawler = function() {
   SigSlots.connect(__sig__.filter_enter, this, this.runFilter);
   SigSlots.connect(__sig__.add_term, this, this.runAddTerm);
   SigSlots.connect(__sig__.add_neg_term, this, this.runAddNegTerm);
+  SigSlots.connect(__sig__.delete_term, this, this.runDeleteTerm);
 };
 
 
@@ -122,7 +123,6 @@ CrawlerVis.prototype.initUICrawler = function() {
   this.loadAvailableCrawlers();
   this.loadAvailableProjectionAlgorithms();
   this.initWordlist();
-  this.initCustomWordlist(this.wordlist.maxWordTextWidth);
   this.initStatslist();
   this.initFilterStatslist();
   this.initPagesLandscape(true);
@@ -193,7 +193,6 @@ CrawlerVis.prototype.initUISeedCrawler = function() {
   this.loadAvailableCrawlers();
   this.loadAvailableProjectionAlgorithms();
   this.initWordlist();
-  this.initCustomWordlist(this.wordlist.maxWordTextWidth);
   this.initStatslist();
   this.initFilterStatslist();
   this.initPagesLandscape(false);
@@ -260,7 +259,11 @@ CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
       var crawlerId = getElementValue(data[0]);
       vis.setActiveCrawler(crawlerId);
   }
-  else document.getElementById("status_panel").innerHTML = 'No crawlers found'
+  else {
+    document.getElementById("status_panel").innerHTML = 'No crawlers found'
+    $(document).ready(function() { $(".status_box").fadeIn(); });
+    $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
+}
 };
 
 // Reload select with available crawlers.
@@ -299,8 +302,14 @@ CrawlerVis.prototype.reloadSelectForAvailableCrawlers = function(data) {
       } 
       
       document.getElementById("status_panel").innerHTML = 'Added new crawler - ' + index_name;
+    $(document).ready(function() { $(".status_box").fadeIn(); });
+    $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
 
-  } else  document.getElementById("status_panel").innerHTML = 'No crawlers found'
+  } else  {
+    document.getElementById("status_panel").innerHTML = 'No crawlers found';
+    $(document).ready(function() { $(".status_box").fadeIn(); });
+    $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
+}
 };
 
 
@@ -314,10 +323,8 @@ CrawlerVis.prototype.loadAvailableCrawlers = function() {
 // Sets active crawler.
 CrawlerVis.prototype.setActiveCrawler = function(crawlerId) {
     $("#wordlist").html("");
-    $("#customwordlist").html("");
 
     this.initWordlist();
-    this.initCustomWordlist(this.wordlist.maxWordTextWidth);
 
     this.termsSnippetsViewer.clear();
 
@@ -514,10 +521,6 @@ CrawlerVis.prototype.initWordlist = function() {
   this.wordlist = new Wordlist('wordlist');
 };
 
-CrawlerVis.prototype.initCustomWordlist = function(maxWordTextWidth) {
-    this.customwordlist = new Wordlist('customwordlist', maxWordTextWidth, false);
-};
-
 // Initializes pages landscape.
 CrawlerVis.prototype.initPagesLandscape = function(showBoostButton) {
   var vis = this;
@@ -608,13 +611,6 @@ CrawlerVis.prototype.onLoadedTermsSummary = function(summary) {
   var maxFreq = Math.max(maxPosFreq, maxNegFreq);
   this.wordlist.setMaxPosNegFreq(maxFreq, maxFreq);
 
-  if(this.customwordlist != undefined){
-      $("#customwordlist").html("");
-      if (this.wordlist.maxWordTextWidth > this.customwordlist.maxWordTextWidth)
-	  this.customwordlist.maxWordTextWidth = this.wordlist.maxWordTextWidth;
-      this.customwordlist.update();
-  }
-
   // Resets terms snippets viewer.
   this.termsSnippetsViewer.clear();
 };
@@ -641,6 +637,10 @@ CrawlerVis.prototype.onTermToggle = function(term, shiftClick) {
   } else {
     // State machine: Neutral -> Positive -> Negative -> Neutral.
     var tags = term['tags'];
+
+    if (tags.indexOf("Custom") != -1)
+	return;
+
     var isPositive = tags.indexOf('Positive') != -1;
     var isNegative = tags.indexOf('Negative') != -1;
 
@@ -720,7 +720,6 @@ CrawlerVis.prototype.onLoadedPages = function(pagesData) {
 
   return pages;
 };
-
 
 // Responds to tag focus.
 CrawlerVis.prototype.onTagFocus = function(tag, onFocus) {
@@ -893,6 +892,8 @@ CrawlerVis.prototype.initModelButton = function() {
 
 CrawlerVis.prototype.createModelData = function() {
     document.getElementById("status_panel").innerHTML = 'Building crawler model...';
+    $(document).ready(function() { $(".status_box").fadeIn(); });
+    $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
     DataAccess.createModelData();
 }
 
@@ -964,16 +965,19 @@ CrawlerVis.prototype.addCrawler = function(index_name) {
 
 
 CrawlerVis.prototype.addTerm = function(term) {
-    $("#customwordlist").html("");
-    this.customwordlist.addEntries([{'word': term, 'posFreq': 0, 'negFreq': 0, 'tags': ["Positive"]}]);
-    DataAccess.setTermTag(term, 'Positive', true);
+    this.wordlist.addEntries([{'word': term, 'posFreq': 0, 'negFreq': 0, 'tags': ["Positive", "Custom"]}]);
+    DataAccess.setTermTag(term, 'Positive;Custom', true);
 };
 
 CrawlerVis.prototype.addNegTerm = function(term) {
-    $("#customwordlist").html("");
-    this.customwordlist.addEntries([{'word': term, 'posFreq': 0, 'negFreq': 0, 'tags': ["Negative"]}]);
-    DataAccess.setTermTag(term, 'Negative', true);
+    this.wordlist.addEntries([{'word': term, 'posFreq': 0, 'negFreq': 0, 'tags': ["Negative", "Custom"]}]);
+    DataAccess.setTermTag(term, 'Negative;Custom', true);
 };
+
+CrawlerVis.prototype.deleteTerm = function(term) {
+    DataAccess.deleteTerm(term);
+};
+
 
 /**
  * Runs query (useful for seed crawler vis).
@@ -990,8 +994,11 @@ CrawlerVis.prototype.runQuery = function(terms) {
  * Runs query (useful for seed crawler vis).
  */
 CrawlerVis.prototype.runAddCrawler = function(index_name) {
-    if (index_name === "")
+    if (index_name === ""){
 	document.getElementById("status_panel").innerHTML = 'Enter a valid crawler name';
+    $(document).ready(function() { $(".status_box").fadeIn(); });
+    $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
+  }
     else this.addCrawler(index_name);
 };
 
@@ -1001,8 +1008,11 @@ CrawlerVis.prototype.runAddCrawler = function(index_name) {
  */
 
 CrawlerVis.prototype.runAddTerm = function(term) {  
-    if (term === "")
-	document.getElementById("status_panel").innerHTML = 'Enter a valid term';
+    if (term === ""){
+	  document.getElementById("status_panel").innerHTML = 'Enter a valid term';
+    $(document).ready(function() { $(".status_box").fadeIn(); });
+    $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
+    }
     else this.addTerm(term);
 };
 
@@ -1011,9 +1021,20 @@ CrawlerVis.prototype.runAddTerm = function(term) {
  */
 
 CrawlerVis.prototype.runAddNegTerm = function(term) {  
-    if (term === "")
-	document.getElementById("status_panel").innerHTML = 'Enter a valid term';
+    if (term === ""){
+	  document.getElementById("status_panel").innerHTML = 'Enter a valid term';
+    $(document).ready(function() { $(".status_box").fadeIn(); });
+    $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
+}
     else this.addNegTerm(term);
+};
+
+/**
+ * Run Delete Term
+ */
+
+CrawlerVis.prototype.runDeleteTerm = function(term) { 
+    this.deleteTerm(term);
 };
 
 /**
@@ -1041,7 +1062,8 @@ CrawlerVis.prototype.applyFilter = function(terms) {
 
   if (terms != undefined && terms != ""){
       document.getElementById("status_panel").innerHTML = 'Applying filter...';
-
+    $(document).ready(function() { $(".status_box").fadeIn(); });
+    $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
       // Applies filter and issues an update automatically.
       DataAccess.update();
   }
@@ -1082,3 +1104,24 @@ CrawlerVis.prototype.appendToHistory = function(elementSelector, history, queryT
       });
   return newHistory;
 };
+
+$(document).ready(function() {
+$(".panel-heading").click(function () {
+    $header = $(this);
+    //getting the next element
+    $content = $header.next();
+    //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
+    $content.slideToggle(400, function(){
+        if( $content.is(":visible")){
+        $header.find("span.collapsethis").removeClass("glyphicon-plus");
+        $header.find("span.collapsethis").addClass("glyphicon-minus");        
+  }
+  else{
+        $header.find("span.collapsethis").removeClass("glyphicon-minus");
+        $header.find("span.collapsethis").addClass("glyphicon-plus");
+    }
+    });
+    
+    
+});
+});

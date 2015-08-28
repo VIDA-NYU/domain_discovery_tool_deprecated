@@ -10,9 +10,18 @@ def add_document(entries, es_index='memex', es_doc_type='page', es=None):
     if es is None:
         es = default_es
 
-    helpers.bulk(es, [{"_index": es_index,
-                       "_type": es_doc_type,
-                       "_source": doc } for doc in entries], refresh=True)
+    es_entries = []
+    for doc in entries:
+        entry = {"_index": es_index,
+                 "_type": es_doc_type,
+                 "_source": {k: v for k, v in doc.items() if k not in ['_id']} }
+
+        if '_id' in doc.keys():
+            entry['_id'] = doc['_id']
+
+        es_entries.append(entry)    
+
+    helpers.bulk(es, es_entries, refresh=True)
 
 def update_document(update_entries, es_index='memex', es_doc_type='page', es=None):
     if es is None:

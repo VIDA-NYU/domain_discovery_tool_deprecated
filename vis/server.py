@@ -215,6 +215,11 @@ class Page:
   def setTermsTag(self, terms, tag, applyTagFlag):
     self._crawler.setTermsTag(terms, tag, applyTagFlag)
 
+  # Delete terms from term window and from the ddt_terms index
+  @cherrypy.expose
+  def deleteTerm(self, term):
+    self._crawler.deleteTerm(term)
+
   # Extracts terms with current labels state.
   @cherrypy.expose
   def extractTerms(self, positiveTerms, negativeTerms, neutralTerms):

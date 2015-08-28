@@ -38,6 +38,8 @@ var DataAccess = (function() {
       lastUpdate = loadedPages['last_downloaded_url_epoch'];
       loadingPages = false;
       document.getElementById("status_panel").innerHTML = 'Processing pages...Done';
+      $(document).ready(function() { $(".status_box").fadeIn(); });
+      $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
   };
 
   // Processes loaded terms summaries.
@@ -45,6 +47,8 @@ var DataAccess = (function() {
       termsSummary = summary;
       loadingTerms = false;
       document.getElementById("status_panel").innerHTML = 'Processing terms...Done';
+      $(document).ready(function() { $(".status_box").fadeIn(); });
+      $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
   };
 
   // Processes loaded pages and terms.
@@ -54,8 +58,11 @@ var DataAccess = (function() {
 	__sig__.emit(__sig__.pages_loaded, pages);
 	__sig__.emit(__sig__.terms_summary_fetched, termsSummary);
 
-	if (pages['pages'].length === 0)
+	if (pages['pages'].length === 0){
 	    document.getElementById("status_panel").innerHTML = 'No pages found';
+      $(document).ready(function() { $(".status_box").fadeIn(); });
+      $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
+    }
 
 	Utils.setWaitCursorEnabled(false);
     }
@@ -67,9 +74,11 @@ var DataAccess = (function() {
       if (!loadingPages) {
 	  __sig__.emit(__sig__.pages_loaded, pages);
 	  
-	  if (pages['pages'].length === 0)
-	      document.getElementById("status_panel").innerHTML = 'No pages found';
-	  
+	  if (pages['pages'].length === 0){
+	     document.getElementById("status_panel").innerHTML = 'No pages found';
+      $(document).ready(function() { $(".status_box").fadeIn(); });
+      $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
+	  }
 	  Utils.setWaitCursorEnabled(false);
       }
       
@@ -82,6 +91,8 @@ var DataAccess = (function() {
  var onModelCreated = function(model_file) {
      Utils.setWaitCursorEnabled(false);
      document.getElementById("status_panel").innerHTML = 'Building crawler model...Done';
+     $(document).ready(function() { $(".status_box").fadeIn(); });
+     $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
      var url = model_file;    
      window.open(url,'Download');  
  }
@@ -193,12 +204,16 @@ var DataAccess = (function() {
   // Queries the web for terms (used in Seed Crawler mode).
   pub.queryWeb = function(terms) {
       document.getElementById("status_panel").innerHTML = 'Querying the Web...see page summary for real-time page download status';
+      $(document).ready(function() { $(".status_box").fadeIn(); });
+      $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
       runQueryForCurrentCrawler('/queryWeb', {'terms': terms});
   };
 
   // Add new crawler
   pub.addCrawler = function(index_name) {
       document.getElementById("status_panel").innerHTML = 'Adding new crawler - ' + index_name;
+      $(document).ready(function() { $(".status_box").fadeIn(); });
+      $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
       runQueryForCurrentCrawler('/addCrawler', {'index_name': index_name}, onCrawlerAdded);
   }
 
@@ -212,6 +227,8 @@ var DataAccess = (function() {
     Utils.setWaitCursorEnabled(true);
 
       document.getElementById("status_panel").innerHTML = 'Processing pages and terms...';
+      $(document).ready(function() { $(".status_box").fadeIn(); });
+      $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
    
       
     if (!updating && currentCrawler !== undefined) {
@@ -261,6 +278,11 @@ var DataAccess = (function() {
     runQueryForCurrentCrawler(
       '/setTermsTag', {'terms': term, 'tag': tag, 'applyTagFlag': applyTagFlag});
   };
+
+    
+  pub.deleteTerm = function(term) {
+      runQueryForCurrentCrawler('/deleteTerm', {'term': term});
+  }
 
   // Sets limit of number of pages loaded.
   pub.setPagesCountCap = function(cap) {

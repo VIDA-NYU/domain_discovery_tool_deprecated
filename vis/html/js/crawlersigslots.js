@@ -33,6 +33,7 @@ var SigSlots = (function() {
   __sig__.filter_enter = function(terms) {};
   __sig__.add_term = function(term) {};
   __sig__.add_neg_term = function(term) {};
+  __sig__.delete_term = function(term) {};
 
   //__sig__.pages_labels_changed = function() {};
   //__sig__.term_selected = function(term) {};
