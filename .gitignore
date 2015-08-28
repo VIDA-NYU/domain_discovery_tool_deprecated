@@ -16,3 +16,4 @@ results.txt
 *.class
 *.jar
 seeds_generator/target/*
+ranking/D_cbow_pdw_8B.pkl
