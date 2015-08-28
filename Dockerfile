@@ -29,6 +29,9 @@ EXPOSE 8084
 EXPOSE 9200
 EXPOSE 9300
 
+# Expose Supervisord port
+EXPOSE 9001
+
 WORKDIR /ddt
 
 # Add build file
