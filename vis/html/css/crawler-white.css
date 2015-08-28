@@ -58,6 +58,7 @@ p, div {
 }
 
 .status_box{  
+  display: none;
   border-radius: 1px;
   background-color: rgba(246,187,66, 0.75);
   border: 0;
