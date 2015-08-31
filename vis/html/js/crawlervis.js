@@ -236,8 +236,8 @@ CrawlerVis.prototype.initUISeedCrawler = function() {
 // Creates select with available crawlers.
 CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
   var vis = this;
-  var selectBox = d3.select('#selectCrawler').on('change', function() {
-    var crawlerId = d3.select(this).node().value;
+  var selectBox = d3.select('#selectCrawler');
+  selectBox.on('change', function() {
     vis.currentCrawler = crawlerId;
     vis.setActiveCrawler(crawlerId);
   });
