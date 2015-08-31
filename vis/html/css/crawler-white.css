@@ -1240,7 +1240,3 @@ h1 {
   padding: 5px 20px;
   color: #000;
 }
-
-#selectCrawler::after{
-  content: "Hello";
-}
