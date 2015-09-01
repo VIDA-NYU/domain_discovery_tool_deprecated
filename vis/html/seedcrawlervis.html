@@ -28,24 +28,22 @@
   </head>
 
   <body>
-    <div class="container-fluid">
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#">Brand</a>
+          <a class="navbar-brand" href="#">Domain Discovery Tool</a>
         </div>
         <div class="collapse navbar-collapse" id="crawlerSelection">
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
-              <div class="btn-group">
-              <a href="#" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Checked option <span class="caret"></span></a>
+              <a data-toggle="dropdown" role="button" class="dropdown-toggle" id="domainButton">Select Domain<span class="caret"></span></a>
                 <ul class="dropdown-menu" id="selectCrawler"></ul>
-              </div>
             </li>
           </ul>
         </div>
       </div>
     </nav>
+    <div class="container-fluid">
       <!-- Left panel -->
       <div class="col-md-3" id="left_panel">
 
