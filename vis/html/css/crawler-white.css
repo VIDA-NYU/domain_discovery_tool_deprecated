@@ -1240,3 +1240,7 @@ h1 {
   padding: 5px 20px;
   color: #000;
 }
+
+.dropdown-menu>li>label {
+  color: #8c8c8c;
+}
