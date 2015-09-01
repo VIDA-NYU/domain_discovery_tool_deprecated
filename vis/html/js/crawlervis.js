@@ -232,31 +232,36 @@ CrawlerVis.prototype.initUISeedCrawler = function() {
   this.initAddTermButton();
 };
 
-CrawlerVis.prototype.renderCrawlerOptions = function(element, data){
-  var vis = this;
-  var options = element.selectAll('option').data(data);
-  options.enter().append('option');
-  options.attr('value', vis.getElementValueId).text(function(d, i) {
-    // TODO(cesar): Builds string with crawler's name and creation date.
-    return d.name + ' (' + Utils.parseFullDate(d.creation) + ')';
-  });
-}
-
 CrawlerVis.prototype.getElementValueId = function(d){
   return d.id;
+}
+
+CrawlerVis.prototype.renderCrawlerOptions = function(element, data){
+  var vis = this;
+  var options = element.selectAll('input').data(data);
+  options.enter().append('input');
+  options
+    .attr('value', vis.getElementValueId)
+    .attr('type', 'radio')
+    .attr('name', 'crawlerRadio')
+    .attr('class', 'radio-select-crawler')
+    .text(function(d, i){
+      // TODO(cesar): Builds string with crawler's name and creation date.
+      return d.name + ' (' + Utils.parseFullDate(d.creation) + ')';
+    });
 }
 
 // Creates select with available crawlers.
 CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
   var vis = this;
   var selectBox = d3.select('#selectCrawler');
-  selectBox.on('change', function() {
-    vis.currentCrawler = crawlerId;
-    vis.setActiveCrawler(crawlerId);
-  });
 
   if (data.length > 0){
     vis.renderCrawlerOptions(selectBox, data);
+    d3.select('input[name="crawlerRadio"]').on('change', function(){
+      vis.currentCrawler = crawlerId;
+      vis.setActiveCrawler(crawlerId);
+    });
     // Manually triggers change of value.
     var crawlerId = vis.getElementValueId(data[0]);
     vis.setActiveCrawler(crawlerId);
@@ -270,9 +275,10 @@ CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
 // Reload select with available crawlers.
 CrawlerVis.prototype.reloadSelectForAvailableCrawlers = function(data) {
   if (data.length > 0) {
-    var currentCrawler = d3.select('#selectCrawler').node().value
+    var currentCrawler = d3.select('input[name="crawlerRadio"]:checked').node().value
     var vis = this;
     var selectBox = d3.select('#selectCrawler');
+
     vis.renderCrawlerOptions(selectBox, data);
 
     $(document).ready(function() {
@@ -280,7 +286,6 @@ CrawlerVis.prototype.reloadSelectForAvailableCrawlers = function(data) {
       $("#selectCrawler option[value="+currentCrawler+"]").prop('selected', true);
     });
 
-      
     // Generate the index name from the entered crawler name
     var index_name = d3.select('#crawler_index_name').node().value;
 
