@@ -244,9 +244,13 @@ CrawlerVis.prototype.renderCrawlerOptions = function(element, data){
     .attr('value', vis.getElementValueId)
     .attr('type', 'radio')
     .attr('name', 'crawlerRadio')
+    .attr('id', function(d, i){
+      // return d.name + ' (' + Utils.parseFullDate(d.creation) + ')'
+      return d.name
+    })
 
   d3.selectAll("input[name='crawlerRadio']").each(function(){
-    $("input[value='"+this.value+"']").wrap("<li>text</li>")
+    $("input[value='"+this.value+"']").wrap("<li></li>").after("<label for='"+this.id+"'>"+this.id+"</label>");
   });
 }
 
