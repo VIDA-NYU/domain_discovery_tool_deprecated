@@ -270,7 +270,7 @@ CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
     var crawlerId = vis.getElementValueId(data[0]);
     vis.setActiveCrawler(crawlerId);
     // Make the first item crawler in data the default choice for crawler.
-    d3.select('input[value="'+data[0]["id"]+'"]').attr("checked", "checked")
+    d3.select('input[value="'+data[0]["id"]+'"]').attr("checked", "checked");
   } else {
     document.getElementById("status_panel").innerHTML = 'No crawlers found'
     $(document).ready(function() { $(".status_box").fadeIn(); });
