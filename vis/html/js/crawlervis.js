@@ -258,7 +258,7 @@ CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
 
   if (data.length > 0){
     vis.renderCrawlerOptions(selectBox, data);
-    d3.select('input[name="crawlerRadio"]').on('change', function(){
+    d3.selectAll('input[name="crawlerRadio"]').on('change', function(){
       vis.currentCrawler = crawlerId;
       vis.setActiveCrawler(crawlerId);
     });
