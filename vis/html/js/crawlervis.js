@@ -244,11 +244,10 @@ CrawlerVis.prototype.renderCrawlerOptions = function(element, data){
     .attr('value', vis.getElementValueId)
     .attr('type', 'radio')
     .attr('name', 'crawlerRadio')
-    .attr('class', 'radio-select-crawler')
-    .text(function(d, i){
-      // TODO(cesar): Builds string with crawler's name and creation date.
-      return d.name + ' (' + Utils.parseFullDate(d.creation) + ')';
-    });
+
+  d3.selectAll("input[name='crawlerRadio']").each(function(){
+    $("input[value='"+this.value+"']").wrap("<li>text</li>")
+  });
 }
 
 // Creates select with available crawlers.
@@ -266,6 +265,8 @@ CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
     // Manually triggers change of value.
     var crawlerId = vis.getElementValueId(data[0]);
     vis.setActiveCrawler(crawlerId);
+    // Make the first item crawler in data the default choice for crawler.
+    d3.select('input[value="'+data[0]["id"]+'"]').attr("checked", "checked")
   } else {
     document.getElementById("status_panel").innerHTML = 'No crawlers found'
     $(document).ready(function() { $(".status_box").fadeIn(); });
@@ -284,7 +285,7 @@ CrawlerVis.prototype.reloadSelectForAvailableCrawlers = function(data) {
 
     $(document).ready(function() {
       // Generate the index name from the entered crawler name
-      $("#selectCrawler option[value="+currentCrawler+"]").prop('selected', true);
+      d3.select('input[value="'+currentCrawler+'"]').attr("checked", "checked")
     });
 
     // Generate the index name from the entered crawler name

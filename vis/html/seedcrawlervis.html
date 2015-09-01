@@ -23,6 +23,7 @@
     <link type="text/css" rel="stylesheet" href="css/d3.slider.css" media="all">
     <link type="text/css" rel="stylesheet" href="css/jquery-ui.css" media="all">
     <link type="text/css" rel="stylesheet" href="css/jquery.urlive.css" media="all">
+    <link type="text/css" rel="stylesheet" href="css/dropdowns-enhancement.min.css" media="all">
     <link type="text/css" rel="stylesheet" href="css/crawler-white.css" media="all">
   </head>
 
@@ -36,12 +37,10 @@
         <div class="collapse navbar-collapse" id="crawlerSelection">
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"
-                role="button" aria-haspopup="true" aria-expanded="false">
-                  Dropdown <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu" id="selectCrawler">
-              </ul>
+              <div class="btn-group">
+              <a href="#" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Checked option <span class="caret"></span></a>
+                <ul class="dropdown-menu" id="selectCrawler"></ul>
+              </div>
             </li>
           </ul>
         </div>
@@ -292,6 +291,7 @@
     <script type="text/javascript" src="js/libs/jquery-ui.js"></script>
     <script type="text/javascript" src="js/libs/jquery.urlive.js"></script>
     <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/libs/dropdowns-enhancement.js"></script>
     <script type="text/javascript" src="js/libs/d3.slider.js"></script>
     <script type="text/javascript" src="js/libs/d3.lasso.js"></script>
     <script type="text/javascript" src="js/libs/moment.js"></script>
