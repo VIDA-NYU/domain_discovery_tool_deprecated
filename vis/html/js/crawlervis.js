@@ -232,6 +232,19 @@ CrawlerVis.prototype.initUISeedCrawler = function() {
   this.initAddTermButton();
 };
 
+CrawlerVis.prototype.renderCrawlerOptions = function(element, data){
+  var vis = this;
+  var options = element.selectAll('option').data(data);
+  options.enter().append('option');
+  options.attr('value', vis.getElementValueId).text(function(d, i) {
+    // TODO(cesar): Builds string with crawler's name and creation date.
+    return d.name + ' (' + Utils.parseFullDate(d.creation) + ')';
+  });
+}
+
+CrawlerVis.prototype.getElementValueId = function(d){
+  return d.id;
+}
 
 // Creates select with available crawlers.
 CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
@@ -241,30 +254,17 @@ CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
     vis.currentCrawler = crawlerId;
     vis.setActiveCrawler(crawlerId);
   });
-  if (data.length > 0) {
-      var getElementValue = function(d) {
-	  return d.id;
-      };
-  
-      var options = selectBox.selectAll('option').data(data);
-      options.enter().append('option');
-      options
-	  .attr('value', getElementValue)
-	  .text(function(d, i) {
-	      // TODO(cesar): Builds string with crawler's name and creation date.
-	      return d.name + ' (' + Utils.parseFullDate(d.creation) + ')';
-	  });
-      
-      // Manually triggers change of value.
-      var crawlerId = getElementValue(data[0]);
-      vis.setActiveCrawler(crawlerId);
-  }
-  else {
+  if (data.length > 0){
+    vis.renderCrawlerOptions(selectBox, data);
+    // Manually triggers change of value.
+    var crawlerId = vis.getElementValueId(data[0]);
+    vis.setActiveCrawler(crawlerId);
+  } else {
     document.getElementById("status_panel").innerHTML = 'No crawlers found'
     $(document).ready(function() { $(".status_box").fadeIn(); });
     $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
+  }
 }
-};
 
 // Reload select with available crawlers.
 CrawlerVis.prototype.reloadSelectForAvailableCrawlers = function(data) {
