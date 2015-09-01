@@ -254,6 +254,7 @@ CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
     vis.currentCrawler = crawlerId;
     vis.setActiveCrawler(crawlerId);
   });
+
   if (data.length > 0){
     vis.renderCrawlerOptions(selectBox, data);
     // Manually triggers change of value.
@@ -269,47 +270,35 @@ CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
 // Reload select with available crawlers.
 CrawlerVis.prototype.reloadSelectForAvailableCrawlers = function(data) {
   if (data.length > 0) {
-      var currentCrawler = d3.select('#selectCrawler').node().value
-      var vis = this;
-      var selectBox = d3.select('#selectCrawler');
-      var getElementValue = function(d) {
-	  return d.id;
-      };
-      
-      var options = selectBox.selectAll('option').data(data);
-      options.enter().append('option');
-      options
-	  .attr('value', getElementValue)
-	  .text(function(d, i) {
-	      // TODO(cesar): Builds string with crawler's name and creation date.
-	      return d.name + ' (' + Utils.parseFullDate(d.creation) + ')';
-	  });
+    var currentCrawler = d3.select('#selectCrawler').node().value
+    var vis = this;
+    var selectBox = d3.select('#selectCrawler');
+    vis.renderCrawlerOptions(selectBox, data);
 
-
-      $(document).ready(function() {
-	  // Generate the index name from the entered crawler name
-	  $("#selectCrawler option[value="+currentCrawler+"]").prop('selected', true);
-      });
-
-      
+    $(document).ready(function() {
       // Generate the index name from the entered crawler name
-      var index_name = d3.select('#crawler_index_name').node().value;
+      $("#selectCrawler option[value="+currentCrawler+"]").prop('selected', true);
+    });
 
-      // If just one crawler exists then select that
-      if (data.length === 1){
-	  var crawlerId = getElementValue(data[0]);
-	  vis.setActiveCrawler(crawlerId);
-      } 
       
-      document.getElementById("status_panel").innerHTML = 'Added new crawler - ' + index_name;
+    // Generate the index name from the entered crawler name
+    var index_name = d3.select('#crawler_index_name').node().value;
+
+    // If just one crawler exists then select that
+    if (data.length === 1){
+      var crawlerId = vis.getElementValueId(data[0]);
+      vis.setActiveCrawler(crawlerId);
+    }
+
+    document.getElementById("status_panel").innerHTML = 'Added new crawler - ' + index_name;
     $(document).ready(function() { $(".status_box").fadeIn(); });
     $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
 
-  } else  {
+  } else {
     document.getElementById("status_panel").innerHTML = 'No crawlers found';
     $(document).ready(function() { $(".status_box").fadeIn(); });
     $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
-}
+  }
 };
 
 
