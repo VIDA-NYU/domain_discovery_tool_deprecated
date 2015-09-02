@@ -59,7 +59,6 @@ p, div {
 }
 
 .status_box{  
-  padding-top: 70px;
   border-radius: 1px;
   background-color: rgba(246,187,66, 0.75);
   border: 0;
@@ -71,6 +70,7 @@ p, div {
   left: 50%;
   margin-right: -50%;
   transform: translate(-50%, -50%) 
+  padding-top: 70px;
 }
 .status_box>.status_panel{
   border-radius: 1px;
