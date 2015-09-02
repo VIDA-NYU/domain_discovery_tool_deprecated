@@ -238,6 +238,8 @@ CrawlerVis.prototype.getElementValueId = function(d){
 
 CrawlerVis.prototype.renderCrawlerOptions = function(element, data){
   var vis = this;
+  // Make select domain menu visible if it was earlier made hidden.
+  $("#selectCrawler").css("visibility", "visible");
   // Remove existing crawler options before rendering new ones.
   element.selectAll('li').remove();
   var options = element.selectAll('input').data(data);
@@ -252,8 +254,11 @@ CrawlerVis.prototype.renderCrawlerOptions = function(element, data){
       return d.name
     })
 
+  // Wrap each input and give it a label.
   d3.selectAll("input[name='crawlerRadio']").each(function(){
-    $("input[id='"+this.id+"']").wrap("<li class='crawler-radio'></li>").after("<label for='"+this.id+"'>"+this.placeholder+"</label>");
+    $("input[id='"+this.id+"']")
+      .wrap("<li class='crawler-radio'></li>")
+      .after("<label for='"+this.id+"'>"+this.placeholder+"</label>");
   });
 }
 
@@ -276,6 +281,7 @@ CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
     $("#currentDomain").text(data[0].name).append("<span class='caret'></span>");
   } else {
     $("#currentDomain").text("No domains available");
+    $("#selectCrawler").css("visibility", "hidden");
     document.getElementById("status_panel").innerHTML = 'No crawlers found'
     $(document).ready(function() { $(".status_box").fadeIn(); });
     $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
