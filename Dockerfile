@@ -52,4 +52,7 @@ ADD . /ddt
 # Setup remaning configs
 RUN make cherrypy_config link_word2vec_data
 
+# Patch address to listen to external connections
+RUN sed -i "s#port = 127.0.0.1:9001#port = 0.0.0.0:9001#g" supervisord.conf
+
 CMD bash -c 'source activate ddt; /ddt/bin/ddt-dev'
