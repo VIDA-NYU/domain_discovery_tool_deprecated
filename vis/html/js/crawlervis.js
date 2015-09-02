@@ -253,7 +253,7 @@ CrawlerVis.prototype.renderCrawlerOptions = function(element, data){
     })
 
   d3.selectAll("input[name='crawlerRadio']").each(function(){
-    $("input[id='"+this.id+"']").wrap("<li></li>").after("<label for='"+this.id+"'>"+this.placeholder+"</label>");
+    $("input[id='"+this.id+"']").wrap("<li class='crawler-radio'></li>").after("<label for='"+this.id+"'>"+this.placeholder+"</label>");
   });
 }
 
@@ -272,10 +272,10 @@ CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
     // Manually triggers change of value.
     var crawlerId = vis.getElementValueId(data[0]);
     vis.setActiveCrawler(crawlerId);
-    $("#currentDomain").replaceWith(data[0].name);
-    // Make the first item crawler in data the default choice for crawler.
     d3.select('input[value="'+data[0]["id"]+'"]').attr("checked", "checked");
+    $("#currentDomain").text(data[0].name).append("<span class='caret'></span>");
   } else {
+    $("#currentDomain").text("No domains available");
     document.getElementById("status_panel").innerHTML = 'No crawlers found'
     $(document).ready(function() { $(".status_box").fadeIn(); });
     $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
@@ -288,6 +288,7 @@ CrawlerVis.prototype.reloadSelectForAvailableCrawlers = function(data) {
     var vis = this;
     var selectBox = d3.select('#selectCrawler');
     vis.renderCrawlerOptions(selectBox, data);
+    $("#currentDomain").text(data[0].name).append("<span class='caret'></span>")
 
     $(document).ready(function() {
       // Generate the index name from the entered crawler name
