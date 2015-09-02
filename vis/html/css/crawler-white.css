@@ -63,6 +63,7 @@ p, div {
   background-color: rgba(246,187,66, 0.75);
   border: 0;
   box-shadow: 0 1px 6px 0 rgba(0,0,0,.12),0 1px 6px 0 rgba(0,0,0,.12);
+  margin-top: 30px;
   width: 16em;
   text-align:center;
   position: fixed;
@@ -70,7 +71,6 @@ p, div {
   left: 50%;
   margin-right: -50%;
   transform: translate(-50%, -50%) 
-  padding-top: 70px;
 }
 .status_box>.status_panel{
   border-radius: 1px;
