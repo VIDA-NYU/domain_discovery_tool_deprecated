@@ -236,7 +236,12 @@ CrawlerVis.prototype.getElementValueId = function(d){
   return d.id;
 }
 
-CrawlerVis.prototype.renderCrawlerOptions = function(element, data){
+CrawlerVis.prototype.setCurrentCrawler = function(crawlerId){
+  this.currentCrawler = crawlerId;
+  this.setActiveCrawler(crawlerId)
+}
+
+CrawlerVis.prototype.renderCrawlerOptions = function(element, data, selectedCrawler){
   var vis = this;
   // Make select domain menu visible if it was earlier made hidden.
   $("#selectCrawler").css("visibility", "visible");
@@ -260,6 +265,9 @@ CrawlerVis.prototype.renderCrawlerOptions = function(element, data){
       .wrap("<li class='crawler-radio'></li>")
       .after("<label for='"+this.id+"'>"+this.placeholder+"</label>");
   });
+  if (selectedCrawler){
+    d3.select('input[value="'+selectedCrawler+'"]').attr("checked", "checked");
+  }
 }
 
 // Creates select with available crawlers.
@@ -271,12 +279,11 @@ CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
     vis.renderCrawlerOptions(selectBox, data);
     d3.selectAll('input[name="crawlerRadio"]').on('change', function(){
       var crawlerId = d3.select('input[name="crawlerRadio"]:checked').node().value;
-      vis.currentCrawler = crawlerId;
-      vis.setActiveCrawler(crawlerId);
+      vis.setCurrentCrawler(crawlerId);
     });
     // Manually triggers change of value.
     var crawlerId = vis.getElementValueId(data[0]);
-    vis.setActiveCrawler(crawlerId);
+    vis.setCurrentCrawler(crawlerId);
     d3.select('input[value="'+data[0]["id"]+'"]').attr("checked", "checked");
     $("#currentDomain").text(data[0].name).append("<span class='caret'></span>");
   } else {
@@ -293,21 +300,20 @@ CrawlerVis.prototype.reloadSelectForAvailableCrawlers = function(data) {
   if (data.length > 0) {
     var vis = this;
     var selectBox = d3.select('#selectCrawler');
-    vis.renderCrawlerOptions(selectBox, data);
-    $("#currentDomain").text(data[0].name).append("<span class='caret'></span>")
-
-    $(document).ready(function() {
-      // Generate the index name from the entered crawler name
-      d3.select('input[value="'+data[0]["id"]+'"]').attr("checked", "checked")
-    });
+    var selectedCrawler = d3.select('input[name="crawlerRadio"]:checked').node()
 
     // Generate the index name from the entered crawler name
     var index_name = d3.select('#crawler_index_name').node().value;
 
     // If just one crawler exists then select that
-    if (data.length === 1){
+    if (selectedCrawler){
+      vis.renderCrawlerOptions(selectBox, data, selectedCrawler.id);
+      $("#currentDomain").text(selectedCrawler.placeholder).append("<span class='caret'></span>");
+    } else {
       var crawlerId = vis.getElementValueId(data[0]);
-      vis.setActiveCrawler(crawlerId);
+      vis.setCurrentCrawler(crawlerId);
+      vis.renderCrawlerOptions(selectBox, data, crawlerId);
+      $("#currentDomain").text(data[0]["name"]).append("<span class='caret'></span>");
     }
 
     document.getElementById("status_panel").innerHTML = 'Added new crawler - ' + index_name;
