@@ -238,6 +238,8 @@ CrawlerVis.prototype.getElementValueId = function(d){
 
 CrawlerVis.prototype.renderCrawlerOptions = function(element, data){
   var vis = this;
+  // Remove existing crawler options before rendering new ones.
+  element.selectAll('li').remove();
   var options = element.selectAll('input').data(data);
   options.enter().append('input');
   options
@@ -282,15 +284,13 @@ CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
 // Reload select with available crawlers.
 CrawlerVis.prototype.reloadSelectForAvailableCrawlers = function(data) {
   if (data.length > 0) {
-    var currentCrawler = d3.select('input[name="crawlerRadio"]:checked').node().value
     var vis = this;
     var selectBox = d3.select('#selectCrawler');
-
     vis.renderCrawlerOptions(selectBox, data);
 
     $(document).ready(function() {
       // Generate the index name from the entered crawler name
-      d3.select('input[value="'+currentCrawler+'"]').attr("checked", "checked")
+      d3.select('input[value="'+data[0]["id"]+'"]').attr("checked", "checked")
     });
 
     // Generate the index name from the entered crawler name
