@@ -23,6 +23,22 @@ Use the `make` command to build DDT and download/install its dependencies.
 make
 ```
 
+After a successful installation, you can activate the DDT development environment:
+
+```
+source activate ddt
+```
+
+And (from the top-level `domain_discovery_tool` directory),  start
+supervisord to run the web application and its associated services:
+
+```
+supervisord
+```
+
+Now you should be able to head to http://localhost:8084/ to interact
+with the tool.
+
 ### Docker development
 
 First, make sure you have Docker installed and running. Then, you can create an DDT image using the Dockerfile. Run the following command in the root folder of this project:
