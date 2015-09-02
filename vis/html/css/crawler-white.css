@@ -4,7 +4,6 @@ body {
   background-color: rgb(241, 242, 246);
   margin-top:20px;
   color: #333;
-  padding-top: 70px;
 }
 h1, h2, h3, h4, h5, h6 {
   font-family: RobotoDraft,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif;
@@ -58,18 +57,18 @@ p, div {
     max-width: 1500px;
 }
 
-.status_box{  
+.status_box{
+  display: none;
   border-radius: 1px;
   background-color: rgba(246,187,66, 0.75);
   border: 0;
   box-shadow: 0 1px 6px 0 rgba(0,0,0,.12),0 1px 6px 0 rgba(0,0,0,.12);
-  margin-top: 30px;
-  width: 16em;
+  width: 20em;
   text-align:center;
   position: fixed;
-  top: 40px;
+  top: 25px;
   left: 50%;
-  margin-right: -50%;
+  right: -50%;
   transform: translate(-50%, -50%) 
 }
 .status_box>.status_panel{
@@ -1240,8 +1239,4 @@ h1 {
 .dropdown-menu li a:hover {
   padding: 5px 20px;
   color: #000;
-}
-
-.dropdown-menu>li>label {
-  color: #8c8c8c;
 }
