@@ -272,6 +272,7 @@ CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
     // Manually triggers change of value.
     var crawlerId = vis.getElementValueId(data[0]);
     vis.setActiveCrawler(crawlerId);
+    $("#currentDomain").replaceWith(data[0].name);
     // Make the first item crawler in data the default choice for crawler.
     d3.select('input[value="'+data[0]["id"]+'"]').attr("checked", "checked");
   } else {
