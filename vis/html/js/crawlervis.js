@@ -243,8 +243,7 @@ CrawlerVis.prototype.setCurrentCrawler = function(crawlerId){
 
 CrawlerVis.prototype.renderCrawlerOptions = function(element, data, selectedCrawler){
   var vis = this;
-  // Make select domain menu visible if it was earlier made hidden.
-  $("#selectCrawler").css("visibility", "visible");
+
   // Remove existing crawler options before rendering new ones.
   element.selectAll('li').filter(function(d, i){
     return (this.id != "addDomainButton");
@@ -290,8 +289,7 @@ CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
     d3.select('input[value="'+data[0]["id"]+'"]').attr("checked", "checked");
     $("#currentDomain").text(data[0].name).append("<span class='caret'></span>");
   } else {
-    $("#currentDomain").text("No domains available");
-    $("#selectCrawler").css("visibility", "hidden");
+    $("#currentDomain").text("No domains available").append("<span class='caret'></span>");
     document.getElementById("status_panel").innerHTML = 'No crawlers found'
     $(document).ready(function() { $(".status_box").fadeIn(); });
     $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));

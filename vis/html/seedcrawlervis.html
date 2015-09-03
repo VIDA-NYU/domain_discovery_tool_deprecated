@@ -43,7 +43,7 @@
                       class="btn btn-warning btn-duo center link-button"
                       data-toggle="modal"
                       data-target="#addDomainModal">
-                        Add Domain
+                        <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Add Domain
                       </button>
                   </li>
                 </ul>
@@ -61,18 +61,11 @@
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title" id="addDomainModalLabel" style="text-align:center;">Add Domain</h4>
-            </div>
-            <div class="modal-body">
-              Add Domain
+              <h4 class="modal-title" id="addDomainModalLabel" style="text-align:center;"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Add New Domain</h4>
             </div>
             <div class="modal-footer">
-              <div class="input-group">
-                <input  type="text" class="form-control" id="crawler_index_name" maxlength="50">
-                <span class="input-group-btn">
-                  <button type="button" class="btn btn-warning" data-type="last" id="submit_add_crawler">Add</button>
-                </span>
-              </div>
+              <input type="text" class="form-control" id="crawler_index_name">
+              <button type="button" class="btn btn-warning center-block" data-type="last" id="submit_add_crawler"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Add</button>
             </div>
           </div>
         </div>
