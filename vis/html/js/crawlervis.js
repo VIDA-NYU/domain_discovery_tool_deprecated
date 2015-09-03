@@ -273,7 +273,11 @@ CrawlerVis.prototype.renderCrawlerOptions = function(element, data, selectedCraw
   d3.selectAll('input[name="crawlerRadio"]').on('change', function(){
     var crawlerId = d3.select('input[name="crawlerRadio"]:checked').node().value;
     vis.setCurrentCrawler(crawlerId);
-  })
+  });
+
+  // Add the Add Domain button after the last element in the crawler selection.
+  var addDomain = $("#addDomainButton").detach();
+  addDomain.appendTo($("#selectCrawler:last-child"));
 }
 
 // Creates select with available crawlers.

@@ -1300,13 +1300,16 @@ h1 {
 }
 
 #selectCrawler{
-  padding-top:0px;
+  padding-bottom:0px;
 }
 
 #addDomain{
   margin-top:0px;
   width: 100%;
-  border-radius:0px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
 }
 
 #submit_add_crawler{
