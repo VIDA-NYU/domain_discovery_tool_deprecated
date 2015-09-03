@@ -246,7 +246,9 @@ CrawlerVis.prototype.renderCrawlerOptions = function(element, data, selectedCraw
   // Make select domain menu visible if it was earlier made hidden.
   $("#selectCrawler").css("visibility", "visible");
   // Remove existing crawler options before rendering new ones.
-  element.selectAll('li').remove();
+  element.selectAll('li').filter(function(d, i){
+    return (this.id != "addDomainButton");
+  }).remove();
   var options = element.selectAll('input').data(data);
   options.enter().append('input');
   options

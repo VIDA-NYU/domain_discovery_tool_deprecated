@@ -37,9 +37,17 @@
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
               <a data-toggle="dropdown" role="button" class="dropdown-toggle" id="currentDomain"></a>
-                <ul class="dropdown-menu" id="selectCrawler"></ul>
+                <ul class="dropdown-menu" id="selectCrawler">
+                  <li id="addDomainButton">
+                    <button type="button" id="addDomain"
+                      class="btn btn-warning btn-duo center link-button"
+                      data-toggle="modal"
+                      data-target="#addDomainModal">
+                        Add Domain
+                      </button>
+                  </li>
+                </ul>
             </li>
-            <li>Add Domain</li>
           </ul>
         </div>
       </div>
@@ -48,39 +56,15 @@
       <!-- Left panel -->
       <div class="col-md-3" id="left_panel">
 
-        <!-- <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">
-            <div class="panel-heading-left" >
-            <span class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;Domains 
-            </div>
-            <div class="panel-heading-right">
-            <span class="collapsethis glyphicon glyphicon-minus"></span> 
-            </div>
-            </h4>
-            
-          </div>
-          <div class="panel-body">
-	    <label for="crawler_index_name">Enter Domain Name:</label><br>
-
-            <div class="input-group">
-	      <input  type="text" class="form-control" id="crawler_index_name" maxlength="50">
-              <span class="input-group-btn">
-		<button type="button" class="btn btn-warning" data-type="last" id="submit_add_crawler">Add</button>
-              </span>
-	    </div>
-          </div>
-        </div> -->
-
-      <div class="modal fade">
+      <div class="modal fade" id="addDomainModal" tabindex="-1" role="dialog" aria-labelledby="addDomainModalLabel">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title">Modal title</h4>
+              <h4 class="modal-title" id="addDomainModalLabel" style="text-align:center;">Add Domain</h4>
             </div>
             <div class="modal-body">
-              <p>One fine body&hellip;</p>
+              Add Domain
             </div>
             <div class="modal-footer">
               <div class="input-group">
@@ -90,10 +74,9 @@
                 </span>
               </div>
             </div>
-          </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-      </div><!-- /.modal -->
-
+          </div>
+        </div>
+      </div>
 
         <div class="panel panel-default">
           
