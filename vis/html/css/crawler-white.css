@@ -1330,3 +1330,7 @@ h1 {
 .nav>li>a {
   margin-right:15px;
 }
+
+.input-group .form-control{
+  position:static;
+}
