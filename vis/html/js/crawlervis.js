@@ -819,10 +819,12 @@ CrawlerVis.prototype.onBrushedPagesChanged = function(indexOfSelectedItems) {
  * Initializes addc crawler button 
  */
 CrawlerVis.prototype.initAddCrawlerButton = function() {
-  d3.select('#submit_add_crawler')
-    .on('click', function() {
+  d3.select('#submit_add_crawler').on('click', function() {
       var value = d3.select('#crawler_index_name').node().value;
       __sig__.emit(__sig__.add_crawler, value);
+
+      // Hide domain modal after domain has been submitted.
+      $("#addDomainModal").modal("hide");
     });
 };
 
