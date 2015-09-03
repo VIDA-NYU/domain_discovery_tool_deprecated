@@ -31,22 +31,25 @@
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#">Domain Discovery Tool</a>
+          <img src="img/engineering_long_black.png" style="height:48px;" />
         </div>
         <div class="collapse navbar-collapse" id="crawlerSelection">
+          <ul class="nav navbar-nav">
+            <li><a class="navbar-brand" href="#">Domain Discovery Tool</a></li>
+          </ul>
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
               <a data-toggle="dropdown" role="button" class="dropdown-toggle" id="currentDomain"></a>
-                <ul class="dropdown-menu" id="selectCrawler">
-                  <li id="addDomainButton">
-                    <button type="button" id="addDomain"
-                      class="btn btn-warning btn-duo center link-button"
-                      data-toggle="modal"
-                      data-target="#addDomainModal">
-                        <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Add Domain
-                      </button>
-                  </li>
-                </ul>
+              <ul class="dropdown-menu" id="selectCrawler">
+                <li id="addDomainButton">
+                  <button type="button" id="addDomain"
+                    class="btn btn-warning btn-duo center link-button"
+                    data-toggle="modal"
+                    data-target="#addDomainModal">
+                      <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Add Domain
+                    </button>
+                </li>
+              </ul>
             </li>
           </ul>
         </div>
