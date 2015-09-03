@@ -268,6 +268,11 @@ CrawlerVis.prototype.renderCrawlerOptions = function(element, data, selectedCraw
   if (selectedCrawler){
     d3.select('input[value="'+selectedCrawler+'"]').attr("checked", "checked");
   }
+
+  d3.selectAll('input[name="crawlerRadio"]').on('change', function(){
+    var crawlerId = d3.select('input[name="crawlerRadio"]:checked').node().value;
+    vis.setCurrentCrawler(crawlerId);
+  })
 }
 
 // Creates select with available crawlers.
@@ -277,10 +282,6 @@ CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
 
   if (data.length > 0){
     vis.renderCrawlerOptions(selectBox, data);
-    d3.selectAll('input[name="crawlerRadio"]').on('change', function(){
-      var crawlerId = d3.select('input[name="crawlerRadio"]:checked').node().value;
-      vis.setCurrentCrawler(crawlerId);
-    });
     // Manually triggers change of value.
     var crawlerId = vis.getElementValueId(data[0]);
     vis.setCurrentCrawler(crawlerId);
