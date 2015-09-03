@@ -4,12 +4,42 @@ This repository contains the Domain Discovery Tool (DDT) project. The DDT tool h
 
 ## Installing in your machine
 
-To install DDT, you will need to have Python and Java installed. You will also need pip, fabric, virtualenv, ElasticSearch and [ACHE Crawler](https://github.com/ViDA-NYU/ache). 
-For a detailed description, you can follow the step-by-step commands in the  [Dockerfile](https://github.com/ViDA-NYU/domain_discovery_tool/blob/master/Dockerfile).
+Building and deploying the Domain Discovery Tool can either be done using its Makefile to create a local development environment, or automatically by conda or Docker for deployment.  The conda build environment is currently only supported on 64-bit OS X and Linux.
 
-An easier and self contained way to run DDT is to build and run a docker image, as described bellow.
+### Local development
 
-## Running using Docker
+First install conda, either through the Anaconda or miniconda installers provided by Continuum.  You will also need Git and a Java Development Kit.  These are system tools that are generally not provided by conda.
+
+Clone the DDT repository and enter it:
+
+```
+https://github.com/ViDA-NYU/domain_discovery_tool
+cd domain_discovery_tool
+```
+
+Use the `make` command to build DDT and download/install its dependencies.
+
+```
+make
+```
+
+After a successful installation, you can activate the DDT development environment:
+
+```
+source activate ddt
+```
+
+And (from the top-level `domain_discovery_tool` directory),  start
+supervisord to run the web application and its associated services:
+
+```
+supervisord
+```
+
+Now you should be able to head to http://localhost:8084/ to interact
+with the tool.
+
+### Docker development
 
 First, make sure you have Docker installed and running. Then, you can create an DDT image using the Dockerfile. Run the following command in the root folder of this project:
 
