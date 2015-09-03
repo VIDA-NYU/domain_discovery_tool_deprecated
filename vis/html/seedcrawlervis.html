@@ -23,10 +23,26 @@
     <link type="text/css" rel="stylesheet" href="css/d3.slider.css" media="all">
     <link type="text/css" rel="stylesheet" href="css/jquery-ui.css" media="all">
     <link type="text/css" rel="stylesheet" href="css/jquery.urlive.css" media="all">
+    <link type="text/css" rel="stylesheet" href="css/dropdowns-enhancement.min.css" media="all">
     <link type="text/css" rel="stylesheet" href="css/crawler-white.css" media="all">
   </head>
 
   <body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Domain Discovery Tool</a>
+        </div>
+        <div class="collapse navbar-collapse" id="crawlerSelection">
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a data-toggle="dropdown" role="button" class="dropdown-toggle" id="currentDomain"></a>
+                <ul class="dropdown-menu" id="selectCrawler"></ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
     <div class="container-fluid">
       <!-- Left panel -->
       <div class="col-md-3" id="left_panel">
@@ -44,7 +60,6 @@
             
           </div>
           <div class="panel-body">
-            <select id="selectCrawler" style="max-width:100%"></select><br><br>
 	    <label for="crawler_index_name">Enter Domain Name:</label><br>
 
             <div class="input-group">
@@ -273,7 +288,8 @@
     <script type="text/javascript" src="js/libs/jquery-1.10.0.min.js"></script>
     <script type="text/javascript" src="js/libs/jquery-ui.js"></script>
     <script type="text/javascript" src="js/libs/jquery.urlive.js"></script>
-
+    <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/libs/dropdowns-enhancement.js"></script>
     <script type="text/javascript" src="js/libs/d3.slider.js"></script>
     <script type="text/javascript" src="js/libs/d3.lasso.js"></script>
     <script type="text/javascript" src="js/libs/moment.js"></script>

@@ -232,84 +232,100 @@ CrawlerVis.prototype.initUISeedCrawler = function() {
   this.initAddTermButton();
 };
 
+CrawlerVis.prototype.getElementValueId = function(d){
+  return d.id;
+}
+
+CrawlerVis.prototype.setCurrentCrawler = function(crawlerId){
+  this.currentCrawler = crawlerId;
+  this.setActiveCrawler(crawlerId)
+}
+
+CrawlerVis.prototype.renderCrawlerOptions = function(element, data, selectedCrawler){
+  var vis = this;
+  // Make select domain menu visible if it was earlier made hidden.
+  $("#selectCrawler").css("visibility", "visible");
+  // Remove existing crawler options before rendering new ones.
+  element.selectAll('li').remove();
+  var options = element.selectAll('input').data(data);
+  options.enter().append('input');
+  options
+    .attr('value', vis.getElementValueId)
+    .attr('type', 'radio')
+    .attr('name', 'crawlerRadio')
+    .attr('id', vis.getElementValueId)
+    .attr('placeholder', function(d, i){
+      // return d.name + ' (' + Utils.parseFullDate(d.creation) + ')'
+      return d.name
+    })
+
+  // Wrap each input and give it a label.
+  d3.selectAll("input[name='crawlerRadio']").each(function(){
+    $("input[id='"+this.id+"']")
+      .wrap("<li class='crawler-radio'></li>")
+      .after("<label for='"+this.id+"'>"+this.placeholder+"</label>");
+  });
+  if (selectedCrawler){
+    d3.select('input[value="'+selectedCrawler+'"]').attr("checked", "checked");
+  }
+
+  d3.selectAll('input[name="crawlerRadio"]').on('change', function(){
+    var crawlerId = d3.select('input[name="crawlerRadio"]:checked').node().value;
+    vis.setCurrentCrawler(crawlerId);
+  })
+}
 
 // Creates select with available crawlers.
 CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
   var vis = this;
-  var selectBox = d3.select('#selectCrawler').on('change', function() {
-    var crawlerId = d3.select(this).node().value;
-    vis.currentCrawler = crawlerId;
-    vis.setActiveCrawler(crawlerId);
-  });
-  if (data.length > 0) {
-      var getElementValue = function(d) {
-	  return d.id;
-      };
-  
-      var options = selectBox.selectAll('option').data(data);
-      options.enter().append('option');
-      options
-	  .attr('value', getElementValue)
-	  .text(function(d, i) {
-	      // TODO(cesar): Builds string with crawler's name and creation date.
-	      return d.name + ' (' + Utils.parseFullDate(d.creation) + ')';
-	  });
-      
-      // Manually triggers change of value.
-      var crawlerId = getElementValue(data[0]);
-      vis.setActiveCrawler(crawlerId);
-  }
-  else {
+  var selectBox = d3.select('#selectCrawler');
+
+  if (data.length > 0){
+    vis.renderCrawlerOptions(selectBox, data);
+    // Manually triggers change of value.
+    var crawlerId = vis.getElementValueId(data[0]);
+    vis.setCurrentCrawler(crawlerId);
+    d3.select('input[value="'+data[0]["id"]+'"]').attr("checked", "checked");
+    $("#currentDomain").text(data[0].name).append("<span class='caret'></span>");
+  } else {
+    $("#currentDomain").text("No domains available");
+    $("#selectCrawler").css("visibility", "hidden");
     document.getElementById("status_panel").innerHTML = 'No crawlers found'
     $(document).ready(function() { $(".status_box").fadeIn(); });
     $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
+  }
 }
-};
 
 // Reload select with available crawlers.
 CrawlerVis.prototype.reloadSelectForAvailableCrawlers = function(data) {
   if (data.length > 0) {
-      var currentCrawler = d3.select('#selectCrawler').node().value
-      var vis = this;
-      var selectBox = d3.select('#selectCrawler');
-      var getElementValue = function(d) {
-	  return d.id;
-      };
-      
-      var options = selectBox.selectAll('option').data(data);
-      options.enter().append('option');
-      options
-	  .attr('value', getElementValue)
-	  .text(function(d, i) {
-	      // TODO(cesar): Builds string with crawler's name and creation date.
-	      return d.name + ' (' + Utils.parseFullDate(d.creation) + ')';
-	  });
+    var vis = this;
+    var selectBox = d3.select('#selectCrawler');
+    var selectedCrawler = d3.select('input[name="crawlerRadio"]:checked').node()
 
+    // Generate the index name from the entered crawler name
+    var index_name = d3.select('#crawler_index_name').node().value;
 
-      $(document).ready(function() {
-	  // Generate the index name from the entered crawler name
-	  $("#selectCrawler option[value="+currentCrawler+"]").prop('selected', true);
-      });
+    // If just one crawler exists then select that
+    if (selectedCrawler){
+      vis.renderCrawlerOptions(selectBox, data, selectedCrawler.id);
+      $("#currentDomain").text(selectedCrawler.placeholder).append("<span class='caret'></span>");
+    } else {
+      var crawlerId = vis.getElementValueId(data[0]);
+      vis.setCurrentCrawler(crawlerId);
+      vis.renderCrawlerOptions(selectBox, data, crawlerId);
+      $("#currentDomain").text(data[0]["name"]).append("<span class='caret'></span>");
+    }
 
-      
-      // Generate the index name from the entered crawler name
-      var index_name = d3.select('#crawler_index_name').node().value;
-
-      // If just one crawler exists then select that
-      if (data.length === 1){
-	  var crawlerId = getElementValue(data[0]);
-	  vis.setActiveCrawler(crawlerId);
-      } 
-      
-      document.getElementById("status_panel").innerHTML = 'Added new crawler - ' + index_name;
+    document.getElementById("status_panel").innerHTML = 'Added new crawler - ' + index_name;
     $(document).ready(function() { $(".status_box").fadeIn(); });
     $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
 
-  } else  {
+  } else {
     document.getElementById("status_panel").innerHTML = 'No crawlers found';
     $(document).ready(function() { $(".status_box").fadeIn(); });
     $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
-}
+  }
 };
 
 
