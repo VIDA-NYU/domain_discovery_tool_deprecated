@@ -244,10 +244,14 @@ CrawlerVis.prototype.setCurrentCrawler = function(crawlerId){
 CrawlerVis.prototype.renderCrawlerOptions = function(element, data, selectedCrawler){
   var vis = this;
   // Make select domain menu visible if it was earlier made hidden.
-  $("#selectCrawler").css("visibility", "visible");
+
   // Remove existing crawler options before rendering new ones.
-  element.selectAll('li').remove();
-  var options = element.selectAll('input').data(data);
+  element.selectAll('li').filter(function(d, i){
+    return (this.id != "addDomain");
+  }).remove();
+  var options = element.selectAll('input').filter(function(d, i){
+    return (this.id != "crawler_index_name");
+  }).data(data);
   options.enter().append('input');
   options
     .attr('value', vis.getElementValueId)
@@ -289,7 +293,6 @@ CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
     $("#currentDomain").text(data[0].name).append("<span class='caret'></span>");
   } else {
     $("#currentDomain").text("No domains available");
-    $("#selectCrawler").css("visibility", "hidden");
     document.getElementById("status_panel").innerHTML = 'No crawlers found'
     $(document).ready(function() { $(".status_box").fadeIn(); });
     $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
