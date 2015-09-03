@@ -243,10 +243,11 @@ CrawlerVis.prototype.setCurrentCrawler = function(crawlerId){
 
 CrawlerVis.prototype.renderCrawlerOptions = function(element, data, selectedCrawler){
   var vis = this;
-  // Make select domain menu visible if it was earlier made hidden.
-  $("#selectCrawler").css("visibility", "visible");
+
   // Remove existing crawler options before rendering new ones.
-  element.selectAll('li').remove();
+  element.selectAll('li').filter(function(d, i){
+    return (this.id != "addDomainButton");
+  }).remove();
   var options = element.selectAll('input').data(data);
   options.enter().append('input');
   options
@@ -272,7 +273,11 @@ CrawlerVis.prototype.renderCrawlerOptions = function(element, data, selectedCraw
   d3.selectAll('input[name="crawlerRadio"]').on('change', function(){
     var crawlerId = d3.select('input[name="crawlerRadio"]:checked').node().value;
     vis.setCurrentCrawler(crawlerId);
-  })
+  });
+
+  // Add the Add Domain button after the last element in the crawler selection.
+  var addDomain = $("#addDomainButton").detach();
+  addDomain.appendTo($("#selectCrawler:last-child"));
 }
 
 // Creates select with available crawlers.
@@ -288,8 +293,7 @@ CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
     d3.select('input[value="'+data[0]["id"]+'"]').attr("checked", "checked");
     $("#currentDomain").text(data[0].name).append("<span class='caret'></span>");
   } else {
-    $("#currentDomain").text("No domains available");
-    $("#selectCrawler").css("visibility", "hidden");
+    $("#currentDomain").text("No domains available").append("<span class='caret'></span>");
     document.getElementById("status_panel").innerHTML = 'No crawlers found'
     $(document).ready(function() { $(".status_box").fadeIn(); });
     $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
@@ -817,10 +821,12 @@ CrawlerVis.prototype.onBrushedPagesChanged = function(indexOfSelectedItems) {
  * Initializes addc crawler button 
  */
 CrawlerVis.prototype.initAddCrawlerButton = function() {
-  d3.select('#submit_add_crawler')
-    .on('click', function() {
+  d3.select('#submit_add_crawler').on('click', function() {
       var value = d3.select('#crawler_index_name').node().value;
       __sig__.emit(__sig__.add_crawler, value);
+
+      // Hide domain modal after domain has been submitted.
+      $("#addDomainModal").modal("hide");
     });
 };
 

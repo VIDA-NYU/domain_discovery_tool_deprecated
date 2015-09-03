@@ -1290,3 +1290,47 @@ h1 {
     color: #555;
     background-color: #e7e7e7;
 }
+
+.modal-content{
+  margin-top:150px;
+}
+
+.modal-header{
+  border-bottom: 1px solid #e5e5e5;
+}
+
+#selectCrawler{
+  padding-bottom:0px;
+  padding-top:0px;
+  margin-right:14px;
+}
+
+#addDomain{
+  margin-top:0px;
+  width: 100%;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+#submit_add_crawler{
+  margin-top:10px;
+}
+
+#currentDomain{
+  cursor:pointer;
+}
+
+.navbar .container-fluid {
+  padding-right: 30px;
+  padding-left: 30px;
+}
+
+.nav>li>a {
+  margin-right:15px;
+}
+
+.input-group .form-control{
+  position:static;
+}

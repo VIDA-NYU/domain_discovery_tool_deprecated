@@ -31,13 +31,25 @@
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#">Domain Discovery Tool</a>
+          <img src="img/nyu_stacked_black.png" style="height:40px;margin-top:5px;padding-right:15px;" />
         </div>
         <div class="collapse navbar-collapse" id="crawlerSelection">
+          <ul class="nav navbar-nav">
+            <li><a class="navbar-brand" href="#">Domain Discovery Tool</a></li>
+          </ul>
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
               <a data-toggle="dropdown" role="button" class="dropdown-toggle" id="currentDomain"></a>
-                <ul class="dropdown-menu" id="selectCrawler"></ul>
+              <ul class="dropdown-menu" id="selectCrawler">
+                <li id="addDomainButton">
+                  <button type="button" id="addDomain"
+                    class="btn btn-warning btn-duo center link-button"
+                    data-toggle="modal"
+                    data-target="#addDomainModal">
+                      <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Add Domain
+                    </button>
+                </li>
+              </ul>
             </li>
           </ul>
         </div>
@@ -47,30 +59,20 @@
       <!-- Left panel -->
       <div class="col-md-3" id="left_panel">
 
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">
-            <div class="panel-heading-left" >
-            <span class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;Domains 
+      <div class="modal fade" id="addDomainModal" tabindex="-1" role="dialog" aria-labelledby="addDomainModalLabel">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="addDomainModalLabel" style="text-align:center;"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Add New Domain</h4>
             </div>
-            <div class="panel-heading-right">
-            <span class="collapsethis glyphicon glyphicon-minus"></span> 
+            <div class="modal-footer">
+              <input type="text" class="form-control" id="crawler_index_name">
+              <button type="button" class="btn btn-warning center-block" data-type="last" id="submit_add_crawler"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Add</button>
             </div>
-            </h4>
-            
-          </div>
-          <div class="panel-body">
-	    <label for="crawler_index_name">Enter Domain Name:</label><br>
-
-            <div class="input-group">
-	      <input  type="text" class="form-control" id="crawler_index_name" maxlength="50">
-              <span class="input-group-btn">
-		<button type="button" class="btn btn-warning" data-type="last" id="submit_add_crawler">Add</button>
-              </span>
-	    </div>
           </div>
         </div>
-
+      </div>
 
         <div class="panel panel-default">
           
