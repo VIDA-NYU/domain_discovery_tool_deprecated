@@ -2,7 +2,7 @@
 /* Bootstrap/Bootflat overhides */
 body {
   background-color: rgb(241, 242, 246);
-  margin-top:20px;
+  /*margin-top:20px;*/
   color: #333;
   padding-top:70px;
 }
