@@ -1302,6 +1302,7 @@ h1 {
 #selectCrawler{
   padding-bottom:0px;
   padding-top:0px;
+  margin-right:14px;
 }
 
 #addDomain{
@@ -1319,4 +1320,13 @@ h1 {
 
 #currentDomain{
   cursor:pointer;
+}
+
+.navbar .container-fluid {
+  padding-right: 30px;
+  padding-left: 30px;
+}
+
+.nav>li>a {
+  margin-right:15px;
 }
