@@ -38,10 +38,15 @@
             <li><a class="navbar-brand" href="#">Domain Discovery Tool</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li class="navbar-form">
-              <button type="button" class="btn btn-warning" data-type="last" id="build_model">
-                <span class="glyphicon glyphicon-download"></span> Model
-              </button>
+            <li class="dropdown">
+              <a data-toggle="dropdown" role="button" class="dropdown-toggle">Build Model <span class='caret'></span></a>
+              <ul class="dropdown-menu" id="downloadModel">
+                <li>
+                  <button type="button" class="btn btn-warning" data-type="last" id="build_model">
+                    <span class="glyphicon glyphicon-download"></span> Model
+                  </button>
+                </li>
+              </ul>
             </li>
             <li class="dropdown">
               <a data-toggle="dropdown" role="button" class="dropdown-toggle" id="currentDomain"></a>

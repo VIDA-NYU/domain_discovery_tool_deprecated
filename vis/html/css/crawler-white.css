@@ -1299,13 +1299,13 @@ h1 {
   border-bottom: 1px solid #e5e5e5;
 }
 
-#selectCrawler{
+#selectCrawler, #downloadModel{
   padding-bottom:0px;
   padding-top:0px;
   margin-right:14px;
 }
 
-#addDomain{
+#addDomain, #build_model{
   margin-top:0px;
   width: 100%;
   border-top-left-radius: 0px;
@@ -1333,8 +1333,4 @@ h1 {
 
 .input-group .form-control{
   position:static;
-}
-
-#build_model {
-  margin-right:10px;
 }
