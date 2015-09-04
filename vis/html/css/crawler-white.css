@@ -1299,10 +1299,15 @@ h1 {
   border-bottom: 1px solid #e5e5e5;
 }
 
-#selectCrawler, #downloadModel{
+#selectCrawler{
   padding-bottom:0px;
   padding-top:0px;
   margin-right:14px;
+}
+
+#downloadModel {
+  padding-bottom:0px;
+  padding-top:0px;
 }
 
 #addDomain, #build_model{
@@ -1320,15 +1325,12 @@ h1 {
 
 #currentDomain{
   cursor:pointer;
+  margin-right:15px;
 }
 
 .navbar .container-fluid {
   padding-right: 30px;
   padding-left: 30px;
-}
-
-.nav>li>a {
-  margin-right:15px;
 }
 
 .input-group .form-control{
