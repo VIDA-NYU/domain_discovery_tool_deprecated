@@ -1334,3 +1334,7 @@ h1 {
 .input-group .form-control{
   position:static;
 }
+
+#build_model {
+  margin-right:10px;
+}

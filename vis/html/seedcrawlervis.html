@@ -38,6 +38,11 @@
             <li><a class="navbar-brand" href="#">Domain Discovery Tool</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
+            <li class="navbar-form">
+              <button type="button" class="btn btn-warning" data-type="last" id="build_model">
+                <span class="glyphicon glyphicon-download"></span> Model
+              </button>
+            </li>
             <li class="dropdown">
               <a data-toggle="dropdown" role="button" class="dropdown-toggle" id="currentDomain"></a>
               <ul class="dropdown-menu" id="selectCrawler">
@@ -47,7 +52,7 @@
                     data-toggle="modal"
                     data-target="#addDomainModal">
                       <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Add Domain
-                    </button>
+                  </button>
                 </li>
               </ul>
             </li>
@@ -213,9 +218,6 @@
                     <span class="glyphicon glyphicon-refresh"></span>
                   </span>
                 </span>
-		<button type="button" class="btn btn-warning" data-type="last" id="build_model">
-		  <span class="glyphicon glyphicon-download"></span> Model
-		</button>
 	      </div>
             </div>
 
