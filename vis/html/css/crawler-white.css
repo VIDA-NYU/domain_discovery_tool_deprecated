@@ -1305,7 +1305,12 @@ h1 {
   margin-right:14px;
 }
 
-#addDomain{
+#downloadModel {
+  padding-bottom:0px;
+  padding-top:0px;
+}
+
+#addDomain, #build_model{
   margin-top:0px;
   width: 100%;
   border-top-left-radius: 0px;
@@ -1320,15 +1325,12 @@ h1 {
 
 #currentDomain{
   cursor:pointer;
+  margin-right:15px;
 }
 
 .navbar .container-fluid {
   padding-right: 30px;
   padding-left: 30px;
-}
-
-.nav>li>a {
-  margin-right:15px;
 }
 
 .input-group .form-control{
