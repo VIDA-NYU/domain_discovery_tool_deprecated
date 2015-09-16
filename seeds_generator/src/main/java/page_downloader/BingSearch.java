@@ -133,7 +133,7 @@ public class BingSearch {
 
     public static void main(String[] args) {
 	
-	String queryfile = "conf/queries.txt"; //default
+	String query = ""; //default
 	String top = "50"; //default
 	String es_index = "memex";
 	String es_doc_type = "page";
@@ -143,7 +143,7 @@ public class BingSearch {
 	while (i < args.length){
 	    String arg = args[i];
 	    if(arg.equals("-q")){
-		queryfile = args[++i];
+		query = args[++i];
 	    } else if(arg.equals("-t")){ 
 		top = args[++i];
 	    } else if(arg.equals("-i")){
@@ -159,11 +159,10 @@ public class BingSearch {
 	    ++i;
 	}
 	
+	System.out.println("Query = " + query);
 	System.out.println("Get the top " + top + " results");
 	
 	BingSearch bs = new BingSearch();
-	ArrayList<String> queries = bs.read_queries(queryfile);
-	for(String query: queries)
-	    bs.search(query, top, es_index, es_doc_type, es_server);
+	bs.search(query, top, es_index, es_doc_type, es_server);
     }
 }

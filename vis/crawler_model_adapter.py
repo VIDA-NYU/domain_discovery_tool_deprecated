@@ -35,34 +35,17 @@ class CrawlerModelAdapter:
     crawlers = self._crawlerModel.getAvailableCrawlers()
     return sorted(crawlers, key = lambda c: (c['name'], c['creation']))
 
-
-
-  # Changes the active crawler to be monitored.
-  def setActiveCrawler(self, crawlerId):
-    self._crawlerModel.setActiveCrawler(crawlerId)
-
-  # Changes the active projection algorithm to be monitored.
-  def setActiveProjectionAlg(self, algId):
-    self._crawlerModel.setActiveProjectionAlg(algId)
-
-
   # Submits a web query for a list of terms, e.g. 'ebola disease'
-  def queryWeb(self, terms):
-    self._crawlerModel.queryWeb(terms)
+  def queryWeb(self, terms, session):
+    self._crawlerModel.queryWeb(terms, session=session)
 
   # Add crawler
   def addCrawler(self, index_name):
     self._crawlerModel.addCrawler(index_name)
 
   # Create model
-  def createModel(self):
-    return self._crawlerModel.createModel()
-
-  # Applies a filter to crawler results, e.g. 'ebola disease'
-  def applyFilter(self, terms):
-    self._crawlerModel.applyFilter(terms)
-
-
+  def createModel(self, session):
+    return self._crawlerModel.createModel(session)
 
   # Returns number of pages downloaded between ts1 and ts2 for active crawler.
   # ts1 and ts2 are Unix epochs (seconds after 1970).
@@ -74,8 +57,8 @@ class CrawlerModelAdapter:
   #   'Positive': {'Explored': #ExploredPgs, 'Exploited': #ExploitedPgs, 'Boosted': #BoostedPgs},
   #   'Negative': {'Explored': #ExploredPgs, 'Exploited': #ExploitedPgs, 'Boosted': #BoostedPgs},
   # }
-  def getPagesSummary(self, opt_ts1 = None, opt_ts2 = None, opt_applyFilter = False):
-    return self._crawlerModel.getPagesSummaryCrawler(opt_ts1, opt_ts2, opt_applyFilter)
+  def getPagesSummary(self, opt_ts1 = None, opt_ts2 = None, opt_applyFilter = False, session = None):
+    return self._crawlerModel.getPagesSummaryCrawler(opt_ts1, opt_ts2, opt_applyFilter, session)
 
 
 
@@ -86,8 +69,8 @@ class CrawlerModelAdapter:
   #   [term, frequencyInPositivePages, frequencyInNegativePages, tags],
   #   ...
   # ]
-  def getTermsSummary(self):
-    return self._crawlerModel.getTermsSummaryCrawler()
+  def getTermsSummary(self, session):
+    return self._crawlerModel.getTermsSummaryCrawler(session)
 
   # Sets limit to pages returned by @getPages.
   def setPagesCountCap(self, pagesCap):
@@ -108,41 +91,36 @@ class CrawlerModelAdapter:
   #             [url3, x, y, tags],
   #   ]
   # }
-  def getPages(self):
-    return self._crawlerModel.getPages()
-
-
+  def getPages(self, session):
+    return self._crawlerModel.getPages(session)
 
   # Boosts set of pages: crawler exploits outlinks for the given set of pages.
   def boostPages(self, pages):
     pages = CrawlerModelAdapter.extractListParam(pages)
     return self._crawlerModel.boostPages(pages)
 
-
-
   # Fetches snippets for a given term.
-  def getTermSnippets(self, term):
-    return self._crawlerModel.getTermSnippets(term)
-
+  def getTermSnippets(self, term, session):
+    return self._crawlerModel.getTermSnippets(term, session)
 
 
   # Adds tag to page (if applyTagFlag is True) or removes tag from page (if applyTagFlag is False).
-  def setPagesTag(self, pages, tag, applyTagFlag):
+  def setPagesTag(self, pages, tag, applyTagFlag, session):
     pages = CrawlerModelAdapter.extractListParam(pages)
     applyTagFlag =  CrawlerModelAdapter.extractBooleanParam(applyTagFlag)
-    self._crawlerModel.setPagesTag(pages, tag, applyTagFlag)
+    self._crawlerModel.setPagesTag(pages, tag, applyTagFlag, session)
 
 
   # Adds tag to terms (if applyTagFlag is True) or removes tag from terms (if applyTagFlag is
   # False).
-  def setTermsTag(self, terms, tag, applyTagFlag):
+  def setTermsTag(self, terms, tag, applyTagFlag, session):
     terms = CrawlerModelAdapter.extractListParam(terms)
     applyTagFlag =  CrawlerModelAdapter.extractBooleanParam(applyTagFlag)
-    self._crawlerModel.setTermsTag(terms, tag, applyTagFlag)
+    self._crawlerModel.setTermsTag(terms, tag, applyTagFlag, session)
 
   # Delete terms from term window and from the ddt_terms index
-  def deleteTerm(self, term):
-    self._crawlerModel.deleteTerm(term)
+  def deleteTerm(self, term, session):
+    self._crawlerModel.deleteTerm(term, session)
 
 #
 # Overwrites default functionality to serve for seed crawler model use.
@@ -178,8 +156,8 @@ class SeedCrawlerModelAdapter(CrawlerModelAdapter):
   #   'Irrelevant': numNegativePages,
   #   'Neutral': numNeutralPages,
   # }
-  def getPagesSummary(self, opt_ts1 = None, opt_ts2 = None, opt_applyFilter = False):
-    return self._crawlerModel.getPagesSummarySeedCrawler(opt_ts1, opt_ts2, opt_applyFilter)
+  def getPagesSummary(self, opt_ts1 = None, opt_ts2 = None, opt_applyFilter = False, session = None):
+    return self._crawlerModel.getPagesSummarySeedCrawler(opt_ts1, opt_ts2, opt_applyFilter, session)
 
 
 
@@ -190,7 +168,7 @@ class SeedCrawlerModelAdapter(CrawlerModelAdapter):
   #   [term, frequencyInRelevantPages, frequencyInIrrelevantPages, tags],
   #   ...
   # ]
-  def getTermsSummary(self):
-    return self._crawlerModel.getTermsSummarySeedCrawler()
+  def getTermsSummary(self, session):
+    return self._crawlerModel.getTermsSummarySeedCrawler(session = session)
 
 
