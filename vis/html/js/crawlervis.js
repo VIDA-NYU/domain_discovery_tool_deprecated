@@ -295,7 +295,7 @@ CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
     d3.select('input[value="'+data[0]["id"]+'"]').attr("checked", "checked");
     $("#currentDomain").text(data[0].name).append("<span class='caret'></span>");
   } else {
-    $("#currentDomain").text("No domains available").append("<span class='caret'></span>");
+    $("#currentDomain").text("Select/Add Domains").append("<span class='caret'></span>");
     document.getElementById("status_panel").innerHTML = 'No domains found'
     $(document).ready(function() { $(".status_box").fadeIn(); });
     $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
@@ -376,10 +376,6 @@ CrawlerVis.prototype.createSelectForAvailableProjectionAlgorithms = function(dat
     });
 
   $('#selectProjectionAlgorithm').val("PCA")
-  // Manually triggers change of value.
-  
-  //var algId = "PCA";
-  //vis.setActiveProjectionAlg(algId);
 };
 
 
@@ -975,6 +971,8 @@ CrawlerVis.prototype.createSelectForFilterPageCap = function() {
     .text(function(d, i) {
       return d;
     });
+
+  $('#filter_cap_select').val(100);
 };
 
 /**
