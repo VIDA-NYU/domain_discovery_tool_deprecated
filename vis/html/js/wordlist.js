@@ -127,14 +127,19 @@ Wordlist.prototype.update = function() {
           wordlist.onItemClick(d, i, d3.event.shiftKey);
           if (d3.event.shiftKey){
             wordlist.onItemFocus(d, i, d3.event.shiftKey, true);
+            wordlist.currentWord = d.word;
           }
         })
-        // .on('mouseover', function(d, i) {
-        //   wordlist.onItemFocus(d, i, d3.event.shiftKey, true);
-        // })
-        // .on('mouseout', function(d, i) {
-        //   wordlist.onItemFocus(d, i, d3.event.shiftKey, false);
-        // });
+        .on('mouseover', function(d, i) {
+          if (!wordlist.currentWord){
+            wordlist.onItemFocus(d, i, d3.event.shiftKey, true);
+          }
+        })
+        .on('mouseout', function(d, i) {
+          if (!wordlist.currentWord){
+            wordlist.onItemFocus(d, i, d3.event.shiftKey, false);
+          }
+        });
 
     // Container for word.
     var circles = rows.selectAll('g.custom').data(function(d) { return [d]; });

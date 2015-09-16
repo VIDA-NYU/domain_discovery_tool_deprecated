@@ -127,4 +127,3 @@ SnippetsViewer.prototype.onItemDoubleClick = function(item, i) {
   // TODO.
   console.log('itemDoubleClicked ' + i);
 };
-
