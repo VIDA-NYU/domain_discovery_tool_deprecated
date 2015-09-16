@@ -62,14 +62,14 @@ Wordlist.prototype.update = function() {
 
     var word_length = [];
     $(this.entries).each(function( index, value ){
-	word_length.push(value["word"].length);
+    	word_length.push(value["word"].length);
     });
 
     if(this.maxWordTextWidth === undefined || this.maxWordTextWidth === null) {
-	this.maxWordTextWidth = Math.max.apply(Math, word_length) * 7;
+    	this.maxWordTextWidth = Math.max.apply(Math, word_length) * 7;
     }else{
-	if((Math.max.apply(Math, word_length) * 7) > this.maxWordTextWidth)
-	    this.maxWordTextWidth = Math.max.apply(Math, word_length) * 7;
+    	if((Math.max.apply(Math, word_length) * 7) > this.maxWordTextWidth)
+    	    this.maxWordTextWidth = Math.max.apply(Math, word_length) * 7;
     }
 
     var containerWidth = $('#' + wordlist.containerId).width();
@@ -124,14 +124,17 @@ Wordlist.prototype.update = function() {
         .classed('noselect', true)
         .text(function(d) { return d['word']; })
         .on('click', function(d, i) {
-	    wordlist.onItemClick(d, i, d3.event.shiftKey);
+          wordlist.onItemClick(d, i, d3.event.shiftKey);
+          if (d3.event.shiftKey){
+            wordlist.onItemFocus(d, i, d3.event.shiftKey, true);
+          }
         })
-        .on('mouseover', function(d, i) {
-          wordlist.onItemFocus(d, i, d3.event.shiftKey, true);
-        })
-        .on('mouseout', function(d, i) {
-          wordlist.onItemFocus(d, i, d3.event.shiftKey, false);
-        });
+        // .on('mouseover', function(d, i) {
+        //   wordlist.onItemFocus(d, i, d3.event.shiftKey, true);
+        // })
+        // .on('mouseout', function(d, i) {
+        //   wordlist.onItemFocus(d, i, d3.event.shiftKey, false);
+        // });
 
     // Container for word.
     var circles = rows.selectAll('g.custom').data(function(d) { return [d]; });
