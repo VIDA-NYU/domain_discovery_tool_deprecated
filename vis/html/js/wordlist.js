@@ -124,14 +124,6 @@ Wordlist.prototype.update = function() {
         .text(function(d){return d['word'];})
         .on('click', function(d, i){
           wordlist.onItemClick(d, i, d3.event.shiftKey);
-          if (d3.event.shiftKey){
-            if (wordlist.currentWord == d.word){
-              wordlist.currentWord = undefined;
-            } else {
-              wordlist.currentWord = d.word;
-            }
-            wordlist.onItemFocus(d, i, d3.event.shiftKey, true);
-          }
         })
         .on('mouseover', function(d, i) {
           if (!wordlist.currentWord){
@@ -147,7 +139,7 @@ Wordlist.prototype.update = function() {
     // Container for word.
     var circles = rows.selectAll('g.custom').data(function(d) { return [d]; });
     circles
-	.enter().append('g')
+        .enter().append('g')
         .classed('custom', true);
 
 
@@ -160,7 +152,6 @@ Wordlist.prototype.update = function() {
       elm
         .classed('Positive', isPositive)
         .classed('Negative', isNegative);
-	
     });
     
     circles.each(function(d) {
