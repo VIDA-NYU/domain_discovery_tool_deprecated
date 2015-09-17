@@ -142,12 +142,16 @@ Wordlist.prototype.update = function() {
     pins.enter().append('svg:foreignObject')
       .attr("width", 1)
       .attr("height", 1)
-      .append("xhtml:span").attr("class", "glyphicon glyphicon-pushpin control")
+      .append("xhtml:span")
+      .attr("class", "glyphicon glyphicon-pushpin control")
+      .style({color: "#E6E6E6"})
       .on("click", function(d, i){
         if (wordlist.currentWord == d.word){
           wordlist.currentWord = undefined;
+          this.style.color = "#E6E6E6";
         } else {
           wordlist.currentWord = d.word;
+          this.style.color = "black";
           wordlist.onItemFocus(d, i, d3.event.shiftKey, true);
         }
       })
