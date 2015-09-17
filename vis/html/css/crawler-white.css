@@ -1343,3 +1343,7 @@ h1 {
 .pins{
   cursor:default;
 }
+
+.pin-selected{
+  color: red;
+}

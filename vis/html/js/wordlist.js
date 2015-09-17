@@ -139,10 +139,10 @@ Wordlist.prototype.update = function() {
         })
 
     var pins = rows.selectAll('g.pins').data(function(d) { return [d]; });
-    pins.enter().append('g')
-      .classed('pins', true)
-      .attr('transform', 'translate(0, '+(0.5 * rowHeight)+')')
-      .append("text").text("pin")
+    pins.enter().append('svg:foreignObject')
+      .attr("width", 1)
+      .attr("height", 1)
+      .append("xhtml:span").attr("class", "glyphicon glyphicon-pushpin control")
       .on("click", function(d, i){
         if (wordlist.currentWord == d.word){
           wordlist.currentWord = undefined;
