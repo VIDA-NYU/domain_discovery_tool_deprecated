@@ -141,10 +141,12 @@ Wordlist.prototype.update = function() {
     var pins = rows.selectAll('g.pins').data(function(d) { return [d]; });
     pins.enter().append('svg:foreignObject')
       .classed("pins", true)
-      .attr("width", 1)
-      .attr("height", 1)
+      .attr("width", 20)
+      .attr("height", 20)
+      .attr("y", "0px")
+      .attr("x", "0px")
       .append("xhtml:span")
-      .attr("class", "glyphicon glyphicon-pushpin control")
+      .attr("class", "control glyphicon glyphicon-pushpin")
       .style({color: "#E6E6E6"})
       .on("click", function(d, i){
         if (wordlist.currentWord == d.word){
