@@ -36,24 +36,6 @@ public class BingSearch {
 	}
     } 
 
-    public ArrayList<String> read_queries(String queryfile){
-	ArrayList<String> queries = new ArrayList<String>();
-	try{
-	    File file = new File(queryfile);
-	    FileReader fileReader = new FileReader(file);
-	    BufferedReader bufferedReader = new BufferedReader(fileReader);
-	    String line;
-	    while ((line = bufferedReader.readLine()) != null) {
-		queries.add(line);
-	    }
-	    fileReader.close();
-	}
-	catch(Exception e){
-	    e.printStackTrace();
-	}
-	return queries;
-    }
-
     public String validate_url(String url){
 	if(!url.contains("http"))
 	    url = "http://" + url;
