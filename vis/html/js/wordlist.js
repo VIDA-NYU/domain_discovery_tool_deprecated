@@ -151,11 +151,11 @@ Wordlist.prototype.update = function() {
       .on("click", function(d, i){
         if (wordlist.currentWord == d.word){
           wordlist.currentWord = undefined;
-          this.style.color = "#E6E6E6";
+          $(this).removeClass("pinned").css("color", "#E6E6E6");
         } else {
           wordlist.currentWord = d.word;
-          d3.selectAll("span.glyphicon.glyphicon-pushpin").style({color:"#E6E6E6"});
-          this.style.color = "black";
+          $(".pins span.pinned").removeClass("pinned").css("color", "#E6E6E6");
+          $(this).addClass("pinned").css("color", "black");
           wordlist.onItemFocus(d, i, d3.event.shiftKey, true);
         }
       })
