@@ -122,11 +122,9 @@ Wordlist.prototype.update = function() {
         .append('text')
         .classed('noselect', true)
         .text(function(d){return d['word'];})
-        .on('click', function(d, i) {
+        .on('click', function(d, i){
           wordlist.onItemClick(d, i, d3.event.shiftKey);
           if (d3.event.shiftKey){
-            // Unassign the current word varaible to enable the mouseover
-            // callbacks.
             if (wordlist.currentWord == d.word){
               wordlist.currentWord = undefined;
             } else {

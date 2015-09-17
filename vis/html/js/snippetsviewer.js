@@ -71,6 +71,7 @@ SnippetsViewer.prototype.update = function() {
       var elem = d3.select(this);
       elem.classed('dblclicked', !elem.classed('dblclicked'));
       viewer.onItemDoubleClick(item, i);
+      window.open(item.url, '_blank');
     });
 
   // Removes missing items.
