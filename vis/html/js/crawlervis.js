@@ -711,9 +711,16 @@ CrawlerVis.prototype.onLoadedTermsSnippets = function(data) {
   var context = data.context;
 
   var termObj = {term: term, tags: tags};
-  var termSnippets = context.map(function(snippet) {
-      return {term: termObj, snippet: snippet};
+
+  var termSnippets = [];
+  $.each(context, function(url, context){
+      var termSnippet = {};
+      termSnippet['term'] = termObj;
+      termSnippet['url'] = url;
+      termSnippet['snippet'] = context;
+      termSnippets.push(termSnippet);
   });
+
   var lazyUpdate = true;
   this.termsSnippetsViewer.clear(lazyUpdate);
   this.termsSnippetsViewer.addItems(termSnippets);

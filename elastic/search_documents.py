@@ -3,6 +3,7 @@ import sys
 import base64
 from datetime import datetime
 from config import es as default_es
+from pprint import pprint
 
 def search(field, queryStr, fields = [], es_index='memex', es_doc_type='page', es=None):
     if es is None:
@@ -174,16 +175,18 @@ def get_context(terms, es_index='memex', es_doc_type='page', es=None):
                         "fragment_size" : 100, "number_of_fragments" : 1
                     }
                 }
-            }
+            },
+            "fields": ["url"]
         }
 
         res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=500)
         hits = res['hits']
 
-        highlights = []
+        context = {}
         for hit in hits['hits']:
-            highlights.append(hit['highlight']['text'][0])
-        return highlights
+            context[hit['fields']['url'][0]] = hit['highlight']['text'][0]
+
+        return context
 
 def range(field, from_val, to_val, ret_fields=[], epoch=None, pagesCount = 200, es_index='memex', es_doc_type='page', es=None):
     if es is None:
