@@ -151,6 +151,7 @@ Wordlist.prototype.update = function() {
           this.style.color = "#E6E6E6";
         } else {
           wordlist.currentWord = d.word;
+          d3.selectAll("span.glyphicon.glyphicon-pushpin").style({color:"#E6E6E6"});
           this.style.color = "black";
           wordlist.onItemFocus(d, i, d3.event.shiftKey, true);
         }
