@@ -1341,9 +1341,13 @@ h1 {
 }
 
 .pins{
-  cursor:default;
+  cursor:pointer;
 }
 
 .pin-selected{
   color: red;
+}
+
+.item{
+  cursor:pointer;
 }

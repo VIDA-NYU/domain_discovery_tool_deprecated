@@ -140,6 +140,7 @@ Wordlist.prototype.update = function() {
 
     var pins = rows.selectAll('g.pins').data(function(d) { return [d]; });
     pins.enter().append('svg:foreignObject')
+      .classed("pins", true)
       .attr("width", 1)
       .attr("height", 1)
       .append("xhtml:span")
