@@ -66,10 +66,11 @@ Wordlist.prototype.update = function() {
     });
 
     if(this.maxWordTextWidth === undefined || this.maxWordTextWidth === null) {
-    	this.maxWordTextWidth = Math.max.apply(Math, word_length) * 7;
+      this.maxWordTextWidth = Math.max.apply(Math, word_length) * 7;
     }else{
-    	if((Math.max.apply(Math, word_length) * 7) > this.maxWordTextWidth)
-    	    this.maxWordTextWidth = Math.max.apply(Math, word_length) * 7;
+      if((Math.max.apply(Math, word_length) * 7) > this.maxWordTextWidth){
+        this.maxWordTextWidth = Math.max.apply(Math, word_length) * 7;
+      }
     }
 
     var containerWidth = $('#' + wordlist.containerId).width();
@@ -90,7 +91,7 @@ Wordlist.prototype.update = function() {
         .attr('transform', 'translate(' + svgMargin.left + ', ' + svgMargin.top + ')');
     
     // Rows for entries.
-    var rows = svg.selectAll('g.row').data(wordlist.entries, function(d, i) {
+    var rows = svg.selectAll('g.row').data(wordlist.entries, function(d, i){
         return i + '-' + d['word'];
     });
     rows.exit().remove();
@@ -107,18 +108,19 @@ Wordlist.prototype.update = function() {
         .classed('bar', true)
         .classed('pos', true)
         .attr('transform', 'translate(' + (width - (maxBarWidth)) + ', 0)')
-      .append('rect')
+        .append('rect')
         .classed('background', true)
         .attr('y', 0.5 * (rowHeight - barHeight))
         .attr('width', maxBarWidth)
         .attr('height', barHeight);
+    
 
     // Container for word.
     var words = rows.selectAll('g.words').data(function(d) { return [d]; });
     words
       .enter().append('g')
         .classed('words', true)
-        .attr('transform', 'translate(15,' + (0.5 * rowHeight) + ')')
+        .attr('transform', 'translate(20,' + (0.5 * rowHeight) + ')')
         .append('text')
         .classed('noselect', true)
         .text(function(d){return d['word'];})
@@ -135,6 +137,21 @@ Wordlist.prototype.update = function() {
             wordlist.onItemFocus(d, i, d3.event.shiftKey, false);
           }
         })
+
+    var pins = rows.selectAll('g.pins').data(function(d) { return [d]; });
+    pins.enter().append('g')
+      .classed('pins', true)
+      .attr('transform', 'translate(0, '+(0.5 * rowHeight)+')')
+      .append("text").text("pin")
+      .on("click", function(d, i){
+        if (wordlist.currentWord == d.word){
+          wordlist.currentWord = undefined;
+        } else {
+          wordlist.currentWord = d.word;
+          wordlist.onItemFocus(d, i, d3.event.shiftKey, true);
+        }
+      })
+
 
     // Container for word.
     var circles = rows.selectAll('g.custom').data(function(d) { return [d]; });
@@ -230,7 +247,6 @@ Wordlist.prototype.update = function() {
           .attr('x', maxBarWidth - width)
           .attr('width', width);
     });
-
 };
 
 
