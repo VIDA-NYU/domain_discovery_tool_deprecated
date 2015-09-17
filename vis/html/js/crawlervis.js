@@ -77,6 +77,7 @@ CrawlerVis.prototype.initSignalSlotsCrawler = function() {
   SigSlots.connect(__sig__.filter_enter, this, this.runFilter);
   SigSlots.connect(__sig__.add_term, this, this.runAddTerm);
   SigSlots.connect(__sig__.add_neg_term, this, this.runAddNegTerm);
+  SigSlots.connect(__sig__.load_new_pages_summary, this, this.loadNewPagesSummary);
     
   // TODO(Cesar): remove! not active for crawler.
   //SigSlots.connect(__sig__.term_toggle, this, this.onTermToggle);
@@ -115,6 +116,7 @@ CrawlerVis.prototype.initSignalSlotsSeedCrawler = function() {
   SigSlots.connect(__sig__.add_term, this, this.runAddTerm);
   SigSlots.connect(__sig__.add_neg_term, this, this.runAddNegTerm);
   SigSlots.connect(__sig__.delete_term, this, this.runDeleteTerm);
+  SigSlots.connect(__sig__.load_new_pages_summary, this, this.loadNewPagesSummary);
 };
 
 
@@ -293,8 +295,8 @@ CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
     d3.select('input[value="'+data[0]["id"]+'"]').attr("checked", "checked");
     $("#currentDomain").text(data[0].name).append("<span class='caret'></span>");
   } else {
-    $("#currentDomain").text("No domains available").append("<span class='caret'></span>");
-    document.getElementById("status_panel").innerHTML = 'No crawlers found'
+    $("#currentDomain").text("Select/Add Domains").append("<span class='caret'></span>");
+    document.getElementById("status_panel").innerHTML = 'No domains found'
     $(document).ready(function() { $(".status_box").fadeIn(); });
     $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
   }
@@ -321,12 +323,12 @@ CrawlerVis.prototype.reloadSelectForAvailableCrawlers = function(data) {
       $("#currentDomain").text(data[0]["name"]).append("<span class='caret'></span>");
     }
 
-    document.getElementById("status_panel").innerHTML = 'Added new crawler - ' + index_name;
+    document.getElementById("status_panel").innerHTML = 'Added new domain - ' + index_name;
     $(document).ready(function() { $(".status_box").fadeIn(); });
     $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
 
   } else {
-    document.getElementById("status_panel").innerHTML = 'No crawlers found';
+    document.getElementById("status_panel").innerHTML = 'No domains found';
     $(document).ready(function() { $(".status_box").fadeIn(); });
     $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
   }
@@ -359,8 +361,8 @@ CrawlerVis.prototype.setActiveCrawler = function(crawlerId) {
 CrawlerVis.prototype.createSelectForAvailableProjectionAlgorithms = function(data) {
   var vis = this;
   var selectBox = d3.select('#selectProjectionAlgorithm').on('change', function() {
-    var algId = d3.select(this).node().value;
-    vis.setActiveProjectionAlg(algId);
+      var algId = d3.select(this).node().value;
+      vis.setActiveProjectionAlg(algId);
   });
   var getElementValue = function(d) {
     return d.name;
@@ -374,9 +376,6 @@ CrawlerVis.prototype.createSelectForAvailableProjectionAlgorithms = function(dat
     });
 
   $('#selectProjectionAlgorithm').val("PCA")
-  // Manually triggers change of value.
-  var algId = "PCA";
-  vis.setActiveProjectionAlg(algId);
 };
 
 
@@ -562,7 +561,7 @@ CrawlerVis.prototype.initPagesLandscape = function(showBoostButton) {
         return;
       }
       // Updates pages and terms.
-      DataAccess.update();
+      DataAccess.update(vis.sessionInfo());
     });
 
 
@@ -612,6 +611,12 @@ CrawlerVis.prototype.initPagesGallery = function() {
 };
 
 
+// Load new pages when available at regular intervals
+CrawlerVis.prototype.loadNewPagesSummary = function(isFilter) {
+    var vis = this;
+    DataAccess.loadNewPagesSummary(isFilter, vis.sessionInfo());
+};
+
 // Initializes pages gallery (snippets for selected pages).
 CrawlerVis.prototype.initTermsSnippetsViewer = function() {
   this.termsSnippetsViewer = new SnippetsViewer('#terms_snippets_viewer');
@@ -639,7 +644,8 @@ CrawlerVis.prototype.onLoadedTermsSummary = function(summary) {
 // Responds to focus on a term.
 CrawlerVis.prototype.onTermFocus = function(term, onFocus) {
   if (onFocus) {
-    DataAccess.loadTermSnippets(term);
+    var vis = this;
+    DataAccess.loadTermSnippets(term, vis.sessionInfo());
   }
 };
 
@@ -666,8 +672,8 @@ CrawlerVis.prototype.onTermToggle = function(term, shiftClick) {
 
     if (isPositive) {
       // It was positive, so it turns negative.
-      DataAccess.setTermTag(term['word'], 'Positive', false);
-      DataAccess.setTermTag(term['word'], 'Negative', true);
+      DataAccess.setTermTag(term['word'], 'Positive', false, vis.sessionInfo());
+      DataAccess.setTermTag(term['word'], 'Negative', true, vis.sessionInfo());
 
       // Removes tag 'Positive' from tags array, adds 'Negative'.
       tags.splice(tags.indexOf('Positive'), 1);
@@ -675,14 +681,14 @@ CrawlerVis.prototype.onTermToggle = function(term, shiftClick) {
     }
     else if (isNegative) {
       // It was Negative, so it turns Neutral.
-      DataAccess.setTermTag(term['word'], 'Negative', false);
+      DataAccess.setTermTag(term['word'], 'Negative', false, vis.sessionInfo());
 
       // Removes tag 'Negative' from tags array.
       tags.splice(tags.indexOf('Negative'), 1);
     }
     else {
       // It was Neutral, so it turns Negative.
-      DataAccess.setTermTag(term['word'], 'Positive', true);
+      DataAccess.setTermTag(term['word'], 'Positive', true, vis.sessionInfo());
 
       // Adds tag 'Positive' to tags array.
       tags.push('Positive');
@@ -705,9 +711,16 @@ CrawlerVis.prototype.onLoadedTermsSnippets = function(data) {
   var context = data.context;
 
   var termObj = {term: term, tags: tags};
-  var termSnippets = context.map(function(snippet) {
-      return {term: termObj, snippet: snippet};
+
+  var termSnippets = [];
+  $.each(context, function(url, context){
+      var termSnippet = {};
+      termSnippet['term'] = termObj;
+      termSnippet['url'] = url;
+      termSnippet['snippet'] = context;
+      termSnippets.push(termSnippet);
   });
+
   var lazyUpdate = true;
   this.termsSnippetsViewer.clear(lazyUpdate);
   this.termsSnippetsViewer.addItems(termSnippets);
@@ -731,9 +744,10 @@ CrawlerVis.prototype.onLoadedPages = function(pagesData) {
   d3.select('#last_update_info_box')
     .html('(last update: ' + lastUpdate + ')');
 
+  var vis = this;
   // Fetches statistics for until last update happened.
-  DataAccess.loadPagesSummaryUntilLastUpdate(false);
-  DataAccess.loadPagesSummaryUntilLastUpdate(true);
+  DataAccess.loadPagesSummaryUntilLastUpdate(false, vis.sessionInfo());
+  DataAccess.loadPagesSummaryUntilLastUpdate(true, vis.sessionInfo());
 
   // Clears pages gallery.
   this.pagesGallery.clear();
@@ -785,8 +799,10 @@ CrawlerVis.prototype.onTagActionClicked = function(tag, action, opt_items) {
       }
     }
   }
+  
+  var vis = this;
   if (urls.length > 0) {
-    DataAccess.setPagesTag(urls, tag, applyTagFlag);
+    DataAccess.setPagesTag(urls, tag, applyTagFlag, vis.sessionInfo());
   }
   this.pagesLandscape.update();
   this.pagesGallery.update();
@@ -913,10 +929,11 @@ CrawlerVis.prototype.initModelButton = function() {
 };
 
 CrawlerVis.prototype.createModelData = function() {
-    document.getElementById("status_panel").innerHTML = 'Building crawler model...';
+    var vis = this;
+    document.getElementById("status_panel").innerHTML = 'Building domain model...';
     $(document).ready(function() { $(".status_box").fadeIn(); });
     $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
-    DataAccess.createModelData();
+    DataAccess.createModelData(vis.sessionInfo());
 }
 
 /**
@@ -929,9 +946,6 @@ CrawlerVis.prototype.initFromCalendarButton = function() {
 	    time: "glyphicon glyphicon-time",
 	    date: "glyphicon glyphicon-calendar"
 	}
-    });
-    $("#from_datetimepicker").on("dp.change", function(e){
-	vis.applyFilter();
     });
 };
 
@@ -946,17 +960,12 @@ CrawlerVis.prototype.initToCalendarButton = function() {
 	    date: "glyphicon glyphicon-calendar"
 	}
     });
-    $("#to_datetimepicker").on("dp.change", function(e){
-	vis.applyFilter();
-    });
 };
 
 // Creates select to limit number of pages to load.
 CrawlerVis.prototype.createSelectForFilterPageCap = function() {
   var vis = this;
-  var selectBox = d3.select('#filter_cap_select').on('change', function() {
-    vis.applyFilter();
-  });
+  var selectBox = d3.select('#filter_cap_select');
   var getElementValue = function(d) {
     return d;
   };
@@ -969,13 +978,16 @@ CrawlerVis.prototype.createSelectForFilterPageCap = function() {
     .text(function(d, i) {
       return d;
     });
+
+  $('#filter_cap_select').val(100);
 };
 
 /**
  * Applies query (useful for seed crawler vis).
  */
 CrawlerVis.prototype.applyQuery = function(terms) {
-  DataAccess.queryWeb(terms);
+  var vis = this;
+  DataAccess.queryWeb(terms, vis.sessionInfo());
 };
 
 /**
@@ -987,17 +999,21 @@ CrawlerVis.prototype.addCrawler = function(index_name) {
 
 
 CrawlerVis.prototype.addTerm = function(term) {
-    this.wordlist.addEntries([{'word': term, 'posFreq': 0, 'negFreq': 0, 'tags': ["Positive", "Custom"]}]);
-    DataAccess.setTermTag(term, 'Positive;Custom', true);
+    var vis = this;
+    vis.wordlist.addEntries([{'word': term, 'posFreq': 0, 'negFreq': 0, 'tags': ["Positive", "Custom"]}]);
+    
+    DataAccess.setTermTag(term, 'Positive;Custom', true, vis.sessionInfo());
 };
 
 CrawlerVis.prototype.addNegTerm = function(term) {
-    this.wordlist.addEntries([{'word': term, 'posFreq': 0, 'negFreq': 0, 'tags': ["Negative", "Custom"]}]);
-    DataAccess.setTermTag(term, 'Negative;Custom', true);
+    var vis = this;
+    vis.wordlist.addEntries([{'word': term, 'posFreq': 0, 'negFreq': 0, 'tags': ["Negative", "Custom"]}]);
+    DataAccess.setTermsTag(term, 'Negative;Custom', true, vis.sessionInfo());
 };
 
 CrawlerVis.prototype.deleteTerm = function(term) {
-    DataAccess.deleteTerm(term);
+    var vis = this;
+    DataAccess.deleteTerm(term, vis.sessionInfo());
 };
 
 
@@ -1017,7 +1033,7 @@ CrawlerVis.prototype.runQuery = function(terms) {
  */
 CrawlerVis.prototype.runAddCrawler = function(index_name) {
     if (index_name === ""){
-	document.getElementById("status_panel").innerHTML = 'Enter a valid crawler name';
+	document.getElementById("status_panel").innerHTML = 'Enter a valid domain name';
     $(document).ready(function() { $(".status_box").fadeIn(); });
     $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
   }
@@ -1063,36 +1079,15 @@ CrawlerVis.prototype.runDeleteTerm = function(term) {
  * Applies filter.
  */
 CrawlerVis.prototype.applyFilter = function(terms) {
-  // Sets cap.
-  var cap = d3.select('#filter_cap_select').node().value;
-  DataAccess.setPagesCountCap(cap);
-
-  var fromdate_local = new Date(d3.select('#fromdate').node().value);
-  var todate_local = new Date(d3.select('#todate').node().value);
-
-  if (fromdate_local != "Invalid Date")
-      var fromdate_utc = Utils.toUTC(fromdate_local);
-  else fromdate_utc = '';
-  if (todate_local != "Invalid Date")
-      var todate_utc = Utils.toUTC(todate_local);
-  else todate_utc = '';
-  
-  if (fromdate_utc != undefined && fromdate_utc != null)
-      DataAccess.setDateTime(fromdate_utc, todate_utc)
-
-  DataAccess.applyFilter(terms);
-
+  var vis = this;  
   if (terms != undefined && terms != ""){
       document.getElementById("status_panel").innerHTML = 'Applying filter...';
     $(document).ready(function() { $(".status_box").fadeIn(); });
     $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
       // Applies filter and issues an update automatically.
-      DataAccess.update();
+      DataAccess.update(vis.sessionInfo());
   }
 };
-
-CrawlerVis.prototype.toUTC = function(terms) {
-}
 
 /**
  * Runs filter.
@@ -1125,6 +1120,35 @@ CrawlerVis.prototype.appendToHistory = function(elementSelector, history, queryT
         return queryTerms;
       });
   return newHistory;
+};
+
+// Return all the session info
+CrawlerVis.prototype.sessionInfo = function() {
+    var algId = d3.select('#selectProjectionAlgorithm').node().value;
+    var domainId = d3.select('input[name="crawlerRadio"]:checked').node().value;
+    var cap = d3.select('#filter_cap_select').node().value;
+    
+    var fromdate_local = new Date(d3.select('#fromdate').node().value);
+    var todate_local = new Date(d3.select('#todate').node().value);
+    
+    if (fromdate_local != "Invalid Date")
+	var fromdate_utc = Utils.toUTC(fromdate_local);
+    else fromdate_utc = null;
+    if (todate_local != "Invalid Date")
+	var todate_utc = Utils.toUTC(todate_local);
+    else todate_utc = null;
+    
+    var filterTerms = d3.select('#filter_box').node().value;
+    if (filterTerms === '')
+	filterTerms = null;
+    return {
+	domainId: domainId,
+	activeProjectionAlg: algId,
+	pagesCap: cap,
+	filter: filterTerms, 
+	fromDate: fromdate_utc,
+	toDate: todate_utc
+    };
 };
 
 $(document).ready(function() {

@@ -36,24 +36,6 @@ public class BingSearch {
 	}
     } 
 
-    public ArrayList<String> read_queries(String queryfile){
-	ArrayList<String> queries = new ArrayList<String>();
-	try{
-	    File file = new File(queryfile);
-	    FileReader fileReader = new FileReader(file);
-	    BufferedReader bufferedReader = new BufferedReader(fileReader);
-	    String line;
-	    while ((line = bufferedReader.readLine()) != null) {
-		queries.add(line);
-	    }
-	    fileReader.close();
-	}
-	catch(Exception e){
-	    e.printStackTrace();
-	}
-	return queries;
-    }
-
     public String validate_url(String url){
 	if(!url.contains("http"))
 	    url = "http://" + url;
@@ -133,7 +115,7 @@ public class BingSearch {
 
     public static void main(String[] args) {
 	
-	String queryfile = "conf/queries.txt"; //default
+	String query = ""; //default
 	String top = "50"; //default
 	String es_index = "memex";
 	String es_doc_type = "page";
@@ -143,7 +125,7 @@ public class BingSearch {
 	while (i < args.length){
 	    String arg = args[i];
 	    if(arg.equals("-q")){
-		queryfile = args[++i];
+		query = args[++i];
 	    } else if(arg.equals("-t")){ 
 		top = args[++i];
 	    } else if(arg.equals("-i")){
@@ -159,11 +141,10 @@ public class BingSearch {
 	    ++i;
 	}
 	
+	System.out.println("Query = " + query);
 	System.out.println("Get the top " + top + " results");
 	
 	BingSearch bs = new BingSearch();
-	ArrayList<String> queries = bs.read_queries(queryfile);
-	for(String query: queries)
-	    bs.search(query, top, es_index, es_doc_type, es_server);
+	bs.search(query, top, es_index, es_doc_type, es_server);
     }
 }

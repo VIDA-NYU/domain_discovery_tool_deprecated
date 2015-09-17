@@ -76,32 +76,17 @@ class Page:
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
 
-
-
-  # Changes the active crawler to be monitored.
-  @cherrypy.expose
-  def setActiveCrawler(self, crawlerId):
-    self._crawler.setActiveCrawler(crawlerId)
-
-
   @cherrypy.expose
   def getAvailableProjectionAlgorithms(self):
     res = self._crawler.getAvailableProjectionAlgorithms()
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
 
-
-
-  # Changes the active crawler to be monitored.
-  @cherrypy.expose
-  def setActiveProjectionAlg(self, algId):
-    self._crawler.setActiveProjectionAlg(algId)
-
-
   # Submits a web query for a list of terms, e.g. 'ebola disease'
   @cherrypy.expose
-  def queryWeb(self, terms):
-    self._crawler.queryWeb(terms)
+  def queryWeb(self, terms, session):
+    session = json.loads(session)
+    self._crawler.queryWeb(terms, session)
 
   # Add crawler
   @cherrypy.expose
@@ -110,15 +95,10 @@ class Page:
 
   # Create model
   @cherrypy.expose
-  def createModel(self):
-    return self._crawler.createModel()
+  def createModel(self, session):
+    session = json.loads(session)
+    return self._crawler.createModel(session)
     
-  # Applies a filter to crawler results, e.g. 'ebola disease'
-  @cherrypy.expose
-  def applyFilter(self, terms):
-    self._crawler.applyFilter(terms)
-
-
   # Returns number of pages downloaded between ts1 and ts2 for active crawler.
   # ts1 and ts2 are Unix epochs (seconds after 1970).
   # If opt_applyFilter is True, the summary returned corresponds to the applied pages filter defined
@@ -138,8 +118,9 @@ class Page:
   #   'Neutral': numNeutralPages,
   # }
   @cherrypy.expose
-  def getPagesSummary(self, opt_ts1 = None, opt_ts2 = None, opt_applyFilter = False):
-    res = self._crawler.getPagesSummary(opt_ts1, opt_ts2, opt_applyFilter)
+  def getPagesSummary(self, opt_ts1 = None, opt_ts2 = None, opt_applyFilter = False, session = None):
+    session = json.loads(session)
+    res = self._crawler.getPagesSummary(opt_ts1, opt_ts2, opt_applyFilter, session)
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
 
@@ -153,8 +134,9 @@ class Page:
   #   ...
   # ]
   @cherrypy.expose
-  def getTermsSummary(self):
-    res = self._crawler.getTermsSummary()
+  def getTermsSummary(self, session):
+    session = json.loads(session)
+    res = self._crawler.getTermsSummary(session)
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
 
@@ -179,8 +161,9 @@ class Page:
   #   ]
   # }
   @cherrypy.expose
-  def getPages(self):
-    res = self._crawler.getPages()
+  def getPages(self, session):
+    session = json.loads(session)
+    res = self._crawler.getPages(session)
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
 
@@ -194,8 +177,9 @@ class Page:
 
   # Fetches snippets for a given term.
   @cherrypy.expose
-  def getTermSnippets(self, term):
-    res = self._crawler.getTermSnippets(term)
+  def getTermSnippets(self, term, session):
+    session = json.loads(session)
+    res = self._crawler.getTermSnippets(term, session)
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
 
@@ -203,22 +187,25 @@ class Page:
   # Adds tag to pages (if applyTagFlag is True) or removes tag from pages (if applyTagFlag is
   # False).
   @cherrypy.expose
-  def setPagesTag(self, pages, tag, applyTagFlag):
+  def setPagesTag(self, pages, tag, applyTagFlag, session):
+    session = json.loads(session)
     self.lock.acquire()
-    self._crawler.setPagesTag(pages, tag, applyTagFlag)
+    self._crawler.setPagesTag(pages, tag, applyTagFlag, session)
     self.lock.release()
 
 
   # Adds tag to terms (if applyTagFlag is True) or removes tag from terms (if applyTagFlag is
   # False).
   @cherrypy.expose
-  def setTermsTag(self, terms, tag, applyTagFlag):
-    self._crawler.setTermsTag(terms, tag, applyTagFlag)
+  def setTermsTag(self, terms, tag, applyTagFlag, session):
+    session = json.loads(session)
+    self._crawler.setTermsTag(terms, tag, applyTagFlag, session)
 
   # Delete terms from term window and from the ddt_terms index
   @cherrypy.expose
-  def deleteTerm(self, term):
-    self._crawler.deleteTerm(term)
+  def deleteTerm(self, term, session):
+    session = json.loads(session)
+    self._crawler.deleteTerm(term, session)
 
   # Extracts terms with current labels state.
   @cherrypy.expose

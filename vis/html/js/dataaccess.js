@@ -122,6 +122,12 @@ var DataAccess = (function() {
     __sig__.emit(__sig__.terms_snippets_loaded, snippetsData);
   };
 
+
+  //Signal load of new pages after certain interval
+  var loadNewPagesSummary = function(isFilter) {
+      __sig__.emit(__sig__.load_new_pages_summary, isFilter);
+  };
+
   // Runs async post query.
   var runQuery = function(query, args, onCompletion, doneCb) {
     $.post(
@@ -154,25 +160,25 @@ var DataAccess = (function() {
   //  });
 
   // Loads new pages summary.
-  pub.loadNewPagesSummary = function(isFilter) {
+  pub.loadNewPagesSummary = function(isFilter, session) {
     if (!loadingSummary && currentCrawler !== undefined) {
       loadingSummary = true;
       runQueryForCurrentCrawler(
-        '/getPagesSummary', {'opt_ts1': lastUpdate},
+        '/getPagesSummary', {'opt_ts1': lastUpdate, 'session': JSON.stringify(session)},
         function(summary) {
           onNewPagesSummaryLoaded(summary, isFilter);
         });
     }
   };
   // Loads pages summary until last pages update.
-  pub.loadPagesSummaryUntilLastUpdate = function(isFilter) {
-    if (currentCrawler !== undefined) {
+  pub.loadPagesSummaryUntilLastUpdate = function(isFilter, session) {
+    //if (currentCrawler !== undefined) {
       runQueryForCurrentCrawler(
-        '/getPagesSummary', {'opt_ts2': lastUpdate, 'opt_applyFilter': isFilter},
+        '/getPagesSummary', {'opt_ts2': lastUpdate, 'opt_applyFilter': isFilter, 'session': JSON.stringify(session)},
         function(summary) {
           onPagesSummaryUntilLastUpdateLoaded(summary, isFilter);
         });
-    }
+    //}
   };
   // Returns public interface.
   // Gets available crawlers from backend.
@@ -189,24 +195,25 @@ var DataAccess = (function() {
   // Sets current crawler Id.
   pub.setActiveCrawler = function(crawlerId) {
     currentCrawler = crawlerId;
-    runQuery('/setActiveCrawler', {'crawlerId': crawlerId});
   };
+
   // Returns public interface.
   // Gets available projection algorithms.
   pub.loadAvailableProjectionAlgorithms = function() {
     runQuery('/getAvailableProjectionAlgorithms', {}, onAvailableProjAlgLoaded);
   };
+
   // Sets current crawler Id.
   pub.setActiveProjectionAlg = function(algId) {
     currentProjAlg = algId;
-    runQuery('/setActiveProjectionAlg', {'algId': algId});
   };
+
   // Queries the web for terms (used in Seed Crawler mode).
-  pub.queryWeb = function(terms) {
+  pub.queryWeb = function(terms, session) {
       document.getElementById("status_panel").innerHTML = 'Querying the Web...see page summary for real-time page download status';
       $(document).ready(function() { $(".status_box").fadeIn(); });
       $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
-      runQueryForCurrentCrawler('/queryWeb', {'terms': terms});
+      runQueryForCurrentCrawler('/queryWeb', {'terms': terms, 'session': JSON.stringify(session)});
   };
 
   // Add new crawler
@@ -217,37 +224,31 @@ var DataAccess = (function() {
       runQueryForCurrentCrawler('/addCrawler', {'index_name': index_name}, onCrawlerAdded);
   }
 
-  // Applies filter to returned pages and pages result.
-  pub.applyFilter = function(terms) {
-    runQueryForCurrentCrawler('/applyFilter', {'terms': terms});
-  };
-
   // Loads pages (complete data, including URL, x and y position etc) and terms.
-  pub.update = function() {
-    Utils.setWaitCursorEnabled(true);
-
+  pub.update = function(session) {
+      Utils.setWaitCursorEnabled(true);
+      
       document.getElementById("status_panel").innerHTML = 'Processing pages and terms...';
       $(document).ready(function() { $(".status_box").fadeIn(); });
       $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
-   
-      
+
     if (!updating && currentCrawler !== undefined) {
       updating = true;
 
       // Fetches pages summaries every n seconds.
       loadingPages = true;
       runQueryForCurrentCrawler(
-        '/getPages', {}, onPagesLoaded, onMaybeUpdateComplete);
+        '/getPages', {'session': JSON.stringify(session)}, onPagesLoaded, onMaybeUpdateComplete);
 
       // Fetches terms summaries.
       loadingTerms = true;
       runQueryForCurrentCrawler(
-        '/getTermsSummary', {}, onTermsSummaryLoaded, onMaybeUpdateComplete);
+        '/getTermsSummary', {'session': JSON.stringify(session)}, onTermsSummaryLoaded, onMaybeUpdateComplete);
     }
   };
   // Loads snippets for a given term.
-  pub.loadTermSnippets = function(term) {
-    runQueryForCurrentCrawler('/getTermSnippets', {'term': term}, onLoadedTermsSnippets);
+  pub.loadTermSnippets = function(term, session) {
+    runQueryForCurrentCrawler('/getTermSnippets', {'term': term, 'session': JSON.stringify(session)}, onLoadedTermsSnippets);
   };
   // Boosts pages given by url.
   pub.boostPages = function(pages) {
@@ -261,27 +262,22 @@ var DataAccess = (function() {
   pub.getLastSummaryTime = function() {
     return lastSummary;
   };
-  // Adds tag to page.
-  pub.setPageTag = function(page, tag, applyTagFlag) {
-    runQueryForCurrentCrawler(
-      '/setPagesTag', {'pages': page, 'tag': tag, 'applyTagFlag': applyTagFlag});
-  };
   // Adds tag to multiple pages.
-  pub.setPagesTag = function(pages, tag, applyTagFlag) {
+  pub.setPagesTag = function(pages, tag, applyTagFlag, session) {
     if (pages.length > 0) {
       runQueryForCurrentCrawler(
-        '/setPagesTag', {'pages': pages.join('|'), 'tag': tag, 'applyTagFlag': applyTagFlag});
+        '/setPagesTag', {'pages': pages.join('|'), 'tag': tag, 'applyTagFlag': applyTagFlag, 'session': JSON.stringify(session)});
     }
   };
   // Adds tag to term.
-  pub.setTermTag = function(term, tag, applyTagFlag) {
+  pub.setTermTag = function(term, tag, applyTagFlag, session) {
     runQueryForCurrentCrawler(
-      '/setTermsTag', {'terms': term, 'tag': tag, 'applyTagFlag': applyTagFlag});
+      '/setTermsTag', {'terms': term, 'tag': tag, 'applyTagFlag': applyTagFlag, 'session': JSON.stringify(session)});
   };
 
     
-  pub.deleteTerm = function(term) {
-      runQueryForCurrentCrawler('/deleteTerm', {'term': term});
+  pub.deleteTerm = function(term, session) {
+      runQueryForCurrentCrawler('/deleteTerm', {'term': term, 'session': JSON.stringify(session)});
   }
 
   // Sets limit of number of pages loaded.
@@ -297,14 +293,14 @@ var DataAccess = (function() {
   };
 
   // Generate data to build crawler model
-  pub.createModelData = function(crawlerId){
+  pub.createModelData = function(session){
       Utils.setWaitCursorEnabled(true);
       runQueryForCurrentCrawler(
-	  '/createModel', {}, onModelCreated);
+	  '/createModel', {'session': JSON.stringify(session)}, onModelCreated);
   }
   // Fetches new pages summaries every n seconds.
-  window.setInterval(function() {pub.loadNewPagesSummary(false);}, REFRESH_EVERY_N_MILLISECONDS);
-  window.setInterval(function() {pub.loadNewPagesSummary(true);}, REFRESH_EVERY_N_MILLISECONDS);
+  window.setInterval(function() {loadNewPagesSummary(false);}, REFRESH_EVERY_N_MILLISECONDS);
+  window.setInterval(function() {loadNewPagesSummary(true);}, REFRESH_EVERY_N_MILLISECONDS);
 
   return pub;
 }());
