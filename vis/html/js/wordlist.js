@@ -139,8 +139,9 @@ Wordlist.prototype.update = function() {
         })
 
     var pins = rows.selectAll('g.pins').data(function(d) { return [d]; });
-    pins.enter().append('svg:foreignObject')
+    pins.enter().append('g')
       .classed("pins", true)
+      .append('svg:foreignObject')
       .attr("width", 20)
       .attr("height", 20)
       .attr("y", "-2px")
