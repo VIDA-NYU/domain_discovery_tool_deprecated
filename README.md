@@ -66,7 +66,8 @@ Alternativaly, you can also specify an external ElasticSearch server address usi
 
 ## Contact
 
-Yamuna Krishnamurthy [yamuna@nyu.edu] \
+Yamuna Krishnamurthy [yamuna@nyu.edu]
+
 Aecio Santos [aecio.santos@nyu.edu]
 
 
