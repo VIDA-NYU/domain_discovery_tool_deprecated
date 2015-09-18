@@ -138,30 +138,6 @@ Wordlist.prototype.update = function() {
           }
         })
 
-    var pins = rows.selectAll('g.pins').data(function(d) { return [d]; });
-    pins.enter().append('g')
-      .classed("pins", true)
-      .append('svg:foreignObject')
-      .attr("width", 20)
-      .attr("height", 20)
-      .attr("y", "-2px")
-      .attr("x", "-5px")
-      .append("xhtml:span")
-      .attr("class", "control glyphicon glyphicon-pushpin")
-      .style({color: "#E6E6E6"})
-      .on("click", function(d, i){
-        if (wordlist.currentWord == d.word){
-          wordlist.currentWord = undefined;
-          $(this).removeClass("pinned").css("color", "#E6E6E6");
-        } else {
-          wordlist.currentWord = d.word;
-          $(".pins span.pinned").removeClass("pinned").css("color", "#E6E6E6");
-          $(this).addClass("pinned").css("color", "black");
-          wordlist.onItemFocus(d, i, d3.event.shiftKey, true);
-        }
-      })
-
-
     // Container for word.
     var circles = rows.selectAll('g.custom').data(function(d) { return [d]; });
     circles
@@ -180,6 +156,40 @@ Wordlist.prototype.update = function() {
         .classed('Negative', isNegative);
     });
     
+   
+
+    var pins = rows.selectAll('g.pins').data(function(d) { return [d]; });
+    pins.enter().append('g')
+      .classed("pins", true)
+      .append('svg:foreignObject')
+      .attr("width", 20)
+      .attr("height", 20)
+      .attr("y", "-2px")
+      .attr("x", "10px")
+      .append("xhtml:span")
+      .attr("class", "control glyphicon glyphicon-pushpin")
+      .style({color: "#E6E6E6"})
+      .on('mouseover', function(d, i) {
+	    Utils.showTooltip();
+      })
+      .on('mousemove', function() {
+	  Utils.updateTooltip('Pin Term Context');
+      })
+      .on('mouseout', function() {
+	  Utils.hideTooltip();
+      })
+      .on("click", function(d, i){
+        if (wordlist.currentWord == d.word){
+          wordlist.currentWord = undefined;
+          $(this).removeClass("pinned").css("color", "#E6E6E6");
+        } else {
+          wordlist.currentWord = d.word;
+          $(".pins span.pinned").removeClass("pinned").css("color", "#E6E6E6");
+          $(this).addClass("pinned").css("color", "black");
+          wordlist.onItemFocus(d, i, d3.event.shiftKey, true);
+        }
+      })    
+
     circles.each(function(d) {
 	var tags = d['tags'];
 	var isCustom = tags.indexOf('Custom') != -1;
@@ -189,7 +199,7 @@ Wordlist.prototype.update = function() {
 		.attr('xlink:href', '/img/delete.jpg')
 		.attr('width', 15)
 		.attr('height', 15)
-		.attr('transform', 'translate(10,-4)')
+		.attr('transform', 'translate(-5,-4)')
 	        .on('click', function(d, i) {
 		    wordlist.onDeleteClick(d, i);
 		})
@@ -202,6 +212,7 @@ Wordlist.prototype.update = function() {
 		.on('mouseout', function() {
 		    Utils.hideTooltip();
 		});
+
 	}
     });
 
