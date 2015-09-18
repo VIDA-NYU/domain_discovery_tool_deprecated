@@ -120,7 +120,7 @@ Wordlist.prototype.update = function() {
     words
       .enter().append('g')
         .classed('words', true)
-        .attr('transform', 'translate(20,' + (0.5 * rowHeight) + ')')
+        .attr('transform', 'translate(30,' + (0.5 * rowHeight) + ')')
         .append('text')
         .classed('noselect', true)
         .text(function(d){return d['word'];})
@@ -143,8 +143,8 @@ Wordlist.prototype.update = function() {
       .classed("pins", true)
       .attr("width", 20)
       .attr("height", 20)
-      .attr("y", "0px")
-      .attr("x", "0px")
+      .attr("y", "-2px")
+      .attr("x", "-5px")
       .append("xhtml:span")
       .attr("class", "control glyphicon glyphicon-pushpin")
       .style({color: "#E6E6E6"})
@@ -188,8 +188,7 @@ Wordlist.prototype.update = function() {
 		.attr('xlink:href', '/img/delete.jpg')
 		.attr('width', 15)
 		.attr('height', 15)
-		.attr('transform',
-	     	      'translate(0,-4)')
+		.attr('transform', 'translate(10,-4)')
 	        .on('click', function(d, i) {
 		    wordlist.onDeleteClick(d, i);
 		})
