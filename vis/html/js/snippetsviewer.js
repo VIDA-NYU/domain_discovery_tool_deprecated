@@ -67,10 +67,11 @@ SnippetsViewer.prototype.update = function() {
     .append('div')
     .classed('noselect', true)
     .classed('item', true)
-    .on('dblclick', function(item, i) {
+    .on('click', function(item, i) {
       var elem = d3.select(this);
       elem.classed('dblclicked', !elem.classed('dblclicked'));
       viewer.onItemDoubleClick(item, i);
+      window.open(item.url, '_blank');
     });
 
   // Removes missing items.
@@ -127,4 +128,3 @@ SnippetsViewer.prototype.onItemDoubleClick = function(item, i) {
   // TODO.
   console.log('itemDoubleClicked ' + i);
 };
-

@@ -1335,3 +1335,15 @@ h1 {
 .input-group .form-control{
   position:static;
 }
+
+.control.glyphicon{
+  position:static;
+}
+
+.pins{
+  cursor:pointer;
+}
+
+.item{
+  cursor:pointer;
+}
