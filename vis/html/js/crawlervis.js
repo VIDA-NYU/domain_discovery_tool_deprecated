@@ -1012,7 +1012,7 @@ CrawlerVis.prototype.addTerm = function(term) {
 CrawlerVis.prototype.addNegTerm = function(term) {
     var vis = this;
     vis.wordlist.addEntries([{'word': term, 'posFreq': 0, 'negFreq': 0, 'tags': ["Negative", "Custom"]}]);
-    DataAccess.setTermsTag(term, 'Negative;Custom', true, vis.sessionInfo());
+    DataAccess.setTermTag(term, 'Negative;Custom', true, vis.sessionInfo());
 };
 
 CrawlerVis.prototype.deleteTerm = function(term) {
