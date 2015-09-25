@@ -1129,7 +1129,7 @@ CrawlerVis.prototype.appendToHistory = function(elementSelector, history, queryT
 // Return all the session info
 CrawlerVis.prototype.sessionInfo = function() {
     var algId = d3.select('#selectProjectionAlgorithm').node().value;
-    var domainId = d3.select('input[name="crawlerRadio"]:checked').node().value;
+    var domainId = d3.select('input[name="crawlerRadio"]:checked').node() ? d3.select('input[name="crawlerRadio"]:checked').node().value : undefined;
     var cap = d3.select('#filter_cap_select').node().value;
 
     var fromdate_local = new Date(d3.select('#fromdate').node().value);
