@@ -168,7 +168,6 @@ Wordlist.prototype.update = function() {
       .attr("x", "10px")
       .append("xhtml:span")
       .attr("class", "control glyphicon glyphicon-pushpin")
-      .style({color: "#E6E6E6"})
       .on('mouseover', function(d, i) {
 	    Utils.showTooltip();
       })
@@ -181,11 +180,11 @@ Wordlist.prototype.update = function() {
       .on("click", function(d, i){
         if (wordlist.currentWord == d.word){
           wordlist.currentWord = undefined;
-          $(this).removeClass("pinned").css("color", "#E6E6E6");
+          $(this).removeClass("pinned");
         } else {
           wordlist.currentWord = d.word;
-          $(".pins span.pinned").removeClass("pinned").css("color", "#E6E6E6");
-          $(this).addClass("pinned").css("color", "black");
+          $(".pins span.pinned").removeClass("pinned");
+          $(this).addClass("pinned");
           wordlist.onItemFocus(d, i, d3.event.shiftKey, true);
         }
       })    
