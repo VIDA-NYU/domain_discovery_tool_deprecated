@@ -1349,6 +1349,12 @@ h1 {
 
 .pins{
   cursor:pointer;
+  letter-spacing:4px;
+  color:#E6E6E6;
+}
+
+.pinned{
+  color:black;
 }
 
 .item{
