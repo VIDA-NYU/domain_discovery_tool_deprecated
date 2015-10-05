@@ -289,6 +289,7 @@ CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
 
   $('#addDomainModal').on('shown.bs.modal', function(e){
     $("#crawler_index_name").focus();
+    $("#crawler_index_name").val("");
   });
 
   if (data.length > 0){
