@@ -1360,3 +1360,7 @@ h1 {
 .item{
   cursor:pointer;
 }
+
+textarea[name=seeds] {
+    resize: none;
+}
