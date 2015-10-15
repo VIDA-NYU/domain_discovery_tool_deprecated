@@ -1157,6 +1157,9 @@ CrawlerVis.prototype.sessionInfo = function() {
 };
 
 $(document).ready(function() {
+// Set the seeds panel as hidden by default.
+$("#seedsHeader").next().slideToggle(0);
+
 $(".panel-heading").click(function () {
     $header = $(this);
     //getting the next element
