@@ -1361,6 +1361,6 @@ h1 {
   cursor:pointer;
 }
 
-textarea[name=seeds] {
+textarea[name=seeds_text] {
     resize: none;
 }
