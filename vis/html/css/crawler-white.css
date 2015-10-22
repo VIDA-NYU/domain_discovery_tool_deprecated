@@ -172,6 +172,13 @@ p {
   font-size: 12px;
 }
 
+#filter_cap_select {
+  -webkit-appearance: menulist-button;
+  margin-top: 0px;
+  height: 30px;
+  font-size: 12px;
+}
+
 #wordlist {
   width: 100%;
   height: 300px;
@@ -1334,4 +1341,22 @@ h1 {
 
 .input-group .form-control{
   position:static;
+}
+
+.control.glyphicon{
+  position:static;
+}
+
+.pins{
+  cursor:pointer;
+  letter-spacing:4px;
+  color:#E6E6E6;
+}
+
+.pinned{
+  color:black;
+}
+
+.item{
+  cursor:pointer;
 }

@@ -232,12 +232,8 @@ var DataAccess = (function() {
       $(document).ready(function() { $(".status_box").fadeIn(); });
       $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
 
-      console.log("Before Updating pages");   
-      
     if (!updating && currentCrawler !== undefined) {
       updating = true;
-	
-      console.log("Updating pages");
 
       // Fetches pages summaries every n seconds.
       loadingPages = true;

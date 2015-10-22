@@ -1,8 +1,11 @@
 # Domain Discovery Tool
 
-This repository contains the Domain Discovery Tool (DDT) project. The DDT tool helps select good seed pages that can subsequently be used to bootstrap focused crawlers. It also allows information extraction and selection of relevant and non-relevant pages crawled by the focused crawlers to help build good page classifiers for them.
+This repository contains the Domain Discovery Tool (DDT) project. DDT is an interactive system that helps users explore and better understand a domain (or topic) as it is represented on the Web. It achieves this by integrating human insights with machine computation (data mining and machine learning) through visualization. DDT allows a domain expert to visualize and analyze pages returned by a search engine or a crawler, and easily provide feedback about relevance. This feedback, in turn, can be used to address two challenges:
 
-## Installing in your machine
+* Guide users in the process of domain understanding and help them construct effective queries to be issued to a search engine; and
+* Configure focused crawlers that efficiently search the Web for additional pages on the topic. DDT allows users to quickly select crawling seeds as well as positive and negatives required to create a page classifier for the focus topic.
+
+## Installing on your machine
 
 Building and deploying the Domain Discovery Tool can either be done using its Makefile to create a local development environment, or automatically by conda or Docker for deployment.  The conda build environment is currently only supported on 64-bit OS X and Linux.
 
@@ -45,7 +48,7 @@ First, make sure you have Docker installed and running. Then, you can create an 
 
     docker build -t domain_discovery_tool .
 
-Run the app using the Docker image that you just built:
+Run the app using the Docker image that you just built. This starts the elasticsearch and the DDT server:
 
     docker run -i -p 8084:8084 -p 9200:9200 -t domain_discovery_tool /ddt/run_demo.sh
 
@@ -56,3 +59,18 @@ To see the app running, go to:
 Alternativaly, you can also specify an external ElasticSearch server address using an enviroment variable:
 
     docker run -p 8084:8084 -e "ELASTICSEARCH_SERVER=http://127.0.0.1:9200" -i -t domain_discovery_tool
+
+## Further Documentation
+
+[Detailed Description of the tool](https://s3.amazonaws.com/vida-nyu/DDT/domain_discovery_tool.pdf)
+
+## Contact
+
+Yamuna Krishnamurthy [yamuna@nyu.edu]
+
+Aecio Santos [aecio.santos@nyu.edu]
+
+
+
+
+
