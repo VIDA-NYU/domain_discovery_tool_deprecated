@@ -996,6 +996,14 @@ CrawlerVis.prototype.applyQuery = function(terms) {
 };
 
 /**
+ * Download pages of uploaded urls
+ */
+CrawlerVis.prototype.downloadUrls = function(urls) {
+  var vis = this;
+  DataAccess.queryWeb(urls, vis.sessionInfo());
+};
+
+/**
 * Submit user-defined seeds.
  */
 $("#createSeeds").submit(function(event){
@@ -1006,16 +1014,9 @@ $("#createSeeds").submit(function(event){
   reader.onload = function(e) {
     var text = reader.result;
     text += event.target.seeds_text.value;
+    CrawlerVis.prototype.downloadUrls(text);
   }
 });
-
-/**
- * Download pages of uploaded urls
- */
-CrawlerVis.prototype.downloadUrls = function(urls) {
-  var vis = this;
-  DataAccess.queryWeb(urls, vis.sessionInfo());
-};
 
 /**
  * Add crawler
