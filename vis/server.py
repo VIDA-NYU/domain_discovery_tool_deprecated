@@ -210,6 +210,7 @@ class Page:
   # Download the pages of uploaded urls
   @cherrypy.expose
   def downloadUrls(self, urls, session):
+    urls = urls.replace("\n", " ")
     session = json.loads(session)
     self._crawler.downloadUrls(urls, session)
 

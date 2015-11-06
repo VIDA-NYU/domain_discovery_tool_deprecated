@@ -795,7 +795,7 @@ class CrawlerModel:
 
     chdir(environ['DDT_HOME']+'/seeds_generator')
     
-    comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar Download_urls -u " + urls + \
+    comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar Download_urls -u \"" + urls + "\"" \
            " -i " + es_info['activeCrawlerIndex'] + \
            " -d " + es_info['docType'] + \
            " -s " + es_server 

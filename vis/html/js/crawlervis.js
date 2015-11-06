@@ -1000,7 +1000,7 @@ CrawlerVis.prototype.applyQuery = function(terms) {
  */
 CrawlerVis.prototype.downloadUrls = function(urls) {
   var vis = this;
-  DataAccess.queryWeb(urls, vis.sessionInfo());
+  DataAccess.downloadUrls(urls, vis.sessionInfo());
 };
 
 /**
@@ -1009,13 +1009,23 @@ CrawlerVis.prototype.downloadUrls = function(urls) {
 $("#createSeeds").submit(function(event){
   event.preventDefault();
   file = event.target.seeds.files[0]
-  reader = new FileReader();
-  reader.readAsText(file);
-  reader.onload = function(e) {
-    var text = reader.result;
-    text += event.target.seeds_text.value;
-    CrawlerVis.prototype.downloadUrls(text);
+  var text = undefined;
+  if(file != undefined && file != ""){
+      reader = new FileReader();
+      reader.readAsText(file);
+      reader.onload = function(e) {
+	  text = reader.result;
+	  text += event.target.seeds_text.value;
+	  if(text != undefined && text != "")
+	      CrawlerVis.prototype.downloadUrls(text);
+      }
+  } else {
+      text = event.target.seeds_text.value;
+      if(text != undefined && text != "")
+	  CrawlerVis.prototype.downloadUrls(text);
   }
+
+
 });
 
 /**

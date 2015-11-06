@@ -217,7 +217,7 @@ var DataAccess = (function() {
   };
 
   // Downloads the pages of given urls
-  pub.queryWeb = function(urls, session) {
+  pub.downloadUrls = function(urls, session) {
       document.getElementById("status_panel").innerHTML = 'Downloading uploaded URLs...see page summary for real-time page download status';
       $(document).ready(function() { $(".status_box").fadeIn(); });
       $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));

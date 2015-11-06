@@ -124,7 +124,7 @@ class CrawlerModelAdapter:
 
   # Download the pages of uploaded urls
   def downloadUrls(self, urls, session):
-    self._crawlerModel.downloadUrls(self, urls, session)
+    self._crawlerModel.downloadUrls(urls, session)
 #
 # Overwrites default functionality to serve for seed crawler model use.
 #

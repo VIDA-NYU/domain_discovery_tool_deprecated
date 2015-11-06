@@ -4,9 +4,11 @@ public class Download_urls {
     
     public void download(String[] urls, String es_index, String es_doc_type, String es_server){
 	Download download = new Download("uploaded", es_index, es_doc_type, es_server);
+	
 	for(String url: urls){
 	    download.addTask(Download_Utils.validate_url(url));
 	}
+	
 	download.shutdown();
     }
 
@@ -36,11 +38,8 @@ public class Download_urls {
 	}
 
 	String[] urls = null;
-	System.out.println("\n" + urls_str + "\n");
 	if(urls_str != null & !urls_str.isEmpty())
-	    System.out.println("\n" + urls_str.indexOf("\\n") + "\n");
-	    urls = urls_str.split("[\\r\\n]+");
-	    System.out.println("\n" + urls[0] + " " + urls.length + "\n");
+	    urls = urls_str.split(" ");
 		
 	Download_urls download_urls = new Download_urls();
 	download_urls.download(urls, es_index, es_doc_type, es_server);
