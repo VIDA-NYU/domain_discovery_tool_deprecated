@@ -207,6 +207,12 @@ class Page:
     session = json.loads(session)
     self._crawler.deleteTerm(term, session)
 
+  # Download the pages of uploaded urls
+  @cherrypy.expose
+  def downloadUrls(self, urls, session):
+    session = json.loads(session)
+    self._crawler.downloadUrls(urls, session)
+
   # Extracts terms with current labels state.
   @cherrypy.expose
   def extractTerms(self, positiveTerms, negativeTerms, neutralTerms):
