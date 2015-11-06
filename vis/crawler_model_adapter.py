@@ -122,6 +122,9 @@ class CrawlerModelAdapter:
   def deleteTerm(self, term, session):
     self._crawlerModel.deleteTerm(term, session)
 
+  # Download the pages of uploaded urls
+  def downloadUrls(self, urls, session):
+    self._crawlerModel.downloadUrls(self, urls, session)
 #
 # Overwrites default functionality to serve for seed crawler model use.
 #

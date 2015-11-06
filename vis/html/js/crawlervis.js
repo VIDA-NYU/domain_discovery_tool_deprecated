@@ -996,6 +996,14 @@ CrawlerVis.prototype.applyQuery = function(terms) {
 };
 
 /**
+ * Download pages of uploaded urls
+ */
+CrawlerVis.prototype.downloadUrls = function(urls) {
+  var vis = this;
+  DataAccess.queryWeb(urls, vis.sessionInfo());
+};
+
+/**
  * Add crawler
  */
 CrawlerVis.prototype.addCrawler = function(index_name) {
