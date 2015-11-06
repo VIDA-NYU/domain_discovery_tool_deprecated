@@ -498,7 +498,7 @@ svg text {
 }
 
 .button-img.enabled {
-	background: #FECD57;
+  background: #FECD57;
 }
 
 .button-img.enabled:hover {
@@ -600,7 +600,7 @@ div.tooltip {
 }
 
 #tags_items .item img.clickable.focus:hover {
-	background: #FECD57;
+  background: #FECD57;
 }
 
 /*
@@ -684,7 +684,7 @@ div.tooltip {
 }
 
 #pages_items .item .tag img.clickable.focus:hover {
-	background: #FECD57;
+  background: #FECD57;
 }
 
 #pages_items .item .selectTag {
@@ -1201,15 +1201,15 @@ h1 {
 }
 
 #submit_query {
-	background: url("../img/search.png") no-repeat scroll center center #FECD57;
+  background: url("../img/search.png") no-repeat scroll center center #FECD57;
   vertical-align: top;
   display: inline-block;
-	cursor: pointer;
-	height: 28px;
-	text-indent: -99999em;
-	transition: background 0.3s ease-in-out 0s;
-	width: 70px;
-	border: 2px solid #fff;
+  cursor: pointer;
+  height: 28px;
+  text-indent: -99999em;
+  transition: background 0.3s ease-in-out 0s;
+  width: 70px;
+  border: 2px solid #fff;
 }
 
 #submit_query:hover {
@@ -1363,4 +1363,9 @@ h1 {
 
 textarea[name=seeds_text] {
     resize: none;
+}
+
+.seeds_button {
+  margin-top: 10px;
+  float:right;
 }
