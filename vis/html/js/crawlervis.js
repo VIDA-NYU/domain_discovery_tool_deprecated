@@ -670,7 +670,7 @@ CrawlerVis.prototype.onTermToggle = function(term, shiftClick) {
     var tags = term['tags'];
 
     if (tags.indexOf("Custom") != -1)
-	return;
+  return;
 
     var isPositive = tags.indexOf('Positive') != -1;
     var isNegative = tags.indexOf('Negative') != -1;
@@ -867,33 +867,33 @@ CrawlerVis.prototype.initQueryWebButton = function() {
 
 CrawlerVis.prototype.initAddTermButton = function() {
     d3.select('#add_term_button')
-	.on('mouseover', function() {
-	    Utils.showTooltip();
-	})
-	.on('mousemove', function() {
-	    Utils.updateTooltip('Add custom relevant terms');
-	})
-	.on('mouseout', function() {
-	    Utils.hideTooltip();
-	})
-	.on('click', function() {
-	    var value = d3.select('#add_term_box').node().value;
-	    __sig__.emit(__sig__.add_term, value);
-	});
+  .on('mouseover', function() {
+      Utils.showTooltip();
+  })
+  .on('mousemove', function() {
+      Utils.updateTooltip('Add custom relevant terms');
+  })
+  .on('mouseout', function() {
+      Utils.hideTooltip();
+  })
+  .on('click', function() {
+      var value = d3.select('#add_term_box').node().value;
+      __sig__.emit(__sig__.add_term, value);
+  });
     d3.select('#add_term_neg_button')
-	.on('mouseover', function() {
-	    Utils.showTooltip();
-	})
-	.on('mousemove', function() {
-	    Utils.updateTooltip('Add custom irrelevant terms');
-	})
-	.on('mouseout', function() {
-	    Utils.hideTooltip();
-	})
-	.on('click', function() {
-	    var value = d3.select('#add_term_box').node().value;
-	    __sig__.emit(__sig__.add_neg_term, value);
-	});
+  .on('mouseover', function() {
+      Utils.showTooltip();
+  })
+  .on('mousemove', function() {
+      Utils.updateTooltip('Add custom irrelevant terms');
+  })
+  .on('mouseout', function() {
+      Utils.hideTooltip();
+  })
+  .on('click', function() {
+      var value = d3.select('#add_term_box').node().value;
+      __sig__.emit(__sig__.add_neg_term, value);
+  });
 
 };
 
@@ -928,9 +928,9 @@ CrawlerVis.prototype.initModelButton = function() {
       Utils.hideTooltip();
     })
 
-	.on('click', function() {
-	    vis.createModelData();
-	});
+  .on('click', function() {
+      vis.createModelData();
+  });
 };
 
 CrawlerVis.prototype.createModelData = function() {
@@ -947,10 +947,10 @@ CrawlerVis.prototype.createModelData = function() {
 CrawlerVis.prototype.initFromCalendarButton = function() {
     var vis = this;
     $("#from_datetimepicker").datetimepicker({
-	icons:{
-	    time: "glyphicon glyphicon-time",
-	    date: "glyphicon glyphicon-calendar"
-	}
+  icons:{
+      time: "glyphicon glyphicon-time",
+      date: "glyphicon glyphicon-calendar"
+  }
     });
 };
 
@@ -960,10 +960,10 @@ CrawlerVis.prototype.initFromCalendarButton = function() {
 CrawlerVis.prototype.initToCalendarButton = function() {
     var vis = this;
     $('#to_datetimepicker').datetimepicker({
-	icons:{
-	    time: "glyphicon glyphicon-time",
-	    date: "glyphicon glyphicon-calendar"
-	}
+  icons:{
+      time: "glyphicon glyphicon-time",
+      date: "glyphicon glyphicon-calendar"
+  }
     });
 };
 
@@ -994,6 +994,39 @@ CrawlerVis.prototype.applyQuery = function(terms) {
   var vis = this;
   DataAccess.queryWeb(terms, vis.sessionInfo());
 };
+
+/**
+ * Download pages of uploaded urls
+ */
+CrawlerVis.prototype.downloadUrls = function(urls) {
+  var vis = this;
+  DataAccess.downloadUrls(urls, vis.sessionInfo());
+};
+
+/**
+* Submit user-defined seeds.
+ */
+$("#createSeeds").submit(function(event){
+  event.preventDefault();
+  file = event.target.seeds.files[0]
+  var text = undefined;
+  if(file != undefined && file != ""){
+      reader = new FileReader();
+      reader.readAsText(file);
+      reader.onload = function(e) {
+	  text = reader.result;
+	  text += event.target.seeds_text.value;
+	  if(text != undefined && text != "")
+	      CrawlerVis.prototype.downloadUrls(text);
+      }
+  } else {
+      text = event.target.seeds_text.value;
+      if(text != undefined && text != "")
+	  CrawlerVis.prototype.downloadUrls(text);
+  }
+
+
+});
 
 /**
  * Add crawler
@@ -1038,7 +1071,7 @@ CrawlerVis.prototype.runQuery = function(terms) {
  */
 CrawlerVis.prototype.runAddCrawler = function(index_name) {
     if (index_name === ""){
-	document.getElementById("status_panel").innerHTML = 'Enter a valid domain name';
+  document.getElementById("status_panel").innerHTML = 'Enter a valid domain name';
     $(document).ready(function() { $(".status_box").fadeIn(); });
     $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
   }
@@ -1052,7 +1085,7 @@ CrawlerVis.prototype.runAddCrawler = function(index_name) {
 
 CrawlerVis.prototype.runAddTerm = function(term) {
     if (term === ""){
-	  document.getElementById("status_panel").innerHTML = 'Enter a valid term';
+    document.getElementById("status_panel").innerHTML = 'Enter a valid term';
     $(document).ready(function() { $(".status_box").fadeIn(); });
     $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
     }
@@ -1065,7 +1098,7 @@ CrawlerVis.prototype.runAddTerm = function(term) {
 
 CrawlerVis.prototype.runAddNegTerm = function(term) {
     if (term === ""){
-	  document.getElementById("status_panel").innerHTML = 'Enter a valid term';
+    document.getElementById("status_panel").innerHTML = 'Enter a valid term';
     $(document).ready(function() { $(".status_box").fadeIn(); });
     $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
 }
@@ -1137,26 +1170,29 @@ CrawlerVis.prototype.sessionInfo = function() {
     var todate_local = new Date(d3.select('#todate').node().value);
 
     if (fromdate_local != "Invalid Date")
-	var fromdate_utc = Utils.toUTC(fromdate_local);
+  var fromdate_utc = Utils.toUTC(fromdate_local);
     else fromdate_utc = null;
     if (todate_local != "Invalid Date")
-	var todate_utc = Utils.toUTC(todate_local);
+  var todate_utc = Utils.toUTC(todate_local);
     else todate_utc = null;
 
     var filterTerms = d3.select('#filter_box').node().value;
     if (filterTerms === '')
-	filterTerms = null;
+  filterTerms = null;
     return {
-	domainId: domainId,
-	activeProjectionAlg: algId,
-	pagesCap: cap,
-	filter: filterTerms,
-	fromDate: fromdate_utc,
-	toDate: todate_utc
+  domainId: domainId,
+  activeProjectionAlg: algId,
+  pagesCap: cap,
+  filter: filterTerms,
+  fromDate: fromdate_utc,
+  toDate: todate_utc
     };
 };
 
 $(document).ready(function() {
+// Set the seeds panel as hidden by default.
+$("#seedsHeader").next().slideToggle(0);
+
 $(".panel-heading").click(function () {
     $header = $(this);
     //getting the next element

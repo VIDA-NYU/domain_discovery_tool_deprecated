@@ -750,7 +750,7 @@ class CrawlerModel:
   # Delete terms from term window and from the ddt_terms index
   def deleteTerm(self,term, session):
     es_info = self.esInfo(session['domainId'])
-    delete([term+'_'+es_info['activeCrawlerIndex']+'_'+es_info['docType']], self._termsIndex, "terms", self._es)
+    delete([term+'_'+es_info['activeCrawlerIndex']+'_'+es_info['docType']], self._termsIndex, "terms", self._es)    
 
   # Add crawler
   def addCrawler(self, index_name):
@@ -780,6 +780,22 @@ class CrawlerModel:
     
     comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar BingSearch -t " + str(max_url_count) + \
            " -q \"" + terms + "\"" + \
+           " -i " + es_info['activeCrawlerIndex'] + \
+           " -d " + es_info['docType'] + \
+           " -s " + es_server 
+
+    p=Popen(comm, shell=True, stderr=PIPE)
+    output, errors = p.communicate()
+    print output
+    print errors
+
+  # Download the pages of uploaded urls
+  def downloadUrls(self, urls, session):  
+    es_info = self.esInfo(session['domainId'])
+
+    chdir(environ['DDT_HOME']+'/seeds_generator')
+    
+    comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar Download_urls -u \"" + urls + "\"" \
            " -i " + es_info['activeCrawlerIndex'] + \
            " -d " + es_info['docType'] + \
            " -s " + es_server 
