@@ -45,7 +45,7 @@ class extract_terms:
         bs = BayesianSets.BayesianSets()
         score = bs.score(subquery_data, other_data)
 
-        rank_index = np.argsort(np.multiply(score,-1))
+        rank_index = np.argsort(score)[::-1]
 
         offset_rank_index = [index[x] for x in rank_index]
 
