@@ -65,10 +65,13 @@ Alternativaly, you can also specify an external ElasticSearch server address usi
 [Detailed Description of the tool](https://s3.amazonaws.com/vida-nyu/DDT/domain_discovery_tool.pdf)
 
 [Demo Scripts and Videos](https://s3.amazonaws.com/vida-nyu/DDT/DomainDiscoveryToolDemoScripts.pdf)
-Note: To follow the demo videos download and use the following demo build version of DDT:
 
+**Note:** To follow the demo videos download and use the following demo build version of DDT:
+
+```
 docker pull vidanyu/ddt:2.7.0-demo
 docker run -i -p 8084:8084 -p 9200:9200 -p 9001:9001  -t vidanyu/ddt:2.7.0-demo
+```
 
 ## Contact
 
