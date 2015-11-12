@@ -36,11 +36,6 @@ public class BingSearch {
 	}
     } 
 
-    public String validate_url(String url){
-	if(!url.contains("http"))
-	    url = "http://" + url;
-	return url;
-    }
 	
     public ArrayList<String> search(String query, String top, String es_index, String es_doc_type, String es_server){
 	System.out.println("Query: " + query);
@@ -88,7 +83,7 @@ public class BingSearch {
 	    	for (int i=0; i<totalUrls; i++){
 			Element e = (Element)urls.item(i);
 			NodeList nl = e.getChildNodes();
-			String url = validate_url((nl.item(0).getNodeValue()));
+			String url = Download_Utils.validate_url((nl.item(0).getNodeValue()));
 			results.add(url);
 			download.addTask(url);
 	    	}

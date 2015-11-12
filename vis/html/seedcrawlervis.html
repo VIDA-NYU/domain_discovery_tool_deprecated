@@ -129,6 +129,31 @@
             </div>
           </div>
         </div>
+        
+        <div class="panel panel-default">
+          
+          <div class="panel-heading" id="seedsHeader">
+            <h4 class="panel-title">
+            <div class="panel-heading-left" >
+              <span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;Upload URLs </div>
+            <div class="panel-heading-right">
+              <span class="collapsethis glyphicon glyphicon-plus"></span>
+            </div>
+            </h4>
+          </div>
+          <div class="panel-body">
+            <form id="createSeeds">
+              <div class="input-group">
+                <p>Upload File</p>
+                <input type="file" name="seeds" id="seedsFile" style="width:100%;">
+                <hr>
+                <p>Copy URLs</p>
+                <textarea class="form-control" name="seeds_text" id="seeds_text" cols="1000" rows="10"></textarea>
+                <input type="submit" name="submit" value="Submit" class="btn btn-warning seeds_button" data-type="last" id="submit_query"></input>
+              </div>
+            </form>
+          </div>
+        </div>
 
         <div class="panel panel-default">
 
@@ -143,7 +168,7 @@
             </h4>
 
           </div>
-	  
+    
           <div class="panel-body">            
             <div id="filter_panel">
               
@@ -155,25 +180,25 @@
               </div>
               <datalist id='filter_box_previous_filters'></datalist>
       <form class="form-horizontal well" style="margin-top:20px;box-shadow: 0 0px 9px rgba(0,0,0,.2);padding: 10px 10px 1px 10px">
-		  <div class="form-group">
-		  <span class="col-sm-2 control-label">From:</span>
-		  <div class="input-group date col-sm-8" id="from_datetimepicker" >
+      <div class="form-group">
+      <span class="col-sm-2 control-label">From:</span>
+      <div class="input-group date col-sm-8" id="from_datetimepicker" >
                     <input type="text" class="form-control" id="fromdate"/>
                     <span class="input-group-addon btn btn-warning" id="fromdate_addon">
                       <span class="glyphicon glyphicon-calendar"></span>
                     </span>
                   </div>
-		</div>
-		<div class="form-group">
-		  <span class="col-sm-2 control-label">To:</span>
-		  <div class="input-group date col-sm-8" id='to_datetimepicker'>
+    </div>
+    <div class="form-group">
+      <span class="col-sm-2 control-label">To:</span>
+      <div class="input-group date col-sm-8" id='to_datetimepicker'>
                     <input type="text" class="form-control" id="todate"/>
                     <span class="input-group-addon btn btn-warning" id="todate_addon">
                       <span class="glyphicon glyphicon-calendar"></span>
                     </span>
                   </div>
-		</div>		
-	      </form>
+    </div>		
+        </form>
 
               <div id="filter_statslist" class="statslist">
                 <svg>
@@ -209,7 +234,7 @@
               <div style="float:left;padding: 0 7px;">
                 Page Clustering Methods:<select id="selectProjectionAlgorithm"></select>
               </div>
-	      
+        
               <div style="float:right">
                 <span id="last_update_info_box" class="noselect seedcrawler"></span>
                 <span id="pages_landscape_buttons" class="control_buttons">
@@ -217,14 +242,14 @@
                     <span class="glyphicon glyphicon-refresh"></span>
                   </span>
                 </span>
-	      </div>
+        </div>
 
-	      <div style="float:left;padding: 0 5px">
-		<select id="filter_cap_select"></select>
-	      </div>
+        <div style="float:left;padding: 0 5px">
+    <select id="filter_cap_select"></select>
+        </div>
 
             </div>
-	    
+      
             <div class="row">
               <div id="pages_landscape_container">
                 <div id="pages_landscape" class="noselect"></div>
@@ -256,18 +281,18 @@
           </div>
           <div class="panel-body">
             <div id="wordlist" class="seedcrawler noselect"></div>
-	    <br><br>
+      <br><br>
             <div class="input-group">
               <span class="input-group-btn">
                 <button type="button" class="btn btn-warning" data-type="last" id="add_term_button">
-		  <span class="glyphicon glyphicon-plus-sign"></span> Relevant
-		</button>
+      <span class="glyphicon glyphicon-plus-sign"></span> Relevant
+    </button>
               </span>
               <input type="text" class="form-control" placeholder="Custom Term... " id="add_term_box">
               <span class="input-group-btn">
                 <button type="button" class="btn btn-warning" data-type="last" id="add_term_neg_button" >
-		  <span class="glyphicon glyphicon-minus-sign"></span> Irrelevant
-		</button>
+      <span class="glyphicon glyphicon-minus-sign"></span> Irrelevant
+    </button>
               </span>
             </div>
             <div id="terms_snippets_viewer" class="terms_interface seedcrawler"></div>

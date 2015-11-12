@@ -52,7 +52,7 @@ class word2vec:
                 m_word_vec = np.array(word_vec_doc).mean(axis=0) 
                 word2vec_list_docs.append(m_word_vec.tolist())
                 urls.append(documents[i])
-                i = i + 1
+            i = i + 1
         
         self.documents = urls
         
@@ -79,7 +79,7 @@ class word2vec:
                 m_word_vec = np.array(word_vec_doc).mean(axis=0) 
                 word2vec_list_docs.append(m_word_vec.tolist())
                 final_urls.append(urls[i])
-                i = i + 1
+            i = i + 1
 
         self.documents = final_urls
 

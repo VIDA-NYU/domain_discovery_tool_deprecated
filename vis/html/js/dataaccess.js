@@ -216,6 +216,14 @@ var DataAccess = (function() {
       runQueryForCurrentCrawler('/queryWeb', {'terms': terms, 'session': JSON.stringify(session)});
   };
 
+  // Downloads the pages of given urls
+  pub.downloadUrls = function(urls, session) {
+      document.getElementById("status_panel").innerHTML = 'Downloading uploaded URLs...see page summary for real-time page download status';
+      $(document).ready(function() { $(".status_box").fadeIn(); });
+      $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
+      runQueryForCurrentCrawler('/downloadUrls', {'urls': urls, 'session': JSON.stringify(session)});
+  };
+
   // Add new crawler
   pub.addCrawler = function(index_name) {
       document.getElementById("status_panel").innerHTML = 'Adding new crawler - ' + index_name;
