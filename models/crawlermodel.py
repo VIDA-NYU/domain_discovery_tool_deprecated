@@ -369,7 +369,7 @@ class CrawlerModel:
 
     s_fields["tag"]="Negative"
     neg_terms = [field['term'][0] for field in multifield_term_search(s_fields, ['term'], self._termsIndex, 'terms', self._es)]
-    
+
     pos_urls = [field['url'][0] for field in term_search(es_info['mapping']['tag'], ['Relevant'], ['url'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)]
     
     top_terms = []
@@ -381,7 +381,7 @@ class CrawlerModel:
       if len(pos_urls) > 0:
         # If positive urls are available search for more documents like them
         results = get_more_like_this(pos_urls, ['url', es_info['mapping']["text"]], self._pagesCapTerms,  es_info['activeCrawlerIndex'], es_info['docType'],  self._es)
-        urls = [field['id'] for field in results]
+        urls = pos_urls[0:self._pagesCapTerms] + [field['id'] for field in results] 
 
       if not urls:
         # If positive urls are not available then get the most recent documents
@@ -392,14 +392,14 @@ class CrawlerModel:
         text = [field[es_info['mapping']["text"]][0] for field in results]
         
         if len(urls) > 0:
+          tfidf_all = tfidf.tfidf(urls, es_info['mapping'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)
           if pos_terms:
-            tfidf_all = tfidf.tfidf(urls, es_info['mapping'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)
             extract_terms_all = extract_terms.extract_terms(tfidf_all)
             [ranked_terms, scores] = extract_terms_all.results(pos_terms)
             top_terms = [ term for term in ranked_terms if (term not in neg_terms)]
             top_terms = top_terms[0:opt_maxNumberOfTerms]
           else:
-            top_terms = get_significant_terms(urls, opt_maxNumberOfTerms, es_info['mapping'],  es_info['activeCrawlerIndex'], es_info['docType'], self._es)
+            top_terms = tfidf_all.getTopTerms(opt_maxNumberOfTerms)
 
         if len(text) > 0:
           [_,_,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(text, opt_maxNumberOfTerms, self.w2v, self._es)
@@ -796,6 +796,7 @@ class CrawlerModel:
   # Projects pages with PCA
   def pca(self, pages):
     
+
     urls = [page[4] for page in pages]
     text = [page[5] for page in pages]
     #[data,_,_,_,urls] = self.term_tfidf(urls)
@@ -821,6 +822,7 @@ class CrawlerModel:
           results.append(pdata)
     except IndexError:
       print 'INDEX OUT OF BOUNDS ',i
+
     return results
 
   # Projects pages with TSNE
