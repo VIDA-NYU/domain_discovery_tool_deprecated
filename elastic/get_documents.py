@@ -19,19 +19,20 @@ def get_documents(terms, term_field, fields=["text"], es_index='memex', es_doc_t
                 },
                 "fields": fields
             }
-            
+
             res = es.search(body=query, 
                             index=es_index,
                             doc_type=es_doc_type)
 
-            hits = res['hits']['hits'][0]
+            if res['hits']['hits']:
+                hits = res['hits']['hits'][0]
 
-            record = {}
-            if not hits.get('fields') is None:
-                record = hits['fields']
-            record['id'] =hits['_id']
+                record = {}
+                if not hits.get('fields') is None:
+                    record = hits['fields']
+                record['id'] =hits['_id']
 
-            results[term] = record           
+                results[term] = record           
             
     return results
 

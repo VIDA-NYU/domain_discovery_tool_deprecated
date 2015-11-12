@@ -3,7 +3,6 @@ import sys
 import base64
 from datetime import datetime
 from config import es as default_es
-from pprint import pprint
 
 def search(field, queryStr, fields = [], es_index='memex', es_doc_type='page', es=None):
     if es is None:
@@ -111,7 +110,8 @@ def multifield_term_search(s_fields, fields=[], es_index='memex', es_doc_type='p
     query = {
         "query" : {
             "bool": {
-                "should": queries
+                "should": queries,
+                "minimum_number_should_match": len(queries)
             }
         },
         "fields": fields
