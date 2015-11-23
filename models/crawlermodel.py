@@ -778,7 +778,16 @@ class CrawlerModel:
 
     chdir(environ['DDT_HOME']+'/seeds_generator')
     
-    comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar BingSearch -t " + str(max_url_count) + \
+    print "\n", session['pagesCap'], "\n"
+
+    if(int(session['pagesCap']) <= max_url_count):
+      top = int(session['pagesCap'])
+    else:
+      top = max_url_count
+
+    print "\n", top, "\n"
+
+    comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar BingSearch -t " + str(top) + \
            " -q \"" + terms + "\"" + \
            " -i " + es_info['activeCrawlerIndex'] + \
            " -d " + es_info['docType'] + \
