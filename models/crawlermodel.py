@@ -62,6 +62,9 @@ class CrawlerModel:
       'Epidemy': ['Epidemy', 100, 100, []],
     }
 
+    self.mut_exc_tags = [ "Relevant",
+                          "Irrelevant"]
+    
     create_config_index()
     create_terms_index()
 
@@ -631,25 +634,45 @@ class CrawlerModel:
       tag = tags[0]['tag'][0].split(';')
 
     return {'term': term, 'tags': tag, 'context': get_context(term.split('_'), es_info['activeCrawlerIndex'], es_info['docType'],  self._es)}
-
-  # Adds tag to pages (if applyTagFlag is True) or removes tag from pages (if applyTagFlag is
+  
+  # Adds tag tow pages (if applyTagFlag is True) or removes tag from pages (if applyTagFlag is
   # False).
   def setPagesTag(self, pages, tag, applyTagFlag, session):
     es_info = self.esInfo(session['domainId'])
 
     entries = {}
     results = get_documents(pages, 'url', [es_info['mapping']['tag']], es_info['activeCrawlerIndex'], es_info['docType'],  self._es)
-
+    
     if applyTagFlag:
       print '\n\napplied tag ' + tag + ' to pages' + str(pages) + '\n\n'
       for page in pages:
         entry = {}
         if len(results) > 0 and not results.get(page) is None:
-            if  not results[page].get(es_info['mapping']['tag']) is None:
-              entry[es_info['mapping']['tag']] = results[page][es_info['mapping']['tag']][0] +';'+tag
+          # pages to be tagged exist
+
+          if results[page].get(es_info['mapping']['tag']) is None:
+            # there are no previous tags
+            entry[es_info['mapping']['tag']] = tag
+          else:
+            tags = []
+            if results[page][es_info['mapping']['tag']][0] != '':
+              # all previous tags were removed
+              tags = list(set(results[page][es_info['mapping']['tag']][0].split(';')))
+
+            if len(tags) != 0:
+              # previous tags exist
+              for tag in self.mut_exc_tags:
+                # remove conflicting tags
+                if tag in tags:
+                  tags.remove(tag)
+              # append new tag    
+              entry[es_info['mapping']['tag']] = ';'.join(tags)+';'+tag
             else:
+              # add new tag
               entry[es_info['mapping']['tag']] = tag
-            entries[results[page]['id']] =  entry
+
+          entries[results[page]['id']] =  entry
+
     else:
       print '\n\nremoved tag ' + tag + ' from pages' + str(pages) + '\n\n'
       for page in pages:
