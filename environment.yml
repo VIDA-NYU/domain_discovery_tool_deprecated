@@ -19,3 +19,4 @@ dependencies:
     - cherrypy
     - requests
     - ache >=0.3.1
+    - jinja2
