@@ -254,6 +254,10 @@ class Page:
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps({"positive": posData, "negative": negData})
 
+  @cherrypy.expose
+  def getBokehPlot(self, session):
+    pass
+
 
 if __name__ == "__main__":
   page = Page()
