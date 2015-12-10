@@ -50,7 +50,8 @@ def selection_plot(response):
 
 
     # Create the figure with FIGURE_WIDTH and FIGURE_HEIGHT
-    p = figure(tools="hover", width=FIGURE_WIDTH, height=FIGURE_HEIGHT, toolbar_location=None)
+    p = figure(tools="hover", width=FIGURE_WIDTH, height=FIGURE_HEIGHT,
+            toolbar_location=None)
 
     # Ensure that the lasso only selects with mouseup, not mousemove.
     p.add_tools(LassoSelectTool(select_every_mousemove=False))
@@ -62,9 +63,13 @@ def selection_plot(response):
     p.xgrid.grid_line_color = None
     p.ygrid.grid_line_color = None
 
-    # Plot non-selected circles with a particular style using CIRCLE_SIZE and 'color' list
-    p.circle("x", "y", size=CIRCLE_SIZE, line_width=2, line_alpha=0.5, line_color=None, fill_alpha=0.6, color='color', source=source, name="urls")
-    nonselected_circle = Circle(fill_alpha=0.2, fill_color='color', line_color='color')
+    # Plot non-selected circles with a particular style using CIRCLE_SIZE and
+    # 'color' list
+    p.circle("x", "y", size=CIRCLE_SIZE, line_width=2, line_alpha=0.5,
+            line_color=None, fill_alpha=0.6, color='color', source=source,
+            name="urls")
+    nonselected_circle = Circle(fill_alpha=0.2, fill_color='color',
+            line_color='color')
     renderer = p.select(name="urls")
     renderer.nonselection_glyph = nonselected_circle
 
@@ -94,13 +99,16 @@ def selection_plot(response):
 
     # Supply color with print formatting.
     button1 = Button(label="Positive", type="success")
-    button1.callback = CustomJS(args=dict(source=source), code=button_code % POSITIVE_COLOR)
+    button1.callback = CustomJS(args=dict(source=source),
+            code=button_code % POSITIVE_COLOR)
 
     button2 = Button(label="Negative", type="success")
-    button2.callback = CustomJS(args=dict(source=source), code=button_code % NEGATIVE_COLOR)
+    button2.callback = CustomJS(args=dict(source=source),
+            code=button_code % NEGATIVE_COLOR)
 
     button3 = Button(label="Neutral", type="success")
-    button3.callback = CustomJS(args=dict(source=source), code=button_code % NEUTRAL_COLOR)
+    button3.callback = CustomJS(args=dict(source=source),
+            code=button_code % NEUTRAL_COLOR)
 
 
     # Adjust what attributes are displayed by the HoverTool
