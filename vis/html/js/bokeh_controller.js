@@ -10,6 +10,10 @@
     exports.session = vis.sessionInfo();
   }
 
+  exports.insertPlot = function(){
+    $("#clusterPlot").html(exports.plotData);
+  }
+
 
   exports.getPlotData = function(){
     $.ajax({
