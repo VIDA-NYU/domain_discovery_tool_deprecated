@@ -13,7 +13,7 @@
 
   exports.getPlotData = function(){
     $.ajax({
-      url: "/getPages",
+      url: "/getBokehPlot",
       type: "POST",
       data: {"session": JSON.stringify(exports.session)},
       success: function(data){
@@ -23,6 +23,7 @@
   }
 
 
+  // Connect to updateSession to bokeh_get_session signal
   SigSlots.connect(__sig__.bokeh_get_session, exports, exports.updateSession);
 
 })(this.BokehPlots = {});

@@ -5,6 +5,8 @@ import os
 from crawler_model_adapter import *
 from threading import Lock
 
+from bokeh_plots.clustering import selection_plot
+
 cherrypy.engine.timeout_monitor.unsubscribe()
 
 class Page:
@@ -256,7 +258,10 @@ class Page:
 
   @cherrypy.expose
   def getBokehPlot(self, session):
-    pass
+    session = json.loads(session)
+    res = selection_plot(self._crawler.getPages(session))
+    cherrypy.response.headers["Content-Type"] = "application/json;"
+    return json.dumps(res)
 
 
 if __name__ == "__main__":

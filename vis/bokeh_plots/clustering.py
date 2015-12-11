@@ -120,10 +120,8 @@ def selection_plot(response):
     layout = vform(p, button1, button2, button3)
 
     # Combine script and div into a single string.
-    # plot_code = components(layout)
-    # return plot_code[0] + plot_code[1]
-    output_file("points.html")
-    show(layout)
+    plot_code = components(layout)
+    return plot_code[0] + plot_code[1]
 
 
 # To be used for plot testing.
