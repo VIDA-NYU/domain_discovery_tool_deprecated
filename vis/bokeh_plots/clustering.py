@@ -80,6 +80,7 @@ def selection_plot(response):
         var inds = source.get('selected')["1d"].indices;
         var data = source.get('data');
         var selected = [];
+        tag = "%s";
         for(var i = 0; i < inds.length; i++){
             selected.push([
                 [
@@ -91,22 +92,22 @@ def selection_plot(response):
             ]);
             data["color"][inds[i]] = "%s";
         }
-        BokehPlots.selected = selected;
+        BokehPlots.updateTags(selected, tag);
         source.trigger("change");
     """
 
     # Supply color with print formatting.
-    button1 = Button(label="Positive", type="success")
+    button1 = Button(label="Relevant", type="success")
     button1.callback = CustomJS(args=dict(source=source),
-            code=button_code % POSITIVE_COLOR)
+            code=button_code % ("Relevant", POSITIVE_COLOR))
 
-    button2 = Button(label="Negative", type="success")
+    button2 = Button(label="Irrelevant", type="success")
     button2.callback = CustomJS(args=dict(source=source),
-            code=button_code % NEGATIVE_COLOR)
+            code=button_code % ("Irrelevant", NEGATIVE_COLOR))
 
     button3 = Button(label="Neutral", type="success")
     button3.callback = CustomJS(args=dict(source=source),
-            code=button_code % NEUTRAL_COLOR)
+            code=button_code % ("Neutral", NEUTRAL_COLOR))
 
 
     # Adjust what attributes are displayed by the HoverTool

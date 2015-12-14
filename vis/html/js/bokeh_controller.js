@@ -3,11 +3,16 @@
   var vis = new CrawlerVis();
 
   exports.session = {};
-  exports.selected = [];
 
 
   exports.updateSession = function(){
     exports.session = vis.sessionInfo();
+  }
+
+
+  exports.updateTags = function(selectedUrls, tag){
+    console.log(selectedUrls);
+    console.log(tag);
   }
 
 
