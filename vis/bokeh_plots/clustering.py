@@ -91,10 +91,8 @@ def selection_plot(response):
             ]);
             data["color"][inds[i]] = "%s";
         }
+        BokehPlots.selected = selected;
         source.trigger("change");
-        window.data = data;
-        window.inds = inds;
-        window.selected = selected;
     """
 
     # Supply color with print formatting.
