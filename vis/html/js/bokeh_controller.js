@@ -8,10 +8,11 @@
 
   exports.updateSession = function(){
     exports.session = vis.sessionInfo();
+    exports.getPlotData();
   }
 
   exports.insertPlot = function(){
-    $("#clusterPlot").html(exports.plotData);
+    $("#bokehClusterPlot").html(exports.plotData);
   }
 
 
@@ -29,5 +30,6 @@
 
   // Connect to updateSession to bokeh_get_session signal
   SigSlots.connect(__sig__.bokeh_get_session, exports, exports.updateSession);
+  SigSlots.connect(__sig__.bokeh_insert_plot, exports, exports.insertPlot);
 
 })(this.BokehPlots = {});
