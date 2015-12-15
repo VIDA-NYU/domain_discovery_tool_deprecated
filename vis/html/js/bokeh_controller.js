@@ -33,8 +33,6 @@
   }
 
 
-
-
   // Connect to updateSession to bokeh_get_session signal
   SigSlots.connect(__sig__.bokeh_get_session, exports, exports.updateSession);
   SigSlots.connect(__sig__.bokeh_insert_plot, exports, exports.getPlotData);

@@ -47,6 +47,11 @@ def selection_plot(response):
             color=color,
         )
     )
+    # Callback code for CDS.
+    source.callback = CustomJS(code="""
+        var inds = cb_obj.get('selected')["1d"].indices;
+        var data = cb_obj.get('data');
+    """)
 
 
     # Create the figure with FIGURE_WIDTH and FIGURE_HEIGHT
@@ -121,11 +126,3 @@ def selection_plot(response):
     # Combine script and div into a single string.
     plot_code = components(layout)
     return plot_code[0] + plot_code[1]
-
-
-# To be used for plot testing.
-if __name__ == "__main__":
-    # plot = selection_plot()
-    # with open("points.html", "w") as f:
-    #     f.write(plot)
-    selection_plot()
