@@ -1,7 +1,6 @@
 (function(exports){
 
   var vis = new CrawlerVis();
-
   exports.session = {};
 
 
@@ -11,8 +10,11 @@
 
 
   exports.updateTags = function(selectedUrls, tag){
-    console.log(selectedUrls);
-    console.log(tag);
+    urls = [];
+    for(var i = 0; i < selectedUrls.length; i++){
+      urls.push(selectedUrls[i]["url"][0]);
+    }
+    urls = urls.join("|");
   }
 
 

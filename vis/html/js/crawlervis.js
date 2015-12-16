@@ -7,6 +7,29 @@
 
 var CrawlerVis = function() {
     var currentCrawler = undefined;
+    this.availableTags = [
+      'Relevant',
+      'Irrelevant',
+      'Neutral',
+    ];
+    this.seedCrawlerTagsLogic = {
+      'Relevant': {
+        applicable: true,
+        removable: true,
+        negate: ['Irrelevant'],
+      },
+      'Irrelevant': {
+        applicable: true,
+        removable: true,
+        negate: ['Relevant'],
+      },
+      'Neutral': {
+        isVirtual: true,
+        applicable: true,
+        removable: false,
+        negate: ['Relevant', 'Irrelevant'],
+      },
+    };
 };
 
 
@@ -198,30 +221,7 @@ CrawlerVis.prototype.initUISeedCrawler = function() {
   this.initStatslist();
   this.initFilterStatslist();
   this.initPagesLandscape(false);
-  this.initTagsGallery(
-    [
-      'Relevant',
-      'Irrelevant',
-      'Neutral',
-    ],
-    {
-      'Relevant': {
-        applicable: true,
-        removable: true,
-        negate: ['Irrelevant'],
-      },
-      'Irrelevant': {
-        applicable: true,
-        removable: true,
-        negate: ['Relevant'],
-      },
-      'Neutral': {
-        isVirtual: true,
-        applicable: true,
-        removable: false,
-        negate: ['Relevant', 'Irrelevant'],
-      },
-    });
+  this.initTagsGallery(this.availableTags, this.seedCrawlerTagsLogic);
   this.initPagesGallery();
   this.initTermsSnippetsViewer();
   this.initFilterButton();

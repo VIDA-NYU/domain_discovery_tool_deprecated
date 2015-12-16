@@ -87,14 +87,12 @@ def selection_plot(response):
         var selected = [];
         tag = "%s";
         for(var i = 0; i < inds.length; i++){
-            selected.push([
-                [
-                    data.x[inds[i]],
-                    data.y[inds[i]],
-                    data.urls[inds[i]],
-                    data.tags[inds[i]],
-                ]
-            ]);
+            selected.push({
+                x: data.x[inds[i]],
+                y: data.y[inds[i]],
+                url: data.urls[inds[i]],
+                tag: data.tags[inds[i]],
+            });
             data["color"][inds[i]] = "%s";
         }
         BokehPlots.updateTags(selected, tag);
@@ -119,7 +117,6 @@ def selection_plot(response):
     hover = p.select(dict(type=HoverTool))
     hover.tooltips = [
         ("urls", "@urls"),
-        ("tags", "@tags"),
     ]
     layout = vform(p, button1, button2, button3)
 
