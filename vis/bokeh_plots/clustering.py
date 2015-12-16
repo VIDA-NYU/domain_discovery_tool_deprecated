@@ -51,6 +51,7 @@ def selection_plot(response):
     source.callback = CustomJS(code="""
         var inds = cb_obj.get('selected')["1d"].indices;
         var data = cb_obj.get('data');
+        BokehPlots.showPages(inds);
     """)
 
 

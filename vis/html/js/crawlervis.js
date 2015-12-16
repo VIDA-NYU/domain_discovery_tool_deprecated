@@ -30,7 +30,8 @@ var CrawlerVis = function() {
       negate: ['Relevant', 'Irrelevant'],
     },
   };
-  this.initTagsGallery(this.availableTags, this.seedCrawlerTagsLogic);
+  // this.initTagsGallery(this.availableTags, this.seedCrawlerTagsLogic);
+  // this.initPagesLandscape(false);
 };
 
 

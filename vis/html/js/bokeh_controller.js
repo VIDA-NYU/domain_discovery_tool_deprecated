@@ -1,6 +1,6 @@
 (function(exports){
 
-  var vis = new CrawlerVis();
+  exports.vis = new CrawlerVis();
   exports.session = {};
 
 
@@ -11,6 +11,11 @@
 
   exports.updateTags = function(selectedUrls, tag){
     vis.tagsGallery.applyOrRemoveTag(tag, "Apply", selectedUrls);
+  }
+
+
+  exports.showPages = function(indices){
+    vis.onBrushedPagesChanged(indices);
   }
 
 
