@@ -91,7 +91,9 @@ def selection_plot(response):
                 x: data.x[inds[i]],
                 y: data.y[inds[i]],
                 url: data.urls[inds[i]],
-                tag: data.tags[inds[i]],
+                tags: data.tags[inds[i]],
+                selected: true,
+                possible: false,
             });
             data["color"][inds[i]] = "%s";
         }

@@ -6,30 +6,31 @@
  */
 
 var CrawlerVis = function() {
-    var currentCrawler = undefined;
-    this.availableTags = [
-      'Relevant',
-      'Irrelevant',
-      'Neutral',
-    ];
-    this.seedCrawlerTagsLogic = {
-      'Relevant': {
-        applicable: true,
-        removable: true,
-        negate: ['Irrelevant'],
-      },
-      'Irrelevant': {
-        applicable: true,
-        removable: true,
-        negate: ['Relevant'],
-      },
-      'Neutral': {
-        isVirtual: true,
-        applicable: true,
-        removable: false,
-        negate: ['Relevant', 'Irrelevant'],
-      },
-    };
+  var currentCrawler = undefined;
+  this.availableTags = [
+    'Relevant',
+    'Irrelevant',
+    'Neutral',
+  ];
+  this.seedCrawlerTagsLogic = {
+    'Relevant': {
+      applicable: true,
+      removable: true,
+      negate: ['Irrelevant'],
+    },
+    'Irrelevant': {
+      applicable: true,
+      removable: true,
+      negate: ['Relevant'],
+    },
+    'Neutral': {
+      isVirtual: true,
+      applicable: true,
+      removable: false,
+      negate: ['Relevant', 'Irrelevant'],
+    },
+  };
+  this.initTagsGallery(this.availableTags, this.seedCrawlerTagsLogic);
 };
 
 
