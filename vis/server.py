@@ -259,7 +259,8 @@ class Page:
   @cherrypy.expose
   def getBokehPlot(self, session):
     session = json.loads(session)
-    res = selection_plot(self._crawler.getPages(session))
+    data = self._crawler.getPages(session)
+    res = {"data": data, "plot": selection_plot(data)}
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
 

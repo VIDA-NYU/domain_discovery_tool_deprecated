@@ -1,36 +1,53 @@
+/**
+ * This module handles communication between the bokeh callbacks and the rest of
+ * the DDT application. Many of these functions are helper functions called from
+ * the bokeh CustomJS callbacks in `vis/bokeh_graphs/clustering.py`.
+ */
 (function(exports){
 
   exports.vis = new CrawlerVis();
+
+  // Build the seed crawler and instantiate the necessary plot objects.
+  exports.vis.initUICrawler.call(exports.vis);
+
   exports.session = {};
 
 
+  // Updates the session information to be sent to the server with
+  // exports.getPlotData()
   exports.updateSession = function(){
-    exports.session = vis.sessionInfo();
+    exports.session = exports.vis.sessionInfo();
   }
 
 
+  // Takes urls and tags from Bokeh and changes their tags.
   exports.updateTags = function(selectedUrls, tag){
-    vis.tagsGallery.applyOrRemoveTag(tag, "Apply", selectedUrls);
+    exports.vis.tagsGallery.applyOrRemoveTag(tag, "Apply", selectedUrls);
   }
 
 
+  // Shows the selected pages on the pageGallery below the plot.
   exports.showPages = function(indices){
-    vis.onBrushedPagesChanged(indices);
+    exports.vis.onBrushedPagesChanged(indices);
   }
 
 
+  // Inserts the bokeh plot at the specified dom element.
   exports.insertPlot = function(plotData){
     $("#bokehClusterPlot").html(plotData);
   }
 
 
+  // Gets the necessary javascript and HTML for rendering the bokeh plot into
+  // the dom.
   exports.getPlotData = function(){
     $.ajax({
       url: "/getBokehPlot",
       type: "POST",
       data: {"session": JSON.stringify(exports.session)},
       success: function(data){
-        exports.insertPlot(data);
+        exports.insertPlot(data.plot);
+        exports.vis.onLoadedPages(data.data);
       },
     });
   }
