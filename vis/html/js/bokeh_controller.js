@@ -34,7 +34,7 @@
 
   // Inserts the bokeh plot at the specified dom element.
   exports.insertPlot = function(plotData){
-    $("#bokehClusterPlot").html(plotData);
+    $("#pages_landscape_container").html(plotData);
   }
 
 

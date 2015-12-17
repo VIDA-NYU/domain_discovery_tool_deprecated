@@ -30,8 +30,6 @@ var CrawlerVis = function() {
       negate: ['Relevant', 'Irrelevant'],
     },
   };
-  // this.initTagsGallery(this.availableTags, this.seedCrawlerTagsLogic);
-  // this.initPagesLandscape(false);
 };
 
 
@@ -811,7 +809,7 @@ CrawlerVis.prototype.onTagActionClicked = function(tag, action, opt_items) {
   if (urls.length > 0) {
     DataAccess.setPagesTag(urls, tag, applyTagFlag, vis.sessionInfo());
   }
-  this.pagesLandscape.update();
+  // this.pagesLandscape.update();
   this.pagesGallery.update();
 };
 

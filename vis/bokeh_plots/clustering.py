@@ -9,8 +9,8 @@ from bokeh.models.widgets import RadioButtonGroup, Button
 from bokeh.embed import components
 
 
-FIGURE_WIDTH=600
-FIGURE_HEIGHT=400
+FIGURE_WIDTH=685
+FIGURE_HEIGHT=365
 NEUTRAL_COLOR = "#7F7F7F"
 POSITIVE_COLOR = "blue"
 NEGATIVE_COLOR = "crimson"
