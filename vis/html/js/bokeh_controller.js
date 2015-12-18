@@ -21,8 +21,9 @@
 
 
   // Takes urls and tags from Bokeh and changes their tags.
-  exports.updateTags = function(selectedUrls, tag){
+  exports.updateTags = function(selectedUrls, tag, inds){
     exports.vis.tagsGallery.applyOrRemoveTag(tag, "Apply", selectedUrls);
+    exports.vis.updateGalleryItems(inds);
   }
 
 

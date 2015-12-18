@@ -98,7 +98,7 @@ def selection_plot(response):
             });
             data["color"][inds[i]] = "%s";
         }
-        BokehPlots.updateTags(selected, tag);
+        BokehPlots.updateTags(selected, tag, inds);
         source.trigger("change");
     """
 

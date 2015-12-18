@@ -67,6 +67,12 @@ PagesGallery.prototype.addItems = function(items) {
 };
 
 
+PagesGallery.prototype.setItems = function(items){
+  this.items = items;
+  this.update();
+}
+
+
 /**
  * Sets a callback to test whether a tag is removable.
  */
