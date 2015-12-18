@@ -95,35 +95,6 @@ TagsGallery.prototype.update = function() {
       return item + '-' + i;
   });
 
-  // New items.
-  items.enter()
-    .append('div')
-    .classed('noselect', true)
-    .classed('item', true);
-
-  // Remove missing items.
-  items.exit().remove();
-
-  // Updates existing items.
-  items
-    .on('click', function(item, i) {
-      var itemElm = d3.select(this);
-      itemElm.classed('selected', !itemElm.classed('selected'));
-      gallery.onItemClick(item, i);
-    })
-    .on('mouseover', function(item, i) {
-      gallery.onItemFocus(item, i, true);
-      d3.select(this).selectAll('img').classed('focus', true);
-    })
-    .on('mouseout', function(item, i) {
-      Utils.hideTooltip();
-      d3.select(this).selectAll('img').classed('focus', false);
-      gallery.onItemFocus(item, i, false);
-    })
-    .html(function(item, i) {
-      return gallery.getItemButtons(item, i) + gallery.getItemInfo(item, i);
-    });
-
   // Configures actions on images.
   items.each(function(item, i) {
     // Only clickable tags.

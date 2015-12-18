@@ -34,7 +34,7 @@
 
   // Inserts the bokeh plot at the specified dom element.
   exports.insertPlot = function(plotData){
-    $("#pages_landscape_container").html(plotData);
+    $("#pages_landscape").html(plotData);
   }
 
 
@@ -53,8 +53,22 @@
   }
 
 
+  exports.getEmptyPlot = function(){
+    $.ajax({
+      url: "/getEmptyBokehPlot",
+      type: "GET",
+      //data: {"session": JSON.stringify(exports.session)},
+      success: function(data){
+        exports.insertPlot(data);
+      },
+    });
+  }
+
+
   // Connect to updateSession to bokeh_get_session signal
   SigSlots.connect(__sig__.bokeh_get_session, exports, exports.updateSession);
   SigSlots.connect(__sig__.bokeh_insert_plot, exports, exports.getPlotData);
+
+  exports.getEmptyPlot();
 
 })(this.BokehPlots = {});

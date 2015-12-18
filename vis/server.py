@@ -5,7 +5,7 @@ import os
 from crawler_model_adapter import *
 from threading import Lock
 
-from bokeh_plots.clustering import selection_plot
+from bokeh_plots.clustering import selection_plot, empty_plot
 
 cherrypy.engine.timeout_monitor.unsubscribe()
 
@@ -263,6 +263,11 @@ class Page:
     res = {"data": data, "plot": selection_plot(data)}
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
+
+  @cherrypy.expose
+  def getEmptyBokehPlot(self):
+    cherrypy.response.headers["Content-Type"] = "application/json;"
+    return json.dumps(empty_plot())
 
 
 if __name__ == "__main__":

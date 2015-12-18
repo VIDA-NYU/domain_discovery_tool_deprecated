@@ -9,8 +9,8 @@ from bokeh.models.widgets import RadioButtonGroup, Button
 from bokeh.embed import components
 
 
-FIGURE_WIDTH=685
-FIGURE_HEIGHT=365
+FIGURE_WIDTH=1000
+FIGURE_HEIGHT=375
 NEUTRAL_COLOR = "#7F7F7F"
 POSITIVE_COLOR = "blue"
 NEGATIVE_COLOR = "crimson"
@@ -56,8 +56,8 @@ def selection_plot(response):
 
 
     # Create the figure with FIGURE_WIDTH and FIGURE_HEIGHT
-    p = figure(tools="hover", width=FIGURE_WIDTH, height=FIGURE_HEIGHT,
-            toolbar_location=None)
+    p = figure(tools="hover", width=FIGURE_WIDTH,
+            toolbar_location=None, responsive=True)
 
     # Ensure that the lasso only selects with mouseup, not mousemove.
     p.add_tools(LassoSelectTool(select_every_mousemove=False))
@@ -121,6 +121,32 @@ def selection_plot(response):
     hover.tooltips = [
         ("urls", "@urls"),
     ]
+    layout = vform(p, button1, button2, button3)
+
+    # Combine script and div into a single string.
+    plot_code = components(layout)
+    return plot_code[0] + plot_code[1]
+
+
+def empty_plot():
+    p = figure(tools="hover", height=FIGURE_HEIGHT,
+            toolbar_location=None, responsive=True)
+
+    # Ensure that the lasso only selects with mouseup, not mousemove.
+    p.add_tools(LassoSelectTool(select_every_mousemove=False))
+
+    # These turn off the x/y axis ticks
+    p.axis.visible = None
+
+    # These turn the major grid off
+    p.xgrid.grid_line_color = None
+    p.ygrid.grid_line_color = None
+
+    # Plot non-selected circles with a particular style using CIRCLE_SIZE and
+    # 'color' list
+    button1 = Button(label="Relevant", type="success")
+    button2 = Button(label="Irrelevant", type="success")
+    button3 = Button(label="Neutral", type="success")
     layout = vform(p, button1, button2, button3)
 
     # Combine script and div into a single string.

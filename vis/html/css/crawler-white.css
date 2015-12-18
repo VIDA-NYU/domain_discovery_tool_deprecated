@@ -428,6 +428,8 @@ svg text {
   background: white;
   width: 100%;
   padding: 10px;
+  height: auto;
+  min-height: 400px;
 }
 
 #pages_landscape {
