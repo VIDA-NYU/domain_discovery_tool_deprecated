@@ -1371,3 +1371,15 @@ textarea[name=seeds_text] {
   margin-top: 10px;
   float:right;
 }
+
+.bk-bs-btn-success {
+  float:right;
+  background-color: #f6bb42;
+  border-color: #f6bb42;
+  margin-left:5px;
+}
+
+.bk-bs-btn-success:hover, .bk-bs-btn-success:active, .bk-bs-btn-success:focus{
+  background-color: #ffce54;
+  border-color: #ffce54;
+}
