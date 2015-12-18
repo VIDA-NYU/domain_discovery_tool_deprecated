@@ -810,17 +810,8 @@ CrawlerVis.prototype.onTagActionClicked = function(tag, action, opt_items) {
     DataAccess.setPagesTag(urls, tag, applyTagFlag, vis.sessionInfo());
   }
   // this.pagesLandscape.update();
-  this.pagesGallery.clear();
+  this.pagesGallery.update();
 };
-
-
-CrawlerVis.prototype.updateGalleryItems = function(indexOfSelectedItems){
-  var pages = this.pagesLandscape.getPagesData();
-  var selectedPages = indexOfSelectedItems.map(function (index) {
-     return pages[index];
-  });
-  this.pagesGallery.setItems(selectedPages);
-}
 
 
 // Responds to clicked tag action for individual page.

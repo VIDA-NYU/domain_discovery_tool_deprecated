@@ -23,13 +23,13 @@
   // Takes urls and tags from Bokeh and changes their tags.
   exports.updateTags = function(selectedUrls, tag, inds){
     exports.vis.tagsGallery.applyOrRemoveTag(tag, "Apply", selectedUrls);
-    exports.vis.updateGalleryItems(inds);
+    exports.vis.onBrushedPagesChanged(inds);
   }
 
 
   // Shows the selected pages on the pageGallery below the plot.
-  exports.showPages = function(indices){
-    exports.vis.onBrushedPagesChanged(indices);
+  exports.showPages = function(inds){
+    exports.vis.onBrushedPagesChanged(inds);
   }
 
 
