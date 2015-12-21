@@ -10,6 +10,7 @@
   // Build the seed crawler and instantiate the necessary plot objects.
   exports.vis.initUICrawler.call(exports.vis);
 
+  exports.inds = [];
   exports.session = {};
 
 
@@ -22,13 +23,15 @@
 
   // Takes urls and tags from Bokeh and changes their tags.
   exports.updateTags = function(selectedUrls, tag, inds){
+    exports.inds = inds;
     exports.vis.tagsGallery.applyOrRemoveTag(tag, "Apply", selectedUrls);
-    exports.vis.onBrushedPagesChanged(inds);
+    exports.updateData();
   }
 
 
   // Shows the selected pages on the pageGallery below the plot.
   exports.showPages = function(inds){
+    exports.inds = inds;
     exports.vis.onBrushedPagesChanged(inds);
   }
 
@@ -62,6 +65,21 @@
       success: function(data){
         exports.insertPlot(data);
       },
+    });
+  }
+
+
+  exports.updateData = function(){
+    $.ajax({
+      url: "/getPages",
+      type: "GET",
+      data: {"session": JSON.stringify(exports.session)},
+      success: function(data){
+        exports.vis.onLoadedPages(data);
+      },
+    })
+    .done(function(){
+      exports.vis.onBrushedPagesChanged(exports.inds);
     });
   }
 
