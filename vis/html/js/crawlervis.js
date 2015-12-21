@@ -756,7 +756,6 @@ CrawlerVis.prototype.onLoadedPages = function(pagesData) {
 
   // Clears pages gallery.
   this.pagesGallery.clear();
-
   return pages;
 };
 
@@ -811,6 +810,7 @@ CrawlerVis.prototype.onTagActionClicked = function(tag, action, opt_items) {
   }
   // this.pagesLandscape.update();
   this.pagesGallery.update();
+  BokehPlots.vis.onBrushedPagesChanged(BokehPlots.inds);
 };
 
 

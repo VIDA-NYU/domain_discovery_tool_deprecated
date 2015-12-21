@@ -76,10 +76,8 @@
       data: {"session": JSON.stringify(exports.session)},
       success: function(data){
         exports.vis.onLoadedPages(data);
+        exports.vis.onBrushedPagesChanged(exports.inds);
       },
-    })
-    .done(function(){
-      exports.vis.onBrushedPagesChanged(exports.inds);
     });
   }
 

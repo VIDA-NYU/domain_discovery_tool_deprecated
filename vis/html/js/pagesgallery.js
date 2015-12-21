@@ -199,8 +199,8 @@ PagesGallery.prototype.update = function() {
         if (isRemovable) {
           // Removes tag from item.
           __sig__.emit(__sig__.tag_individual_page_action_clicked, tag, actionType, item);
+          BokehPlots.updateData();
         }
-        BokehPlots.updateData();
       })
       .on('mouseover', function(tag, i) {
         var isRemovable = gallery.cbIsTagRemovable(tag);
@@ -263,6 +263,7 @@ PagesGallery.prototype.update = function() {
         url: item.url,
     });
   });
+
 };
 
 
