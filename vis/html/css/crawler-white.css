@@ -136,6 +136,7 @@ p {
   background: #f9f9f9;
   font-size: 25px;
   padding: 10px;
+  z-index: 0;
 }
 
 #right_panel {
