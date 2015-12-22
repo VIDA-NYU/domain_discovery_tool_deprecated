@@ -810,7 +810,7 @@ CrawlerVis.prototype.onTagActionClicked = function(tag, action, opt_items) {
   }
   // this.pagesLandscape.update();
   this.pagesGallery.update();
-  BokehPlots.vis.onBrushedPagesChanged(BokehPlots.inds);
+  BokehPlots.updateData();
 };
 
 
