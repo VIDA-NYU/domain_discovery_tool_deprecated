@@ -199,7 +199,7 @@ PagesGallery.prototype.update = function() {
         if (isRemovable) {
           // Removes tag from item.
           __sig__.emit(__sig__.tag_individual_page_action_clicked, tag, actionType, item);
-          BokehPlots.updateData();
+          BokehPlots.vis.onBrushedPagesChanged(BokehPlots.inds);
         }
       })
       .on('mouseover', function(tag, i) {
@@ -231,7 +231,7 @@ PagesGallery.prototype.update = function() {
       if (tag != defaultOption) {
         // Adds tag to item.
         __sig__.emit(__sig__.tag_individual_page_action_clicked, tag, 'Apply', item);
-        BokehPlots.updateData();
+        BokehPlots.vis.onBrushedPagesChanged(BokehPlots.inds);
       }
     });
 
