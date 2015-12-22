@@ -25,7 +25,6 @@
   exports.updateTags = function(selectedUrls, tag, inds){
     exports.inds = inds;
     exports.vis.tagsGallery.applyOrRemoveTag(tag, "Apply", selectedUrls);
-    exports.updateData();
   }
 
 
@@ -71,12 +70,13 @@
 
   exports.updateData = function(){
     $.ajax({
-      url: "/getPages",
+      url: "/getBokehPlot",
       type: "GET",
       data: {"session": JSON.stringify(exports.session)},
       success: function(data){
-        exports.vis.onLoadedPages(data);
+        exports.vis.onLoadedPages(data.data);
         exports.vis.onBrushedPagesChanged(exports.inds);
+        exports.insertPlot(data.plot);
       },
     });
   }
