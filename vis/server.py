@@ -257,8 +257,10 @@ class Page:
   @cherrypy.expose
   def topic_model(self, ddt_domain):
     project = self._crawler._crawlerModel.make_topic_model(ddt_domain=ddt_domain)
-    return str(project.selected_tokenized_corpus.next())
-
+    doc_topic_matrix = project.selected_modeled_corpus.doc_topic_matrix
+    num_docs = len(doc_topic_matrix)
+    result = "Topics distribution for {:d} documents. {}".format(num_docs, str(doc_topic_matrix))
+    return result
 
 if __name__ == "__main__":
   page = Page()
