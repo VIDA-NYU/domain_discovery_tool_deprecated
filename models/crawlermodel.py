@@ -39,9 +39,6 @@ from ranking import tfidf, rank, extract_terms, word2vec, get_bigrams_trigrams
 
 from topik import read_input, tokenize, vectorize, run_model, visualize, TopikProject
 
-import logging
-logging.basicConfig(filename='crawlermodel.log',level=logging.DEBUG)
-
 import urllib2
 import json
 
@@ -978,18 +975,13 @@ class CrawlerModel:
     delta = dt - epoch
     return delta.total_seconds()
 
-  def make_ddt_lda_model(self, session=None, ntopics=3):
-    logging.debug(str(session))
-
-    es_info = self.esInfo(session['domainId']);
-    input_index = es_info['activeCrawlerIndex']
-    output_index = input_index + '_topic_model'
-    output_args = {"source": es_server, "index": output_index, "content_field":"text"}
+  def make_topic_model(self, ddt_domain, ntopics=3):
+    output_index = ddt_domain + '_topic_model'
+    output_args = {"source": es_server, "index": output_index, "content_field": "text"}
 
     with TopikProject(output_index, output_type="ElasticSearchOutput", output_args=output_args) as project:
-      project.read_input(source=es_server, content_field='text', index=input_index)
+      project.read_input(source=es_server, content_field='text', index=ddt_domain)
       project.tokenize(method='simple')
       project.vectorize(method='bag_of_words')
       project.run_model(model_name='lda', ntopics=ntopics)
-    logging.debug(str(proj.selected_tokenized_corpus.next()))
     return project

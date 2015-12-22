@@ -255,8 +255,9 @@ class Page:
     return json.dumps({"positive": posData, "negative": negData})
 
   @cherrypy.expose
-  def topic_model(self):
-    self._crawler._crawlerModel.make_ddt_lda_model()
+  def topic_model(self, ddt_domain):
+    project = self._crawler._crawlerModel.make_topic_model(ddt_domain=ddt_domain)
+    return str(project.selected_tokenized_corpus.next())
 
 
 if __name__ == "__main__":
