@@ -147,6 +147,8 @@ class SeedCrawlerModelAdapter(CrawlerModelAdapter):
   def getAvailableProjectionAlgorithms(self):
     return self._crawlerModel.getAvailableProjectionAlgorithms()
 
+  def getAvailableQueries(self, session):
+    return self._crawlerModel.getAvailableQueries(session)
 
   # Returns number of pages downloaded between ts1 and ts2 for active crawler.
   # ts1 and ts2 are Unix epochs (seconds after 1970).
