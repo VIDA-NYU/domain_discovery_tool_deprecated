@@ -71,8 +71,8 @@ def selection_plot(response):
 
     # Plot non-selected circles with a particular style using CIRCLE_SIZE and
     # 'color' list
-    p.circle("x", "y", size=CIRCLE_SIZE, line_width=2, line_alpha=0.5,
-            line_color=None, fill_alpha=0.6, color='color', source=source,
+    p.circle("x", "y", size=CIRCLE_SIZE, line_width=2, line_alpha=1,
+            line_color=None, fill_alpha=1, color='color', source=source,
             name="urls")
     nonselected_circle = Circle(fill_alpha=0.2, fill_color='color',
             line_color='color')
