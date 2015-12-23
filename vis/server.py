@@ -84,6 +84,13 @@ class Page:
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
 
+  @cherrypy.expose
+  def getAvailableQueries(self, session):
+    session = json.loads(session)
+    res = self._crawler.getAvailableQueries(session)
+    cherrypy.response.headers["Content-Type"] = "application/json;"
+    return json.dumps(res)
+
   # Submits a web query for a list of terms, e.g. 'ebola disease'
   @cherrypy.expose
   def queryWeb(self, terms, session):

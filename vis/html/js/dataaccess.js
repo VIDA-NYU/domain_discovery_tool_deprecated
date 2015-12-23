@@ -123,6 +123,11 @@ var DataAccess = (function() {
     __sig__.emit(__sig__.terms_snippets_loaded, snippetsData);
   };
 
+  // Processes loaded queries
+  var onAvailableQueriesLoaded = function(queriesData) {
+    __sig__.emit(__sig__.queries_loaded, queriesData);
+  };
+
 
   //Signal load of new pages after certain interval
   var loadNewPagesSummary = function(isFilter) {
@@ -210,6 +215,12 @@ var DataAccess = (function() {
     currentProjAlg = algId;
   };
 
+  // Returns public interface.
+  // Gets available queries from backend.
+  pub.loadAvailableQueries = function(session) {
+      runQuery('/getAvailableQueries', {'session': JSON.stringify(session)}, onAvailableQueriesLoaded);
+  };
+  
   // Queries the web for terms (used in Seed Crawler mode).
   pub.queryWeb = function(terms, session) {
       document.getElementById("status_panel").innerHTML = 'Querying the Web...see page summary for real-time page download status';

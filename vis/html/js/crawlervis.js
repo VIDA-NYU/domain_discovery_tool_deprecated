@@ -30,6 +30,8 @@ var CrawlerVis = function() {
       negate: ['Relevant', 'Irrelevant'],
     },
   };
+    var currentCrawler = undefined;
+    var queries = undefined;
 };
 
 
@@ -89,7 +91,7 @@ CrawlerVis.prototype.initSignalSlotsCrawler = function() {
   SigSlots.connect(__sig__.term_focus, this, this.onTermFocus);
   SigSlots.connect(__sig__.terms_snippets_loaded, this, this.onLoadedTermsSnippets);
   SigSlots.connect(__sig__.pages_loaded, this, this.onLoadedPages);
-
+  SigSlots.connect(__sig__.queries_loaded, this, this.onLoadedQueries);
   SigSlots.connect(__sig__.tag_focus, this, this.onTagFocus);
   SigSlots.connect(__sig__.tag_clicked, this, this.onTagClicked);
   SigSlots.connect(__sig__.tag_action_clicked, this, this.onTagActionClicked);
@@ -125,7 +127,7 @@ CrawlerVis.prototype.initSignalSlotsSeedCrawler = function() {
 
   SigSlots.connect(__sig__.terms_snippets_loaded, this, this.onLoadedTermsSnippets);
   SigSlots.connect(__sig__.pages_loaded, this, this.onLoadedPages);
-
+  SigSlots.connect(__sig__.queries_loaded, this, this.onLoadedQueries);
   SigSlots.connect(__sig__.tag_focus, this, this.onTagFocus);
   SigSlots.connect(__sig__.tag_clicked, this, this.onTagClicked);
   SigSlots.connect(__sig__.tag_action_clicked, this, this.onTagActionClicked);
@@ -147,6 +149,7 @@ CrawlerVis.prototype.initSignalSlotsSeedCrawler = function() {
 CrawlerVis.prototype.initUICrawler = function() {
   this.loadAvailableCrawlers();
   this.loadAvailableProjectionAlgorithms();
+  this.createSelectForAvailablePageRetrievalCriteria();
   this.initWordlist();
   this.initStatslist();
   this.initFilterStatslist();
@@ -217,6 +220,7 @@ CrawlerVis.prototype.initUICrawler = function() {
 CrawlerVis.prototype.initUISeedCrawler = function() {
   this.loadAvailableCrawlers();
   this.loadAvailableProjectionAlgorithms();
+  this.createSelectForAvailablePageRetrievalCriteria();
   this.initWordlist();
   this.initStatslist();
   this.initFilterStatslist();
@@ -239,8 +243,9 @@ CrawlerVis.prototype.getElementValueId = function(d){
 }
 
 CrawlerVis.prototype.setCurrentCrawler = function(crawlerId){
-  this.currentCrawler = crawlerId;
-  this.setActiveCrawler(crawlerId)
+    this.currentCrawler = crawlerId;
+    this.setActiveCrawler(crawlerId);
+    this.clearAll();
 }
 
 CrawlerVis.prototype.renderCrawlerOptions = function(element, data, selectedCrawler){
@@ -379,10 +384,8 @@ CrawlerVis.prototype.createSelectForAvailableProjectionAlgorithms = function(dat
     .text(function(d, i) {
       return d.name;
     });
-
-  $('#selectProjectionAlgorithm').val("PCA")
+  selectBox.val = options[0].text;
 };
-
 
 // Loads list of available projection algorithms.
 CrawlerVis.prototype.loadAvailableProjectionAlgorithms = function() {
@@ -396,6 +399,95 @@ CrawlerVis.prototype.setActiveProjectionAlg = function(algId) {
   DataAccess.setActiveProjectionAlg(algId);
 };
 
+// Creates select with available pages selection criteria.
+CrawlerVis.prototype.createSelectForAvailablePageRetrievalCriteria = function() {
+  var vis = this;
+  var selectBox = d3.select('#page_retrieval_criteria_select').on('change', function() {
+      var criteria = d3.select(this).node().value;
+      if(criteria == "Queries"){
+	  $('#select_queries').show();
+      }
+      else $('#select_queries').hide();
+  });
+    
+  $('#selectPageRetrievalCriteria').val("Most Recent");
+    
+  d3.select('#select_queries').on('click', function() {
+      DataAccess.loadAvailableQueries(vis.sessionInfo());
+  });
+
+    $('#listQueriesModal').on('shown.bs.modal', function(){
+	
+	var prev_checked_queries = vis.getCheckedValues("queries_checkbox");
+	var check_all = false;
+	if (prev_checked_queries.indexOf('select_all') > -1)
+	    check_all = true;
+
+	$('#queryCheckBox').empty();
+	
+	var newli_select_all = document.createElement('li');
+	if(check_all)
+	    newli_select_all.innerHTML = "<input type='checkbox' name='queries_checkbox' id='select_all' value='select_all' checked='true'><label for='select_all'>Select All</label>";
+	else
+	    newli_select_all.innerHTML = "<input type='checkbox' name='queries_checkbox' id='select_all' value='select_all'><label for='select_all'>Select All</label>";
+	
+	document.getElementById('queryCheckBox').appendChild(newli_select_all);
+
+	d3.select('#select_all').on('click', function(){
+	    checkboxes = document.getElementsByName('queries_checkbox');
+	    for (var checkbox in checkboxes){
+	    	checkboxes[checkbox].checked = this.checked;
+	    }
+	});
+
+	queries = vis.queries;
+	// Sort the queries by number of documents
+	keysSorted = Object.keys(queries).sort(function(a,b){
+	    return queries[b] - queries[a]
+	});
+
+	var count;
+	for (count = 0; count < keysSorted.length; count++) {
+	    var checked = false;
+	    if (prev_checked_queries.indexOf(keysSorted[count]) > -1)
+		checked = true;
+	    var newli = document.createElement('li');
+	    var label = "query_" + count.toString();
+	    if(check_all || checked)
+		newli.innerHTML = "<input type='checkbox' name='queries_checkbox' checked='true' 'id='" + label +"' value='"+keysSorted[count]+"'><label for='"+label+"'>"+keysSorted[count]+" ("+queries[keysSorted[count]]+")"+"</label>";
+	    else
+		newli.innerHTML = "<input type='checkbox' name='queries_checkbox' 'id='" + label +"' value='"+keysSorted[count]+"'><label for='"+label+"'>"+keysSorted[count]+" ("+queries[keysSorted[count]]+")"+"</label>";
+	    document.getElementById('queryCheckBox').appendChild(newli);
+	}
+    });
+  
+};
+
+CrawlerVis.prototype.onLoadedQueries = function(queries) {
+    var vis = this;
+    vis.queries = queries;
+    vis.enableQuerySelection(queries);
+};
+
+
+CrawlerVis.prototype.enableQuerySelection = function(queries){
+    var vis = this;
+    // Show the queries list modal
+    $('#listQueriesModal').modal("show");
+};
+
+CrawlerVis.prototype.getCheckedValues = function(source){
+    var selected_queries = [];
+    checkboxes = document.getElementsByName(source);
+    var index;
+    for (index = 0; index < checkboxes.length; index++){
+	
+	if(checkboxes[index].checked){
+	    selected_queries.push(checkboxes[index].value);
+	}
+    }
+    return selected_queries;
+};
 
 // Initializes statistics about crawler: number of positive/negative pages,
 // exploited/explored/pending for visualization.
@@ -645,7 +737,6 @@ CrawlerVis.prototype.onLoadedTermsSummary = function(summary) {
   this.termsSnippetsViewer.clear();
 };
 
-
 // Responds to focus on a term.
 CrawlerVis.prototype.onTermFocus = function(term, onFocus) {
   if (onFocus) {
@@ -819,7 +910,6 @@ CrawlerVis.prototype.onTagIndividualPageActionClicked = function(tag, action, it
   this.tagsGallery.applyOrRemoveTag(tag, action, [item]);
 };
 
-
 /**
  * Responds to new brushing for pages.
  */
@@ -863,6 +953,7 @@ CrawlerVis.prototype.initQueryWebButton = function() {
   // Initializes history of queries.
   this.queriesList = [];
 };
+
 
 
 CrawlerVis.prototype.initAddTermButton = function() {
@@ -1162,31 +1253,51 @@ CrawlerVis.prototype.appendToHistory = function(elementSelector, history, queryT
 
 // Return all the session info
 CrawlerVis.prototype.sessionInfo = function() {
+    var vis = this;
+    
+    var session = {};
+    
     var algId = d3.select('#selectProjectionAlgorithm').node().value;
+    session['activeProjectionAlg'] = algId;
+    
     var domainId = d3.select('input[name="crawlerRadio"]:checked').node() ? d3.select('input[name="crawlerRadio"]:checked').node().value : undefined;
+    session['domainId'] = domainId;
+    
     var cap = d3.select('#filter_cap_select').node().value;
-
+    session['pagesCap'] = cap;
+    
     var fromdate_local = new Date(d3.select('#fromdate').node().value);
     var todate_local = new Date(d3.select('#todate').node().value);
-
+    
     if (fromdate_local != "Invalid Date")
-  var fromdate_utc = Utils.toUTC(fromdate_local);
+	var fromdate_utc = Utils.toUTC(fromdate_local);
     else fromdate_utc = null;
     if (todate_local != "Invalid Date")
-  var todate_utc = Utils.toUTC(todate_local);
+	var todate_utc = Utils.toUTC(todate_local);
     else todate_utc = null;
+
+    session['fromDate'] = fromdate_utc;
+    session['toDate'] = todate_utc;
 
     var filterTerms = d3.select('#filter_box').node().value;
     if (filterTerms === '')
-  filterTerms = null;
-    return {
-  domainId: domainId,
-  activeProjectionAlg: algId,
-  pagesCap: cap,
-  filter: filterTerms,
-  fromDate: fromdate_utc,
-  toDate: todate_utc
-    };
+	filterTerms = null;
+    session['filter'] = filterTerms;
+    
+    var pageRetrievalCriteria = d3.select('#page_retrieval_criteria_select').node().value;
+    session['pageRetrievalCriteria'] = pageRetrievalCriteria;
+    if (pageRetrievalCriteria == 'Queries'){
+	session['selected_queries'] = vis.getCheckedValues('queries_checkbox').toString();
+    }
+    
+    return session;
+};
+
+
+CrawlerVis.prototype.clearAll = function() {
+    d3.select('#query_box').node().value = "";
+    d3.select('#filter_box').node().value = "";
+    $('#queryCheckBox').empty();
 };
 
 $(document).ready(function() {
