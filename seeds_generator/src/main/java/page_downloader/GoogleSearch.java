@@ -12,23 +12,24 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
 import java.util.ArrayList;
-import org.apache.commons.codec.binary.Base64;
-import org.xml.sax.InputSource;
-import org.w3c.dom.*;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
+import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONString;
 
-public class BingSearch {
+
+public class GoogleSearch {
     
     private String accountKey;
+    private String cseID;
     private Properties prop; 
 
-    public BingSearch(){
+    public GoogleSearch(){
 	try{
 	    prop = new Properties();
 	    FileInputStream is = new FileInputStream("conf/config.properties");
 	    prop.load(is);
-	    accountKey = prop.getProperty("ACCOUNTKEY");
+	    accountKey = prop.getProperty("ACCOUNTKEY_GOOG");
+	    cseID = prop.getProperty("CSE_ID_GOOG");
 	}   
 	catch(Exception e){
 	    e.printStackTrace();
@@ -49,21 +50,21 @@ public class BingSearch {
 	
 	ArrayList<String> results = new ArrayList<String>();
 	query = query.replaceAll(" ", "%20");
-	byte[] accountKeyBytes = Base64.encodeBase64((this.accountKey + ":" + this.accountKey).getBytes());
-	String accountKeyEnc = new String(accountKeyBytes);
 	URL query_url;
 	try {
-	    int chunk = 50;
-	    if (Integer.valueOf(top) < 50)
-		chunk = Integer.valueOf(top); 
-	    int skip_index = 0;
+	    int chunk = 10;
+	    int num = 10;
+	    int start = 1;
+	    if (Integer.valueOf(top) < 10){
+		num = Integer.valueOf(top);
+		chunk = Integer.valueOf(top);
+	    } 
 	    while(chunk > 0){
-	    	query_url = new URL("https://api.datamarket.azure.com/Data.ashx/Bing/Search/v1/Web?Adult=%27Off%27&$skip=" + String.valueOf(skip_index*50) + "&Query=%27" + query + "%20filetype:html" + "%27&$top=" + String.valueOf(chunk));
+	    	query_url = new URL("https://www.googleapis.com/customsearch/v1?start=" + String.valueOf(start) + "&num=" + String.valueOf(num) + "&key=" + accountKey + "&cx=" + cseID + "&q=" + query);  
 	    	System.out.println(query_url);
 
 	    	HttpURLConnection conn = (HttpURLConnection)query_url.openConnection();
 	    	conn.setRequestMethod("GET");
-	    	conn.setRequestProperty("Authorization", "Basic " + accountKeyEnc);
 
 	    	BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
 	    	String output = "";
@@ -71,26 +72,29 @@ public class BingSearch {
 	    	while ((line = br.readLine()) != null) {
 			output = output + line;
 	    	} 
+
 	    	conn.disconnect();
 
-	    	DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-	    	DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder(); 
-	    	InputSource is = new InputSource(new StringReader(output));
-	    	Document doc = docBuilder.parse(is);
-	    	NodeList urls = doc.getElementsByTagName("d:Url");
-	    	int totalUrls = urls.getLength();
+		JSONObject obj=new JSONObject(output);
 
-	    	for (int i=0; i<totalUrls; i++){
-			Element e = (Element)urls.item(i);
-			NodeList nl = e.getChildNodes();
-			String url = Download_Utils.validate_url((nl.item(0).getNodeValue()));
-			results.add(url);
-			download.addTask(url);
-	    	}
-		if ((Integer.valueOf(top) - chunk) < 50) 
-			chunk = Integer.valueOf(top) - chunk;
-		else chunk += 50;
-		++skip_index;
+		JSONObject queries = (JSONObject)obj.get("queries");
+		JSONArray request = (JSONArray)queries.get("request");
+		Integer totalUrls = (Integer)((JSONObject)request.get(0)).get("count");
+		
+		JSONArray urls = (JSONArray)obj.getJSONArray("items");
+		for(int i=0; i < totalUrls;++i){
+		    JSONObject url = (JSONObject)urls.get(i);
+		    String link = (String)url.get("link");
+		    results.add(link);
+		    download.addTask(link);
+		}
+		
+		chunk = Integer.valueOf(top) - chunk;
+
+		if (chunk < 10)
+		    num = chunk;
+
+		start = start + 10;
 	    }
 	} 
 	catch (MalformedURLException e1) {
@@ -139,7 +143,7 @@ public class BingSearch {
 	System.out.println("Query = " + query);
 	System.out.println("Get the top " + top + " results");
 	
-	BingSearch bs = new BingSearch();
+	GoogleSearch bs = new GoogleSearch();
 	bs.search(query, top, es_index, es_doc_type, es_server);
     }
 }

@@ -66,6 +66,9 @@ class CrawlerModel:
       'Epidemy': ['Epidemy', 100, 100, []],
     }
 
+    self.mut_exc_tags = [ "Relevant",
+                          "Irrelevant"]
+    
     create_config_index()
     create_terms_index()
 
@@ -376,13 +379,14 @@ class CrawlerModel:
       "index": es_info['activeCrawlerIndex'],
       "doc_type": es_info['docType']
     }
-    pos_terms = [field['term'][0] for field in multifield_term_search(s_fields, ['term'], self._termsIndex, 'terms', self._es)]
 
+    pos_terms = [field['term'][0] for field in multifield_term_search(s_fields, ['term'], self._termsIndex, 'terms', self._es)]
+        
     s_fields["tag"]="Negative"
     neg_terms = [field['term'][0] for field in multifield_term_search(s_fields, ['term'], self._termsIndex, 'terms', self._es)]
 
     pos_urls = [field['id'] for field in term_search(es_info['mapping']['tag'], ['Relevant'], ['url'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)]
-    
+
     top_terms = []
     top_bigrams = []
     top_trigrams = []
@@ -391,9 +395,10 @@ class CrawlerModel:
       urls = []
       if len(pos_urls) > 0:
         # If positive urls are available search for more documents like them
+        
         results = get_more_like_this(pos_urls, ['url', es_info['mapping']["text"]], self._pagesCapTerms,  es_info['activeCrawlerIndex'], es_info['docType'],  self._es)
         urls = pos_urls[0:self._pagesCapTerms] + [field['id'] for field in results] 
-
+        
       if not urls:
         # If positive urls are not available then get the most recent documents
         results = get_most_recent_documents(self._pagesCapTerms, es_info['mapping'], ['url',es_info['mapping']["text"]], session['filter'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)
@@ -401,7 +406,7 @@ class CrawlerModel:
         
       if len(results) > 0:
         text = [field[es_info['mapping']["text"]][0] for field in results]
-        
+                
         if len(urls) > 0:
           tfidf_all = tfidf.tfidf(urls, es_info['mapping'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)
           if pos_terms:
@@ -411,7 +416,7 @@ class CrawlerModel:
             top_terms = top_terms[0:opt_maxNumberOfTerms]
           else:
             top_terms = tfidf_all.getTopTerms(opt_maxNumberOfTerms)
-
+        
         if len(text) > 0:
           [_,_,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(text, opt_maxNumberOfTerms, self.w2v, self._es)
           top_bigrams = [term for term in top_bigrams if term[0].replace('_',' ') not in neg_terms]
@@ -512,7 +517,7 @@ class CrawlerModel:
     for term in top_trigrams:
       entry = [term[0].replace('_', ' '), 0, 0, []]
       terms.append(entry)
-
+    
     return terms
 
   # Sets limit to pages returned by @getPages.
@@ -704,25 +709,45 @@ class CrawlerModel:
       tag = tags[0]['tag'][0].split(';')
 
     return {'term': term, 'tags': tag, 'context': get_context(term.split('_'), es_info['activeCrawlerIndex'], es_info['docType'],  self._es)}
-
-  # Adds tag to pages (if applyTagFlag is True) or removes tag from pages (if applyTagFlag is
+  
+  # Adds tag tow pages (if applyTagFlag is True) or removes tag from pages (if applyTagFlag is
   # False).
   def setPagesTag(self, pages, tag, applyTagFlag, session):
     es_info = self.esInfo(session['domainId'])
 
     entries = {}
     results = get_documents(pages, 'url', [es_info['mapping']['tag']], es_info['activeCrawlerIndex'], es_info['docType'],  self._es)
-
+    
     if applyTagFlag:
       print '\n\napplied tag ' + tag + ' to pages' + str(pages) + '\n\n'
       for page in pages:
         entry = {}
         if len(results) > 0 and not results.get(page) is None:
-            if  not results[page].get(es_info['mapping']['tag']) is None:
-              entry[es_info['mapping']['tag']] = results[page][es_info['mapping']['tag']][0] +';'+tag
+          # pages to be tagged exist
+
+          if results[page].get(es_info['mapping']['tag']) is None:
+            # there are no previous tags
+            entry[es_info['mapping']['tag']] = tag
+          else:
+            tags = []
+            if results[page][es_info['mapping']['tag']][0] != '':
+              # all previous tags were removed
+              tags = list(set(results[page][es_info['mapping']['tag']][0].split(';')))
+
+            if len(tags) != 0:
+              # previous tags exist
+              for tag in self.mut_exc_tags:
+                # remove conflicting tags
+                if tag in tags:
+                  tags.remove(tag)
+              # append new tag    
+              entry[es_info['mapping']['tag']] = ';'.join(tags)+';'+tag
             else:
+              # add new tag
               entry[es_info['mapping']['tag']] = tag
-            entries[results[page]['id']] =  entry
+
+          entries[results[page]['id']] =  entry
+
     else:
       print '\n\nremoved tag ' + tag + ' from pages' + str(pages) + '\n\n'
       for page in pages:
@@ -851,7 +876,16 @@ class CrawlerModel:
 
     chdir(environ['DDT_HOME']+'/seeds_generator')
     
-    comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar BingSearch -t " + str(max_url_count) + \
+    print "\n", session['pagesCap'], "\n"
+
+    if(int(session['pagesCap']) <= max_url_count):
+      top = int(session['pagesCap'])
+    else:
+      top = max_url_count
+
+    print "\n", top, "\n"
+
+    comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar BingSearch -t " + str(top) + \
            " -q \"" + terms + "\"" + \
            " -i " + es_info['activeCrawlerIndex'] + \
            " -d " + es_info['docType'] + \
