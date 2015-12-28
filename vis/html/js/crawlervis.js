@@ -845,8 +845,6 @@ CrawlerVis.prototype.onLoadedPages = function(pagesData) {
   DataAccess.loadPagesSummaryUntilLastUpdate(false, vis.sessionInfo());
   DataAccess.loadPagesSummaryUntilLastUpdate(true, vis.sessionInfo());
 
-  // Clears pages gallery.
-  this.pagesGallery.clear();
   return pages;
 };
 
@@ -899,8 +897,6 @@ CrawlerVis.prototype.onTagActionClicked = function(tag, action, opt_items) {
   if (urls.length > 0) {
     DataAccess.setPagesTag(urls, tag, applyTagFlag, vis.sessionInfo());
   }
-  // this.pagesLandscape.update();
-  this.pagesGallery.update();
   BokehPlots.updateData();
 };
 
@@ -918,8 +914,7 @@ CrawlerVis.prototype.onBrushedPagesChanged = function(indexOfSelectedItems) {
   var selectedPages = indexOfSelectedItems.map(function (index) {
     return pages[index];
   });
-  this.pagesGallery.clear();
-  this.pagesGallery.addItems(selectedPages);
+  this.pagesGallery.setItems(selectedPages);
 
   // Updates button used to boost selected items in pages landscape.
   d3.select('#pages_landscape_boost')
