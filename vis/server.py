@@ -32,13 +32,18 @@ class Page:
   def __init__(self):
     # Folder with html content.
     self._HTML_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), u"html")
+    self.visfilename = os.path.join(self._HTML_DIR, u"topicsvis.html")
     self.lock = Lock()
 
 
   # Access to topics visualization.
   @cherrypy.expose
-  def topicsvis(self):
-    return open(os.path.join(self._HTML_DIR, u"topicsvis.html"))
+  def topicsvis(self, ddt_domain):
+    project = self.topic_model(ddt_domain)
+    project.visualize(mode='save_html', filename=self.visfilename)
+    with open(self.visfilename, 'r') as f:
+      vis = f.read()
+    return vis
 
 
   # Access to crawler vis.
@@ -254,14 +259,9 @@ class Page:
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps({"positive": posData, "negative": negData})
 
-  @cherrypy.expose
   def topic_model(self, ddt_domain):
     project = self._crawler._crawlerModel.make_topic_model(ddt_domain=ddt_domain)
-    doc_topic_matrix = project.selected_modeled_corpus.doc_topic_matrix
-    num_docs = len(doc_topic_matrix)
-    result = "Topics distribution for {:d} documents. {}".format(num_docs, str(doc_topic_matrix))
-    return result
-
+    return project
 if __name__ == "__main__":
   page = Page()
 
@@ -282,4 +282,5 @@ if __name__ == "__main__":
 else:
   page = Page()
   # This branch is for the test suite; you can ignore it.
-  app = cherrypy.tree.mount(page, config=Page.getConfig())
+  config = Page.getConfig()
+  app = cherrypy.tree.mount(page, config=config)
