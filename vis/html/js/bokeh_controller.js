@@ -8,7 +8,7 @@
   exports.vis = new CrawlerVis();
 
   // Build the seed crawler and instantiate the necessary plot objects.
-  exports.vis.initUICrawler.call(exports.vis);
+  exports.vis.initUISeedCrawler.call(exports.vis);
 
   exports.inds = [];
   exports.session = {};

@@ -440,7 +440,7 @@ CrawlerVis.prototype.createSelectForAvailablePageRetrievalCriteria = function() 
 	    }
 	});
 
-	queries = vis.queries;
+	queries = BokehPlots.vis.queries;
 	// Sort the queries by number of documents
 	keysSorted = Object.keys(queries).sort(function(a,b){
 	    return queries[b] - queries[a]
@@ -466,6 +466,7 @@ CrawlerVis.prototype.createSelectForAvailablePageRetrievalCriteria = function() 
 CrawlerVis.prototype.onLoadedQueries = function(queries) {
     var vis = this;
     vis.queries = queries;
+    BokehPlots.vis.queries = queries;
     vis.enableQuerySelection(queries);
 };
 
