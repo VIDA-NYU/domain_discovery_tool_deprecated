@@ -54,9 +54,6 @@ class CrawlerModel:
                            # 'K-Means': self.kmeans,
                          }
 
-    self.pageRetrieval = {'Most Recent': self.getPages
-                         }
-
     # TODO(Yamuna): delete when not returning random data anymore.
     self._randomTerms = {
       'Word': ['Word', randint(1, 100), randint(1, 100), ['Positive']],
@@ -566,10 +563,11 @@ class CrawlerModel:
     queries = session['selected_queries'].split(',')
     for query in queries:
       s_fields[es_info['mapping']["query"]] = "'" + query + "'"
-      hits.extend(multifield_query_search(s_fields, session['pagesCap'], ["url", "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], 
+      results= multifield_query_search(s_fields, session['pagesCap'], ["url", "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], 
                                      es_info['activeCrawlerIndex'], 
                                      es_info['docType'],
-                                     self._es))
+                                     self._es)
+      hits.extend(results)
     return hits
 
   def _getRelevantPages(self, session):
@@ -656,7 +654,7 @@ class CrawlerModel:
         doc[5] = hit[es_info['mapping']["text"]][0]
 
       docs.append(doc)
-    
+
     if len(docs) > 1:
       # Prepares results: computes projection.
       # Update x, y for pages after projection is done.
@@ -713,53 +711,58 @@ class CrawlerModel:
   # Adds tag tow pages (if applyTagFlag is True) or removes tag from pages (if applyTagFlag is
   # False).
   def setPagesTag(self, pages, tag, applyTagFlag, session):
+    
     es_info = self.esInfo(session['domainId'])
 
     entries = {}
     results = get_documents(pages, 'url', [es_info['mapping']['tag']], es_info['activeCrawlerIndex'], es_info['docType'],  self._es)
-    
-    if applyTagFlag:
+
+    if applyTagFlag and len(results) > 0:
       print '\n\napplied tag ' + tag + ' to pages' + str(pages) + '\n\n'
+      
       for page in pages:
-        entry = {}
-        if len(results) > 0 and not results.get(page) is None:
+        if not results.get(page) is None:
           # pages to be tagged exist
-
-          if results[page].get(es_info['mapping']['tag']) is None:
-            # there are no previous tags
-            entry[es_info['mapping']['tag']] = tag
-          else:
-            tags = []
-            if results[page][es_info['mapping']['tag']][0] != '':
-              # all previous tags were removed
-              tags = list(set(results[page][es_info['mapping']['tag']][0].split(';')))
-
-            if len(tags) != 0:
-              # previous tags exist
-              for tag in self.mut_exc_tags:
-                # remove conflicting tags
-                if tag in tags:
-                  tags.remove(tag)
-              # append new tag    
-              entry[es_info['mapping']['tag']] = ';'.join(tags)+';'+tag
-            else:
-              # add new tag
+          records = results[page]
+          for record in records:
+            entry = {}
+            if record.get(es_info['mapping']['tag']) is None:
+              # there are no previous tags
               entry[es_info['mapping']['tag']] = tag
+            else:
+              tags = []
+              if  record[es_info['mapping']['tag']][0] != '':
+                # all previous tags were removed
+                tags = list(set(record[es_info['mapping']['tag']][0].split(';')))
+                
+              if len(tags) != 0:
+                # previous tags exist
+                for tag in self.mut_exc_tags:
+                  # remove conflicting tags
+                  if tag in tags:
+                    tags.remove(tag)
+                    # append new tag    
+                    entry[es_info['mapping']['tag']] = ';'.join(tags)+';'+tag
+              else:
+                # add new tag
+                entry[es_info['mapping']['tag']] = tag
 
-          entries[results[page]['id']] =  entry
+            entries[record['id']] =  entry
 
-    else:
+    elif len(results) > 0:
       print '\n\nremoved tag ' + tag + ' from pages' + str(pages) + '\n\n'
       for page in pages:
-        entry = {}
-        if len(results) > 0 and not results.get(page) is None:
-          if not results[page].get(es_info['mapping']['tag']) is None:
-            if tag in results[page][es_info['mapping']['tag']]:
-              tags = list(set(results[page][es_info['mapping']['tag']][0].split(';')))
-              tags.remove(tag)
-              entry[es_info['mapping']['tag']] = ';'.join(tags)
-              entries[results[page]['id']] = entry
-
+        if not results.get(page) is None:
+          records = results[page]
+          for record in records:
+            entry = {}
+            if not record.get(es_info['mapping']['tag']) is None:
+              if tag in record[es_info['mapping']['tag']]:
+                tags = list(set(record[es_info['mapping']['tag']][0].split(';')))
+                tags.remove(tag)
+                entry[es_info['mapping']['tag']] = ';'.join(tags)
+                entries[record['id']] = entry
+    
     if entries:
       update_try = 0
       while (update_try < 10):
@@ -853,7 +856,7 @@ class CrawlerModel:
   # Add crawler
   def addCrawler(self, index_name):
 
-    create_index(index_name, self._es)
+    create_index(index_name, es=self._es)
     
     fields = index_name.lower().split(' ')
     index = '_'.join([item for item in fields if item not in ''])
@@ -876,14 +879,10 @@ class CrawlerModel:
 
     chdir(environ['DDT_HOME']+'/seeds_generator')
     
-    print "\n", session['pagesCap'], "\n"
-
     if(int(session['pagesCap']) <= max_url_count):
       top = int(session['pagesCap'])
     else:
       top = max_url_count
-
-    print "\n", top, "\n"
 
     comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar BingSearch -t " + str(top) + \
            " -q \"" + terms + "\"" + \
