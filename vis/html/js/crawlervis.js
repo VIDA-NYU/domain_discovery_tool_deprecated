@@ -74,6 +74,7 @@ CrawlerVis.buildForSeedCrawler = function() {
     'Irrelevant': {'Until Last Update': 0, 'New': 0, 'Total': 0},
     'Neutral': {'Until Last Update': 0, 'New': 0, 'Total': 0},
   };
+  BokehPlots.vis = vis;
   return vis;
 };
 
@@ -440,7 +441,7 @@ CrawlerVis.prototype.createSelectForAvailablePageRetrievalCriteria = function() 
 	    }
 	});
 
-	queries = BokehPlots.vis.queries;
+	queries = vis.queries;
 	// Sort the queries by number of documents
 	keysSorted = Object.keys(queries).sort(function(a,b){
 	    return queries[b] - queries[a]
@@ -466,7 +467,7 @@ CrawlerVis.prototype.createSelectForAvailablePageRetrievalCriteria = function() 
 CrawlerVis.prototype.onLoadedQueries = function(queries) {
     var vis = this;
     vis.queries = queries;
-    BokehPlots.vis.queries = queries;
+    // BokehPlots.vis.queries = queries;
     vis.enableQuerySelection(queries);
 };
 
