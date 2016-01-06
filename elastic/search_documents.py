@@ -19,7 +19,7 @@ def search(field, queryStr, fields = [], es_index='memex', es_doc_type='page', e
             "fields": fields
         }
 
-        res = es.search(body=query, fields=','.join(fields[0:]), index=es_index, doc_type=es_doc_type, size=500)
+        res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=500)
         hits = res['hits']['hits']
 
         results = []
@@ -51,7 +51,8 @@ def multifield_query_search(s_fields, pageCount=100, fields = [], es_index='meme
             "fields": fields
         }
 
-        res = es.search(body=query, fields=','.join(fields[0:]), index=es_index, doc_type=es_doc_type, size=pageCount)
+        res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=pageCount)
+        
         hits = res['hits']['hits']
 
         results = []
