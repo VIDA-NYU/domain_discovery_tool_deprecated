@@ -5,11 +5,6 @@
  */
 (function(exports){
 
-  exports.vis = new CrawlerVis();
-
-  // Build the seed crawler and instantiate the necessary plot objects.
-  exports.vis.initUISeedCrawler.call(exports.vis);
-
   exports.inds = [];
   exports.session = {};
 
