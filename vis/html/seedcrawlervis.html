@@ -24,6 +24,7 @@
     <link type="text/css" rel="stylesheet" href="css/jquery-ui.css" media="all">
     <link type="text/css" rel="stylesheet" href="css/jquery.urlive.css" media="all">
     <link type="text/css" rel="stylesheet" href="css/dropdowns-enhancement.min.css" media="all">
+    <link type="text/css" rel="stylesheet" href="css/bokeh-0.10.0.min.css" media="all">
     <link type="text/css" rel="stylesheet" href="css/crawler-white.css" media="all">
   </head>
 
@@ -224,8 +225,8 @@
 
 
       <!-- Middle panel -->
-      <div class="col-md-6" id="middle_panel">
-	
+      <div class="col-md-6" id="middle_panel" style="z-index:0;">
+
         <div class="row">
           
           <div class="col-md-12">
@@ -281,9 +282,7 @@
 	    
 
             <div class="row">
-              <div id="pages_landscape_container">
                 <div id="pages_landscape" class="noselect"></div>
-              </div>
             </div>
             
           </div>
@@ -357,6 +356,7 @@
     <script type="text/javascript" src="js/libs/d3.lasso.js"></script>
     <script type="text/javascript" src="js/libs/moment.js"></script>
     <script type="text/javascript" src="js/libs/queue.min.js"></script>
+    <script type="text/javascript" src="js/libs/bokeh-0.10.0.min.js"></script>
     <script type="text/javascript" src="bootstrap-datetimepicker-4.15.35/js/bootstrap-datetimepicker.min.js"></script>
     <!--script type="text/javascript" src="js/pagescontrols.js"></script-->
     <script type="text/javascript" src="js/pagesgallery.js"></script>
@@ -371,6 +371,7 @@
     <!--script type="text/javascript" src="js/termsgallery.js"></script-->
     <script type="text/javascript" src="js/utils.js"></script>
     <script type="text/javascript" src="js/wordlist.js"></script>
+    <script type="text/javascript" src="js/bokeh_controller.js"></script>
     <script>
       // Initializes main app class after page is loaded.
       window.onload = function() {

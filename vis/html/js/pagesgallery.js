@@ -67,6 +67,12 @@ PagesGallery.prototype.addItems = function(items) {
 };
 
 
+PagesGallery.prototype.setItems = function(items){
+  this.items = items;
+  this.update();
+}
+
+
 /**
  * Sets a callback to test whether a tag is removable.
  */
@@ -193,6 +199,7 @@ PagesGallery.prototype.update = function() {
         if (isRemovable) {
           // Removes tag from item.
           __sig__.emit(__sig__.tag_individual_page_action_clicked, tag, actionType, item);
+          BokehPlots.updateData();
         }
       })
       .on('mouseover', function(tag, i) {
@@ -255,6 +262,7 @@ PagesGallery.prototype.update = function() {
         url: item.url,
     });
   });
+
 };
 
 
