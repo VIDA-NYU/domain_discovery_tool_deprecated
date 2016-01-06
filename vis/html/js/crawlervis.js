@@ -467,7 +467,6 @@ CrawlerVis.prototype.createSelectForAvailablePageRetrievalCriteria = function() 
 CrawlerVis.prototype.onLoadedQueries = function(queries) {
     var vis = this;
     vis.queries = queries;
-    // BokehPlots.vis.queries = queries;
     vis.enableQuerySelection(queries);
 };
 
