@@ -198,8 +198,7 @@ PagesGallery.prototype.update = function() {
         var isRemovable = gallery.cbIsTagRemovable(tag);
         if (isRemovable) {
           // Removes tag from item.
-          __sig__.emit(__sig__.tag_individual_page_action_clicked, tag, actionType, item);
-          BokehPlots.updateData();
+          $(".plotdiv .bk-bs-btn:contains('Neutral')").trigger("click");
         }
       })
       .on('mouseover', function(tag, i) {
@@ -230,7 +229,7 @@ PagesGallery.prototype.update = function() {
       var tag = d3.select(this).node().value;
       if (tag != defaultOption) {
         // Adds tag to item.
-        __sig__.emit(__sig__.tag_individual_page_action_clicked, tag, 'Apply', item);
+        $(".plotdiv .bk-bs-btn:contains('" + tag + "')").trigger("click");
       }
     });
 
