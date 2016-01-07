@@ -975,7 +975,8 @@ class CrawlerModel:
     delta = dt - epoch
     return delta.total_seconds()
 
-  def make_topic_model(self, ddt_domain, ntopics=3):
+  def make_topic_model(self, ddt_domain, model_name, ntopics):
+    # import pdb; pdb.set_trace()
     output_index = ddt_domain + '_topic_model'
     output_args = {"source": es_server, "index": output_index, "content_field": "text"}
 
@@ -983,5 +984,5 @@ class CrawlerModel:
       project.read_input(source=es_server, content_field='text', index=ddt_domain)
       project.tokenize(method='simple')
       project.vectorize(method='bag_of_words')
-      project.run_model(model_name='lda', ntopics=ntopics)
+      project.run_model(model_name=model_name, ntopics=ntopics)
     return project

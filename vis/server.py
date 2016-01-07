@@ -36,12 +36,20 @@ class Page:
     self.lock = Lock()
 
 
-  # Access to topics visualization.
   @cherrypy.expose
-  def topicsvis(self, ddt_domain):
-    project = self.topic_model(ddt_domain)
-    project.visualize(mode='save_html', filename=self.visfilename)
-    with open(self.visfilename, 'r') as f:
+  def topicsvis(self, ddt_domain, model_name='lda', ntopics=3):
+    'Visualize topic model'
+    ntopics = int(ntopics) # ntopics comes as a string from a URL query string
+    'Visualize topic model of the corpus of this domain'
+    project = self.topic_model(
+      ddt_domain=ddt_domain,
+      model_name=model_name,
+      ntopics=ntopics
+    )
+    filename = '_'.join([ddt_domain, model_name, str(ntopics), 'vis.html'])
+    filepath = os.path.join(self._HTML_DIR, filename)
+    project.visualize(mode='save_html', filename=filepath)
+    with open(filepath, 'r') as f:
       vis = f.read()
     return vis
 
@@ -259,8 +267,13 @@ class Page:
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps({"positive": posData, "negative": negData})
 
-  def topic_model(self, ddt_domain):
-    project = self._crawler._crawlerModel.make_topic_model(ddt_domain=ddt_domain)
+  def topic_model(self, ddt_domain, model_name, ntopics):
+    'Run a topic model on the corpus of this domain'
+    project = self._crawler._crawlerModel.make_topic_model(
+      ddt_domain=ddt_domain,
+      ntopics=ntopics,
+      model_name=model_name
+    )
     return project
 if __name__ == "__main__":
   page = Page()
