@@ -64,7 +64,6 @@
     } else {
       var color = "#7F7F7F";
     }
-    var value = "#CCFFCC";
     url_index = [].concat.apply([], d.urls).indexOf(url);
     d.color[url_index] = color;
     d.tags[url_index][0] = type;
