@@ -19,7 +19,7 @@
   // Takes urls and tags from Bokeh and changes their tags.
   exports.updateTags = function(selectedUrls, tag, inds){
     exports.inds = inds;
-    exports.vis.tagsGallery.applyOrRemoveTag(tag, "Apply", selectedUrls);
+    exports.vis.tagsGallery.applyOrRemoveTag(tag, "Apply", selectedUrls, false);
   }
 
 
@@ -71,6 +71,20 @@
       success: function(data){
         exports.vis.onLoadedPages(data.data);
         exports.vis.onBrushedPagesChanged(exports.inds);
+      },
+    });
+  }
+
+
+  exports.updateDataPlot = function(){
+    $.ajax({
+      url: "/getBokehPlot",
+      type: "GET",
+      data: {"session": JSON.stringify(exports.session)},
+      success: function(data){
+        exports.vis.onLoadedPages(data.data);
+        exports.vis.onBrushedPagesChanged(exports.inds);
+        exports.insertPlot(data.plot);
       },
     });
   }

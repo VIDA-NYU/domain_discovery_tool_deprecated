@@ -864,7 +864,7 @@ CrawlerVis.prototype.onTagClicked = function(tag) {
 
 
 // Responds to clicked tag action.
-CrawlerVis.prototype.onTagActionClicked = function(tag, action, opt_items) {
+CrawlerVis.prototype.onTagActionClicked = function(tag, action, opt_items, refresh_plot) {
   // If items is empty array, applies action to selected pages in the landscape.
   if (!opt_items || opt_items.length == 0) {
     opt_items = this.pagesLandscape.getSelectedItems();
@@ -899,7 +899,11 @@ CrawlerVis.prototype.onTagActionClicked = function(tag, action, opt_items) {
     DataAccess.setPagesTag(urls, tag, applyTagFlag, vis.sessionInfo());
   }
 
-  BokehPlots.updateData();
+  if(refresh_plot == false || action == "Remove"){
+    BokehPlots.updateData();
+  } else {
+    BokehPlots.updateDataPlot();
+  }
 };
 
 

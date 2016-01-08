@@ -193,7 +193,7 @@ TagsGallery.prototype.onItemActionClick = function(item, i, actionType) {
 /**
  * Applies or removes tag.
  */
-TagsGallery.prototype.applyOrRemoveTag = function(tag, actionType, opt_pages) {
+TagsGallery.prototype.applyOrRemoveTag = function(tag, actionType, opt_pages, refresh_plot) {
   // Handles tags logic.
   if (tag in this.tagsLogic) {
     var logicForTag = this.tagsLogic[tag];
@@ -202,19 +202,19 @@ TagsGallery.prototype.applyOrRemoveTag = function(tag, actionType, opt_pages) {
       // Removes tags in negate.
       for (var i in logicForTag.negate) {
         var negateTag = logicForTag.negate[i];
-        __sig__.emit(__sig__.tag_action_clicked, negateTag, 'Remove', opt_pages);
+        __sig__.emit(__sig__.tag_action_clicked, negateTag, 'Remove', opt_pages, refresh_plot);
       }
       if (logicForTag.applicable && !logicForTag.isVirtual) {
-        __sig__.emit(__sig__.tag_action_clicked, tag, actionType, opt_pages);
+        __sig__.emit(__sig__.tag_action_clicked, tag, actionType, opt_pages, refresh_plot);
       }
     } else {
       // Removes tag when removable.
       if (logicForTag.removable) {
-        __sig__.emit(__sig__.tag_action_clicked, tag, actionType, opt_pages);
+        __sig__.emit(__sig__.tag_action_clicked, tag, actionType, opt_pages, refresh_plot);
       }
     }
   } else {
-    __sig__.emit(__sig__.tag_action_clicked, tag, actionType, opt_pages);
+    __sig__.emit(__sig__.tag_action_clicked, tag, actionType, opt_pages, refresh_plot);
   }
 };
 
