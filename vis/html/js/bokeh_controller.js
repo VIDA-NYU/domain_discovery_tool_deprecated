@@ -7,6 +7,7 @@
 
   exports.inds = [];
   exports.session = {};
+  exports.plot = {};
 
 
   // Updates the session information to be sent to the server with
@@ -36,6 +37,42 @@
   }
 
 
+  exports.BokehPlotKey = function(){
+    return Bokeh.index[Object.keys(Bokeh.index)[0]].model.children()[0]
+  }
+
+
+  exports.getGlyphRenderersByType = function(glyphType) {
+    var allRenderers = exports.plot.get("renderers");
+    var renderers = [];
+    $.each(exports.plot.get("renderers"), function(index, value) {
+      if (value.attributes.hasOwnProperty("glyph") && value.attributes.glyph.type === glyphType) {
+        renderers.push(value);
+      }
+    });
+    return renderers;
+  };
+
+
+  exports.updatePlotColors = function(url, type) {
+    var renderer = exports.getGlyphRenderersByType("Circle")[0];
+    var d = renderer.get("data_source").get("data");
+    if(type == "Relevant"){
+      var color = "blue";
+    } else if(type == "Irrelevant"){
+      var color = "crimson";
+    } else {
+      var color = "#7F7F7F";
+    }
+    var value = "#CCFFCC";
+    url_index = [].concat.apply([], d.urls).indexOf(url);
+    d.color[url_index] = color;
+    d.tags[url_index][0] = type;
+    renderer.get("data_source").set("data", d);
+    renderer.get("data_source").trigger("change");
+  };
+
+
   // Gets the necessary javascript and HTML for rendering the bokeh plot into
   // the dom.
   exports.getPlotData = function(){
@@ -44,7 +81,9 @@
       type: "POST",
       data: {"session": JSON.stringify(exports.session)},
       success: function(data){
+        Bokeh.index = {};
         exports.insertPlot(data.plot);
+        exports.plot = exports.BokehPlotKey()
         exports.vis.onLoadedPages(data.data);
       },
     });

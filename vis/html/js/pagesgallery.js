@@ -198,6 +198,7 @@ PagesGallery.prototype.update = function() {
         var isRemovable = gallery.cbIsTagRemovable(tag);
         if (isRemovable) {
           // Removes tag from item.
+          BokehPlots.updatePlotColors(item.url[0], "Neutral");
           __sig__.emit(__sig__.tag_individual_page_action_clicked, tag, actionType, item);
           BokehPlots.updateData();
         }
@@ -230,6 +231,7 @@ PagesGallery.prototype.update = function() {
       var tag = d3.select(this).node().value;
       if (tag != defaultOption) {
         // Adds tag to item.
+        BokehPlots.updatePlotColors(item.url[0], tag);
         __sig__.emit(__sig__.tag_individual_page_action_clicked, tag, 'Apply', item);
       }
     });

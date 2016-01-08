@@ -57,7 +57,7 @@ def selection_plot(response):
 
     # Create the figure with FIGURE_WIDTH and FIGURE_HEIGHT
     p = figure(tools="hover", width=FIGURE_WIDTH,
-            toolbar_location=None, responsive=True)
+            toolbar_location=None, responsive=True, tags=["clusterPlot"])
 
     # Ensure that the lasso only selects with mouseup, not mousemove.
     p.add_tools(LassoSelectTool(select_every_mousemove=False))

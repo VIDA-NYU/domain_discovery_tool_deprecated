@@ -899,11 +899,7 @@ CrawlerVis.prototype.onTagActionClicked = function(tag, action, opt_items, refre
     DataAccess.setPagesTag(urls, tag, applyTagFlag, vis.sessionInfo());
   }
 
-  if(refresh_plot == false || action == "Remove"){
-    BokehPlots.updateData();
-  } else {
-    BokehPlots.updateDataPlot();
-  }
+  BokehPlots.updateData();
 };
 
 
