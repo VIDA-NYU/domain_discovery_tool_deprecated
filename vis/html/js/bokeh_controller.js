@@ -19,8 +19,32 @@
 
   // Takes urls and tags from Bokeh and changes their tags.
   exports.updateTags = function(selectedUrls, tag, inds){
+    exports.updatePagesGallery(tag);
     exports.inds = inds;
     exports.vis.tagsGallery.applyOrRemoveTag(tag, "Apply", selectedUrls, false);
+  }
+
+
+  exports.concatUrls = function(data){
+    var urls = [];
+    for(var i = 0; i < data.length; i++){
+      urls.push(data[i].url)
+    }
+    urls = [].concat.apply([], urls);
+    return urls;
+  }
+
+
+  exports.updatePagesGallery = function(tag){
+    $("#pages_items").children().find("span.not-clickable").each(function(item){
+      if(tag != "Neutral"){
+        $(this).siblings().attr("class", "clickable");
+        $(this).text(tag);
+      } else {
+        $(this).siblings().attr("class", "not-clickable");
+        $(this).text("");
+      }
+    });
   }
 
 
