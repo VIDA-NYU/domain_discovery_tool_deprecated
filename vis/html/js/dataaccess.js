@@ -73,6 +73,7 @@ var DataAccess = (function() {
       updating = loadingPages || loadingTerms;
       if (!loadingPages) {
 	  __sig__.emit(__sig__.pages_loaded, pages);
+	  __sig__.emit(__sig__.bokeh_insert_plot);
 	  
 	  if (pages['pages'].length === 0){
 	     document.getElementById("status_panel").innerHTML = 'No pages found';
@@ -131,6 +132,7 @@ var DataAccess = (function() {
   //Signal load of new pages after certain interval
   var loadNewPagesSummary = function(isFilter) {
       __sig__.emit(__sig__.load_new_pages_summary, isFilter);
+      __sig__.emit(__sig__.bokeh_get_session);
   };
 
   // Runs async post query.

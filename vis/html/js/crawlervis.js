@@ -6,6 +6,30 @@
  */
 
 var CrawlerVis = function() {
+  var currentCrawler = undefined;
+  this.availableTags = [
+    'Relevant',
+    'Irrelevant',
+    'Neutral',
+  ];
+  this.seedCrawlerTagsLogic = {
+    'Relevant': {
+      applicable: true,
+      removable: true,
+      negate: ['Irrelevant'],
+    },
+    'Irrelevant': {
+      applicable: true,
+      removable: true,
+      negate: ['Relevant'],
+    },
+    'Neutral': {
+      isVirtual: true,
+      applicable: true,
+      removable: false,
+      negate: ['Relevant', 'Irrelevant'],
+    },
+  };
     var currentCrawler = undefined;
     var queries = undefined;
 };
@@ -50,6 +74,7 @@ CrawlerVis.buildForSeedCrawler = function() {
     'Irrelevant': {'Until Last Update': 0, 'New': 0, 'Total': 0},
     'Neutral': {'Until Last Update': 0, 'New': 0, 'Total': 0},
   };
+  BokehPlots.vis = vis;
   return vis;
 };
 
@@ -201,30 +226,7 @@ CrawlerVis.prototype.initUISeedCrawler = function() {
   this.initStatslist();
   this.initFilterStatslist();
   this.initPagesLandscape(false);
-  this.initTagsGallery(
-    [
-      'Relevant',
-      'Irrelevant',
-      'Neutral',
-    ],
-    {
-      'Relevant': {
-        applicable: true,
-        removable: true,
-        negate: ['Irrelevant'],
-      },
-      'Irrelevant': {
-        applicable: true,
-        removable: true,
-        negate: ['Relevant'],
-      },
-      'Neutral': {
-        isVirtual: true,
-        applicable: true,
-        removable: false,
-        negate: ['Relevant', 'Irrelevant'],
-      },
-    });
+  this.initTagsGallery(this.availableTags, this.seedCrawlerTagsLogic);
   this.initPagesGallery();
   this.initTermsSnippetsViewer();
   this.initFilterButton();
@@ -844,9 +846,6 @@ CrawlerVis.prototype.onLoadedPages = function(pagesData) {
   DataAccess.loadPagesSummaryUntilLastUpdate(false, vis.sessionInfo());
   DataAccess.loadPagesSummaryUntilLastUpdate(true, vis.sessionInfo());
 
-  // Clears pages gallery.
-  this.pagesGallery.clear();
-
   return pages;
 };
 
@@ -865,7 +864,7 @@ CrawlerVis.prototype.onTagClicked = function(tag) {
 
 
 // Responds to clicked tag action.
-CrawlerVis.prototype.onTagActionClicked = function(tag, action, opt_items) {
+CrawlerVis.prototype.onTagActionClicked = function(tag, action, opt_items, refresh_plot) {
   // If items is empty array, applies action to selected pages in the landscape.
   if (!opt_items || opt_items.length == 0) {
     opt_items = this.pagesLandscape.getSelectedItems();
@@ -899,8 +898,8 @@ CrawlerVis.prototype.onTagActionClicked = function(tag, action, opt_items) {
   if (urls.length > 0) {
     DataAccess.setPagesTag(urls, tag, applyTagFlag, vis.sessionInfo());
   }
-  this.pagesLandscape.update();
-  this.pagesGallery.update();
+
+  BokehPlots.updateData();
 };
 
 
@@ -917,8 +916,7 @@ CrawlerVis.prototype.onBrushedPagesChanged = function(indexOfSelectedItems) {
   var selectedPages = indexOfSelectedItems.map(function (index) {
     return pages[index];
   });
-  this.pagesGallery.clear();
-  this.pagesGallery.addItems(selectedPages);
+  this.pagesGallery.setItems(selectedPages);
 
   // Updates button used to boost selected items in pages landscape.
   d3.select('#pages_landscape_boost')
