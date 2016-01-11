@@ -49,6 +49,7 @@ class CrawlerModel:
     self._all = 10000
     self._termsIndex = "ddt_terms"
     self._pagesCapTerms = 100
+    self._capTerms = 500
     self.projectionsAlg = {'Group by Similarity': self.pca
                            # 't-SNE': self.tsne,
                            # 'K-Means': self.kmeans,
@@ -377,12 +378,12 @@ class CrawlerModel:
       "doc_type": es_info['docType']
     }
 
-    pos_terms = [field['term'][0] for field in multifield_term_search(s_fields, ['term'], self._termsIndex, 'terms', self._es)]
+    pos_terms = [field['term'][0] for field in multifield_term_search(s_fields, self._capTerms, ['term'], self._termsIndex, 'terms', self._es)]
         
     s_fields["tag"]="Negative"
-    neg_terms = [field['term'][0] for field in multifield_term_search(s_fields, ['term'], self._termsIndex, 'terms', self._es)]
+    neg_terms = [field['term'][0] for field in multifield_term_search(s_fields, self._capTerms, ['term'], self._termsIndex, 'terms', self._es)]
 
-    pos_urls = [field['id'] for field in term_search(es_info['mapping']['tag'], ['Relevant'], ['url'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)]
+    pos_urls = [field['id'] for field in term_search(es_info['mapping']['tag'], ['Relevant'], self._pagesCapTerms, ['url'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)]
 
     top_terms = []
     top_bigrams = []
@@ -420,19 +421,17 @@ class CrawlerModel:
           top_trigrams = [term for term in top_trigrams if term[0].replace('_',' ') not in neg_terms]
 
     else:
-      filter_terms = session['filter'].split(' ')
-      if session['fromDate'] is None:
-        results = search(es_info['mapping']["text"], filter_terms, ["url", es_info['mapping']["text"]], es_info['activeCrawlerIndex'], es_info['docType'], self._es)
-      else:
-        s_fields = {
-          es_info['mapping']["text"]: ' AND  '.join(filter_terms),
-          es_info['mapping']["timestamp"]: "[" + str(session['fromDate']) + " TO " + str(session['toDate']) + "]" 
-        }
-        results = multifield_query_search(s_fields, 500, ["url", es_info['mapping']["text"]], 
-                                          es_info['activeCrawlerIndex'], 
-                                          es_info['docType'],
-                                          self._es)
-
+      s_fields = {
+        es_info['mapping']["text"]: "(" + session['filter'].replace('"','\"') + ")"
+      }
+      if not session['fromDate'] is None:
+        s_fields[es_info['mapping']["timestamp"]] = "[" + str(session['fromDate']) + " TO " + str(session['toDate']) + "]" 
+        
+      results = multifield_query_search(s_fields, self._pagesCapTerms, ["url", es_info['mapping']["text"]], 
+                                        es_info['activeCrawlerIndex'], 
+                                        es_info['docType'],
+                                        self._es)
+      
       ids = [field['id'] for field in results]
       text = [field[es_info['mapping']["text"]][0] for field in results]
       top_terms = get_significant_terms(ids, opt_maxNumberOfTerms, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
@@ -469,7 +468,7 @@ class CrawlerModel:
     else:
       pos_freq = { key: 0 for key in top_terms }      
 
-    neg_urls = [field['id'] for field in term_search(es_info['mapping']['tag'], ['Irrelevant'], ['url'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)]
+    neg_urls = [field['id'] for field in term_search(es_info['mapping']['tag'], ['Irrelevant'], self._pagesCapTerms, ['url'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)]
     neg_freq = {}
     if len(neg_urls) > 1:
       tfidf_neg = tfidf.tfidf(neg_urls, es_info['mapping'], es_info['activeCrawlerIndex'], es_info['docType'],  self._es)
@@ -496,7 +495,7 @@ class CrawlerModel:
     results = []
     for term in top_terms:
       s_fields["term"] = term
-      res = multifield_term_search(s_fields, ['tag', 'term'], self._termsIndex, 'terms', self._es)
+      res = multifield_term_search(s_fields, self._capTerms, ['tag', 'term'], self._termsIndex, 'terms', self._es)
       results.extend(res)
 
     tags = {result['term'][0]: result['tag'][0] for result in results}    
@@ -540,7 +539,7 @@ class CrawlerModel:
                      self._es)
       else:
         s_fields = {
-          es_info['mapping']["text"]: ' AND  '.join(session['filter'].split(' ')),
+          es_info['mapping']["text"]: "(" + session['filter'].replace('"','\"') + ")",
           es_info['mapping']["timestamp"]: "[" + str(session['fromDate']) + " TO " + str(session['toDate']) + "]" 
         }
         hits = multifield_query_search(s_fields, session['pagesCap'], ["url", "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], 
@@ -554,7 +553,7 @@ class CrawlerModel:
 
     s_fields = {}
     if not session['filter'] is None:
-      s_fields[es_info['mapping']["text"]] = ' AND  '.join(session['filter'].split(' '))
+      s_fields[es_info['mapping']["text"]] =   session['filter'].replace('"','\"')
 
     if not session['fromDate'] is None:
       s_fields[es_info['mapping']["timestamp"]] = "[" + str(session['fromDate']) + " TO " + str(session['toDate']) + "]" 
@@ -564,16 +563,23 @@ class CrawlerModel:
     for query in queries:
       s_fields[es_info['mapping']["query"]] = "'" + query + "'"
       results= multifield_query_search(s_fields, session['pagesCap'], ["url", "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], 
-                                     es_info['activeCrawlerIndex'], 
-                                     es_info['docType'],
-                                     self._es)
+                                       es_info['activeCrawlerIndex'], 
+                                       es_info['docType'],
+                                      self._es)
       hits.extend(results)
     return hits
 
   def _getRelevantPages(self, session):
     es_info = self.esInfo(session['domainId'])
 
-    pos_hits = term_search(es_info['mapping']['tag'], ['relevant'], ['url', "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], es_info['activeCrawlerIndex'], 'page', self._es)
+    pos_hits = search(es_info['mapping']['tag'], ['relevant'], session['pagesCap'], ['url', "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], es_info['activeCrawlerIndex'], 'page', self._es)
+
+    return pos_hits
+
+  def _getMoreLikeRelevantPages(self, session):
+    es_info = self.esInfo(session['domainId'])
+
+    pos_hits = search(es_info['mapping']['tag'], ['relevant'], session['pagesCap'], ['url', "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], es_info['activeCrawlerIndex'], 'page', self._es)
 
     hits = []
     if len(pos_hits) > 0:
@@ -587,7 +593,14 @@ class CrawlerModel:
 
   def _getIrrelevantPages(self, session):
     es_info = self.esInfo(session['domainId'])
-    neg_hits = term_search(es_info['mapping']['tag'], ['irrelevant'], ['url', "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], es_info['activeCrawlerIndex'], 'page', self._es)
+
+    neg_hits = search(es_info['mapping']['tag'], ['irrelevant'], session['pagesCap'], ['url', "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], es_info['activeCrawlerIndex'], 'page', self._es)
+
+    return neg_hits
+
+  def _getMoreLikeIrrelevantPages(self, session):
+    es_info = self.esInfo(session['domainId'])
+    neg_hits = search(es_info['mapping']['tag'], ['irrelevant'], session['pagesCap'], ['url', "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], es_info['activeCrawlerIndex'], 'page', self._es)
 
     hits = []
     if len(neg_hits) > 0:
@@ -627,8 +640,12 @@ class CrawlerModel:
       hits = self._getPagesForQueries(session)
     elif (session['pageRetrievalCriteria'] == 'Relevant'):
       hits = self._getRelevantPages(session)
+    elif (session['pageRetrievalCriteria'] == 'More like Relevant'):
+      hits = self._getMoreLikeRelevantPages(session)
     elif (session['pageRetrievalCriteria'] == 'Irrelevant'):
       hits = self._getIrrelevantPages(session)
+    elif (session['pageRetrievalCriteria'] == 'More like Irrelevant'):
+      hits = self._getMoreLikeIrrelevantPages(session)
       
     last_downloaded_url_epoch = None
     docs = []
@@ -700,13 +717,13 @@ class CrawlerModel:
       "doc_type": es_info['docType'],
     }
 
-    tags = multifield_term_search(s_fields, ['tag'], self._termsIndex, 'terms', self._es)
+    tags = multifield_term_search(s_fields, self._capTerms, ['tag'], self._termsIndex, 'terms', self._es)
     
     tag = []
     if tags:
       tag = tags[0]['tag'][0].split(';')
 
-    return {'term': term, 'tags': tag, 'context': get_context(term.split('_'), es_info['activeCrawlerIndex'], es_info['docType'],  self._es)}
+    return {'term': term, 'tags': tag, 'context': get_context(term.split('_'), es_info['mapping']['text'], es_info['activeCrawlerIndex'], es_info['docType'],  self._es)}
   
   # Adds tag tow pages (if applyTagFlag is True) or removes tag from pages (if applyTagFlag is
   # False).
@@ -715,7 +732,7 @@ class CrawlerModel:
     es_info = self.esInfo(session['domainId'])
 
     entries = {}
-    results = get_documents(pages, 'url', [es_info['mapping']['tag']], es_info['activeCrawlerIndex'], es_info['docType'],  self._es)
+    results = get_documents(pages, 'url', [es_info['mapping']['text']], es_info['activeCrawlerIndex'], es_info['docType'],  self._es)
 
     if applyTagFlag and len(results) > 0:
       print '\n\napplied tag ' + tag + ' to pages' + str(pages) + '\n\n'
