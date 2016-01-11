@@ -116,13 +116,19 @@ def get_most_recent_documents(opt_maxNumberOfPages = 200, mapping=None, fields =
             }
         }
     else:
-        query["query"] = {
-            "query_string": {
-                "fields" : [mapping['text']],
-                "query": ' and  '.join(opt_filter.split(' ')),
+        if opt_filter[0] == '"' and opt_filter[len(opt_filter) - 1] == '"':
+            query["query"] = {
+                "match_phrase": {
+                    mapping['text'] : opt_filter.replace('"','')
+                }
             }
-        }
-
+        else:
+            query["query"] = {
+                "match": {
+                    mapping['text'] : opt_filter
+                }
+            }
+    
     if len(fields) > 0:
         query["fields"] = fields
     
