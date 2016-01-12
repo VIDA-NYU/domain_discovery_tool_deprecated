@@ -6,6 +6,7 @@ from bokeh.plotting import figure, show, output_file, save
 from bokeh.plotting import ColumnDataSource
 from bokeh.models import HoverTool, Circle, CustomJS, LassoSelectTool
 from bokeh.models.widgets import RadioButtonGroup, Button
+from bokeh.models.widgets.inputs import TextInput
 from bokeh.embed import components
 
 
@@ -115,13 +116,16 @@ def selection_plot(response):
     button3.callback = CustomJS(args=dict(source=source),
             code=button_code % ("Neutral", NEUTRAL_COLOR))
 
-
+    textInput = TextInput(value="default")
+    textInput.callback = CustomJS(args=dict(source=source),
+                            code=button_code % ("text", NEUTRAL_COLOR))
+        
     # Adjust what attributes are displayed by the HoverTool
     hover = p.select(dict(type=HoverTool))
     hover.tooltips = [
         ("urls", "@urls"),
     ]
-    layout = vform(p, button1, button2, button3)
+    layout = vform(p, textInput, button1, button2, button3)
 
     # Combine script and div into a single string.
     plot_code = components(layout)
@@ -147,7 +151,8 @@ def empty_plot():
     button1 = Button(label="Relevant", type="success")
     button2 = Button(label="Irrelevant", type="success")
     button3 = Button(label="Neutral", type="success")
-    layout = vform(p, button1, button2, button3)
+    textInput = TextInput(value="default")
+    layout = vform(p, textInput, button1, button2, button3)
 
     # Combine script and div into a single string.
     plot_code = components(layout)
