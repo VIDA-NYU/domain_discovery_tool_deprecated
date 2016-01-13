@@ -1396,4 +1396,10 @@ textarea[name=seeds_text] {
 .bk-bs-btn-success:hover, .bk-bs-btn-success:active, .bk-bs-btn-success:focus{
   background-color: #ffce54;
   border-color: #ffce54;
+						     }
+
+.bk-widget-form-input {
+    float:right;
+    margin-left:5px;
+    width: 35%;
 }
