@@ -281,9 +281,10 @@ class Page:
 
   @cherrypy.expose
   def statistics(self):
-      from data import page_data
-      script, div = domains_dashboard(page_data)
-      return
+    from data import page_data
+    script, div = domains_dashboard(page_data)
+    template = Template(open(os.path.join(self._HTML_DIR, u"domains_dashboard.html")).read())
+    return template.render(script=script, div=div)
 
 
 if __name__ == "__main__":
