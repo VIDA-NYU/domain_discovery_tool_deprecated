@@ -12,6 +12,7 @@ from bokeh.embed import components
 
 FIGURE_WIDTH=1000
 FIGURE_HEIGHT=375
+CUSTOM_COLOR = "green"
 NEUTRAL_COLOR = "#7F7F7F"
 POSITIVE_COLOR = "blue"
 NEGATIVE_COLOR = "crimson"
@@ -103,6 +104,28 @@ def selection_plot(response):
         source.trigger("change");
     """
 
+    textinput_code = """
+        event.preventDefault();
+        var inds = source.get('selected')["1d"].indices;
+        var data = source.get('data');
+        var selected = [];
+        var tag = cb_obj.get("value");
+        for(var i = 0; i < inds.length; i++){
+            selected.push({
+                x: data.x[inds[i]],
+                y: data.y[inds[i]],
+                url: data.urls[inds[i]],
+                tags: data.tags[inds[i]],
+                selected: true,
+                possible: false,
+            });
+            data["color"][inds[i]] = "%s";
+        }
+        BokehPlots.updateTags(selected, tag, inds);
+        source.trigger("change");
+    """
+
+    
     # Supply color with print formatting.
     button1 = Button(label="Relevant", type="success")
     button1.callback = CustomJS(args=dict(source=source),
@@ -118,7 +141,7 @@ def selection_plot(response):
 
     textInput = TextInput(value="default")
     textInput.callback = CustomJS(args=dict(source=source),
-                            code=button_code % ("text", NEUTRAL_COLOR))
+                                  code=textinput_code % (CUSTOM_COLOR))
         
     # Adjust what attributes are displayed by the HoverTool
     hover = p.select(dict(type=HoverTool))
