@@ -975,14 +975,37 @@ class CrawlerModel:
     delta = dt - epoch
     return delta.total_seconds()
 
-  def make_topic_model(self, ddt_domain, model_name, ntopics):
-    # import pdb; pdb.set_trace()
-    output_index = ddt_domain + '_topic_model'
-    output_args = {"source": es_server, "index": output_index, "content_field": "text"}
+  def make_topic_model(self, domain, tokenizer, vectorizer, model, ntopics):
+    """Build topic model from the corpus of the supplied DDT domain.
 
-    with TopikProject(output_index, output_type="ElasticSearchOutput", output_args=output_args) as project:
-      project.read_input(source=es_server, content_field='text', index=ddt_domain)
-      project.tokenize(method='simple')
-      project.vectorize(method='bag_of_words')
-      project.run_model(model_name=model_name, ntopics=ntopics)
-    return project
+    The topic model is represented as a topik.TopikProject object, and is
+    persisted in disk, recording the model parameters and the location of the
+    data. The output of the topic model itself is stored in Elasticsearch.
+
+    Parameters
+    ----------
+    domain: str
+        DDT domain name as stored in Elasticsearch, so lowercase and with underscores in place of spaces.
+    tokenizer: str
+        A tokenizer from ``topik.tokenizer.registered_tokenizers``
+    vectorizer: str
+        A vectorization method from ``topik.vectorizers.registered_vectorizers``
+    model: str
+        A topic model from ``topik.vectorizers.registered_models``
+    ntopics: int
+        The number of topics to be used when modeling the corpus.
+
+    Returns
+    -------
+    model: a topik topic model
+        A topik model, encoding things like term frequencies, etc.
+    """
+    raw_data = read_input(source="http://localhost:9200", index=domain)
+    content_field = 'text'
+    id_doc_pairs = ((hash(item[content_field]), item[content_field]) for item in raw_data)
+    tokens = tokenize(id_doc_pairs, method=tokenizer)
+    vectors = vectorize(tokens, method=vectorizer)
+    model = run_model(vectors, model_name=model, ntopics=ntopics)
+    return model
+
+

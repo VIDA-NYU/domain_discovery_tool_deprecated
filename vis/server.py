@@ -4,6 +4,8 @@ import json
 import os
 from crawler_model_adapter import *
 from threading import Lock
+import bokeh.embed
+import bokeh.resources
 
 cherrypy.engine.timeout_monitor.unsubscribe()
 
@@ -32,24 +34,60 @@ class Page:
   def __init__(self):
     # Folder with html content.
     self._HTML_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), u"html")
-    self.visfilename = os.path.join(self._HTML_DIR, u"topicsvis.html")
     self.lock = Lock()
+    self._crawler = SeedCrawlerModelAdapter()
+    # Adding make_topic_model here as self._crawler gets initialized here. This is
+    # hackish, but it's the simplest change right now. We should move both terms to the
+    # __init__ method.
+    self.make_topic_model = self._crawler._crawlerModel.make_topic_model
 
 
   @cherrypy.expose
-  def topicsvis(self, ddt_domain, model_name='lda', ntopics=3):
-    'Visualize topic model'
+  def topicsvis(self, domain, visualizer='lda_vis', tokenizer='simple', vectorizer='bag_of_words', model='lda', ntopics=3):
+    """Visualize topic model.
+
+    Parameters
+    ----------
+    domain: str
+        DDT domain name. Make it lowercase and replace spaces with underscores.
+    visualizer: str
+        Visualization method from ``topik.visualizers.registered_visualizers``.
+
+    Other Parameters
+    ----------------
+    Same as in ``self.topic_model``.
+
+    See Also
+    --------
+    - CrawlerModel.make_topic_model: this method essentially wraps that one and invokes a visualization.
+    - topik.visualize: the top-level visualization routine we use here
+
+    Notes
+    -----
+    The visualization will be stored in disk in a HTML file in the directory from where DDT was initialized
+    """
     ntopics = int(ntopics) # ntopics comes as a string from a URL query string
-    'Visualize topic model of the corpus of this domain'
-    project = self.topic_model(
-      ddt_domain=ddt_domain,
-      model_name=model_name,
+    mymodel = self.make_topic_model(
+      domain=domain,
+      tokenizer=tokenizer,
+      vectorizer=vectorizer,
+      model=model,
       ntopics=ntopics
     )
-    filename = '_'.join([ddt_domain, model_name, str(ntopics), 'vis.html'])
-    filepath = os.path.join(self._HTML_DIR, filename)
-    project.visualize(mode='save_html', filename=filepath)
-    with open(filepath, 'r') as f:
+    filename = '_'.join([domain, model, str(ntopics) + "topics", visualizer, 'vis.html'])
+    if visualizer == 'lda_vis':
+      visualize(mymodel, mode='save_html', vis_name=visualizer, filename=filename)
+    elif visualizer == 'termite':
+      termite_plot = visualize(mymodel, vis_name=visualizer)
+      termite_html = bokeh.embed.file_html(termite_plot, resources=bokeh.resources.INLINE)
+      with open(filename, 'w') as f:
+        f.write(termite_html)
+    elif visualizer == 'test':
+      return "Completed modeling step."
+    else:
+      raise NotImplementedError
+
+    with open(filename, 'r') as f:
       vis = f.read()
     return vis
 
@@ -65,7 +103,6 @@ class Page:
   @cherrypy.expose
   def seedcrawler(self):
     # TODO Use SeedCrawlerModelAdapter self._crawler = SeedCrawlerModelAdapter()
-    self._crawler = SeedCrawlerModelAdapter()
     return open(os.path.join(self._HTML_DIR, u"seedcrawlervis.html"))
 
   @cherrypy.expose
@@ -267,14 +304,7 @@ class Page:
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps({"positive": posData, "negative": negData})
 
-  def topic_model(self, ddt_domain, model_name, ntopics):
-    'Run a topic model on the corpus of this domain'
-    project = self._crawler._crawlerModel.make_topic_model(
-      ddt_domain=ddt_domain,
-      ntopics=ntopics,
-      model_name=model_name
-    )
-    return project
+
 if __name__ == "__main__":
   page = Page()
 
