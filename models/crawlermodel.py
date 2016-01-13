@@ -64,9 +64,6 @@ class CrawlerModel:
       'Epidemy': ['Epidemy', 100, 100, []],
     }
 
-    self.mut_exc_tags = [ "Relevant",
-                          "Irrelevant"]
-    
     create_config_index()
     create_terms_index()
 
@@ -732,7 +729,7 @@ class CrawlerModel:
     es_info = self.esInfo(session['domainId'])
 
     entries = {}
-    results = get_documents(pages, 'url', [es_info['mapping']['text']], es_info['activeCrawlerIndex'], es_info['docType'],  self._es)
+    results = get_documents(pages, 'url', [es_info['mapping']['tag']], es_info['activeCrawlerIndex'], es_info['docType'],  self._es)
 
     if applyTagFlag and len(results) > 0:
       print '\n\napplied tag ' + tag + ' to pages' + str(pages) + '\n\n'
@@ -753,13 +750,8 @@ class CrawlerModel:
                 tags = list(set(record[es_info['mapping']['tag']][0].split(';')))
                 
               if len(tags) != 0:
-                # previous tags exist
-                for tag in self.mut_exc_tags:
-                  # remove conflicting tags
-                  if tag in tags:
-                    tags.remove(tag)
-                    # append new tag    
-                    entry[es_info['mapping']['tag']] = ';'.join(tags)+';'+tag
+                # append new tag    
+                entry[es_info['mapping']['tag']] = ';'.join(tags)+';'+tag
               else:
                 # add new tag
                 entry[es_info['mapping']['tag']] = tag
@@ -774,8 +766,9 @@ class CrawlerModel:
           for record in records:
             entry = {}
             if not record.get(es_info['mapping']['tag']) is None:
-              if tag in record[es_info['mapping']['tag']]:
-                tags = list(set(record[es_info['mapping']['tag']][0].split(';')))
+              current_tags = record[es_info['mapping']['tag']][0]
+              if tag in current_tags:
+                tags = list(set(current_tags.split(';')))
                 tags.remove(tag)
                 entry[es_info['mapping']['tag']] = ';'.join(tags)
                 entries[record['id']] = entry
