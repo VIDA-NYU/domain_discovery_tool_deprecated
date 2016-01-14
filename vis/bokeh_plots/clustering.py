@@ -23,6 +23,7 @@ def colormap(key):
     color = {
         "Irrelevant": NEGATIVE_COLOR,
         "Relevant": POSITIVE_COLOR,
+        "Custom": CUSTOM_COLOR
     }.get(key, NEUTRAL_COLOR)
     return color
 
@@ -38,8 +39,21 @@ def selection_plot(response):
     xdata = [x[1] for x in response["pages"]]
     ydata = [x[2] for x in response["pages"]]
     tags = [x[3] for x in response["pages"]]
-    color = [colormap(x[0]) if x else colormap(None) for x in tags]
-
+    color = []
+    for tag in tags:
+        custom = False
+        if tag:
+            for t in tag:
+                if t not in ["Relevant", "Irrelevant", ""]:
+                    custom = True
+                    break
+            if not custom:    
+                color.append(colormap(tag[0]))
+            else:
+                color.append(colormap("Custom"))
+        else:
+            color.append(colormap(None))
+        
     source = ColumnDataSource(
         data=dict(
             x=xdata,
