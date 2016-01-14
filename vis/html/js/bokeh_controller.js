@@ -35,7 +35,7 @@
   }
 
 
-  exports.updatePagesGallery = function(tag){
+    exports.updatePagesGallery = function(tag){
     $("#pages_items").children().find("span.not-clickable").each(function(item){
       if(tag != "Neutral"){
         $(this).siblings().attr("class", "clickable");
@@ -78,15 +78,17 @@
   };
 
 
-  exports.updatePlotColors = function(url, type) {
+    exports.updatePlotColors = function(url, type) {
     var renderer = exports.getGlyphRenderersByType("Circle")[0];
     var d = renderer.get("data_source").get("data");
     if(type == "Relevant"){
       var color = "blue";
     } else if(type == "Irrelevant"){
       var color = "crimson";
+    } else if(type == "Neutral"){
+	var color = "#7F7F7F";
     } else {
-      var color = "#7F7F7F";
+	var color = "green";
     }
     url_index = [].concat.apply([], d.urls).indexOf(url);
     d.color[url_index] = color;
