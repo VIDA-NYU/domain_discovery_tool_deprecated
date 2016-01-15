@@ -136,6 +136,7 @@ p {
   background: #f9f9f9;
   font-size: 25px;
   padding: 10px;
+  z-index: 0;
 }
 
 #right_panel {
@@ -177,6 +178,19 @@ p {
   margin-top: 0px;
   height: 30px;
   font-size: 12px;
+}
+
+#page_retrieval_criteria_select {
+  -webkit-appearance: menulist-button;
+  margin-top: 0px;
+  height: 30px;
+  font-size: 12px;
+}
+
+
+#queryCheckBox {
+    list-style: none;
+    padding: 0;
 }
 
 #wordlist {
@@ -428,6 +442,8 @@ svg text {
   background: white;
   width: 100%;
   padding: 10px;
+  height: auto;
+  min-height: 400px;
 }
 
 #pages_landscape {
@@ -1368,4 +1384,16 @@ textarea[name=seeds_text] {
 .seeds_button {
   margin-top: 10px;
   float:right;
+}
+
+.bk-bs-btn-success {
+  float:right;
+  background-color: #f6bb42;
+  border-color: #f6bb42;
+  margin-left:5px;
+}
+
+.bk-bs-btn-success:hover, .bk-bs-btn-success:active, .bk-bs-btn-success:focus{
+  background-color: #ffce54;
+  border-color: #ffce54;
 }

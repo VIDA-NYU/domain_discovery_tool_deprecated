@@ -31,6 +31,7 @@ def update_document(update_entries, es_index='memex', es_doc_type='page', es=Non
                        "_index": es_index,
                        "_type": es_doc_type,
                        "doc": value,
+                       "doc_as_upsert": True,
                        "_id": key} for key, value in update_entries.items()], refresh=True)
 
 def refresh(es_index='memex', es_doc_type='page', es=None):

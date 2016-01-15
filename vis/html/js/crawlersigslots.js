@@ -22,9 +22,10 @@ var SigSlots = (function() {
   __sig__.term_toggle = function(term, shiftClick) {};
   __sig__.terms_snippets_loaded = function(snippetsData) {};
   __sig__.pages_loaded = function(pages) {};
+  __sig__.queries_loaded = function(queries) {};
   __sig__.tag_focus = function(tag, onFocus) {};
   __sig__.tag_clicked = function(tag) {};
-  __sig__.tag_action_clicked = function(tag, actionType, pages) {};
+  __sig__.tag_action_clicked = function(tag, actionType, pages, refresh_plot) {};
   __sig__.tag_individual_page_action_clicked = function(tag, actionType, page) {};
   __sig__.brushed_pages_changed = function(pagesIndices) {};
 
@@ -35,6 +36,9 @@ var SigSlots = (function() {
   __sig__.add_neg_term = function(term) {};
   __sig__.delete_term = function(term) {};
   __sig__.load_new_pages_summary = function(isFilter) {};
+
+  __sig__.bokeh_get_session = function() {};
+  __sig__.bokeh_insert_plot = function() {};
 
   //__sig__.pages_labels_changed = function() {};
   //__sig__.term_selected = function(term) {};

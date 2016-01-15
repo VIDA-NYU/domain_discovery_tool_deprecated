@@ -4,7 +4,7 @@ import base64
 from datetime import datetime
 from config import es as default_es
 
-def search(field, queryStr, fields = [], es_index='memex', es_doc_type='page', es=None):
+def search(field, queryStr, pageCount=100, fields = [], es_index='memex', es_doc_type='page', es=None):
     if es is None:
         es = default_es
 
@@ -19,7 +19,7 @@ def search(field, queryStr, fields = [], es_index='memex', es_doc_type='page', e
             "fields": fields
         }
 
-        res = es.search(body=query, fields=','.join(fields[0:]), index=es_index, doc_type=es_doc_type, size=500)
+        res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=pageCount)
         hits = res['hits']['hits']
 
         results = []
@@ -51,7 +51,8 @@ def multifield_query_search(s_fields, pageCount=100, fields = [], es_index='meme
             "fields": fields
         }
 
-        res = es.search(body=query, fields=','.join(fields[0:]), index=es_index, doc_type=es_doc_type, size=pageCount)
+        res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=pageCount)
+        
         hits = res['hits']['hits']
 
         results = []
@@ -62,7 +63,7 @@ def multifield_query_search(s_fields, pageCount=100, fields = [], es_index='meme
 
         return results
 
-def term_search(field, queryStr, fields=[], es_index='memex', es_doc_type='page', es=None):
+def term_search(field, queryStr, pageCount=100, fields=[], es_index='memex', es_doc_type='page', es=None):
     if es is None:
         es = default_es
 
@@ -79,7 +80,7 @@ def term_search(field, queryStr, fields=[], es_index='memex', es_doc_type='page'
             "fields": fields
         }
 
-        res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=500)
+        res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=pageCount)
         hits = res['hits']['hits']
 
         results = []
@@ -91,7 +92,7 @@ def term_search(field, queryStr, fields=[], es_index='memex', es_doc_type='page'
         return results
 
 
-def multifield_term_search(s_fields, fields=[], es_index='memex', es_doc_type='page', es=None):
+def multifield_term_search(s_fields, pageCount=100, fields=[], es_index='memex', es_doc_type='page', es=None):
     if es is None:
         es = default_es
         
@@ -117,7 +118,7 @@ def multifield_term_search(s_fields, fields=[], es_index='memex', es_doc_type='p
         "fields": fields
     }
     
-    res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=500)
+    res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=pageCount)
     hits = res['hits']['hits']
     
     results = []
@@ -155,7 +156,7 @@ def get_image(url, es_index='memex', es_doc_type='page', es=None):
             print "No thumbnail found"
     return [None, None]
 
-def get_context(terms, es_index='memex', es_doc_type='page', es=None):
+def get_context(terms, field = "text", es_index='memex', es_doc_type='page', es=None):
     if es is None:
         es = default_es
 
@@ -163,15 +164,15 @@ def get_context(terms, es_index='memex', es_doc_type='page', es=None):
         query = {
             "query": { 
                 "match": {
-                    "text": {
-                        "query": ' and  '.join(terms[0:]),
+                    field: {
+                        "query": ' '.join(terms[0:]),
                         "operator" : "and"
                     }
                 }
              },
             "highlight" : {
                 "fields" : {
-                    "text": {
+                    field: {
                         "fragment_size" : 100, "number_of_fragments" : 1
                     }
                 }

@@ -3,19 +3,21 @@ import json
 
 from config import es as default_es
 
-def create_index(es_index='memex', es=None):
+def create_index(es_index='memex', mapping=environ['DDT_HOME']+'/elastic/mapping.json', es=None):
     if es is None:
         es = default_es
 
-    json_page_data=open(environ['DDT_HOME']+'/elastic/mapping.json').read()
+    json_page_data=open(mapping).read()
 
     page_mappings = json.loads(json_page_data)
 
-    mappings = {"mappings": 
-                {
-                    "page": page_mappings["page"]
-                }
-            }
+    doctypes = {}
+    for doc_type in page_mappings.keys():
+        doctypes[doc_type] = page_mappings[doc_type]
+        
+    mappings = {
+        "mappings": doctypes
+    }
     
     fields = es_index.lower().split(' ')
     es_index = '_'.join([item for item in fields if item not in ''])

@@ -33,7 +33,7 @@ var PagesLandscape = function(parentContainerId) {
     .on('click', function() {
       __sig__.emit(__sig__.pages_extract_terms);
     });
-  this.update();
+  // this.update();
 };
 
 
@@ -50,9 +50,9 @@ PagesLandscape.prototype.getPagesData = function() {
  */
 PagesLandscape.prototype.setPagesData = function(pagesData) {
   this.pagesData = pagesData;
-  this.update();
+  // this.update();
   // Deselects items when pages data changed.
-  this.lasso.clearLasso();
+  // this.lasso.clearLasso();
 };
 
 

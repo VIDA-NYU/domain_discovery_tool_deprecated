@@ -67,6 +67,12 @@ PagesGallery.prototype.addItems = function(items) {
 };
 
 
+PagesGallery.prototype.setItems = function(items){
+  this.items = items;
+  this.update();
+}
+
+
 /**
  * Sets a callback to test whether a tag is removable.
  */
@@ -192,7 +198,11 @@ PagesGallery.prototype.update = function() {
         var isRemovable = gallery.cbIsTagRemovable(tag);
         if (isRemovable) {
           // Removes tag from item.
+          BokehPlots.updatePlotColors(item.url[0], "Neutral");
+          $(this).attr("class", "not-clickable");
+          $(this).siblings().text(" ");
           __sig__.emit(__sig__.tag_individual_page_action_clicked, tag, actionType, item);
+          BokehPlots.updateData();
         }
       })
       .on('mouseover', function(tag, i) {
@@ -222,7 +232,18 @@ PagesGallery.prototype.update = function() {
     selectBox.on('change', function() {
       var tag = d3.select(this).node().value;
       if (tag != defaultOption) {
+        if($(this).siblings()[0]){
+          if(tag != "Neutral"){
+            $(this).siblings().children('img').attr("class", "clickable");
+            $(this).siblings().children('.not-clickable').text(tag);
+          } else {
+            $(this).siblings().children('img').attr("class", "not-clickable");
+            $(this).siblings().children('.not-clickable').text(" ");
+          }
+        }
+
         // Adds tag to item.
+        BokehPlots.updatePlotColors(item.url[0], tag);
         __sig__.emit(__sig__.tag_individual_page_action_clicked, tag, 'Apply', item);
       }
     });
@@ -255,6 +276,7 @@ PagesGallery.prototype.update = function() {
         url: item.url,
     });
   });
+
 };
 
 

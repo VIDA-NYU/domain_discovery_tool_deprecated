@@ -25,14 +25,16 @@ def get_documents(terms, term_field, fields=["text"], es_index='memex', es_doc_t
                             doc_type=es_doc_type)
 
             if res['hits']['hits']:
-                hits = res['hits']['hits'][0]
+                hits = res['hits']['hits']
 
-                record = {}
-                if not hits.get('fields') is None:
-                    record = hits['fields']
-                record['id'] =hits['_id']
-
-                results[term] = record           
+                records = []
+                for hit in hits:
+                    record = {}
+                    if not hit.get('fields') is None:
+                        record = hit['fields']
+                    record['id'] =hit['_id']
+                    records.append(record)
+                results[term] = records           
             
     return results
 
@@ -114,19 +116,25 @@ def get_most_recent_documents(opt_maxNumberOfPages = 200, mapping=None, fields =
             }
         }
     else:
-        query["query"] = {
-            "query_string": {
-                "fields" : [mapping['text']],
-                "query": ' and  '.join(opt_filter.split(' ')),
+        if opt_filter[0] == '"' and opt_filter[len(opt_filter) - 1] == '"':
+            query["query"] = {
+                "match_phrase": {
+                    mapping['text'] : opt_filter.replace('"','')
+                }
             }
-        }
-
+        else:
+            query["query"] = {
+                "match": {
+                    mapping['text'] : opt_filter
+                }
+            }
+    
     if len(fields) > 0:
         query["fields"] = fields
-
+    
     res = es.search(body=query, index = es_index, doc_type = es_doc_type)
     hits = res['hits']['hits']
-
+    
     results = []
     for hit in hits:
         fields = hit['fields']

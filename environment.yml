@@ -19,4 +19,6 @@ dependencies:
     - cherrypy
     - requests
     - ache >=0.3.1
+    - jinja2
+    - bokeh=0.10.0
     - topik
