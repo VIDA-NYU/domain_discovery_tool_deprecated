@@ -284,7 +284,11 @@ class Page:
   def statistics(self, session):
     session = json.loads(session)
     pages = self._crawler.getPages(session)
-    script, div = domains_dashboard(pages)
+    if pages["pages"]:
+        script, div = domains_dashboard(pages)
+    else:
+        script = None
+        div = None
     with open(os.path.join(self._HTML_DIR, u"domains_dashboard.html")) as f:
         template = Template(f.read())
     return template.render(script=script, div=div)
