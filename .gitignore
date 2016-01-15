@@ -22,3 +22,4 @@ data/
 vis/html/models/
 *.DS_Store
 .idea
+*.swp
