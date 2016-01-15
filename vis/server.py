@@ -2,6 +2,7 @@ import cherrypy
 from ConfigParser import ConfigParser
 import json
 import os
+import urlparse
 from crawler_model_adapter import *
 from threading import Lock
 
@@ -280,10 +281,12 @@ class Page:
     return json.dumps(empty_plot())
 
   @cherrypy.expose
-  def statistics(self):
-    from data import page_data
-    script, div = domains_dashboard(page_data)
-    template = Template(open(os.path.join(self._HTML_DIR, u"domains_dashboard.html")).read())
+  def statistics(self, session):
+    session = json.loads(session)
+    pages = self._crawler.getPages(session)
+    script, div = domains_dashboard(pages)
+    with open(os.path.join(self._HTML_DIR, u"domains_dashboard.html")) as f:
+        template = Template(f.read())
     return template.render(script=script, div=div)
 
 
