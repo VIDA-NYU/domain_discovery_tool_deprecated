@@ -564,6 +564,9 @@ CrawlerVis.prototype.updatePagesStatsCrawler = function(stats, statslist) {
   d3.select('#pages_landscape_update')
     .classed('enabled', newPages > 0)
     .classed('disabled', newPages == 0);
+  d3.select('#goto_statistics')
+    .classed('enabled', true)
+    .classed('disabled', false);
 };
 
 
@@ -628,6 +631,9 @@ CrawlerVis.prototype.updatePagesStatsSeedCrawler = function(stats, statslist) {
   // Updates buttons used to update pages landscape.
   // For seed crawler, update button is always available;
   d3.select('#pages_landscape_update')
+    .classed('enabled', true)
+    .classed('disabled', false);
+  d3.select('#goto_statistics')
     .classed('enabled', true)
     .classed('disabled', false);
 };

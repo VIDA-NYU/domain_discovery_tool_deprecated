@@ -26,7 +26,7 @@ def domains_dashboard(response):
 
     source_domains = ColumnDataSource(data=dict(x=xdomains, y=ydomains))
     bar_domains = Bar(source_domains.data, values="y", label="x", title="Most Common Domains by Number",
-            bar_width=BAR_WIDTH)
+            bar_width=BAR_WIDTH, height=584)
     panel_domains = Panel(child=bar_domains, title="Domains")
 
     # Domain Information Table
@@ -44,7 +44,7 @@ def domains_dashboard(response):
 
     source_top_level = ColumnDataSource(data=dict(x=xendings, y=yendings))
     bar_top_level = Bar(source_top_level.data, values="y", label="x",
-            title="Most Common URL Endings by Number", bar_width=BAR_WIDTH)
+            title="Most Common URL Endings by Number", bar_width=BAR_WIDTH, height=584)
     panel_top_level = Panel(child=bar_top_level, title="Endings")
 
     # Top level domains table
