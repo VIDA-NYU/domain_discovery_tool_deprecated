@@ -82,14 +82,7 @@ def get_most_recent_documents(opt_maxNumberOfPages = 200, mapping=None, fields =
         es = default_es
 
     query = { 
-        "size": opt_maxNumberOfPages,
-        "sort": [
-            {
-                mapping["timestamp"]: {
-                    "order": "desc"
-                }
-            }
-        ]
+        "size": opt_maxNumberOfPages
     }
 
     match_q = {
@@ -116,22 +109,15 @@ def get_most_recent_documents(opt_maxNumberOfPages = 200, mapping=None, fields =
             }
         }
     else:
-        if opt_filter[0] == '"' and opt_filter[len(opt_filter) - 1] == '"':
-            query["query"] = {
-                "match_phrase": {
-                    mapping['text'] : opt_filter.replace('"','')
-                }
-            }
-        else:
-            query["query"] = {
-                "match": {
-                    mapping['text'] : opt_filter
-                }
-            }
+        query["query"] = {
+            "query_string": {
+                "query": "(" + mapping['text'] + ":" + opt_filter.replace('"', '\"') + ")"
+            }   
+        }
     
     if len(fields) > 0:
         query["fields"] = fields
-    
+
     res = es.search(body=query, index = es_index, doc_type = es_doc_type)
     hits = res['hits']['hits']
     
