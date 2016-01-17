@@ -521,6 +521,7 @@ class CrawlerModel:
   def _getMostRecentPages(self, session):
     es_info = self.esInfo(session['domainId'])
 
+    print "\n pages cap ", session['pagesCap'], "\n"
     hits = []
     if session['fromDate'] is None:
       hits = get_most_recent_documents(session['pagesCap'], es_info['mapping'], ["url", "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]],  
@@ -800,7 +801,7 @@ class CrawlerModel:
     tags = []
     for term in terms:
       s_fields["term"] = term
-      res = multifield_term_search(s_fields, ['tag'], self._termsIndex, 'terms', self._es)
+      res = multifield_term_search(s_fields, 1, ['tag'], self._termsIndex, 'terms', self._es)
       tags.extend(res)
 
     results = {result['id']: result['tag'][0] for result in tags}
