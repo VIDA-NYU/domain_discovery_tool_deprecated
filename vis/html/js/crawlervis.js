@@ -1063,7 +1063,7 @@ CrawlerVis.prototype.createSelectForFilterPageCap = function() {
     return d;
   };
   // Some options.
-  var data = [10, 50, 100, 500, 1000, 2000];
+    var data = [10, 50, 100, 250, 500, 1000, 2000];
   var options = selectBox.selectAll('option').data(data);
   options.enter().append('option');
   options
