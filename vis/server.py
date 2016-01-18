@@ -7,7 +7,7 @@ from crawler_model_adapter import *
 from threading import Lock
 
 from bokeh_plots.clustering import selection_plot, empty_plot
-from bokeh_plots.domains_dashboard import domains_dashboard
+from bokeh_plots.domains_dashboard import domains_dashboard, pages_timeseries
 
 from jinja2 import Template
 
@@ -286,7 +286,11 @@ class Page:
     pages = self._crawler.getPages(session)
     pages_dates = self._crawler.getPagesDates(session)
     if pages["pages"]:
-        script, div = domains_dashboard(pages)
+        if pages_dates:
+            timeseries_panel = pages_timeseries(pages_dates)
+        else:
+            timeseries_panel = None
+        script, div = domains_dashboard(pages, timeseries_panel)
     else:
         script = None
         div = None

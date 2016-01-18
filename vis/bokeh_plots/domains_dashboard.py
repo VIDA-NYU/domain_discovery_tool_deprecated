@@ -1,5 +1,9 @@
 from urlparse import urlparse
 from collections import Counter
+from operator import itemgetter
+import datetime
+
+import numpy as np
 
 from bokeh.plotting import figure, show, output_file
 from bokeh.embed import components
@@ -14,11 +18,32 @@ PLOT_ELEMENTS = 10
 BAR_WIDTH = 0.4
 
 
-def page_retrieval_graph(response):
-    pass
+def pages_timeseries_parse(response):
+    parse_datetime = lambda x: datetime.datetime.strptime(x, "%Y-%m-%dT%H:%M:%S.%f")
+
+    parsed_dates = [parse_datetime(x[1]).date() for x in response]
+    date_counts = sorted(Counter(parsed_dates).items(), key=itemgetter(0))
+
+    dates = [x[0] for x in date_counts]
+
+    # Get a cumulative sum of the number of pages fetched.
+    fetched = np.cumsum([y[1] for y in date_counts])
+
+    return dates, fetched
 
 
-def domains_dashboard(response):
+def pages_timeseries(response):
+    source = pages_timeseries_parse(response)
+    plot = figure(plot_width=584, x_axis_type="datetime")
+    plot.line(x=source[0], y=source[1])
+    return Panel(child=plot, title="Fetched")
+
+
+def domains_dashboard(response, extra_plots=None):
+    """
+    Domains dashboard plot function. Takes an arguments for extra plots which
+    will be added in a tab with the other plots.
+    """
     # Parsed Response Data
     urls = [x[0][0] for x in response["pages"]]
     parsed_urls = [urlparse(x).hostname for x in urls]
@@ -60,7 +85,7 @@ def domains_dashboard(response):
             columns=columns_top_level, width=400, height=280)
 
     # Add the plots and charts to a vform and organize them with VBox and HBox
-    plot_tabs = Tabs(tabs=[panel_domains, panel_top_level])
+    plot_tabs = Tabs(tabs=[panel_domains, panel_top_level, extra_plots])
 
     # Take the two tables and the graph, turn them into VBox, then organize them
     # side by side in an HBox.
