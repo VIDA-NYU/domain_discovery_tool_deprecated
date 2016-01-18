@@ -76,12 +76,13 @@ class Page:
       model=model,
       ntopics=ntopics
     )
-    filename = '_'.join([domain, model, str(ntopics) + "topics", visualizer, 'vis.html'])
+    summary_string = '_'.join([domain, model, str(ntopics) + "topics", visualizer])
+    filename = summary_string + '.html'
     if visualizer == 'lda_vis':
       visualize(mymodel, mode='save_html', vis_name=visualizer, filename=filename)
     elif visualizer == 'termite':
       termite_plot = visualize(mymodel, vis_name=visualizer)
-      termite_html = bokeh.embed.file_html(termite_plot, resources=bokeh.resources.INLINE)
+      termite_html = bokeh.embed.file_html(termite_plot, resources=bokeh.resources.INLINE, title=summary_string)
       with open(filename, 'w') as f:
         f.write(termite_html)
     elif visualizer == 'test':
