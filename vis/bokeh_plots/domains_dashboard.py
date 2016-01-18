@@ -14,6 +14,10 @@ PLOT_ELEMENTS = 10
 BAR_WIDTH = 0.4
 
 
+def page_retrieval_graph(response):
+    pass
+
+
 def domains_dashboard(response):
     # Parsed Response Data
     urls = [x[0][0] for x in response["pages"]]
@@ -58,6 +62,8 @@ def domains_dashboard(response):
     # Add the plots and charts to a vform and organize them with VBox and HBox
     plot_tabs = Tabs(tabs=[panel_domains, panel_top_level])
 
+    # Take the two tables and the graph, turn them into VBox, then organize them
+    # side by side in an HBox.
     vbox_tables = VBox(children=[data_table_domain, data_table_top_level])
     vbox_plots = VBox(children=[plot_tabs])
     hbox_dashboard = HBox(children=[vbox_tables, vbox_plots])

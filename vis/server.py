@@ -284,6 +284,7 @@ class Page:
   def statistics(self, session):
     session = json.loads(session)
     pages = self._crawler.getPages(session)
+    pages_dates = self._crawler.getPagesDates(session)
     if pages["pages"]:
         script, div = domains_dashboard(pages)
     else:
