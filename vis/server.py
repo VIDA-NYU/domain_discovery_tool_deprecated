@@ -43,10 +43,8 @@ class Page:
     # __init__ method.
     self.make_topic_model = self._crawler._crawlerModel.make_topic_model
 
-
-  @cherrypy.expose
-  def topicsvis(self, domain, visualizer='lda_vis', tokenizer='simple', vectorizer='bag_of_words', model='lda', ntopics=3):
-    """Visualize topic model.
+  def topicsvis_aux(self, domain, visualizer='lda_vis', tokenizer='simple', vectorizer='bag_of_words', model='lda', ntopics=3):
+    """Create topic model visualization.
 
     Parameters
     ----------
@@ -59,6 +57,11 @@ class Page:
     ----------------
     Same as in ``self.topic_model``.
 
+    Returns
+    -------
+    filename: str
+        Absolute path of the HTML file containing the visualization.
+
     See Also
     --------
     - CrawlerModel.make_topic_model: this method essentially wraps that one and invokes a visualization.
@@ -70,11 +73,11 @@ class Page:
     """
     ntopics = int(ntopics) # ntopics comes as a string from a URL query string
     mymodel = self.make_topic_model(
-      domain=domain,
-      tokenizer=tokenizer,
-      vectorizer=vectorizer,
-      model=model,
-      ntopics=ntopics
+            domain=domain,
+            tokenizer=tokenizer,
+            vectorizer=vectorizer,
+            model=model,
+            ntopics=ntopics
     )
     summary_string = '_'.join([domain, model, str(ntopics) + "topics", visualizer])
     filename = summary_string + '.html'
@@ -89,7 +92,12 @@ class Page:
       return "Completed modeling step."
     else:
       raise NotImplementedError
+    return filename
 
+
+  @cherrypy.expose
+  def topicsvis(self, domain, visualizer='lda_vis', tokenizer='simple', vectorizer='bag_of_words', model='lda', ntopics=3):
+    filename = self.topicsvis_aux(domain=domain, visualizer=visualizer, tokenizer=tokenizer, vectorizer=vectorizer, model=model, ntopics=ntopics)
     with open(filename, 'r') as f:
       vis = f.read()
     return vis
