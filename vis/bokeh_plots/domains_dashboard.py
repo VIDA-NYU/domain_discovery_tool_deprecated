@@ -18,24 +18,13 @@ PLOT_ELEMENTS = 10
 BAR_WIDTH = 0.4
 
 
-def pages_timeseries_parse(response):
-    parse_datetime = lambda x: datetime.datetime.strptime(x, "%Y-%m-%dT%H:%M:%S.%f")
-
-    parsed_dates = [parse_datetime(x[1]).date() for x in response]
-    date_counts = sorted(Counter(parsed_dates).items(), key=itemgetter(0))
-
-    dates = [x[0] for x in date_counts]
-
-    # Get a cumulative sum of the number of pages fetched.
-    fetched = np.cumsum([y[1] for y in date_counts])
-
-    return dates, fetched
-
-
 def pages_timeseries(response):
-    source = pages_timeseries_parse(response)
-    plot = figure(plot_width=584, x_axis_type="datetime")
-    plot.line(x=source[0], y=source[1])
+    parse_datetime = lambda x: datetime.datetime.strptime(x, "%Y-%m-%dT%H:%M:%S.%f")
+    parsed_dates = [parse_datetime(x[1]) for x in response]
+    dates = sorted(parsed_dates)
+    plot = figure(plot_width=584, x_axis_type="datetime", x_axis_label="Dates",
+            y_axis_label="Number Fetched")
+    plot.line(x=dates, y=range(len(dates)))
     return Panel(child=plot, title="Fetched")
 
 
@@ -55,7 +44,8 @@ def domains_dashboard(response, extra_plots=None):
 
     source_domains = ColumnDataSource(data=dict(x=xdomains, y=ydomains))
     bar_domains = Bar(source_domains.data, values="y", label="x", title="Most Common Domains by Number",
-            bar_width=BAR_WIDTH, height=584)
+            bar_width=BAR_WIDTH, height=584, xlabel="Domains",
+            ylabel="Occurences")
     panel_domains = Panel(child=bar_domains, title="Domains")
 
     # Domain Information Table
@@ -73,7 +63,8 @@ def domains_dashboard(response, extra_plots=None):
 
     source_top_level = ColumnDataSource(data=dict(x=xendings, y=yendings))
     bar_top_level = Bar(source_top_level.data, values="y", label="x",
-            title="Most Common URL Endings by Number", bar_width=BAR_WIDTH, height=584)
+            title="Most Common URL Endings by Number", bar_width=BAR_WIDTH,
+            height=584, xlabel="Endings", ylabel="Occurences")
     panel_top_level = Panel(child=bar_top_level, title="Endings")
 
     # Top level domains table
