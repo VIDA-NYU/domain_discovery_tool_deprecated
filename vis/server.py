@@ -82,7 +82,8 @@ class Page:
     summary_string = '_'.join([domain, model, str(ntopics) + "topics", visualizer])
     filename = summary_string + '.html'
     if visualizer == 'lda_vis':
-      visualize(mymodel, mode='save_html', vis_name=visualizer, filename=filename)
+      with self.lock:
+          visualize(mymodel, mode='save_html', vis_name=visualizer, filename=filename)
     elif visualizer == 'termite':
       termite_plot = visualize(mymodel, vis_name=visualizer)
       termite_html = bokeh.embed.file_html(termite_plot, resources=bokeh.resources.INLINE, title=summary_string)
