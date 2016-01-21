@@ -1089,9 +1089,10 @@ class CrawlerModel:
     model: a topik topic model
         A topik model, encoding things like term frequencies, etc.
     """
-    raw_data = read_input(source="http://localhost:9200", index=domain)
     content_field = 'text'
-    id_doc_pairs = ((hash(item[content_field]), item[content_field]) for item in raw_data)
+    def not_empty(doc): return bool(doc[content_field])  # True if document not empty
+    raw_data = filter(not_empty, read_input(source="http://localhost:9200", index=domain))
+    id_doc_pairs = ((hash(__[content_field]), __[content_field]) for __ in raw_data)
     tokens = tokenize(id_doc_pairs, method=tokenizer)
     vectors = vectorize(tokens, method=vectorizer)
     model = run_model(vectors, model_name=model, ntopics=ntopics)
