@@ -161,10 +161,8 @@
 
   // Statistics page functions and callbacks.
   $("#goto_statistics").on("click", function(){
-    // event.preventDefault();
     var url = "/statistics?" + $.param({session: JSON.stringify(exports.session)});
     $(this).attr("href", url);
-    // exports.gotoStatistics();
   });
 
 })(this.BokehPlots = {});
