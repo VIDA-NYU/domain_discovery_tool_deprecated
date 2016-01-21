@@ -43,8 +43,9 @@ class Page:
     # __init__ method.
     self.make_topic_model = self._crawler._crawlerModel.make_topic_model
 
-  def topicsvis_aux(self, domain, visualizer='lda_vis', tokenizer='simple', vectorizer='bag_of_words', model='lda', ntopics=3):
-    """Create topic model visualization.
+  @cherrypy.expose
+  def topicsvis(self, domain, visualizer='lda_vis', tokenizer='simple', vectorizer='bag_of_words', model='lda', ntopics=3):
+    """Returns topic model visualization in HTML
 
     Parameters
     ----------
@@ -59,8 +60,8 @@ class Page:
 
     Returns
     -------
-    filename: str
-        Absolute path of the HTML file containing the visualization.
+    vis: str
+        HTML containing the visualization.
 
     See Also
     --------
@@ -81,8 +82,10 @@ class Page:
     )
     summary_string = '_'.join([domain, model, str(ntopics) + "topics", visualizer])
     filename = summary_string + '.html'
+
+    # output visualization to filename
     if visualizer == 'lda_vis':
-      with self.lock:
+      with self.lock:  # pyLDAvis uses topik/pandas/numexpr code that is not thread-safe
           visualize(mymodel, mode='save_html', vis_name=visualizer, filename=filename)
     elif visualizer == 'termite':
       termite_plot = visualize(mymodel, vis_name=visualizer)
@@ -93,12 +96,7 @@ class Page:
       return "Completed modeling step."
     else:
       raise NotImplementedError
-    return filename
 
-
-  @cherrypy.expose
-  def topicsvis(self, domain, visualizer='lda_vis', tokenizer='simple', vectorizer='bag_of_words', model='lda', ntopics=3):
-    filename = self.topicsvis_aux(domain=domain, visualizer=visualizer, tokenizer=tokenizer, vectorizer=vectorizer, model=model, ntopics=ntopics)
     with open(filename, 'r') as f:
       vis = f.read()
     return vis
