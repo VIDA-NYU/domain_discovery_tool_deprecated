@@ -27,7 +27,7 @@ from elastic.get_config import get_available_domains, get_mapping
 from elastic.search_documents import get_context, term_search, search, multifield_term_search, range, multifield_query_search 
 from elastic.add_documents import add_document, update_document, refresh
 from elastic.get_mtermvectors import getTermStatistics, getTermFrequency
-from elastic.get_documents import get_most_recent_documents, get_documents, get_all_ids, get_more_like_this
+from elastic.get_documents import get_most_recent_documents, get_documents, get_all_ids, get_more_like_this, get_pages_datetimes
 from elastic.aggregations import get_significant_terms, get_unique_values
 from elastic.create_index import create_index, create_terms_index, create_config_index
 from elastic.load_config import load_config
@@ -928,6 +928,10 @@ class CrawlerModel:
     output, errors = p.communicate()
     print output
     print errors
+
+  def getPagesDates(self, session):
+    es_info = self.esInfo(session['domainId'])
+    return get_pages_datetimes(es_info["activeCrawlerIndex"])
     
   # Projects pages.
   def projectPages(self, pages, projectionType='TSNE'):

@@ -176,4 +176,5 @@ class SeedCrawlerModelAdapter(CrawlerModelAdapter):
   def getTermsSummary(self, session):
     return self._crawlerModel.getTermsSummarySeedCrawler(session = session)
 
-
+  def getPagesDates(self, session):
+    return self._crawlerModel.getPagesDates(session)
