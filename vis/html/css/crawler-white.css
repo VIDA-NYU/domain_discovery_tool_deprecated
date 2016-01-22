@@ -1397,3 +1397,8 @@ textarea[name=seeds_text] {
   background-color: #ffce54;
   border-color: #ffce54;
 }
+
+#goto_statistics {
+    background-color:inherit;
+    border:inherit;
+}
