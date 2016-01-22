@@ -457,7 +457,8 @@ class CrawlerModel:
     if len(pos_urls) > 1:
       tfidf_pos = tfidf.tfidf(pos_urls, es_info['mapping'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)
       [_,corpus,ttfs_pos] = tfidf_pos.getTfArray()
-      total_pos_tf = np.sum(ttfs_pos.toarray(), axis=0)
+      
+      total_pos_tf = np.sum(ttfs_pos, axis=0)
       total_pos = np.sum(total_pos_tf)
       pos_freq={}
       for key in top_terms:
@@ -473,7 +474,7 @@ class CrawlerModel:
     if len(neg_urls) > 1:
       tfidf_neg = tfidf.tfidf(neg_urls, es_info['mapping'], es_info['activeCrawlerIndex'], es_info['docType'],  self._es)
       [_,corpus,ttfs_neg] = tfidf_neg.getTfArray()
-      total_neg_tf = np.sum(ttfs_neg.toarray(), axis=0)
+      total_neg_tf = np.sum(ttfs_neg, axis=0)
       total_neg = np.sum(total_neg_tf)
       neg_freq={}
       for key in top_terms:
@@ -1028,7 +1029,7 @@ class CrawlerModel:
   def term_tfidf(self, urls):
 
     [data, data_tf, data_ttf , corpus, urls] = getTermStatistics(urls, es_info['mapping'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)
-    return [data.toarray(), data_tf, data_ttf, corpus, urls]
+    return [data, data_tf, data_ttf, corpus, urls]
 
   @staticmethod
   def runPCASKLearn(X, pc_count = None):
