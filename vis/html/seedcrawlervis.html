@@ -48,6 +48,21 @@
               </a>
             </li>
             <li class="dropdown">
+              <a data-toggle="dropdown" role="button" class="dropdown-toggle">TopikVis <span class='caret'></span></a>
+              <ul class="dropdown-menu" id="topikVis">
+                <li class='crawler-radio'>
+                  <a target="_blank" class="plot_button" value="lda_vis" href="" id="ldavisPlot">LDAVis</a>
+                  <a target="_blank" class="plot_button" value="termite" href="" id="termitePlot">Termite</a>
+                </li>
+                <!--<li>
+                  <button type="button" class="btn btn-warning" data-type="last" id="">
+                    <span class="glyphicon glyphicon-download"></span> Visualize
+                  </button>
+                </li>
+                -->
+              </ul>
+            </li>
+            <li class="dropdown">
               <a data-toggle="dropdown" role="button" class="dropdown-toggle">Model <span class='caret'></span></a>
               <ul class="dropdown-menu" id="downloadModel">
                 <li>
@@ -383,6 +398,7 @@
     <script type="text/javascript" src="js/utils.js"></script>
     <script type="text/javascript" src="js/wordlist.js"></script>
     <script type="text/javascript" src="js/bokeh_controller.js"></script>
+    <script type="text/javascript" src="js/topicvis.js"></script>
     <script>
       // Initializes main app class after page is loaded.
       window.onload = function() {
