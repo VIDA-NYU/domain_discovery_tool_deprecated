@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+    <head>
+        <link rel="stylesheet" href="bootflat-2.0.4/css/bootstrap.min.css">
+        <link rel="stylesheet" href="bootflat-2.0.4/css/bootflat.min.css">
+        <link type="text/css" rel="stylesheet" href="css/bokeh-0.10.0.min.css" media="all">
+        <link rel="stylesheet" href="bootflat-2.0.4/css/bootstrap.min.css">
+        <link rel="stylesheet" href="bootflat-2.0.4/css/bootflat.min.css">
+        <link type="text/css" rel="stylesheet" href="css/crawler-white.css" media="all">
+        <link type="text/css" rel="stylesheet" href="css/dashboard_styles.css" media="all">
+        <script type="text/javascript" src="js/libs/bokeh-0.10.0.min.js"></script>
+    </head>
+    <body>
+        <nav class="navbar navbar-default navbar-fixed-top">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <img src="img/nyu_stacked_black.png" style="height:40px;margin-top:5px;padding-right:15px;" />
+            </div>
+            <div class="collapse navbar-collapse" id="crawlerSelection">
+              <ul class="nav navbar-nav">
+                <li><a class="navbar-brand" href="#">Domain Discovery Tool</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    {% if (script or div) %}
+                    <h2>Current Domain Statistics</h2>
+                        {{ script | safe }}
+                        {{ div | safe }}
+                    {% else %}
+                        <center><h3>No page information available for this domain.</h3></center>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
