@@ -48,7 +48,7 @@ class Page:
     self.make_topic_model = self._crawler._crawlerModel.make_topic_model
 
   @cherrypy.expose
-  def topicsvis(self, domain, visualizer='lda_vis', tokenizer='simple', vectorizer='bag_of_words', model='lda', ntopics=3):
+  def topicvis(self, domain, visualizer='lda_vis', tokenizer='simple', vectorizer='bag_of_words', model='lda', ntopics=3):
     """Returns topic model visualization in HTML
 
     Parameters

@@ -1337,7 +1337,7 @@ h1 {
   padding-top:0px;
 }
 
-#addDomain, #build_model {
+#addDomain, #build_model, #topicVisSettings {
   margin-top:0px;
   width: 100%;
   border-top-left-radius: 0px;
@@ -1408,7 +1408,11 @@ textarea[name=seeds_text] {
     border:inherit;
 }
 
-#topikVis {
+#topicVis {
     padding-top:0px;
     padding-bottom:0px;
+}
+
+.control-label {
+    margin-top:20px;
 }
