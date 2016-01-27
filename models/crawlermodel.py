@@ -72,6 +72,7 @@ class CrawlerModel:
 
     self._mapping = {"timestamp":"retrieved", "text":"text", "html":"html", "tag":"tag", "query":"query"}
     self._domains = None
+    self.pos_tags = ['NN', 'NNS', 'NNP', 'NNPS', 'VBN', 'JJ']
 
     
   # Returns a list of available crawlers in the format:
@@ -406,7 +407,7 @@ class CrawlerModel:
         text = [field[es_info['mapping']["text"]][0] for field in results]
                 
         if len(urls) > 0:
-          tfidf_all = tfidf.tfidf(urls, es_info['mapping'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)
+          tfidf_all = tfidf.tfidf(urls, pos_tags=self.pos_tags, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
           if pos_terms:
             extract_terms_all = extract_terms.extract_terms(tfidf_all)
             [ranked_terms, scores] = extract_terms_all.results(pos_terms)
@@ -455,7 +456,7 @@ class CrawlerModel:
 
     pos_freq = {}
     if len(pos_urls) > 1:
-      tfidf_pos = tfidf.tfidf(pos_urls, es_info['mapping'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)
+      tfidf_pos = tfidf.tfidf(pos_urls, pos_tags=['NN', 'NNS', 'NNP', 'NNPS', 'VBN', 'JJ'], mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
       [_,corpus,ttfs_pos] = tfidf_pos.getTfArray()
       
       total_pos_tf = np.sum(ttfs_pos, axis=0)
@@ -472,7 +473,7 @@ class CrawlerModel:
     neg_urls = [field['id'] for field in term_search(es_info['mapping']['tag'], ['Irrelevant'], self._pagesCapTerms, ['url'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)]
     neg_freq = {}
     if len(neg_urls) > 1:
-      tfidf_neg = tfidf.tfidf(neg_urls, es_info['mapping'], es_info['activeCrawlerIndex'], es_info['docType'],  self._es)
+      tfidf_neg = tfidf.tfidf(neg_urls, pos_tags=['NN', 'NNS', 'NNP', 'NNPS', 'VBN', 'JJ'], mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
       [_,corpus,ttfs_neg] = tfidf_neg.getTfArray()
       total_neg_tf = np.sum(ttfs_neg, axis=0)
       total_neg = np.sum(total_neg_tf)
@@ -733,7 +734,7 @@ class CrawlerModel:
     es_info = self.esInfo(session['domainId'])
 
     entries = {}
-    results = get_documents(pages, 'url', [es_info['mapping']['text']], es_info['activeCrawlerIndex'], es_info['docType'],  self._es)
+    results = get_documents(pages, 'url', [es_info['mapping']['tag']], es_info['activeCrawlerIndex'], es_info['docType'],  self._es)
 
     if applyTagFlag and len(results) > 0:
       print '\n\napplied tag ' + tag + ' to pages' + str(pages) + '\n\n'
@@ -1031,8 +1032,7 @@ class CrawlerModel:
     return results
 
   def term_tfidf(self, urls):
-
-    [data, data_tf, data_ttf , corpus, urls] = getTermStatistics(urls, es_info['mapping'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)
+    [data, data_tf, data_ttf , corpus, urls] = getTermStatistics(urls, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
     return [data, data_tf, data_ttf, corpus, urls]
 
   @staticmethod
