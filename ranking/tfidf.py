@@ -2,19 +2,26 @@ import numpy as np
 from elastic.get_mtermvectors import getTermStatistics
 
 class tfidf:
-    def __init__(self, opt_docs = None, mapping=None, es_index = 'memex', es_doc_type = 'page', es = None):
+    def __init__(self, opt_docs = None, rm_stopwords=True, rm_numbers=True, pos_tags=[],  mapping=None, es_index = 'memex', es_doc_type = 'page', es = None):
         self.documents = opt_docs
         self.corpus = None
         self.tfidfArray = None
         self.tfArray = None
         self.ttf = None
         self.mapping = mapping
+        self.rm_stopwords = rm_stopwords
+        self.rm_numbers = rm_numbers
+        self.pos_tags = pos_tags
+        self.es_index = es_index
+        self.es_doc_type = es_doc_type
+        self.es = es
+        
         if opt_docs != None:
-          self.process(opt_docs, es_index, es_doc_type, es)
+          self.process(opt_docs)
 
     def getTopTerms(self,top):
         N = len(self.documents)
-        avg = np.divide(np.sum(self.tfidfArray.toarray(), axis=0), N)
+        avg = np.divide(np.sum(self.tfidfArray, axis=0), N)
         sortedAvgIndices = np.argsort(avg)[::-1]
         return [self.corpus[i] for i in sortedAvgIndices[0:top]]
 
@@ -40,8 +47,8 @@ class tfidf:
     def getTerms(self, indices):
         return [self.corpus[x] for x in indices]
 
-    def process(self, documents, es_index = 'memex', es_doc_type = 'page', es = None):
-        [data_tfidf, data_tf, data_ttf, corpus, urls] = getTermStatistics(documents, self.mapping, es_index, es_doc_type, es)
+    def process(self, documents):
+        [data_tfidf, data_tf, data_ttf, corpus, urls] = getTermStatistics(documents, self.rm_stopwords, self.rm_numbers, self.pos_tags, self.mapping, self.es_index, self.es_doc_type, self.es)
         self.tfidfArray = data_tfidf
         self.tfArray = data_tf
         self.ttf = data_ttf
