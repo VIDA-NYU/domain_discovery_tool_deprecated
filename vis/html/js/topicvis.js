@@ -4,6 +4,8 @@
    * Sting to be used when grabbing the settings form DOM element.
    */
   var form = "#topicvis_settings_form";
+  var MIN_TOPICS = 2;
+  var MAX_TOPICS = 100;
 
 
   /**
@@ -29,7 +31,13 @@
     for(var i = 0; i < formData.length; i++){
       objects[formData[i]["name"]] = formData[i]["value"]
     }
-    return objects;
+    if((objects.ntopics > MAX_TOPICS) || (objects.ntopics < MIN_TOPICS)){
+      $("#error_ntopics").css("display", "inline");
+      throw "ntopics must be a number between " + MIN_TOPICS + " and " + MAX_TOPICS + ".";
+    } else {
+      $("#error_ntopics").css("display", "none");
+      return objects;
+    }
   }
 
 
@@ -63,19 +71,6 @@
   $("#save_topicvis_settings").on("click", function(){
     exports.updateSettings();
     $("#topicVisSettingsModal").modal("hide");
-  });
-
-
-  /**
-   * Update the ntopic select field with 23 integer values. The default will be
-   * the first in the list of options. This is done to iteratively create 23
-   * options without having to manually add them to the DOM element.
-   */
-  $(document).ready(function(){
-    for(var i = 2; i < 24; i++){
-      var option = "<option value='" + i + "'>" + i + "</option>"
-      $("#ntopics").append(option);
-    }
   });
 
 })(this.TopicVis = {});

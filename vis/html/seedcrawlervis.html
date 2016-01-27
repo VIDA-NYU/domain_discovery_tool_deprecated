@@ -127,7 +127,10 @@
             <div class="modal-body">
               <form id="topicvis_settings_form">
                 <label for="topic_model" class="control-label">Number of Topics</label>
-                <select name="ntopics" id="ntopics" class="form-control"></select>
+                <input type="text" value="2" name="ntopics" id="ntopics" class="form-control">
+                <p id="error_ntopics" style="color:#990000;display:none;">
+                  ERROR: Please provide a number between 2 and 100<br>
+                </p>
                 <label for="topic_model" class="control-label">Topic Model</label>
                 <select name="model" id="topic_model" class="form-control">
                   <option value="plsa">PLSA</option>
