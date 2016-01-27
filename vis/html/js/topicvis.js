@@ -5,7 +5,7 @@
    */
   var form = "#topicvis_settings_form";
   var MIN_TOPICS = 2;
-  var MAX_TOPICS = 100;
+  var MAX_TOPICS = 20;
 
 
   /**
