@@ -51,7 +51,7 @@ class CrawlerModel:
     self._pagesCapTerms = 100
     self._capTerms = 500
     self.projectionsAlg = {'Group by Similarity': self.pca
-                           # 't-SNE': self.tsne,
+                           #'t-SNE': self.tsne
                            # 'K-Means': self.kmeans,
                          }
 
@@ -64,9 +64,6 @@ class CrawlerModel:
       'Epidemy': ['Epidemy', 100, 100, []],
     }
 
-    self.mut_exc_tags = [ "Relevant",
-                          "Irrelevant"]
-    
     create_config_index()
     create_terms_index()
 
@@ -756,17 +753,15 @@ class CrawlerModel:
                 
               if len(tags) != 0:
                 # previous tags exist
-                for tag in self.mut_exc_tags:
-                  # remove conflicting tags
-                  if tag in tags:
-                    tags.remove(tag)
-                    # append new tag    
-                    entry[es_info['mapping']['tag']] = ';'.join(tags)+';'+tag
+                if not tag in tags:
+                  # append new tag    
+                  entry[es_info['mapping']['tag']] = ';'.join(tags)+';'+tag
               else:
                 # add new tag
                 entry[es_info['mapping']['tag']] = tag
 
-            entries[record['id']] =  entry
+            if entry:
+              entries[record['id']] =  entry
 
     elif len(results) > 0:
       print '\n\nremoved tag ' + tag + ' from pages' + str(pages) + '\n\n'
@@ -809,7 +804,7 @@ class CrawlerModel:
     tags = []
     for term in terms:
       s_fields["term"] = term
-      res = multifield_term_search(s_fields, ['tag'], self._termsIndex, 'terms', self._es)
+      res = multifield_term_search(s_fields, 1, ['tag'], self._termsIndex, 'terms', self._es)
       tags.extend(res)
 
     results = {result['id']: result['tag'][0] for result in tags}
@@ -1044,7 +1039,7 @@ class CrawlerModel:
 
   @staticmethod
   def runTSNESKLearn(X, pc_count = None):
-    tsne = TSNE(n_components=pc_count, random_state=0, metric='cosine')
+    tsne = TSNE(n_components=pc_count, random_state=0)
     return [None, tsne.fit_transform(X).tolist()]
 
   @staticmethod
