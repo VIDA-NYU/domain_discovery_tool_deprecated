@@ -69,8 +69,7 @@ class CrawlerModel:
 
     self._mapping = {"timestamp":"retrieved", "text":"text", "html":"html", "tag":"tag", "query":"query"}
     self._domains = None
-    self.pos_tags = ['NN', 'NNS', 'NNP', 'NNPS', 'VBN', 'JJ']
-
+    self.pos_tags = ['NN', 'NNS', 'NNP', 'NNPS', 'FW', 'JJ']
     
   # Returns a list of available crawlers in the format:
   # [
@@ -453,7 +452,7 @@ class CrawlerModel:
 
     pos_freq = {}
     if len(pos_urls) > 1:
-      tfidf_pos = tfidf.tfidf(pos_urls, pos_tags=['NN', 'NNS', 'NNP', 'NNPS', 'VBN', 'JJ'], mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
+      tfidf_pos = tfidf.tfidf(pos_urls, pos_tags=self.pos_tags, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
       [_,corpus,ttfs_pos] = tfidf_pos.getTfArray()
       
       total_pos_tf = np.sum(ttfs_pos, axis=0)
@@ -470,7 +469,7 @@ class CrawlerModel:
     neg_urls = [field['id'] for field in term_search(es_info['mapping']['tag'], ['Irrelevant'], self._pagesCapTerms, ['url'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)]
     neg_freq = {}
     if len(neg_urls) > 1:
-      tfidf_neg = tfidf.tfidf(neg_urls, pos_tags=['NN', 'NNS', 'NNP', 'NNPS', 'VBN', 'JJ'], mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
+      tfidf_neg = tfidf.tfidf(neg_urls, pos_tags=self.pos_tags, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
       [_,corpus,ttfs_neg] = tfidf_neg.getTfArray()
       total_neg_tf = np.sum(ttfs_neg, axis=0)
       total_neg = np.sum(total_neg_tf)
@@ -746,10 +745,11 @@ class CrawlerModel:
               # there are no previous tags
               entry[es_info['mapping']['tag']] = tag
             else:
+              current_tag = record[es_info['mapping']['tag']][0]
               tags = []
-              if  record[es_info['mapping']['tag']][0] != '':
+              if  current_tag != '':
                 # all previous tags were removed
-                tags = list(set(record[es_info['mapping']['tag']][0].split(';')))
+                tags = list(set(current_tag.split(';')))
                 
               if len(tags) != 0:
                 # previous tags exist
@@ -761,18 +761,20 @@ class CrawlerModel:
                 entry[es_info['mapping']['tag']] = tag
 
             if entry:
-              entries[record['id']] =  entry
+                  entries[record['id']] =  entry
 
     elif len(results) > 0:
       print '\n\nremoved tag ' + tag + ' from pages' + str(pages) + '\n\n'
+
       for page in pages:
         if not results.get(page) is None:
           records = results[page]
           for record in records:
             entry = {}
             if not record.get(es_info['mapping']['tag']) is None:
-              if tag in record[es_info['mapping']['tag']]:
-                tags = list(set(record[es_info['mapping']['tag']][0].split(';')))
+              current_tag = record[es_info['mapping']['tag']][0]
+              if tag in current_tag:
+                tags = list(set(current_tag.split(';')))
                 tags.remove(tag)
                 entry[es_info['mapping']['tag']] = ';'.join(tags)
                 entries[record['id']] = entry
