@@ -6,15 +6,7 @@
 (function(exports){
 
   exports.inds = [];
-  exports.session = {};
   exports.plot = {};
-
-
-  // Updates the session information to be sent to the server with
-  // exports.getPlotData()
-  exports.updateSession = function(){
-    exports.session = exports.vis.sessionInfo();
-  }
 
 
   // Takes urls and tags from Bokeh and changes their tags.
@@ -102,7 +94,7 @@
     $.ajax({
       url: "/getBokehPlot",
       type: "POST",
-      data: {"session": JSON.stringify(exports.session)},
+      data: {"session": JSON.stringify(exports.vis.sessionInfo())},
       success: function(data){
         Bokeh.index = {};
         exports.insertPlot(data.plot);
@@ -117,7 +109,6 @@
     $.ajax({
       url: "/getEmptyBokehPlot",
       type: "GET",
-      //data: {"session": JSON.stringify(exports.session)},
       success: function(data){
         exports.insertPlot(data);
       },
@@ -129,7 +120,7 @@
     $.ajax({
       url: "/getBokehPlot",
       type: "GET",
-      data: {"session": JSON.stringify(exports.session)},
+      data: {"session": JSON.stringify(exports.vis.sessionInfo())},
       success: function(data){
         exports.vis.onLoadedPages(data.data);
         exports.vis.onBrushedPagesChanged(exports.inds);
@@ -142,7 +133,7 @@
     $.ajax({
       url: "/getBokehPlot",
       type: "GET",
-      data: {"session": JSON.stringify(exports.session)},
+      data: {"session": JSON.stringify(exports.vis.sessionInfo())},
       success: function(data){
         exports.vis.onLoadedPages(data.data);
         exports.vis.onBrushedPagesChanged(exports.inds);
@@ -152,17 +143,16 @@
   }
 
 
+  // Statistics page functions and callbacks.
+  $("#goto_statistics").on("click", function(){
+    var url = "/statistics?" + $.param({session: JSON.stringify(exports.vis.sessionInfo())});
+    $(this).attr("href", url);
+  });
+
+
   // Connect to updateSession to bokeh_get_session signal
-  SigSlots.connect(__sig__.bokeh_get_session, exports, exports.updateSession);
   SigSlots.connect(__sig__.bokeh_insert_plot, exports, exports.getPlotData);
 
   exports.getEmptyPlot();
-
-
-  // Statistics page functions and callbacks.
-  $("#goto_statistics").on("click", function(){
-    var url = "/statistics?" + $.param({session: JSON.stringify(exports.session)});
-    $(this).attr("href", url);
-  });
 
 })(this.BokehPlots = {});
