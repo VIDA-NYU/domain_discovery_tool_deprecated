@@ -1403,3 +1403,8 @@ textarea[name=seeds_text] {
     margin-left:5px;
     width: 35%;
 }
+
+#goto_statistics {
+    background-color:inherit;
+    border:inherit;
+}

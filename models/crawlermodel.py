@@ -27,7 +27,7 @@ from elastic.get_config import get_available_domains, get_mapping
 from elastic.search_documents import get_context, term_search, search, multifield_term_search, range, multifield_query_search 
 from elastic.add_documents import add_document, update_document, refresh
 from elastic.get_mtermvectors import getTermStatistics, getTermFrequency
-from elastic.get_documents import get_most_recent_documents, get_documents, get_all_ids, get_more_like_this
+from elastic.get_documents import get_most_recent_documents, get_documents, get_all_ids, get_more_like_this, get_pages_datetimes
 from elastic.aggregations import get_significant_terms, get_unique_values
 from elastic.create_index import create_index, create_terms_index, create_config_index
 from elastic.load_config import load_config
@@ -51,7 +51,7 @@ class CrawlerModel:
     self._pagesCapTerms = 100
     self._capTerms = 500
     self.projectionsAlg = {'Group by Similarity': self.pca
-                           # 't-SNE': self.tsne,
+                           #'t-SNE': self.tsne
                            # 'K-Means': self.kmeans,
                          }
 
@@ -69,7 +69,7 @@ class CrawlerModel:
 
     self._mapping = {"timestamp":"retrieved", "text":"text", "html":"html", "tag":"tag", "query":"query"}
     self._domains = None
-
+    self.pos_tags = ['NN', 'NNS', 'NNP', 'NNPS', 'FW', 'JJ']
     
   # Returns a list of available crawlers in the format:
   # [
@@ -403,7 +403,7 @@ class CrawlerModel:
         text = [field[es_info['mapping']["text"]][0] for field in results]
                 
         if len(urls) > 0:
-          tfidf_all = tfidf.tfidf(urls, es_info['mapping'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)
+          tfidf_all = tfidf.tfidf(urls, pos_tags=self.pos_tags, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
           if pos_terms:
             extract_terms_all = extract_terms.extract_terms(tfidf_all)
             [ranked_terms, scores] = extract_terms_all.results(pos_terms)
@@ -452,9 +452,10 @@ class CrawlerModel:
 
     pos_freq = {}
     if len(pos_urls) > 1:
-      tfidf_pos = tfidf.tfidf(pos_urls, es_info['mapping'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)
+      tfidf_pos = tfidf.tfidf(pos_urls, pos_tags=self.pos_tags, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
       [_,corpus,ttfs_pos] = tfidf_pos.getTfArray()
-      total_pos_tf = np.sum(ttfs_pos.toarray(), axis=0)
+      
+      total_pos_tf = np.sum(ttfs_pos, axis=0)
       total_pos = np.sum(total_pos_tf)
       pos_freq={}
       for key in top_terms:
@@ -468,9 +469,9 @@ class CrawlerModel:
     neg_urls = [field['id'] for field in term_search(es_info['mapping']['tag'], ['Irrelevant'], self._pagesCapTerms, ['url'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)]
     neg_freq = {}
     if len(neg_urls) > 1:
-      tfidf_neg = tfidf.tfidf(neg_urls, es_info['mapping'], es_info['activeCrawlerIndex'], es_info['docType'],  self._es)
+      tfidf_neg = tfidf.tfidf(neg_urls, pos_tags=self.pos_tags, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
       [_,corpus,ttfs_neg] = tfidf_neg.getTfArray()
-      total_neg_tf = np.sum(ttfs_neg.toarray(), axis=0)
+      total_neg_tf = np.sum(ttfs_neg, axis=0)
       total_neg = np.sum(total_neg_tf)
       neg_freq={}
       for key in top_terms:
@@ -745,31 +746,36 @@ class CrawlerModel:
               # there are no previous tags
               entry[es_info['mapping']['tag']] = tag
             else:
+              current_tag = record[es_info['mapping']['tag']][0]
               tags = []
-              if  record[es_info['mapping']['tag']][0] != '':
+              if  current_tag != '':
                 # all previous tags were removed
-                tags = list(set(record[es_info['mapping']['tag']][0].split(';')))
+                tags = list(set(current_tag.split(';')))
                 
               if len(tags) != 0:
-                # append new tag    
-                entry[es_info['mapping']['tag']] = ';'.join(tags)+';'+tag
+                # previous tags exist
+                if not tag in tags:
+                  # append new tag    
+                  entry[es_info['mapping']['tag']] = ';'.join(tags)+';'+tag
               else:
                 # add new tag
                 entry[es_info['mapping']['tag']] = tag
 
-            entries[record['id']] =  entry
+            if entry:
+                  entries[record['id']] =  entry
 
     elif len(results) > 0:
       print '\n\nremoved tag ' + tag + ' from pages' + str(pages) + '\n\n'
+
       for page in pages:
         if not results.get(page) is None:
           records = results[page]
           for record in records:
             entry = {}
             if not record.get(es_info['mapping']['tag']) is None:
-              current_tags = record[es_info['mapping']['tag']][0]
-              if tag in current_tags:
-                tags = list(set(current_tags.split(';')))
+              current_tag = record[es_info['mapping']['tag']][0]
+              if tag in current_tag:
+                tags = list(set(current_tag.split(';')))
                 tags.remove(tag)
                 entry[es_info['mapping']['tag']] = ';'.join(tags)
                 entries[record['id']] = entry
@@ -921,6 +927,10 @@ class CrawlerModel:
     output, errors = p.communicate()
     print output
     print errors
+
+  def getPagesDates(self, session):
+    es_info = self.esInfo(session['domainId'])
+    return get_pages_datetimes(es_info["activeCrawlerIndex"])
     
   # Projects pages.
   def projectPages(self, pages, projectionType='TSNE'):
@@ -1020,9 +1030,8 @@ class CrawlerModel:
     return results
 
   def term_tfidf(self, urls):
-
-    [data, data_tf, data_ttf , corpus, urls] = getTermStatistics(urls, es_info['mapping'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)
-    return [data.toarray(), data_tf, data_ttf, corpus, urls]
+    [data, data_tf, data_ttf , corpus, urls] = getTermStatistics(urls, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
+    return [data, data_tf, data_ttf, corpus, urls]
 
   @staticmethod
   def runPCASKLearn(X, pc_count = None):
@@ -1033,7 +1042,7 @@ class CrawlerModel:
 
   @staticmethod
   def runTSNESKLearn(X, pc_count = None):
-    tsne = TSNE(n_components=pc_count, random_state=0, metric='cosine')
+    tsne = TSNE(n_components=pc_count, random_state=0)
     return [None, tsne.fit_transform(X).tolist()]
 
   @staticmethod

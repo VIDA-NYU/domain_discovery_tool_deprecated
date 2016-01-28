@@ -160,4 +160,11 @@
 
   exports.getEmptyPlot();
 
+
+  // Statistics page functions and callbacks.
+  $("#goto_statistics").on("click", function(){
+    var url = "/statistics?" + $.param({session: JSON.stringify(exports.session)});
+    $(this).attr("href", url);
+  });
+
 })(this.BokehPlots = {});

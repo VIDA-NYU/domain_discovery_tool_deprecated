@@ -178,6 +178,21 @@ def get_documents_by_id(ids=[], fields=[], es_index = 'memex', es_doc_type = 'pa
             results.append(fields)
     return results
 
+
+def get_pages_datetimes(index_name, es=None):
+    if es is None:
+        es = default_es
+
+    items = es.search(index_name, size=100000)["hits"]["hits"]
+    url_info = []
+
+    for item in items:
+        url = item["_source"]["url"]
+        timestamp = item["_source"]["retrieved"]
+        url_info.append((url, timestamp))
+    return url_info
+
+
 if __name__ == "__main__":
     urls = []
     with open(environ['MEMEX_HOME']+'/seed_crawler/seeds_generator/results.txt', 'r') as f:
@@ -185,4 +200,3 @@ if __name__ == "__main__":
     urls = [url.strip() for url in urls]
 
     docs = get_documents(urls)
-
