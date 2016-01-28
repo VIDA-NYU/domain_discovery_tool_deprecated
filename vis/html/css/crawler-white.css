@@ -1398,6 +1398,11 @@ textarea[name=seeds_text] {
   border-color: #ffce54;
 }
 
+.bk-bs-dropdown-menu {
+    left:inherit;
+    right:-75%;
+}
+
 #goto_statistics {
     background-color:inherit;
     border:inherit;
