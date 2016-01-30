@@ -832,6 +832,7 @@ CrawlerVis.prototype.onLoadedTermsSnippets = function(data) {
 
 // Responds to loaded pages signal.
 CrawlerVis.prototype.onLoadedPages = function(pagesData) {
+    
   var pages = pagesData['pages'].map(function(page, i) {
     return {
       url: page[0],
@@ -840,6 +841,17 @@ CrawlerVis.prototype.onLoadedPages = function(pagesData) {
       tags: page[3],
     };
   });
+    for(var i in pages){
+	var page = pages[i];
+	for(var j in page["tags"]){
+	    var tag = page["tags"][j];
+	    if(tag != ""){
+		if(this.availableTags.indexOf(tag) < 0) {
+		    this.tagsGallery.addItem(tag);
+		}
+	    }
+	}
+    }
   this.pagesLandscape.setPagesData(pages);
 
   // Updates last update.
