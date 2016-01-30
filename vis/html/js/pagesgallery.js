@@ -238,7 +238,7 @@ PagesGallery.prototype.update = function() {
             $(this).siblings().children('.not-clickable').text(tag);
           } else {
             $(this).siblings().children('img').attr("class", "not-clickable");
-            $(this).siblings().children('.not-clickable').text(" ");
+            $(this).siblings().children('.not-clickable').text("");
           }
         }
 
