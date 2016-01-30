@@ -40,6 +40,7 @@ def selection_plot(response):
     ydata = [x[2] for x in response["pages"]]
     tags = [x[3] for x in response["pages"]]
     color = []
+    custom_tags = ["Custom tags..."]
     
     for tag in tags:
         custom = False
@@ -47,7 +48,8 @@ def selection_plot(response):
             for t in tag:
                 if t not in ["Relevant", "Irrelevant", ""]:
                     custom = True
-                    break
+                    if t not in custom_tags:
+                        custom_tags.append(t)
             if not custom:    
                 color.append(colormap(tag[0]))
             else:
@@ -128,8 +130,10 @@ def selection_plot(response):
     
         //Update the custom tags selection list 
         var options = custom_tags_select.get("options");
-        options.push(tag);
-        custom_tags_select.set("options", options);
+        if(options.indexOf(tag) < 0){
+            options.push(tag);
+            custom_tags_select.set("options", options);
+        }
 
         // Reinitialise to the default value
         cb_obj.set("value", "Enter custom tag here...")
@@ -190,7 +194,7 @@ def selection_plot(response):
     custom_tag_input.callback = CustomJS(args=dict(source=source),
                                   code=textinput_code % (CUSTOM_COLOR))
     
-    custom_tag_select = Select(value="Custom tags...", options=["Custom tags..."])
+    custom_tag_select = Select(value="Custom tags...", options=custom_tags)
     custom_tag_select.callback = CustomJS(args=dict(source=source),
                                   code=selectinput_code % (CUSTOM_COLOR))
     custom_tag_input.callback.args["custom_tags_select"] = custom_tag_select
