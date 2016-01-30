@@ -18,7 +18,9 @@
 
 
   // Takes urls and tags from Bokeh and changes their tags.
-  exports.updateTags = function(selectedUrls, tag, inds){
+    exports.updateTags = function(selectedUrls, tag, inds){
+    // Add custom tags
+    exports.vis.tagsGallery.addItem(tag, false);
     exports.updatePagesGallery(tag);
     exports.inds = inds;
     exports.vis.tagsGallery.applyOrRemoveTag(tag, "Apply", selectedUrls, false);
@@ -35,7 +37,7 @@
   }
 
 
-    exports.updatePagesGallery = function(tag){
+  exports.updatePagesGallery = function(tag){
     $("#pages_items").children().find("span.not-clickable").each(function(item){
       if(tag != "Neutral"){
         $(this).siblings().attr("class", "clickable");
@@ -78,7 +80,7 @@
   };
 
 
-    exports.updatePlotColors = function(url, type) {
+  exports.updatePlotColors = function(url, type) {
     var renderer = exports.getGlyphRenderersByType("Circle")[0];
     var d = renderer.get("data_source").get("data");
     if(type == "Relevant"){
@@ -86,9 +88,9 @@
     } else if(type == "Irrelevant"){
       var color = "crimson";
     } else if(type == "Neutral"){
-	var color = "#7F7F7F";
+      var color = "#7F7F7F";
     } else {
-	var color = "green";
+      var color = "green";
     }
     url_index = [].concat.apply([], d.urls).indexOf(url);
     d.color[url_index] = color;
