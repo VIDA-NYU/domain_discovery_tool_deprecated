@@ -6,7 +6,7 @@ from bokeh.plotting import figure, show, output_file, save
 from bokeh.plotting import ColumnDataSource
 from bokeh.models import HoverTool, Circle, CustomJS, LassoSelectTool
 from bokeh.models.widgets import RadioButtonGroup, Button
-from bokeh.models.widgets.inputs import TextInput
+from bokeh.models.widgets.inputs import TextInput, Select
 from bokeh.embed import components
 
 
@@ -40,6 +40,7 @@ def selection_plot(response):
     ydata = [x[2] for x in response["pages"]]
     tags = [x[3] for x in response["pages"]]
     color = []
+    
     for tag in tags:
         custom = False
         if tag:
@@ -53,7 +54,7 @@ def selection_plot(response):
                 color.append(colormap("Custom"))
         else:
             color.append(colormap(None))
-        
+
     source = ColumnDataSource(
         data=dict(
             x=xdata,
@@ -124,6 +125,15 @@ def selection_plot(response):
         var data = source.get('data');
         var selected = [];
         var tag = cb_obj.get("value");
+    
+        //Update the custom tags selection list 
+        var options = custom_tags_select.get("options");
+        options.push(tag);
+        custom_tags_select.set("options", options);
+
+        // Reinitialise to the default value
+        cb_obj.set("value", "Enter custom tag here...")
+
         for(var i = 0; i < inds.length; i++){
             selected.push({
                 x: data.x[inds[i]],
@@ -139,30 +149,58 @@ def selection_plot(response):
         source.trigger("change");
     """
 
-    
+    selectinput_code = """
+    event.preventDefault();
+    var inds = source.get('selected')["1d"].indices;
+    var data = source.get('data');
+    var selected = [];
+    var tag = cb_obj.get("value");    
+
+    cb_obj.set("value", "Enter tags...")
+
+    for(var i = 0; i < inds.length; i++){
+         selected.push({
+            x: data.x[inds[i]],
+            y: data.y[inds[i]],
+            url: data.urls[inds[i]],
+            tags: data.tags[inds[i]],
+            selected: true,
+            possible: false,
+         });
+         data["color"][inds[i]] = "%s";
+    }
+    BokehPlots.updateTags(selected, tag, inds);
+    source.trigger("change");
+    """
+
     # Supply color with print formatting.
-    button1 = Button(label="Relevant", type="success")
-    button1.callback = CustomJS(args=dict(source=source),
-            code=button_code % ("Relevant", POSITIVE_COLOR))
+    but_relevant = Button(label="Relevant", type="success")
+    but_relevant.callback = CustomJS(args=dict(source=source),
+                    code=button_code % ("Relevant", POSITIVE_COLOR))
 
-    button2 = Button(label="Irrelevant", type="success")
-    button2.callback = CustomJS(args=dict(source=source),
-            code=button_code % ("Irrelevant", NEGATIVE_COLOR))
+    but_irrelevant = Button(label="Irrelevant", type="success")
+    but_irrelevant.callback = CustomJS(args=dict(source=source),
+                    code=button_code % ("Irrelevant", NEGATIVE_COLOR))
 
-    button3 = Button(label="Neutral", type="success")
-    button3.callback = CustomJS(args=dict(source=source),
-            code=button_code % ("Neutral", NEUTRAL_COLOR))
+    but_neutral = Button(label="Neutral", type="success")
+    but_neutral.callback = CustomJS(args=dict(source=source),
+                    code=button_code % ("Neutral", NEUTRAL_COLOR))
 
-    textInput = TextInput(value="default")
-    textInput.callback = CustomJS(args=dict(source=source),
+    custom_tag_input = TextInput(value="Enter custom tag here...")
+    custom_tag_input.callback = CustomJS(args=dict(source=source),
                                   code=textinput_code % (CUSTOM_COLOR))
-        
+    
+    custom_tag_select = Select(value="Custom tags...", options=["Custom tags..."])
+    custom_tag_select.callback = CustomJS(args=dict(source=source),
+                                  code=selectinput_code % (CUSTOM_COLOR))
+    custom_tag_input.callback.args["custom_tags_select"] = custom_tag_select
+
     # Adjust what attributes are displayed by the HoverTool
     hover = p.select(dict(type=HoverTool))
     hover.tooltips = [
         ("urls", "@urls"),
     ]
-    layout = vform(p, textInput, button1, button2, button3)
+    layout = vform(p,custom_tag_input, custom_tag_select, but_relevant, but_irrelevant, but_neutral)
 
     # Combine script and div into a single string.
     plot_code = components(layout)
@@ -185,11 +223,13 @@ def empty_plot():
 
     # Plot non-selected circles with a particular style using CIRCLE_SIZE and
     # 'color' list
-    button1 = Button(label="Relevant", type="success")
-    button2 = Button(label="Irrelevant", type="success")
-    button3 = Button(label="Neutral", type="success")
-    textInput = TextInput(value="default")
-    layout = vform(p, textInput, button1, button2, button3)
+    but_relevant = Button(label="Relevant", type="success")
+    but_irrelevant = Button(label="Irrelevant", type="success")
+    but_neutral = Button(label="Neutral", type="success")
+    custom_tag_input = TextInput(value="Enter custom tag here...")
+    custom_tag_select = Select(value="Custom tags...", options=["Custom tags..."])
+
+    layout = vform(p, custom_tag_input, custom_tag_select, but_relevant, but_irrelevant, but_neutral)
 
     # Combine script and div into a single string.
     plot_code = components(layout)
