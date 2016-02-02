@@ -150,6 +150,9 @@ class SeedCrawlerModelAdapter(CrawlerModelAdapter):
   def getAvailableQueries(self, session):
     return self._crawlerModel.getAvailableQueries(session)
 
+  def getAvailableTags(self, session):
+    return self._crawlerModel.getAvailableTags(session)
+
   # Returns number of pages downloaded between ts1 and ts2 for active crawler.
   # ts1 and ts2 are Unix epochs (seconds after 1970).
   # If opt_applyFilter is True, the summary returned corresponds to the applied pages filter defined
