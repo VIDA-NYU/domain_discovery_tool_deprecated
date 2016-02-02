@@ -56,7 +56,7 @@ $(CHERRY_PY_CONFIG_TARGET): vis/config.conf-in
 
 $(GET_NLTK_DATA_TARGET): $(CONDA_ENV)
 	source activate ddt; \
-	python -m nltk.downloader -d ${PWD}/nltk_data stopwords brown punkt
+	python -m nltk.downloader -d ${PWD}/nltk_data stopwords brown punkt averaged_perceptron_tagger
 
 $(LINK_WORD2VEC_DATA_TARGET): $(CONDA_ENV)/data/D_cbow_pdw_8B.pkl
 	ln $(CONDA_ENV)/data/D_cbow_pdw_8B.pkl ${PWD}/ranking
