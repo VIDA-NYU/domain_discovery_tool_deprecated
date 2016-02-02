@@ -15,8 +15,6 @@ class extract_terms:
         
         [urls, corpus, d] = self.table.getTfidfArray()
         
-        d = d.toarray()
-
         query_index = self.getIndex(corpus, query_terms)
 
         #Normalise the data
