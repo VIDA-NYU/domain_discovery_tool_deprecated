@@ -23,6 +23,7 @@ var SigSlots = (function() {
   __sig__.terms_snippets_loaded = function(snippetsData) {};
   __sig__.pages_loaded = function(pages) {};
   __sig__.queries_loaded = function(queries) {};
+  __sig__.tags_loaded = function(tags) {};
   __sig__.tag_focus = function(tag, onFocus) {};
   __sig__.tag_clicked = function(tag) {};
   __sig__.tag_action_clicked = function(tag, actionType, pages, refresh_plot) {};
