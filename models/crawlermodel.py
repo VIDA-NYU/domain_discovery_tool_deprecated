@@ -110,7 +110,12 @@ class CrawlerModel:
   def getAvailableQueries(self, session):
     es_info = self.esInfo(session['domainId'])
     return get_unique_values('query', self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)
-    
+
+  def getAvailableTags(self, session):
+    es_info = self.esInfo(session['domainId'])
+    tags = get_unique_values('tag', self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)
+    return tags
+
   def encode(self, url):
     return urllib2.quote(url).replace("/", "%2F")
     
@@ -568,6 +573,27 @@ class CrawlerModel:
       hits.extend(results)
     return hits
 
+  def _getPagesForTags(self, session):
+    es_info = self.esInfo(session['domainId'])
+
+    s_fields = {}
+    if not session['filter'] is None:
+      s_fields[es_info['mapping']["text"]] = session['filter'].replace('"','\"')
+
+    if not session['fromDate'] is None:
+      s_fields[es_info['mapping']["timestamp"]] = "[" + str(session['fromDate']) + " TO " + str(session['toDate']) + "]" 
+      
+    hits=[]
+    tags = session['selected_tags'].split(',')
+    for tag in tags:
+      s_fields[es_info['mapping']["tag"]] = "'" + tag + "'"
+      results= multifield_query_search(s_fields, session['pagesCap'], ["url", "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], 
+                                       es_info['activeCrawlerIndex'], 
+                                       es_info['docType'],
+                                      self._es)
+      hits.extend(results)
+    return hits
+
   def _getRelevantPages(self, session):
     es_info = self.esInfo(session['domainId'])
 
@@ -575,39 +601,20 @@ class CrawlerModel:
 
     return pos_hits
 
-  def _getMoreLikeRelevantPages(self, session):
+  def _getMoreLikePages(self, session):
     es_info = self.esInfo(session['domainId'])
-
-    pos_hits = search(es_info['mapping']['tag'], ['relevant'], session['pagesCap'], ['url', "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], es_info['activeCrawlerIndex'], 'page', self._es)
-
-    hits = []
-    if len(pos_hits) > 0:
-      pos_urls = [field['id'] for field in pos_hits]
-      
-      results = get_more_like_this(pos_urls, ['url', "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], session['pagesCap'],  es_info['activeCrawlerIndex'], es_info['docType'],  self._es)
-      
-      hits = pos_hits[0:self._pagesCapTerms] + results
-
-    return hits
-
-  def _getIrrelevantPages(self, session):
-    es_info = self.esInfo(session['domainId'])
-
-    neg_hits = search(es_info['mapping']['tag'], ['irrelevant'], session['pagesCap'], ['url', "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], es_info['activeCrawlerIndex'], 'page', self._es)
-
-    return neg_hits
-
-  def _getMoreLikeIrrelevantPages(self, session):
-    es_info = self.esInfo(session['domainId'])
-    neg_hits = search(es_info['mapping']['tag'], ['irrelevant'], session['pagesCap'], ['url', "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], es_info['activeCrawlerIndex'], 'page', self._es)
-
-    hits = []
-    if len(neg_hits) > 0:
-      neg_urls = [field['id'] for field in neg_hits]
-
-      results = get_more_like_this(neg_urls, ['url', "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], session['pagesCap'],  es_info['activeCrawlerIndex'], es_info['docType'],  self._es)
     
-      hits = neg_hits[0:self._pagesCapTerms] + results
+    hits=[]
+    tags = session['selected_tags'].split(',')
+    for tag in tags:
+      tag_hits = search(es_info['mapping']['tag'], [tag], session['pagesCap'], ['url', "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], es_info['activeCrawlerIndex'], 'page', self._es)
+
+      if len(tag_hits) > 0:
+        tag_urls = [field['id'] for field in tag_hits]
+      
+        results = get_more_like_this(tag_urls, ['url', "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], session['pagesCap'],  es_info['activeCrawlerIndex'], es_info['docType'],  self._es)
+      
+        hits.extend(tag_hits[0:self._pagesCapTerms] + results)
 
     return hits
 
@@ -637,14 +644,10 @@ class CrawlerModel:
       hits = self._getMostRecentPages(session)
     elif (session['pageRetrievalCriteria'] == 'Queries'):
       hits = self._getPagesForQueries(session)
-    elif (session['pageRetrievalCriteria'] == 'Relevant'):
-      hits = self._getRelevantPages(session)
-    elif (session['pageRetrievalCriteria'] == 'More like Relevant'):
-      hits = self._getMoreLikeRelevantPages(session)
-    elif (session['pageRetrievalCriteria'] == 'Irrelevant'):
-      hits = self._getIrrelevantPages(session)
-    elif (session['pageRetrievalCriteria'] == 'More like Irrelevant'):
-      hits = self._getMoreLikeIrrelevantPages(session)
+    elif (session['pageRetrievalCriteria'] == 'Tags'):
+      hits = self._getPagesForTags(session)
+    elif (session['pageRetrievalCriteria'] == 'More like'):
+      hits = self._getMoreLikePages(session)
       
     last_downloaded_url_epoch = None
     docs = []
