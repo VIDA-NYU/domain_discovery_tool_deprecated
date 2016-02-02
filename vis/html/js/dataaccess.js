@@ -128,6 +128,11 @@ var DataAccess = (function() {
     __sig__.emit(__sig__.queries_loaded, queriesData);
   };
 
+  // Processes loaded tags
+  var onAvailableTagsLoaded = function(tagsData) {
+    __sig__.emit(__sig__.tags_loaded, tagsData);
+  };
+
 
   //Signal load of new pages after certain interval
   var loadNewPagesSummary = function(isFilter) {
@@ -219,6 +224,12 @@ var DataAccess = (function() {
   // Gets available queries from backend.
   pub.loadAvailableQueries = function(session) {
       runQuery('/getAvailableQueries', {'session': JSON.stringify(session)}, onAvailableQueriesLoaded);
+  };
+
+  // Returns public interface.
+  // Gets available tags from backend.
+  pub.loadAvailableTags = function(session) {
+      runQuery('/getAvailableTags', {'session': JSON.stringify(session)}, onAvailableTagsLoaded);
   };
   
   // Queries the web for terms (used in Seed Crawler mode).
