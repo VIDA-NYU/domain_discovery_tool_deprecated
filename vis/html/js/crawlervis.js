@@ -32,6 +32,7 @@ var CrawlerVis = function() {
   };
     var currentCrawler = undefined;
     var queries = undefined;
+    var tags = undefined;
 };
 
 
@@ -93,6 +94,7 @@ CrawlerVis.prototype.initSignalSlotsCrawler = function() {
   SigSlots.connect(__sig__.terms_snippets_loaded, this, this.onLoadedTermsSnippets);
   SigSlots.connect(__sig__.pages_loaded, this, this.onLoadedPages);
   SigSlots.connect(__sig__.queries_loaded, this, this.onLoadedQueries);
+  SigSlots.connect(__sig__.tags_loaded, this, this.onLoadedTags);
   SigSlots.connect(__sig__.tag_focus, this, this.onTagFocus);
   SigSlots.connect(__sig__.tag_clicked, this, this.onTagClicked);
   SigSlots.connect(__sig__.tag_action_clicked, this, this.onTagActionClicked);
@@ -129,6 +131,7 @@ CrawlerVis.prototype.initSignalSlotsSeedCrawler = function() {
   SigSlots.connect(__sig__.terms_snippets_loaded, this, this.onLoadedTermsSnippets);
   SigSlots.connect(__sig__.pages_loaded, this, this.onLoadedPages);
   SigSlots.connect(__sig__.queries_loaded, this, this.onLoadedQueries);
+  SigSlots.connect(__sig__.tags_loaded, this, this.onLoadedTags);
   SigSlots.connect(__sig__.tag_focus, this, this.onTagFocus);
   SigSlots.connect(__sig__.tag_clicked, this, this.onTagClicked);
   SigSlots.connect(__sig__.tag_action_clicked, this, this.onTagActionClicked);
@@ -406,9 +409,18 @@ CrawlerVis.prototype.createSelectForAvailablePageRetrievalCriteria = function() 
   var selectBox = d3.select('#page_retrieval_criteria_select').on('change', function() {
       var criteria = d3.select(this).node().value;
       if(criteria == "Queries"){
+	  $('#select_tags').hide();
 	  $('#select_queries').show();
       }
-      else $('#select_queries').hide();
+      else if(criteria == "Tags" || criteria == "More like"){
+	  $('#select_queries').hide();
+	  $('#select_tags').show();
+      }
+      else {
+	  $('#select_queries').hide();
+	  $('#select_tags').hide();
+      }
+
   });
     
   $('#selectPageRetrievalCriteria').val("Most Recent");
@@ -461,7 +473,56 @@ CrawlerVis.prototype.createSelectForAvailablePageRetrievalCriteria = function() 
 	    document.getElementById('queryCheckBox').appendChild(newli);
 	}
     });
-  
+
+    d3.select('#select_tags').on('click', function() {
+      DataAccess.loadAvailableTags(vis.sessionInfo());
+  });
+
+    $('#listTagsModal').on('shown.bs.modal', function(){
+
+	var prev_checked_tags = vis.getCheckedValues("tags_checkbox");
+	var check_all = false;
+	if (prev_checked_tags.indexOf('select_all') > -1)
+	    check_all = true;
+
+	$('#tagsCheckBox').empty();
+	
+	var newli_select_all = document.createElement('li');
+	if(check_all)
+	    newli_select_all.innerHTML = "<input type='checkbox' name='tags_checkbox' id='select_all' value='select_all' checked='true'><label for='select_all'>Select All</label>";
+	else
+	    newli_select_all.innerHTML = "<input type='checkbox' name='tags_checkbox' id='select_all' value='select_all'><label for='select_all'>Select All</label>";
+	
+	document.getElementById('tagsCheckBox').appendChild(newli_select_all);
+
+	d3.select('#select_all').on('click', function(){
+	    checkboxes = document.getElementsByName('tags_checkbox');
+	    for (var checkbox in checkboxes){
+	    	checkboxes[checkbox].checked = this.checked;
+	    }
+	});
+
+	tags = vis.tags;
+	// Sort the queries by number of documents
+	keysSorted = Object.keys(tags).sort(function(a,b){
+	    return tags[b] - tags[a]
+	});
+
+	var count;
+	for (count = 0; count < keysSorted.length; count++) {
+	    var checked = false;
+	    if (prev_checked_tags.indexOf(keysSorted[count]) > -1)
+		checked = true;
+	    var newli = document.createElement('li');
+	    var label = "tag_" + count.toString();
+	    if(check_all || checked)
+		newli.innerHTML = "<input type='checkbox' name='tags_checkbox' checked='true' 'id='" + label +"' value='"+keysSorted[count]+"'><label for='"+label+"'>"+keysSorted[count]+" ("+tags[keysSorted[count]]+")"+"</label>";
+	    else
+		newli.innerHTML = "<input type='checkbox' name='tags_checkbox' 'id='" + label +"' value='"+keysSorted[count]+"'><label for='"+label+"'>"+keysSorted[count]+" ("+tags[keysSorted[count]]+")"+"</label>";
+	    document.getElementById('tagsCheckBox').appendChild(newli);
+	}
+    });
+
 };
 
 CrawlerVis.prototype.onLoadedQueries = function(queries) {
@@ -470,6 +531,18 @@ CrawlerVis.prototype.onLoadedQueries = function(queries) {
     vis.enableQuerySelection(queries);
 };
 
+CrawlerVis.prototype.onLoadedTags = function(tags) {
+    var vis = this;
+    vis.tags = tags;
+    vis.enableTagSelection(tags);
+};
+
+
+CrawlerVis.prototype.enableTagSelection = function(tags){
+    var vis = this;
+    // Show the tags list modal
+    $('#listTagsModal').modal("show");
+};
 
 CrawlerVis.prototype.enableQuerySelection = function(queries){
     var vis = this;
@@ -1303,6 +1376,9 @@ CrawlerVis.prototype.sessionInfo = function() {
     session['pageRetrievalCriteria'] = pageRetrievalCriteria;
     if (pageRetrievalCriteria == 'Queries'){
 	session['selected_queries'] = vis.getCheckedValues('queries_checkbox').toString();
+    }
+    if (pageRetrievalCriteria == 'Tags' || pageRetrievalCriteria == 'More like'){
+	session['selected_tags'] = vis.getCheckedValues('tags_checkbox').toString();
     }
     
     return session;
