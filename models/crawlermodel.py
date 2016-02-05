@@ -113,8 +113,16 @@ class CrawlerModel:
 
   def getAvailableTags(self, session):
     es_info = self.esInfo(session['domainId'])
-    tags = get_unique_values('tag', self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)
-    return tags
+    tags_str = get_unique_values('tag', self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)
+    unique_tags = {}
+    for tags, num in tags_str.iteritems():
+      tags_list = tags.split(";")
+      for tag in tags_list:
+        if unique_tags.get(tag) is not None:
+          unique_tags[tag] = unique_tags[tag] + num
+        else:
+          unique_tags[tag] = num  
+    return unique_tags
 
   def encode(self, url):
     return urllib2.quote(url).replace("/", "%2F")
@@ -527,7 +535,6 @@ class CrawlerModel:
   def _getMostRecentPages(self, session):
     es_info = self.esInfo(session['domainId'])
 
-    print "\n pages cap ", session['pagesCap'], "\n"
     hits = []
     if session['fromDate'] is None:
       hits = get_most_recent_documents(session['pagesCap'], es_info['mapping'], ["url", "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]],  
@@ -586,8 +593,12 @@ class CrawlerModel:
     hits=[]
     tags = session['selected_tags'].split(',')
     for tag in tags:
-      s_fields[es_info['mapping']["tag"]] = "'" + tag + "'"
-      results= multifield_query_search(s_fields, session['pagesCap'], ["url", "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], 
+      #Added a wildcard query as tag is not analyzed field
+      query = {
+        "wildcard": {es_info['mapping']["tag"]:"*" + tag + "*"}
+        }
+      s_fields["queries"] = [query]
+      results= multifield_term_search(s_fields, session['pagesCap'], ["url", "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], 
                                        es_info['activeCrawlerIndex'], 
                                        es_info['docType'],
                                       self._es)
