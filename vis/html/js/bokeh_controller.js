@@ -16,23 +16,10 @@
 
   // Takes urls and tags from Bokeh and changes their tags.
   exports.updateTags = function(selectedUrls, tag, action){
-      // Add the tag to tagsgallery if it does not exist. For example a custom tag
+    // Add the tag to tagsgallery if it does not exist. For example a custom tag
     exports.vis.tagsGallery.addItem(tag, false);
-    exports.updatePagesGallery(tag);
     exports.vis.tagsGallery.applyOrRemoveTag(tag, action, selectedUrls, false);
   }
-
-   exports.updatePagesGallery = function(tag){
-     $("#pages_items").children().find("span.not-clickable").each(function(item){
-        if(tag != "Neutral"){
-            $(this).siblings().attr("class", "clickable");
-            $(this).text(tag);
-	} else {
-            $(this).siblings().attr("class", "not-clickable");
-            $(this).text("");
-	}
-     });
-   }
 
   // Shows the selected pages on the pageGallery below the plot.
   exports.showPages = function(inds){
