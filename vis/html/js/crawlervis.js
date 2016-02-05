@@ -157,7 +157,6 @@ CrawlerVis.prototype.initUICrawler = function() {
   this.initWordlist();
   this.initStatslist();
   this.initFilterStatslist();
-  this.initPagesLandscape(true);
   this.initTagsGallery(
     [
       'Relevant',
@@ -212,6 +211,7 @@ CrawlerVis.prototype.initUICrawler = function() {
         negate: [],
       },
     });
+  this.initPagesLandscape(true);
   this.initPagesGallery();
   this.initTermsSnippetsViewer();
   this.initFilterButton();
@@ -738,7 +738,8 @@ CrawlerVis.prototype.initPagesLandscape = function(showBoostButton) {
         return;
       }
       // Updates pages and terms.
-      DataAccess.update(vis.sessionInfo());
+	DataAccess.update(vis.sessionInfo());
+	vis.pagesGallery.clear();
     });
 
 
@@ -905,15 +906,15 @@ CrawlerVis.prototype.onLoadedTermsSnippets = function(data) {
 
 // Responds to loaded pages signal.
 CrawlerVis.prototype.onLoadedPages = function(pagesData) {
-    
-  var pages = pagesData['pages'].map(function(page, i) {
+    var pages = pagesData['pages'].map(function(page, i) {
     return {
       url: page[0],
       x: page[1],
       y: page[2],
       tags: page[3],
     };
-  });
+    });
+   
     for(var i in pages){
 	var page = pages[i];
 	for(var j in page["tags"]){
@@ -956,41 +957,44 @@ CrawlerVis.prototype.onTagClicked = function(tag) {
 
 // Responds to clicked tag action.
 CrawlerVis.prototype.onTagActionClicked = function(tag, action, opt_items, refresh_plot) {
-  // If items is empty array, applies action to selected pages in the landscape.
-  if (!opt_items || opt_items.length == 0) {
-    opt_items = this.pagesLandscape.getSelectedItems();
-  }
-
-  // Apply or remove tag from urls.
-  var applyTagFlag = action == 'Apply';
-  var urls = [];
-  for (var i in opt_items) {
-    var item = opt_items[i];
-    var tags = item.tags;
-
-    // Removes tag when the tag is present for item, and applies only when tag is not present for
-    // item.
-    var isTagPresent = item.tags.some(function(itemTag) {
-      return itemTag == tag;
-    });
-    if ((applyTagFlag && !isTagPresent) || (!applyTagFlag && isTagPresent)) {
-      urls.push(item.url);
-
-      // Updates tag list for items.
-      if (applyTagFlag) {
-        tags.push(tag);
-      } else {
-        tags.splice(tags.indexOf(tag), 1);
-      }
+    // If items is empty array, applies action to selected pages in the landscape.
+    if (!opt_items || opt_items.length == 0) {
+	opt_items = this.pagesLandscape.getSelectedItems();
     }
-  }
-
-  var vis = this;
-  if (urls.length > 0) {
-    DataAccess.setPagesTag(urls, tag, applyTagFlag, vis.sessionInfo());
-  }
-
-  BokehPlots.updateData();
+    
+    // Apply or remove tag from urls.
+    var applyTagFlag = action == 'Apply';
+    var urls = [];
+    var updated_tags = {};
+    for (var i in opt_items) {
+	var item = opt_items[i];
+	var tags = item.tags;
+	
+	// Removes tag when the tag is present for item, and applies only when tag is not present for
+	// item.
+	var isTagPresent = item.tags.some(function(itemTag) {
+	    return itemTag == tag;
+	});
+	if ((applyTagFlag && !isTagPresent) || (!applyTagFlag && isTagPresent)) {
+	    urls.push(item.url);
+	    
+	    // Updates tag list for items.
+	    if (applyTagFlag) {
+		tags.push(tag);
+	    } else {
+		tags.splice(tags.indexOf(tag), 1);
+	    }
+	    // Track the updated tags to update the bokeh plot data
+	    updated_tags[item.url] = tags;	
+	}
+    }
+    
+    var vis = this;
+    if (urls.length > 0) {
+	DataAccess.setPagesTag(urls, tag, applyTagFlag, vis.sessionInfo());
+    }
+    
+    BokehPlots.updateData(updated_tags);
 };
 
 
