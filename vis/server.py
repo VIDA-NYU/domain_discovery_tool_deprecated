@@ -183,11 +183,10 @@ class Page:
   @cherrypy.expose
   def getPages(self, session):
     session = json.loads(session)
-    res = self._crawler.getPages(session)
+    data = self._crawler.getPages(session)
+    res = {"data": data, "plot": selection_plot(data)}
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
-
-
 
   # Boosts set of pages: crawler exploits outlinks for the given set of pages.
   @cherrypy.expose
@@ -273,14 +272,6 @@ class Page:
     # Returns object for positive and negative page examples.
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps({"positive": posData, "negative": negData})
-
-  @cherrypy.expose
-  def getBokehPlot(self, session):
-    session = json.loads(session)
-    data = self._crawler.getPages(session)
-    res = {"data": data, "plot": selection_plot(data)}
-    cherrypy.response.headers["Content-Type"] = "application/json;"
-    return json.dumps(res)
 
   @cherrypy.expose
   def getEmptyBokehPlot(self):
