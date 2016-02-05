@@ -98,16 +98,19 @@ def multifield_term_search(s_fields, pageCount=100, fields=[], es_index='memex',
         
     queries = []
     for k,v in s_fields.items():
-        query = {
-            "match": {
-                k: {
-                    "query": v,
+        if "queries" in k:
+            queries.extend(v)
+        else:
+            query = {
+                "match": {
+                    k: {
+                        "query": v,
                     "minimum_should_match":"100%"
+                    }
                 }
             }
-        }
-        queries.append(query)
-        
+            queries.append(query)
+            
     query = {
         "query" : {
             "bool": {
@@ -117,7 +120,7 @@ def multifield_term_search(s_fields, pageCount=100, fields=[], es_index='memex',
         },
         "fields": fields
     }
-    
+
     res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=pageCount)
     hits = res['hits']['hits']
     
