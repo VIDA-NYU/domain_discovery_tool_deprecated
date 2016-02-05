@@ -118,10 +118,11 @@ class CrawlerModel:
     for tags, num in tags_str.iteritems():
       tags_list = tags.split(";")
       for tag in tags_list:
-        if unique_tags.get(tag) is not None:
-          unique_tags[tag] = unique_tags[tag] + num
-        else:
-          unique_tags[tag] = num  
+        if tag != "":
+          if unique_tags.get(tag) is not None:
+            unique_tags[tag] = unique_tags[tag] + num
+          else:
+            unique_tags[tag] = num  
     return unique_tags
 
   def encode(self, url):
@@ -593,16 +594,17 @@ class CrawlerModel:
     hits=[]
     tags = session['selected_tags'].split(',')
     for tag in tags:
-      #Added a wildcard query as tag is not analyzed field
-      query = {
-        "wildcard": {es_info['mapping']["tag"]:"*" + tag + "*"}
+      if tag != "":
+        #Added a wildcard query as tag is not analyzed field
+        query = {
+          "wildcard": {es_info['mapping']["tag"]:"*" + tag + "*"}
         }
-      s_fields["queries"] = [query]
-      results= multifield_term_search(s_fields, session['pagesCap'], ["url", "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], 
-                                       es_info['activeCrawlerIndex'], 
-                                       es_info['docType'],
-                                      self._es)
-      hits.extend(results)
+        s_fields["queries"] = [query]
+        results= multifield_term_search(s_fields, session['pagesCap'], ["url", "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], 
+                                        es_info['activeCrawlerIndex'], 
+                                        es_info['docType'],
+                                        self._es)
+        hits.extend(results)
     return hits
 
   def _getRelevantPages(self, session):
