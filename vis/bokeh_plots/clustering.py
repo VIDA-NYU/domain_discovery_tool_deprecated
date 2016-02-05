@@ -117,7 +117,7 @@ def selection_plot(response):
             });
             data["color"][inds[i]] = "%s";
         }
-        BokehPlots.updateTags(selected, tag, inds);
+        BokehPlots.updateTags(selected, tag, "Apply");
         source.trigger("change");
     """
 
@@ -127,16 +127,17 @@ def selection_plot(response):
         var data = source.get('data');
         var selected = [];
         var tag = cb_obj.get("value");
-    
+
+        // Reinitialise to the default value
+        cb_obj.set("value", "Enter custom tag here...")
+
+        if(tag.indexOf("Enter custom tag here...") < 0) {
         //Update the custom tags selection list 
         var options = custom_tags_select.get("options");
         if(options.indexOf(tag) < 0){
             options.push(tag);
             custom_tags_select.set("options", options);
         }
-
-        // Reinitialise to the default value
-        cb_obj.set("value", "Enter custom tag here...")
 
         for(var i = 0; i < inds.length; i++){
             selected.push({
@@ -149,8 +150,9 @@ def selection_plot(response):
             });
             data["color"][inds[i]] = "%s";
         }
-        BokehPlots.updateTags(selected, tag, inds);
+        BokehPlots.updateTags(selected, tag, "Apply");
         source.trigger("change");
+        }
     """
 
     selectinput_code = """
@@ -161,7 +163,7 @@ def selection_plot(response):
     var tag = cb_obj.get("value");    
 
     cb_obj.set("value", "Enter tags...")
-
+    if(tag.indexOf("Enter custom tag here...") < 0) {
     for(var i = 0; i < inds.length; i++){
          selected.push({
             x: data.x[inds[i]],
@@ -173,8 +175,9 @@ def selection_plot(response):
          });
          data["color"][inds[i]] = "%s";
     }
-    BokehPlots.updateTags(selected, tag, inds);
+    BokehPlots.updateTags(selected, tag, "Apply");
     source.trigger("change");
+    }
     """
 
     # Supply color with print formatting.
@@ -192,11 +195,11 @@ def selection_plot(response):
 
     custom_tag_input = TextInput(value="Enter custom tag here...")
     custom_tag_input.callback = CustomJS(args=dict(source=source),
-                                  code=textinput_code % (CUSTOM_COLOR))
+                    code=textinput_code % (CUSTOM_COLOR))
     
     custom_tag_select = Select(value="Custom tags...", options=custom_tags)
     custom_tag_select.callback = CustomJS(args=dict(source=source),
-                                  code=selectinput_code % (CUSTOM_COLOR))
+                    code=selectinput_code % (CUSTOM_COLOR))
     custom_tag_input.callback.args["custom_tags_select"] = custom_tag_select
 
     # Adjust what attributes are displayed by the HoverTool
