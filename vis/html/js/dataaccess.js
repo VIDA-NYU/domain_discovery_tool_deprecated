@@ -7,7 +7,7 @@
 var DataAccess = (function() {
   var pub = {};
 
-  var REFRESH_EVERY_N_MILLISECONDS = 2000;
+    var REFRESH_EVERY_N_MILLISECONDS = 2000;
 
   var lastUpdate = 0;
   var lastSummary = 0;
@@ -35,7 +35,7 @@ var DataAccess = (function() {
   // Processes loaded pages.
   var onPagesLoaded = function(loadedPages) {
       pages = loadedPages;
-      lastUpdate = loadedPages['last_downloaded_url_epoch'];
+      lastUpdate = loadedPages["data"]['last_downloaded_url_epoch'];
       loadingPages = false;
       document.getElementById("status_panel").innerHTML = 'Processing pages...Done';
       $(document).ready(function() { $(".status_box").fadeIn(); });
@@ -52,41 +52,24 @@ var DataAccess = (function() {
   };
 
   // Processes loaded pages and terms.
-  var onMaybeUpdateCompleteOld = function() {
-    updating = loadingPages || loadingTerms;
-    if (!updating) {
-	__sig__.emit(__sig__.pages_loaded, pages);
-	__sig__.emit(__sig__.terms_summary_fetched, termsSummary);
-
-	if (pages['pages'].length === 0){
-	    document.getElementById("status_panel").innerHTML = 'No pages found';
-      $(document).ready(function() { $(".status_box").fadeIn(); });
-      $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
-    }
-
-	Utils.setWaitCursorEnabled(false);
-    }
-  };
-
-  // Processes loaded pages and terms.
-  var onMaybeUpdateComplete = function() {
-      updating = loadingPages || loadingTerms;
-      if (!loadingPages) {
-	  __sig__.emit(__sig__.pages_loaded, pages);
-	  __sig__.emit(__sig__.bokeh_insert_plot);
-	  
-	  if (pages['pages'].length === 0){
-	     document.getElementById("status_panel").innerHTML = 'No pages found';
-      $(document).ready(function() { $(".status_box").fadeIn(); });
-      $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
-	  }
-	  Utils.setWaitCursorEnabled(false);
-      }
-      
-      if (!loadingTerms) {
-      	__sig__.emit(__sig__.terms_summary_fetched, termsSummary);
-      }
-  };
+    var onMaybeUpdateComplete = function() {
+	updating = loadingPages || loadingTerms;
+	if (!loadingPages && loadingTerms) {
+	    __sig__.emit(__sig__.pages_loaded, pages["data"]);
+	    __sig__.emit(__sig__.bokeh_insert_plot, pages);
+	    
+	    if (pages["data"].length === 0){
+		document.getElementById("status_panel").innerHTML = 'No pages found';
+		$(document).ready(function() { $(".status_box").fadeIn(); });
+		$(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
+	    }
+	    Utils.setWaitCursorEnabled(false);
+	}
+	
+	if (!loadingTerms) {
+      	    __sig__.emit(__sig__.terms_summary_fetched, termsSummary);
+	}
+    };
 
  // Signals model creation completion
  var onModelCreated = function(model_file) {
