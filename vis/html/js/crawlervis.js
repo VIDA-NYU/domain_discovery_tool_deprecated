@@ -1393,6 +1393,9 @@ CrawlerVis.prototype.clearAll = function() {
     d3.select('#query_box').node().value = "";
     d3.select('#filter_box').node().value = "";
     $('#queryCheckBox').empty();
+    this.pagesGallery.clear();
+    this.termsSnippetsViewer.clear();
+    BokehPlots.clear();
 };
 
 $(document).ready(function() {
