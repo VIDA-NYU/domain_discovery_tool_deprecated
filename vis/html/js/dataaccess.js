@@ -51,10 +51,10 @@ var DataAccess = (function() {
       $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
   };
 
-  // Processes loaded pages and terms.
-    var onMaybeUpdateComplete = function() {
+  // Processes loaded pages.
+    var onMaybeUpdateCompletePages = function() {
 	updating = loadingPages || loadingTerms;
-	if (!loadingPages && loadingTerms) {
+	if (!loadingPages) {
 	    __sig__.emit(__sig__.pages_loaded, pages["data"]);
 	    __sig__.emit(__sig__.bokeh_insert_plot, pages);
 	    
@@ -65,11 +65,15 @@ var DataAccess = (function() {
 	    }
 	    Utils.setWaitCursorEnabled(false);
 	}
-	
+    };
+
+    // Processes loaded terms.
+    var onMaybeUpdateCompleteTerms = function() {
+	updating = loadingPages || loadingTerms;
 	if (!loadingTerms) {
       	    __sig__.emit(__sig__.terms_summary_fetched, termsSummary);
 	}
-    };
+    }
 
  // Signals model creation completion
  var onModelCreated = function(model_file) {
@@ -253,12 +257,12 @@ var DataAccess = (function() {
       // Fetches pages summaries every n seconds.
       loadingPages = true;
       runQueryForCurrentCrawler(
-        '/getPages', {'session': JSON.stringify(session)}, onPagesLoaded, onMaybeUpdateComplete);
+        '/getPages', {'session': JSON.stringify(session)}, onPagesLoaded, onMaybeUpdateCompletePages);
 
       // Fetches terms summaries.
       loadingTerms = true;
       runQueryForCurrentCrawler(
-        '/getTermsSummary', {'session': JSON.stringify(session)}, onTermsSummaryLoaded, onMaybeUpdateComplete);
+        '/getTermsSummary', {'session': JSON.stringify(session)}, onTermsSummaryLoaded, onMaybeUpdateCompleteTerms);
     }
   };
   // Loads snippets for a given term.
