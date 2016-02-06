@@ -573,7 +573,7 @@ class CrawlerModel:
     hits=[]
     queries = session['selected_queries'].split(',')
     for query in queries:
-      s_fields[es_info['mapping']["query"]] = "'" + query + "'"
+      s_fields[es_info['mapping']["query"]] = '"' + query + '"'
       results= multifield_query_search(s_fields, session['pagesCap'], ["url", "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], 
                                        es_info['activeCrawlerIndex'], 
                                        es_info['docType'],
@@ -661,7 +661,7 @@ class CrawlerModel:
       hits = self._getPagesForTags(session)
     elif (session['pageRetrievalCriteria'] == 'More like'):
       hits = self._getMoreLikePages(session)
-      
+
     last_downloaded_url_epoch = None
     docs = []
 
@@ -955,9 +955,9 @@ class CrawlerModel:
   # Projects pages with PCA
   def pca(self, pages):
     
-
     urls = [page[4] for page in pages]
     text = [page[5] for page in pages]
+
     #[data,_,_,_,urls] = self.term_tfidf(urls)
 
     #[urls, data] = CrawlerModel.w2v.process(urls, es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
