@@ -359,15 +359,9 @@ CrawlerVis.prototype.loadAvailableCrawlers = function() {
 // Sets active crawler.
 CrawlerVis.prototype.setActiveCrawler = function(crawlerId) {
     $("#wordlist").html("");
-
     this.initWordlist();
-
-    this.termsSnippetsViewer.clear();
-
     // Changes active crawler and forces update.
     DataAccess.setActiveCrawler(crawlerId);
-
-    d3.select('#filter_box').node().value = "";
 };
 
 
