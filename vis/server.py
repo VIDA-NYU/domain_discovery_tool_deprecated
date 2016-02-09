@@ -39,6 +39,9 @@ class Page:
     # Folder with html content.
     self._HTML_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), u"html")
     self.lock = Lock()
+    # TODO Use SeedCrawlerModelAdapter self._crawler = SeedCrawlerModelAdapter()
+    self._crawler = SeedCrawlerModelAdapter()
+
 
 
   # Access to topics visualization.
@@ -57,8 +60,6 @@ class Page:
   # Access to seed crawler vis.
   @cherrypy.expose
   def seedcrawler(self):
-    # TODO Use SeedCrawlerModelAdapter self._crawler = SeedCrawlerModelAdapter()
-    self._crawler = SeedCrawlerModelAdapter()
     return open(os.path.join(self._HTML_DIR, u"seedcrawlervis.html"))
 
   @cherrypy.expose
