@@ -35,33 +35,37 @@ var DataAccess = (function() {
   // Processes loaded pages.
   var onPagesLoaded = function(loadedPages) {
       pages = loadedPages;
-      lastUpdate = loadedPages["data"]['last_downloaded_url_epoch'];
       loadingPages = false;
-      document.getElementById("status_panel").innerHTML = 'Processing pages...Done';
-      $(document).ready(function() { $(".status_box").fadeIn(); });
-      $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
+      if(pages["data"]["pages"].length > 0){
+	  lastUpdate = loadedPages["data"]['last_downloaded_url_epoch'];
+	  document.getElementById("status_panel").innerHTML = 'Processing pages...Done';
+	  $(document).ready(function() { $(".status_box").fadeIn(); });
+	  $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
+      }
   };
 
   // Processes loaded terms summaries.
   var onTermsSummaryLoaded = function(summary) {
       termsSummary = summary;
       loadingTerms = false;
-      document.getElementById("status_panel").innerHTML = 'Processing terms...Done';
-      $(document).ready(function() { $(".status_box").fadeIn(); });
-      $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
+      if(termsSummary.length > 0){
+	  document.getElementById("status_panel").innerHTML = 'Processing terms...Done';
+	  $(document).ready(function() { $(".status_box").fadeIn(); });
+	  $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
+      }
   };
 
   // Processes loaded pages.
     var onMaybeUpdateCompletePages = function() {
 	updating = loadingPages || loadingTerms;
 	if (!loadingPages) {
-	    __sig__.emit(__sig__.pages_loaded, pages["data"]);
-	    __sig__.emit(__sig__.bokeh_insert_plot, pages);
-	    
-	    if (pages["data"].length === 0){
+	    if (pages["data"]["pages"].length === 0){
 		document.getElementById("status_panel").innerHTML = 'No pages found';
 		$(document).ready(function() { $(".status_box").fadeIn(); });
 		$(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
+	    } else {
+		__sig__.emit(__sig__.pages_loaded, pages["data"]);
+		__sig__.emit(__sig__.bokeh_insert_plot, pages);
 	    }
 	    Utils.setWaitCursorEnabled(false);
 	}
@@ -71,7 +75,9 @@ var DataAccess = (function() {
     var onMaybeUpdateCompleteTerms = function() {
 	updating = loadingPages || loadingTerms;
 	if (!loadingTerms) {
-      	    __sig__.emit(__sig__.terms_summary_fetched, termsSummary);
+	    if(termsSummary.length > 0){
+      		__sig__.emit(__sig__.terms_summary_fetched, termsSummary);
+	    }
 	}
     }
 
