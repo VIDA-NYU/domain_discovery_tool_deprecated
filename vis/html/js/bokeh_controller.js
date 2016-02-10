@@ -6,6 +6,7 @@
 (function(exports){
 
   exports.inds = [];
+  exports.session = {};
   exports.plot = {};
 
   // Updates the session information to be sent to the server with
@@ -87,6 +88,7 @@
     $.ajax({
       url: "/getEmptyBokehPlot",
       type: "GET",
+      //data: {"session": JSON.stringify(exports.session)},
       success: function(data){
         exports.insertPlot(data);
       },

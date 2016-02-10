@@ -1404,10 +1404,6 @@ textarea[name=seeds_text] {
     width: 35%;
 }
 
-.bk-bs-dropdown-menu {
-    left:inherit;
-    right:-75%;
-}
 
 #goto_statistics {
     background-color:inherit;
