@@ -1262,12 +1262,7 @@ h1 {
 
 .dropdown-menu li a:hover {
   padding: 5px 20px;
-  color: #262626;
-  background-color: #f5f5f5;
-}
-
-.dropdown-menu>li>label {
-    padding:5px 20px;
+  color: #000;
 }
 
 .navbar {
@@ -1337,7 +1332,7 @@ h1 {
   padding-top:0px;
 }
 
-#addDomain, #build_model, #topicVisSettings {
+#addDomain, #build_model{
   margin-top:0px;
   width: 100%;
   border-top-left-radius: 0px;
@@ -1417,13 +1412,4 @@ textarea[name=seeds_text] {
 #goto_statistics {
     background-color:inherit;
     border:inherit;
-}
-
-#topicVis {
-    padding-top:0px;
-    padding-bottom:0px;
-}
-
-.control-label {
-    margin-top:20px;
 }
