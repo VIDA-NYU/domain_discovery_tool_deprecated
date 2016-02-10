@@ -75,11 +75,17 @@ def selection_plot(response):
 
 
     # Create the figure with FIGURE_WIDTH and FIGURE_HEIGHT
-    p = figure(tools="hover", width=FIGURE_WIDTH,
-            toolbar_location=None, responsive=True, tags=["clusterPlot"])
+    p = figure(
+        tools="hover,wheel_zoom,reset",
+        width=FIGURE_WIDTH,
+        responsive=True,
+        tags=["clusterPlot"],
+    )
 
     # Ensure that the lasso only selects with mouseup, not mousemove.
-    p.add_tools(LassoSelectTool(select_every_mousemove=False))
+    p.add_tools(
+        LassoSelectTool(select_every_mousemove=False),
+    )
 
     # These turn off the x/y axis ticks
     p.axis.visible = None
@@ -215,8 +221,12 @@ def selection_plot(response):
 
 
 def empty_plot():
-    p = figure(tools="hover", height=FIGURE_HEIGHT,
-            toolbar_location=None, responsive=True)
+    p = figure(
+        tools="hover,wheel_zoom,reset",
+        width=FIGURE_WIDTH,
+        responsive=True,
+        tags=["clusterPlot"],
+    )
 
     # Ensure that the lasso only selects with mouseup, not mousemove.
     p.add_tools(LassoSelectTool(select_every_mousemove=False))
