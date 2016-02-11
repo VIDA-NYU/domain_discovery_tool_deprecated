@@ -2,7 +2,7 @@ import json
 from functools import partial
 
 from bokeh.io import vform
-from bokeh.plotting import figure, show, output_file, save
+from bokeh.plotting import figure, show, output_file, save, hplot, vplot
 from bokeh.plotting import ColumnDataSource
 from bokeh.models import HoverTool, Circle, CustomJS, LassoSelectTool
 from bokeh.models.widgets import RadioButtonGroup, Button
@@ -40,7 +40,7 @@ def selection_plot(response):
     ydata = [x[2] for x in response["pages"]]
     tags = [x[3] for x in response["pages"]]
     color = []
-    custom_tags = ["Custom tags..."]
+    custom_tags = ["Custom tags"]
     
     for tag in tags:
         custom = False
@@ -129,9 +129,9 @@ def selection_plot(response):
         var tag = cb_obj.get("value");
 
         // Reinitialise to the default value
-        cb_obj.set("value", "Enter custom tag here...")
+        cb_obj.set("value", "Add custom tag...")
 
-        if(tag.indexOf("Enter custom tag here...") < 0) {
+        if(tag.indexOf("Add custom tag...") < 0) {
         //Update the custom tags selection list 
         var options = custom_tags_select.get("options");
         if(options.indexOf(tag) < 0){
@@ -163,7 +163,7 @@ def selection_plot(response):
     var tag = cb_obj.get("value");    
 
     cb_obj.set("value", "Enter tags...")
-    if(tag.indexOf("Enter custom tag here...") < 0) {
+    if(tag.indexOf("Add custom tag...") < 0) {
     for(var i = 0; i < inds.length; i++){
          selected.push({
             x: data.x[inds[i]],
@@ -193,11 +193,11 @@ def selection_plot(response):
     but_neutral.callback = CustomJS(args=dict(source=source),
                     code=button_code % ("Neutral", NEUTRAL_COLOR))
 
-    custom_tag_input = TextInput(value="Enter custom tag here...")
+    custom_tag_input = TextInput(value="Add custom tag...")
     custom_tag_input.callback = CustomJS(args=dict(source=source),
                     code=textinput_code % (CUSTOM_COLOR))
     
-    custom_tag_select = Select(value="Custom tags...", options=custom_tags)
+    custom_tag_select = Select(value="Custom tags", options=custom_tags)
     custom_tag_select.callback = CustomJS(args=dict(source=source),
                     code=selectinput_code % (CUSTOM_COLOR))
     custom_tag_input.callback.args["custom_tags_select"] = custom_tag_select
@@ -207,8 +207,9 @@ def selection_plot(response):
     hover.tooltips = [
         ("urls", "@urls"),
     ]
-    layout = vform(p,custom_tag_input, custom_tag_select, but_relevant, but_irrelevant, but_neutral)
-
+    tags = hplot(custom_tag_input, custom_tag_select,  but_neutral, but_relevant, but_irrelevant)
+    layout = vplot(p, tags)
+    
     # Combine script and div into a single string.
     plot_code = components(layout)
     return plot_code[0] + plot_code[1]
@@ -233,10 +234,11 @@ def empty_plot():
     but_relevant = Button(label="Relevant", type="success")
     but_irrelevant = Button(label="Irrelevant", type="success")
     but_neutral = Button(label="Neutral", type="success")
-    custom_tag_input = TextInput(value="Enter custom tag here...")
-    custom_tag_select = Select(value="Custom tags...", options=["Custom tags..."])
+    custom_tag_input = TextInput(value="Add custom tag...")
+    custom_tag_select = Select(value="Custom tags", options=["Custom tags"])
 
-    layout = vform(p, custom_tag_input, custom_tag_select, but_relevant, but_irrelevant, but_neutral)
+    tags = hplot(custom_tag_input, custom_tag_select, but_relevant, but_irrelevant, but_neutral)
+    layout = vform(p, tags)
 
     # Combine script and div into a single string.
     plot_code = components(layout)
