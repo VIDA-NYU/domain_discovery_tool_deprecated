@@ -82,7 +82,14 @@ def get_most_recent_documents(opt_maxNumberOfPages = 200, mapping=None, fields =
         es = default_es
 
     query = { 
-        "size": opt_maxNumberOfPages
+        "size": opt_maxNumberOfPages,
+        "sort": [
+            {
+                mapping["timestamp"]: {
+                    "order": "desc"
+                }
+            }
+        ]
     }
 
     match_q = {
