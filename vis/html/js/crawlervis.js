@@ -146,6 +146,7 @@ CrawlerVis.prototype.initSignalSlotsSeedCrawler = function() {
   SigSlots.connect(__sig__.add_neg_term, this, this.runAddNegTerm);
   SigSlots.connect(__sig__.delete_term, this, this.runDeleteTerm);
   SigSlots.connect(__sig__.load_new_pages_summary, this, this.loadNewPagesSummary);
+  SigSlots.connect(__sig__.set_pages_tags_completed, this, this.onPagesTagsSet);
 };
 
 
@@ -648,7 +649,6 @@ CrawlerVis.prototype.onLoadedNewPagesSummarySeedCrawler = function(summary, isFi
     // Computes total.
     stats[t]['Total'] = stats[t]['Until Last Update'] + stats[t]['New'];
   }
-
   // Updates UI element that reports pages statistics.
   this.updatePagesStatsSeedCrawler(stats, statslist);
 };
@@ -666,7 +666,6 @@ CrawlerVis.prototype.onLoadedPreviousPagesSummarySeedCrawler = function(summary,
     // Computes total.
     stats[t]['Total'] = stats[t]['Until Last Update'] + stats[t]['New'];
   }
-
   // Updates UI element that reports pages statistics.
   this.updatePagesStatsSeedCrawler(stats, statslist);
 };
@@ -898,6 +897,14 @@ CrawlerVis.prototype.onLoadedTermsSnippets = function(data) {
 };
 
 
+// Triggers page summary update after the pages are tagged
+CrawlerVis.prototype.onPagesTagsSet = function() {
+    var vis = this;
+    // Fetches statistics for until last update happened.
+    DataAccess.loadPagesSummaryUntilLastUpdate(false, vis.sessionInfo());
+    DataAccess.loadPagesSummaryUntilLastUpdate(true, vis.sessionInfo());
+}
+    
 // Responds to loaded pages signal.
 CrawlerVis.prototype.onLoadedPages = function(pagesData) {
     var pages = pagesData['pages'].map(function(page, i) {
@@ -926,7 +933,7 @@ CrawlerVis.prototype.onLoadedPages = function(pagesData) {
   var lastUpdate = Utils.parseDateTime(DataAccess.getLastUpdateTime());
   d3.select('#last_update_info_box')
     .html('(last update: ' + lastUpdate + ')');
-
+    
   var vis = this;
   // Fetches statistics for until last update happened.
   DataAccess.loadPagesSummaryUntilLastUpdate(false, vis.sessionInfo());
