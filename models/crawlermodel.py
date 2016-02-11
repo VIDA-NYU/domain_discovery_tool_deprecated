@@ -1,4 +1,5 @@
 import time
+import calendar
 from datetime import datetime
 from dateutil import tz
 
@@ -302,20 +303,19 @@ class CrawlerModel:
 
     # If ts1 not specified, sets it to -Infinity.
     if opt_ts1 is None:
-      now = time.localtime(0)
-      opt_ts1 = float(time.mktime(now)) * 1000
+      now = time.gmtime(0)
+      opt_ts1 = float(calendar.timegm(now))
     else:
       opt_ts1 = float(opt_ts1)
 
     # If ts2 not specified, sets it to now.
     if opt_ts2 is None:
-      now = time.localtime()
-      opt_ts2 = float(time.mktime(now)) * 1000
+      now = time.gmtime()
+      opt_ts2 = float(calendar.timegm(now))
     else:
       opt_ts2 = float(opt_ts2)
 
-    if opt_applyFilter:
-      # TODO(Yamuna): apply filter if it is None. Otherwise, match_all.
+    if opt_applyFilter and session['filter'] != "":
       results = get_most_recent_documents(session['pagesCap'], es_info['mapping'], ["url", es_info['mapping']["tag"]], 
                                           session['filter'], es_info['activeCrawlerIndex'], es_info['docType'],  \
                                           self._es)
@@ -327,17 +327,17 @@ class CrawlerModel:
     irrelevant = 0
     neutral = 0
 
-    # TODO(Yamuna): Double check the return values for crawler
     for res in results:
         try:
           tags = res[es_info['mapping']['tag']]
-          if 'Relevant' in res[es_info['mapping']['tag']]:
-            relevant = relevant + 1
-          elif 'Irrelevant' in res[es_info['mapping']['tag']]:
+          if 'Irrelevant' in res[es_info['mapping']['tag']]:
             irrelevant = irrelevant + 1
           else:
-            # Page has tags, but not Relevant or Irrelevant.
-            neutral = neutral + 1
+            # Page has tags Relevant or custom.
+            if "" not in tags:
+              relevant = relevant + 1
+            else:
+              neutral = neutral + 1
         except KeyError:
           # Page does not have tags.
           neutral = neutral + 1
