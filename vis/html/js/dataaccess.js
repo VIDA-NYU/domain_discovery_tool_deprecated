@@ -28,16 +28,21 @@ var DataAccess = (function() {
   // Processes loaded pages summaries.
   var onNewPagesSummaryLoaded = function(summary, isFilter) {
     loadingSummary = false;
-    lastSummary = moment().unix();
+      lastSummary = moment().unix();
     __sig__.emit(__sig__.new_pages_summary_fetched, summary, isFilter);
   };
 
+  // Triggers page summary update after the pages are tagged
+  var onSetPagesTagCompleted = function(){
+      __sig__.emit(__sig__.set_pages_tags_completed);
+  }
   // Processes loaded pages.
   var onPagesLoaded = function(loadedPages) {
       pages = loadedPages;
       loadingPages = false;
       if(pages["data"]["pages"].length > 0){
-	  lastUpdate = loadedPages["data"]['last_downloaded_url_epoch'];
+	  lastUpdate = moment().unix();
+	  console.log(lastUpdate);
 	  document.getElementById("status_panel").innerHTML = 'Processing pages...Done';
 	  $(document).ready(function() { $(".status_box").fadeIn(); });
 	  $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
@@ -176,10 +181,10 @@ var DataAccess = (function() {
     }
   };
   // Loads pages summary until last pages update.
-  pub.loadPagesSummaryUntilLastUpdate = function(isFilter, session) {
+    pub.loadPagesSummaryUntilLastUpdate = function(isFilter, session) {
     //if (currentCrawler !== undefined) {
       runQueryForCurrentCrawler(
-        '/getPagesSummary', {'opt_ts2': lastUpdate, 'opt_applyFilter': isFilter, 'session': JSON.stringify(session)},
+          '/getPagesSummary', {'opt_ts2': lastUpdate, 'opt_applyFilter': isFilter, 'session': JSON.stringify(session)},
         function(summary) {
           onPagesSummaryUntilLastUpdateLoaded(summary, isFilter);
         });
@@ -291,7 +296,7 @@ var DataAccess = (function() {
   pub.setPagesTag = function(pages, tag, applyTagFlag, session) {
     if (pages.length > 0) {
       runQueryForCurrentCrawler(
-        '/setPagesTag', {'pages': pages.join('|'), 'tag': tag, 'applyTagFlag': applyTagFlag, 'session': JSON.stringify(session)});
+          '/setPagesTag', {'pages': pages.join('|'), 'tag': tag, 'applyTagFlag': applyTagFlag, 'session': JSON.stringify(session)}, onSetPagesTagCompleted);
     }
   };
   // Adds tag to term.
