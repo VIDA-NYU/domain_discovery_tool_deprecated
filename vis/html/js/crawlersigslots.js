@@ -37,7 +37,7 @@ var SigSlots = (function() {
   __sig__.add_neg_term = function(term) {};
   __sig__.delete_term = function(term) {};
   __sig__.load_new_pages_summary = function(isFilter) {};
-
+  __sig__.set_pages_tags_completed = function(){};
   __sig__.bokeh_get_session = function() {};
   __sig__.bokeh_insert_plot = function() {};
 
