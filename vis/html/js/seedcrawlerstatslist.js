@@ -78,7 +78,7 @@ Statslist.prototype.update = function() {
         .enter().append('text')
         .classed('caption', true)
         .attr('y', 0.5 * rowHeight);
-    titleText.text('Crawled pages: ' + numberFormat(statslist.nPagesTotal));    
+    titleText.text('Total pages: ' + numberFormat(statslist.nPagesTotal));    
     
     
     // Rows for entries.
@@ -169,7 +169,7 @@ Statslist.prototype.update = function() {
         })
         .on('mousemove', function(d, i) {
             var t = numberFormat(d['Total']) + ' ' + d['label']
-              + ' pages out of ' + numberFormat(statslist.nPagesTotal) + ' crawled';
+              + ' pages out of ' + numberFormat(statslist.nPagesTotal) + ' total';
             Utils.updateTooltip(t);
         })
         .on('mouseout', function(d, i) {
