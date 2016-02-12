@@ -285,12 +285,16 @@ class Page:
     session = json.loads(session)
     pages = self._crawler.getPages(session)
     pages_dates = self._crawler.getPagesDates(session)
+    queries = self._crawler.getAvailableQueries(session)
     if pages["pages"]:
         if pages_dates:
             timeseries_panel = pages_timeseries(pages_dates)
         else:
             timeseries_panel = None
-        script, div = domains_dashboard(pages, timeseries_panel)
+        if queries:
+            script, div = domains_dashboard(pages, timeseries_panel, queries)
+        else:
+            script, div = domains_dashboard(pages, timeseries_panel)
     else:
         script = None
         div = None
