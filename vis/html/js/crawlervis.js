@@ -626,12 +626,6 @@ CrawlerVis.prototype.updatePagesStatsCrawler = function(stats, statslist) {
     neg['Explored'] + neg['Exploited'] + neg['New']);
   statslist.setMaxBarTotal(maxWidth);
 
-
-  // Updates buttons used to update pages landscape.
-  var newPages = pos['New'] + neg['New'];
-  d3.select('#pages_landscape_update')
-    .classed('enabled', newPages > 0)
-    .classed('disabled', newPages == 0);
   d3.select('#goto_statistics')
     .classed('enabled', true)
     .classed('disabled', false);
@@ -694,11 +688,6 @@ CrawlerVis.prototype.updatePagesStatsSeedCrawler = function(stats, statslist) {
     Math.max(stats['Relevant']['Total'], stats['Irrelevant']['Total']));
   statslist.setMaxBarTotal(maxWidth);
 
-  // Updates buttons used to update pages landscape.
-  // For seed crawler, update button is always available;
-  d3.select('#pages_landscape_update')
-    .classed('enabled', true)
-    .classed('disabled', false);
   d3.select('#goto_statistics')
     .classed('enabled', true)
     .classed('disabled', false);
@@ -731,8 +720,8 @@ CrawlerVis.prototype.initPagesLandscape = function(showBoostButton) {
         return;
       }
       // Updates pages and terms.
-	DataAccess.update(vis.sessionInfo());
-	vis.pagesGallery.clear();
+      DataAccess.update(vis.sessionInfo());
+      vis.pagesGallery.clear();
     });
 
 
