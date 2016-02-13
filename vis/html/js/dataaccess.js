@@ -42,7 +42,6 @@ var DataAccess = (function() {
       loadingPages = false;
       if(pages["data"]["pages"].length > 0){
 	  lastUpdate = moment().unix();
-	  console.log(lastUpdate);
 	  document.getElementById("status_panel").innerHTML = 'Processing pages...Done';
 	  $(document).ready(function() { $(".status_box").fadeIn(); });
 	  $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
@@ -63,6 +62,12 @@ var DataAccess = (function() {
   // Processes loaded pages.
     var onMaybeUpdateCompletePages = function() {
 	updating = loadingPages || loadingTerms;
+	
+	// Update status of the update button
+	d3.select('#pages_landscape_update')
+	    .classed('enabled', !updating)
+	    .classed('disabled', updating)
+	
 	if (!loadingPages) {
 	    if (pages["data"]["pages"].length === 0){
 		document.getElementById("status_panel").innerHTML = 'No pages found';
@@ -79,6 +84,12 @@ var DataAccess = (function() {
     // Processes loaded terms.
     var onMaybeUpdateCompleteTerms = function() {
 	updating = loadingPages || loadingTerms;
+
+	// Update status of the update button
+	d3.select('#pages_landscape_update')
+	    .classed('enabled', !updating)
+	    .classed('disabled', updating)
+
 	if (!loadingTerms) {
 	    if(termsSummary.length > 0){
       		__sig__.emit(__sig__.terms_summary_fetched, termsSummary);
@@ -256,25 +267,32 @@ var DataAccess = (function() {
 
   // Loads pages (complete data, including URL, x and y position etc) and terms.
   pub.update = function(session) {
-      Utils.setWaitCursorEnabled(true);
       
-      document.getElementById("status_panel").innerHTML = 'Processing pages and terms...';
-      $(document).ready(function() { $(".status_box").fadeIn(); });
-      $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
+      if (!updating && currentCrawler !== undefined) {
 
-    if (!updating && currentCrawler !== undefined) {
-      updating = true;
+	  Utils.setWaitCursorEnabled(true);
 
-      // Fetches pages summaries every n seconds.
-      loadingPages = true;
-      runQueryForCurrentCrawler(
-        '/getPages', {'session': JSON.stringify(session)}, onPagesLoaded, onMaybeUpdateCompletePages);
+	  document.getElementById("status_panel").innerHTML = 'Processing pages and terms...';
+	  $(document).ready(function() { $(".status_box").fadeIn(); });
+	  $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
 
-      // Fetches terms summaries.
-      loadingTerms = true;
-      runQueryForCurrentCrawler(
-        '/getTermsSummary', {'session': JSON.stringify(session)}, onTermsSummaryLoaded, onMaybeUpdateCompleteTerms);
-    }
+	  // Update status of the update button
+	  d3.select('#pages_landscape_update')
+	      .classed('enabled', false)
+	      .classed('disabled', true);
+
+	  updating = true;
+
+	  // Fetches pages summaries every n seconds.
+	  loadingPages = true;
+	  runQueryForCurrentCrawler(
+              '/getPages', {'session': JSON.stringify(session)}, onPagesLoaded, onMaybeUpdateCompletePages);
+	  
+	  // Fetches terms summaries.
+	  loadingTerms = true;
+	  runQueryForCurrentCrawler(
+              '/getTermsSummary', {'session': JSON.stringify(session)}, onTermsSummaryLoaded, onMaybeUpdateCompleteTerms);
+      }
   };
   // Loads snippets for a given term.
   pub.loadTermSnippets = function(term, session) {
