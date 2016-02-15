@@ -109,6 +109,22 @@
 		  </div>
 		</div>
       </div>
+            <div class="modal fade" id="listTagsModal" tabindex="-1" role="dialog" aria-labelledby="listTagsModalLabel">
+		<div class="modal-dialog">
+		  <div class="modal-content">
+		    <div class="modal-header">
+		      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		      <h4 class="modal-title" id="listTagsModalLabel" style="text-align:center;"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Tags</h4>
+		    </div>
+		    <div class="modal-body">
+		      <ul id="tagsCheckBox"></ul>
+		    </div>
+		    <div class="modal-footer">
+		      <button type="button" class="btn btn-warning center-block" data-type="last" id="submit_Tags" data-dismiss="modal">Close</button>
+		    </div>
+		  </div>
+		</div>
+      </div>
 
         <div class="panel panel-default">
           
@@ -264,7 +280,7 @@
               <div style="float:right">
                 <span id="last_update_info_box" class="noselect seedcrawler"></span>
                 <span id="pages_landscape_buttons" class="control_buttons">
-                  <span id="pages_landscape_update" class="btn btn-warning disabled pages_landscape_button noselect">
+                  <span id="pages_landscape_update" class="btn btn-warning enabled pages_landscape_button noselect">
                     <span class="glyphicon glyphicon-refresh"></span>
                   </span>
                 </span>
@@ -278,13 +294,14 @@
 		<select id="page_retrieval_criteria_select">
 		  <option>Most Recent</option>
 		  <option>Queries</option>
-		  <option>Relevant</option>
-		  <option>Irrelevant</option>
-		  <option>More like Relevant</option>
-		  <option>More like Irrelevant</option>		  		  
+		  <option>Tags</option>
+		  <option>More like</option>
 		</select>
 		<button type="button" class="btn btn-warning" data-type="last" id="select_queries" style="display:none;">
 		  Select Queries
+                </button>
+		<button type="button" class="btn btn-warning" data-type="last" id="select_tags" style="display:none;">
+		  Select Tags
                 </button>
 	      </div>
 	      

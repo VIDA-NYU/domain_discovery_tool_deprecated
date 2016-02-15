@@ -139,11 +139,12 @@ def getTermStatistics(all_hits, rm_stopwords=True, rm_numbers=True, pos_tags=[],
         filtered_words = pos_filter(pos_tags, corpus)
         indices = [corpus.index(term) for term in corpus if term not in filtered_words]
         corpus =  np.delete(corpus, indices)
+        corpus = corpus.tolist()
         data =  np.delete(data, indices, 1)
         tf_data =  np.delete(tf_data, indices, 1)
         ttf = {key:value for key, value in ttf.iteritems() if key in corpus}
-        
-    result = [data, tf_data, ttf, corpus.tolist(), docs]
+
+    result = [data, tf_data, ttf, corpus, docs]
 
     del tfidfs
     del tfs

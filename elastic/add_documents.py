@@ -32,7 +32,7 @@ def update_document(update_entries, es_index='memex', es_doc_type='page', es=Non
                        "_type": es_doc_type,
                        "doc": value,
                        "doc_as_upsert": True,
-                       "_id": key} for key, value in update_entries.items()], refresh=True)
+                       "_id": key} for key, value in update_entries.items()], refresh=True, request_timeout=600)
 
 def refresh(es_index='memex', es_doc_type='page', es=None):
     if es is None:

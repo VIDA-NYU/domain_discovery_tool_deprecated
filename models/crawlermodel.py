@@ -1,4 +1,5 @@
 import time
+import calendar
 from datetime import datetime
 from dateutil import tz
 
@@ -110,7 +111,21 @@ class CrawlerModel:
   def getAvailableQueries(self, session):
     es_info = self.esInfo(session['domainId'])
     return get_unique_values('query', self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)
-    
+
+  def getAvailableTags(self, session):
+    es_info = self.esInfo(session['domainId'])
+    tags_str = get_unique_values('tag', self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)
+    unique_tags = {}
+    for tags, num in tags_str.iteritems():
+      tags_list = tags.split(";")
+      for tag in tags_list:
+        if tag != "":
+          if unique_tags.get(tag) is not None:
+            unique_tags[tag] = unique_tags[tag] + num
+          else:
+            unique_tags[tag] = num  
+    return unique_tags
+
   def encode(self, url):
     return urllib2.quote(url).replace("/", "%2F")
     
@@ -288,20 +303,19 @@ class CrawlerModel:
 
     # If ts1 not specified, sets it to -Infinity.
     if opt_ts1 is None:
-      now = time.localtime(0)
-      opt_ts1 = float(time.mktime(now)) * 1000
+      now = time.gmtime(0)
+      opt_ts1 = float(calendar.timegm(now))
     else:
       opt_ts1 = float(opt_ts1)
 
     # If ts2 not specified, sets it to now.
     if opt_ts2 is None:
-      now = time.localtime()
-      opt_ts2 = float(time.mktime(now)) * 1000
+      now = time.gmtime()
+      opt_ts2 = float(calendar.timegm(now))
     else:
       opt_ts2 = float(opt_ts2)
 
-    if opt_applyFilter:
-      # TODO(Yamuna): apply filter if it is None. Otherwise, match_all.
+    if opt_applyFilter and session['filter'] != "":
       results = get_most_recent_documents(session['pagesCap'], es_info['mapping'], ["url", es_info['mapping']["tag"]], 
                                           session['filter'], es_info['activeCrawlerIndex'], es_info['docType'],  \
                                           self._es)
@@ -313,17 +327,17 @@ class CrawlerModel:
     irrelevant = 0
     neutral = 0
 
-    # TODO(Yamuna): Double check the return values for crawler
     for res in results:
         try:
           tags = res[es_info['mapping']['tag']]
-          if 'Relevant' in res[es_info['mapping']['tag']]:
-            relevant = relevant + 1
-          elif 'Irrelevant' in res[es_info['mapping']['tag']]:
+          if 'Irrelevant' in res[es_info['mapping']['tag']]:
             irrelevant = irrelevant + 1
           else:
-            # Page has tags, but not Relevant or Irrelevant.
-            neutral = neutral + 1
+            # Page has tags Relevant or custom.
+            if "" not in tags:
+              relevant = relevant + 1
+            else:
+              neutral = neutral + 1
         except KeyError:
           # Page does not have tags.
           neutral = neutral + 1
@@ -559,12 +573,38 @@ class CrawlerModel:
     hits=[]
     queries = session['selected_queries'].split(',')
     for query in queries:
-      s_fields[es_info['mapping']["query"]] = "'" + query + "'"
+      s_fields[es_info['mapping']["query"]] = '"' + query + '"'
       results= multifield_query_search(s_fields, session['pagesCap'], ["url", "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], 
                                        es_info['activeCrawlerIndex'], 
                                        es_info['docType'],
                                       self._es)
       hits.extend(results)
+    return hits
+
+  def _getPagesForTags(self, session):
+    es_info = self.esInfo(session['domainId'])
+
+    s_fields = {}
+    if not session['filter'] is None:
+      s_fields[es_info['mapping']["text"]] = session['filter'].replace('"','\"')
+
+    if not session['fromDate'] is None:
+      s_fields[es_info['mapping']["timestamp"]] = "[" + str(session['fromDate']) + " TO " + str(session['toDate']) + "]" 
+      
+    hits=[]
+    tags = session['selected_tags'].split(',')
+    for tag in tags:
+      if tag != "":
+        #Added a wildcard query as tag is not analyzed field
+        query = {
+          "wildcard": {es_info['mapping']["tag"]:"*" + tag + "*"}
+        }
+        s_fields["queries"] = [query]
+        results= multifield_term_search(s_fields, session['pagesCap'], ["url", "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], 
+                                        es_info['activeCrawlerIndex'], 
+                                        es_info['docType'],
+                                        self._es)
+        hits.extend(results)
     return hits
 
   def _getRelevantPages(self, session):
@@ -574,39 +614,20 @@ class CrawlerModel:
 
     return pos_hits
 
-  def _getMoreLikeRelevantPages(self, session):
+  def _getMoreLikePages(self, session):
     es_info = self.esInfo(session['domainId'])
-
-    pos_hits = search(es_info['mapping']['tag'], ['relevant'], session['pagesCap'], ['url', "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], es_info['activeCrawlerIndex'], 'page', self._es)
-
-    hits = []
-    if len(pos_hits) > 0:
-      pos_urls = [field['id'] for field in pos_hits]
-      
-      results = get_more_like_this(pos_urls, ['url', "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], session['pagesCap'],  es_info['activeCrawlerIndex'], es_info['docType'],  self._es)
-      
-      hits = pos_hits[0:self._pagesCapTerms] + results
-
-    return hits
-
-  def _getIrrelevantPages(self, session):
-    es_info = self.esInfo(session['domainId'])
-
-    neg_hits = search(es_info['mapping']['tag'], ['irrelevant'], session['pagesCap'], ['url', "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], es_info['activeCrawlerIndex'], 'page', self._es)
-
-    return neg_hits
-
-  def _getMoreLikeIrrelevantPages(self, session):
-    es_info = self.esInfo(session['domainId'])
-    neg_hits = search(es_info['mapping']['tag'], ['irrelevant'], session['pagesCap'], ['url', "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], es_info['activeCrawlerIndex'], 'page', self._es)
-
-    hits = []
-    if len(neg_hits) > 0:
-      neg_urls = [field['id'] for field in neg_hits]
-
-      results = get_more_like_this(neg_urls, ['url', "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], session['pagesCap'],  es_info['activeCrawlerIndex'], es_info['docType'],  self._es)
     
-      hits = neg_hits[0:self._pagesCapTerms] + results
+    hits=[]
+    tags = session['selected_tags'].split(',')
+    for tag in tags:
+      tag_hits = search(es_info['mapping']['tag'], [tag], session['pagesCap'], ['url', "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], es_info['activeCrawlerIndex'], 'page', self._es)
+
+      if len(tag_hits) > 0:
+        tag_urls = [field['id'] for field in tag_hits]
+      
+        results = get_more_like_this(tag_urls, ['url', "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], session['pagesCap'],  es_info['activeCrawlerIndex'], es_info['docType'],  self._es)
+      
+        hits.extend(tag_hits[0:self._pagesCapTerms] + results)
 
     return hits
 
@@ -636,15 +657,11 @@ class CrawlerModel:
       hits = self._getMostRecentPages(session)
     elif (session['pageRetrievalCriteria'] == 'Queries'):
       hits = self._getPagesForQueries(session)
-    elif (session['pageRetrievalCriteria'] == 'Relevant'):
-      hits = self._getRelevantPages(session)
-    elif (session['pageRetrievalCriteria'] == 'More like Relevant'):
-      hits = self._getMoreLikeRelevantPages(session)
-    elif (session['pageRetrievalCriteria'] == 'Irrelevant'):
-      hits = self._getIrrelevantPages(session)
-    elif (session['pageRetrievalCriteria'] == 'More like Irrelevant'):
-      hits = self._getMoreLikeIrrelevantPages(session)
-      
+    elif (session['pageRetrievalCriteria'] == 'Tags'):
+      hits = self._getPagesForTags(session)
+    elif (session['pageRetrievalCriteria'] == 'More like'):
+      hits = self._getMoreLikePages(session)
+
     last_downloaded_url_epoch = None
     docs = []
 
@@ -900,7 +917,7 @@ class CrawlerModel:
     else:
       top = max_url_count
 
-    comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar BingSearch -t " + str(top) + \
+    comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar GoogleSearch -t " + str(top) + \
            " -q \"" + terms + "\"" + \
            " -i " + es_info['activeCrawlerIndex'] + \
            " -d " + es_info['docType'] + \
@@ -938,9 +955,9 @@ class CrawlerModel:
   # Projects pages with PCA
   def pca(self, pages):
     
-
     urls = [page[4] for page in pages]
     text = [page[5] for page in pages]
+
     #[data,_,_,_,urls] = self.term_tfidf(urls)
 
     #[urls, data] = CrawlerModel.w2v.process(urls, es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)

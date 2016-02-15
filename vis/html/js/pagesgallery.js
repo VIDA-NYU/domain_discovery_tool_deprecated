@@ -196,13 +196,8 @@ PagesGallery.prototype.update = function() {
       })
       .on('click', function(tag, i) {
         var isRemovable = gallery.cbIsTagRemovable(tag);
-        if (isRemovable) {
-          // Removes tag from item.
-          BokehPlots.updatePlotColors(item.url[0], "Neutral");
-          $(this).attr("class", "not-clickable");
-          $(this).siblings().text(" ");
-          __sig__.emit(__sig__.tag_individual_page_action_clicked, tag, actionType, item);
-          BokehPlots.updateData();
+          if (isRemovable) {
+            BokehPlots.updateTags([item],tag, actionType);
         }
       })
       .on('mouseover', function(tag, i) {
@@ -238,18 +233,16 @@ PagesGallery.prototype.update = function() {
             $(this).siblings().children('.not-clickable').text(tag);
           } else {
             $(this).siblings().children('img').attr("class", "not-clickable");
-            $(this).siblings().children('.not-clickable').text(" ");
+            $(this).siblings().children('.not-clickable').text("");
           }
         }
-
         // Adds tag to item.
-        BokehPlots.updatePlotColors(item.url[0], tag);
-        __sig__.emit(__sig__.tag_individual_page_action_clicked, tag, 'Apply', item);
+	BokehPlots.updateTags([item],tag, "Apply");
       }
     });
 
     // Removes all options.
-    selectBox.selectAll('option').remove();
+    selectBox.selectAll('option').remove(); 
 
     // List shows only new tags.
     var itemTags = {};

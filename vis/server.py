@@ -39,6 +39,9 @@ class Page:
     # Folder with html content.
     self._HTML_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), u"html")
     self.lock = Lock()
+    # TODO Use SeedCrawlerModelAdapter self._crawler = SeedCrawlerModelAdapter()
+    self._crawler = SeedCrawlerModelAdapter()
+
 
 
   # Access to topics visualization.
@@ -57,8 +60,6 @@ class Page:
   # Access to seed crawler vis.
   @cherrypy.expose
   def seedcrawler(self):
-    # TODO Use SeedCrawlerModelAdapter self._crawler = SeedCrawlerModelAdapter()
-    self._crawler = SeedCrawlerModelAdapter()
     return open(os.path.join(self._HTML_DIR, u"seedcrawlervis.html"))
 
   @cherrypy.expose
@@ -92,6 +93,13 @@ class Page:
   def getAvailableQueries(self, session):
     session = json.loads(session)
     res = self._crawler.getAvailableQueries(session)
+    cherrypy.response.headers["Content-Type"] = "application/json;"
+    return json.dumps(res)
+  
+  @cherrypy.expose
+  def getAvailableTags(self, session):
+    session = json.loads(session)
+    res = self._crawler.getAvailableTags(session)
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
 
@@ -176,11 +184,10 @@ class Page:
   @cherrypy.expose
   def getPages(self, session):
     session = json.loads(session)
-    res = self._crawler.getPages(session)
+    data = self._crawler.getPages(session)
+    res = {"data": data, "plot": selection_plot(data)}
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
-
-
 
   # Boosts set of pages: crawler exploits outlinks for the given set of pages.
   @cherrypy.expose
@@ -266,14 +273,6 @@ class Page:
     # Returns object for positive and negative page examples.
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps({"positive": posData, "negative": negData})
-
-  @cherrypy.expose
-  def getBokehPlot(self, session):
-    session = json.loads(session)
-    data = self._crawler.getPages(session)
-    res = {"data": data, "plot": selection_plot(data)}
-    cherrypy.response.headers["Content-Type"] = "application/json;"
-    return json.dumps(res)
 
   @cherrypy.expose
   def getEmptyBokehPlot(self):

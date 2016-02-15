@@ -73,7 +73,7 @@ class word2vec:
                 results = get_documents_by_id(terms, ["term", "vector"], "word_phrase_to_vec", "terms", self.es)
                 word_vec_doc = [res["vector"] for res in results]
             else:    
-                word_vec_doc = [self.word_vec[term] for term in doc.keys() if doc[term] > 2 and not self.word_vec.get(term) is None]
+                word_vec_doc = [self.word_vec[term] for term in doc.keys() if not self.word_vec.get(term) is None]
                 
             if word_vec_doc:
                 m_word_vec = np.array(word_vec_doc).mean(axis=0) 
