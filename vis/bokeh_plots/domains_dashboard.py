@@ -33,7 +33,18 @@ def pages_timeseries(response):
     return Panel(child=plot, title="Fetched")
 
 
-def domains_dashboard(response, extra_plots=None):
+def queries_table(response):
+    source = ColumnDataSource(data=dict(x=response.keys(), y=response.values()))
+    columns = [
+            TableColumn(field="x", title="Query"),
+            TableColumn(field="y", title="Pages"),
+        ]
+    table = DataTable(source=source, columns=columns, width=400,
+            height=280)
+    return table
+
+
+def domains_dashboard(response, extra_plots=None, queries=None):
     """
     Domains dashboard plot function. Takes an arguments for extra plots which
     will be added in a tab with the other plots.
@@ -96,7 +107,10 @@ def domains_dashboard(response, extra_plots=None):
 
     # Take the two tables and the graph, turn them into VBox, then organize them
     # side by side in an HBox.
-    vbox_tables = VBox(children=[data_table_domain, data_table_top_level])
+    if queries:
+        vbox_tables = VBox(children=[data_table_domain, data_table_top_level, queries_table(queries)])
+    else:
+        vbox_tables = VBox(children=[data_table_domain, data_table_top_level])
     vbox_plots = VBox(children=[plot_tabs])
     hbox_dashboard = HBox(children=[vbox_tables, vbox_plots])
     return components(vplot(hbox_dashboard))
