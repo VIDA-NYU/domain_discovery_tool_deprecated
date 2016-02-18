@@ -48,6 +48,25 @@
               </a>
             </li>
             <li class="dropdown">
+              <a data-toggle="dropdown" role="button" class="dropdown-toggle">TopicVis <span class='caret'></span></a>
+              <ul class="dropdown-menu" id="topicVis">
+                <li class='crawler-radio'>
+                  <a target="_blank" class="plot_button" value="lda_vis" href="" id="ldavisPlot">LDAVis</a>
+                  <a target="_blank" class="plot_button" value="termite" href="" id="termitePlot">Termite</a>
+                </li>
+                <li>
+                  <button type="button"
+                      class="btn btn-warning btn-duo center link-button"
+                      data-type="last"
+                      id="topicVisSettings"
+                      data-toggle="modal"
+                      data-target="#topicVisSettingsModal">
+                    <span class="glyphicon glyphicon-cog"></span> Settings
+                  </button>
+                </li>
+              </ul>
+            </li>
+            <li class="dropdown">
               <a data-toggle="dropdown" role="button" class="dropdown-toggle">Model <span class='caret'></span></a>
               <ul class="dropdown-menu" id="downloadModel">
                 <li>
@@ -88,6 +107,41 @@
             <div class="modal-footer">
               <input type="text" class="form-control" id="crawler_index_name">
               <button type="button" class="btn btn-warning center-block" data-type="last" id="submit_add_crawler"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="topicVisSettingsModal" tabindex="-1" role="dialog" aria-labelledby="topicVisSettingsModalLabel">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title"
+                  id="topicVisSettingsModalLabel"
+                  style="text-align:center;">
+                <span class="glyphicon glyphicon-cog"></span>
+                &nbsp;&nbsp;TopicVis Settings
+              </h4>
+            </div>
+            <div class="modal-body">
+              <form id="topicvis_settings_form">
+                <label for="topic_model" class="control-label">Number of Topics</label>
+                <input type="text" value="2" name="ntopics" id="ntopics" class="form-control">
+                <p id="error_ntopics" style="color:#990000;display:none;">
+                  ERROR: Please provide a number between 2 and 20<br>
+                </p>
+                <label for="topic_model" class="control-label">Topic Model</label>
+                <select name="model" id="topic_model" class="form-control">
+                  <option value="plsa">PLSA</option>
+                  <option value="lda">LDA</option>
+                </select>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-warning center-block" data-type="last" id="save_topicvis_settings">
+                Save
+              </button>
             </div>
           </div>
         </div>
@@ -400,6 +454,7 @@
     <script type="text/javascript" src="js/utils.js"></script>
     <script type="text/javascript" src="js/wordlist.js"></script>
     <script type="text/javascript" src="js/bokeh_controller.js"></script>
+    <script type="text/javascript" src="js/topicvis.js"></script>
     <script>
       // Initializes main app class after page is loaded.
       window.onload = function() {

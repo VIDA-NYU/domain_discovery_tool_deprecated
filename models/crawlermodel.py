@@ -38,6 +38,8 @@ from elastic.delete import delete
 
 from ranking import tfidf, rank, extract_terms, word2vec, get_bigrams_trigrams
 
+from topik import read_input, tokenize, vectorize, run_model, visualize, TopikProject
+
 import urllib2
 import json
 
@@ -1080,4 +1082,39 @@ class CrawlerModel:
     epoch = datetime.utcfromtimestamp(0)
     delta = dt - epoch
     return delta.total_seconds()
+
+  def make_topic_model(self, domain, tokenizer, vectorizer, model, ntopics):
+    """Build topic model from the corpus of the supplied DDT domain.
+
+    The topic model is represented as a topik.TopikProject object, and is
+    persisted in disk, recording the model parameters and the location of the
+    data. The output of the topic model itself is stored in Elasticsearch.
+
+    Parameters
+    ----------
+    domain: str
+        DDT domain name as stored in Elasticsearch, so lowercase and with underscores in place of spaces.
+    tokenizer: str
+        A tokenizer from ``topik.tokenizer.registered_tokenizers``
+    vectorizer: str
+        A vectorization method from ``topik.vectorizers.registered_vectorizers``
+    model: str
+        A topic model from ``topik.vectorizers.registered_models``
+    ntopics: int
+        The number of topics to be used when modeling the corpus.
+
+    Returns
+    -------
+    model: a topik topic model
+        A topik model, encoding things like term frequencies, etc.
+    """
+    content_field = 'text'
+    def not_empty(doc): return bool(doc[content_field])  # True if document not empty
+    raw_data = filter(not_empty, read_input(source="http://localhost:9200", index=domain))
+    id_doc_pairs = ((hash(__[content_field]), __[content_field]) for __ in raw_data)
+    tokens = tokenize(id_doc_pairs, method=tokenizer)
+    vectors = vectorize(tokens, method=vectorizer)
+    model = run_model(vectors, model_name=model, ntopics=ntopics)
+    return model
+
 
