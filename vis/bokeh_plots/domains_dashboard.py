@@ -44,7 +44,23 @@ def queries_table(response):
     return table
 
 
-def domains_dashboard(response, extra_plots=None, queries=None):
+def queries_plot(response):
+    source = ColumnDataSource(data=dict(x=response.keys(), y=response.values()))
+    queries_bar = Bar(source.data, values="y", label="x",
+            title="Queries", bar_width=BAR_WIDTH,
+            height=584, xlabel="Endings", ylabel="Occurences")
+    panel = Panel(child=queries_bar, title="Queries")
+    return panel
+
+
+def queries_plot_element(response):
+    table = VBox(children=[queries_table(response)])
+    plot = VBox(children=[queries_plot(response)])
+    plot = HBox(children=[table, plot])
+    return components(vplot(plot))
+
+
+def domains_dashboard(response, extra_plots=None):
     """
     Domains dashboard plot function. Takes an arguments for extra plots which
     will be added in a tab with the other plots.
@@ -107,10 +123,7 @@ def domains_dashboard(response, extra_plots=None, queries=None):
 
     # Take the two tables and the graph, turn them into VBox, then organize them
     # side by side in an HBox.
-    if queries:
-        vbox_tables = VBox(children=[data_table_domain, data_table_top_level, queries_table(queries)])
-    else:
-        vbox_tables = VBox(children=[data_table_domain, data_table_top_level])
+    vbox_tables = VBox(children=[data_table_domain, data_table_top_level])
     vbox_plots = VBox(children=[plot_tabs])
     hbox_dashboard = HBox(children=[vbox_tables, vbox_plots])
     return components(vplot(hbox_dashboard))

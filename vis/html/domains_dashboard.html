@@ -25,15 +25,30 @@
         </nav>
         <div class="container">
             <div class="row">
+                {% if ((pages_script and pages_div) or (queries_script and queries_div)) %}
                 <div class="col-md-12">
-                    {% if (script or div) %}
-                    <h2>Current Domain Statistics</h2>
-                        {{ script | safe }}
-                        {{ div | safe }}
+                    {% if (pages_script and pages_div) %}
+                    <h4>Page Statistics</h4>
+                        {{ pages_script | safe }}
+                        {{ pages_div | safe }}
                     {% else %}
                         <center><h3>No page information available for this domain.</h3></center>
                     {% endif %}
                 </div>
+                <div class="col-md-12">
+                    {% if (queries_script and queries_div) %}
+                    <h4>Queries Statistics</h4>
+                        {{ queries_script | safe }}
+                        {{ queries_div | safe }}
+                    {% else %}
+                        <center><h3>No queries information available for this domain.</h3></center>
+                    {% endif %}
+                </div>
+                {% else %}
+                <div class="col-md-12">
+                    <h2>No statistics available for this domain.</h2>
+                </div>
+                {% endif %}
             </div>
         </div>
     </body>

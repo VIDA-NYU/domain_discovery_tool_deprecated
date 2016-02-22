@@ -9,7 +9,8 @@ import bokeh.embed
 import bokeh.resources
 
 from bokeh_plots.clustering import selection_plot, empty_plot
-from bokeh_plots.domains_dashboard import domains_dashboard, pages_timeseries
+from bokeh_plots.domains_dashboard import (domains_dashboard, pages_timeseries,
+        queries_plot_element)
 
 from jinja2 import Template
 
@@ -344,21 +345,25 @@ class Page:
     pages = self._crawler.getPages(session)
     pages_dates = self._crawler.getPagesDates(session)
     queries = self._crawler.getAvailableQueries(session)
+    if queries:
+        queries_script, queries_div = queries_plot_element(queries)
+    else:
+        queries_script = None
+        queries_div = None
     if pages["pages"]:
         if pages_dates:
             timeseries_panel = pages_timeseries(pages_dates)
         else:
             timeseries_panel = None
-        if queries:
-            script, div = domains_dashboard(pages, timeseries_panel, queries)
-        else:
-            script, div = domains_dashboard(pages, timeseries_panel)
+        pages_script, pages_div = domains_dashboard(pages, timeseries_panel)
     else:
-        script = None
-        div = None
+        pages_script = None
+        pages_div = None
     with open(os.path.join(self._HTML_DIR, u"domains_dashboard.html")) as f:
         template = Template(f.read())
-    return template.render(script=script, div=div)
+    return template.render(pages_script=pages_script, pages_div=pages_div,
+            queries_script=queries_script, queries_div=queries_div)
+
 
 
 if __name__ == "__main__":
