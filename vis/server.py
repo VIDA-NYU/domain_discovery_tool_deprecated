@@ -10,7 +10,7 @@ import bokeh.resources
 
 from bokeh_plots.clustering import selection_plot, empty_plot
 from bokeh_plots.domains_dashboard import (domains_dashboard, pages_timeseries,
-        queries_plot_element)
+        queries_dashboard)
 
 from jinja2 import Template
 
@@ -346,7 +346,7 @@ class Page:
     pages_dates = self._crawler.getPagesDates(session)
     queries = self._crawler.getAvailableQueries(session)
     if queries:
-        queries_script, queries_div = queries_plot_element(queries)
+        queries_script, queries_div = queries_dashboard(queries)
     else:
         queries_script = None
         queries_div = None

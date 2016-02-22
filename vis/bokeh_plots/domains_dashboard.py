@@ -48,16 +48,14 @@ def queries_plot(response):
     source = ColumnDataSource(data=dict(x=response.keys(), y=response.values()))
     queries_bar = Bar(source.data, values="y", label="x",
             title="Queries", bar_width=BAR_WIDTH,
-            height=584, xlabel="Endings", ylabel="Occurences")
-    panel = Panel(child=queries_bar, title="Queries")
-    return panel
+            height=584, xlabel="Query", ylabel="Occurences")
+    return queries_bar
 
 
-def queries_plot_element(response):
+def queries_dashboard(response):
     table = VBox(children=[queries_table(response)])
     plot = VBox(children=[queries_plot(response)])
-    plot = HBox(children=[table, plot])
-    return components(vplot(plot))
+    return components(vplot(HBox(children=[table, plot])))
 
 
 def domains_dashboard(response, extra_plots=None):
