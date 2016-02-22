@@ -56,11 +56,17 @@ TagsGallery.prototype.clear = function(lazyUpdate) {
  * Adds item to gallery.
  */
 TagsGallery.prototype.addItem = function(tag, lazyUpdate) {
-  this.userItems.push(tag);
-  this.tagsLogic[tag] = {'applicable': true, 'removable': true, negate: []};
-  if (!lazyUpdate) {
-    this.update();
-  }
+    if(this.predefinedItems.indexOf(tag) < 0) {
+	if(this.userItems.indexOf(tag) < 0){
+	    this.userItems.push(tag);
+	    this.tagsLogic[tag] = {'applicable': true, 'removable': true, negate: []};
+	    if(this.tagsLogic["Neutral"]["negate"].indexOf(tag) < 0)
+		this.tagsLogic["Neutral"]["negate"].push(tag); 
+	    if (!lazyUpdate) {
+		this.update();
+	    }
+	}
+    }
 };
 
 

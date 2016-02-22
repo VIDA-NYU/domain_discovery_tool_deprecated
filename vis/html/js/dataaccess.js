@@ -7,7 +7,7 @@
 var DataAccess = (function() {
   var pub = {};
 
-  var REFRESH_EVERY_N_MILLISECONDS = 2000;
+    var REFRESH_EVERY_N_MILLISECONDS = 2000;
 
   var lastUpdate = 0;
   var lastSummary = 0;
@@ -28,65 +28,74 @@ var DataAccess = (function() {
   // Processes loaded pages summaries.
   var onNewPagesSummaryLoaded = function(summary, isFilter) {
     loadingSummary = false;
-    lastSummary = moment().unix();
+      lastSummary = moment().unix();
     __sig__.emit(__sig__.new_pages_summary_fetched, summary, isFilter);
   };
 
+  // Triggers page summary update after the pages are tagged
+  var onSetPagesTagCompleted = function(){
+      __sig__.emit(__sig__.set_pages_tags_completed);
+  }
   // Processes loaded pages.
   var onPagesLoaded = function(loadedPages) {
       pages = loadedPages;
-      lastUpdate = loadedPages['last_downloaded_url_epoch'];
       loadingPages = false;
-      document.getElementById("status_panel").innerHTML = 'Processing pages...Done';
-      $(document).ready(function() { $(".status_box").fadeIn(); });
-      $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
+      if(pages["data"]["pages"].length > 0){
+	  lastUpdate = moment().unix();
+	  document.getElementById("status_panel").innerHTML = 'Processing pages...Done';
+	  $(document).ready(function() { $(".status_box").fadeIn(); });
+	  $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
+      }
   };
 
   // Processes loaded terms summaries.
   var onTermsSummaryLoaded = function(summary) {
       termsSummary = summary;
       loadingTerms = false;
-      document.getElementById("status_panel").innerHTML = 'Processing terms...Done';
-      $(document).ready(function() { $(".status_box").fadeIn(); });
-      $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
-  };
-
-  // Processes loaded pages and terms.
-  var onMaybeUpdateCompleteOld = function() {
-    updating = loadingPages || loadingTerms;
-    if (!updating) {
-	__sig__.emit(__sig__.pages_loaded, pages);
-	__sig__.emit(__sig__.terms_summary_fetched, termsSummary);
-
-	if (pages['pages'].length === 0){
-	    document.getElementById("status_panel").innerHTML = 'No pages found';
-      $(document).ready(function() { $(".status_box").fadeIn(); });
-      $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
-    }
-
-	Utils.setWaitCursorEnabled(false);
-    }
-  };
-
-  // Processes loaded pages and terms.
-  var onMaybeUpdateComplete = function() {
-      updating = loadingPages || loadingTerms;
-      if (!loadingPages) {
-	  __sig__.emit(__sig__.pages_loaded, pages);
-	  __sig__.emit(__sig__.bokeh_insert_plot);
-	  
-	  if (pages['pages'].length === 0){
-	     document.getElementById("status_panel").innerHTML = 'No pages found';
-      $(document).ready(function() { $(".status_box").fadeIn(); });
-      $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
-	  }
-	  Utils.setWaitCursorEnabled(false);
-      }
-      
-      if (!loadingTerms) {
-      	__sig__.emit(__sig__.terms_summary_fetched, termsSummary);
+      if(termsSummary.length > 0){
+	  document.getElementById("status_panel").innerHTML = 'Processing terms...Done';
+	  $(document).ready(function() { $(".status_box").fadeIn(); });
+	  $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
       }
   };
+
+  // Processes loaded pages.
+    var onMaybeUpdateCompletePages = function() {
+	updating = loadingPages || loadingTerms;
+	
+	// Update status of the update button
+	d3.select('#pages_landscape_update')
+	    .classed('enabled', !updating)
+	    .classed('disabled', updating)
+	
+	if (!loadingPages) {
+	    if (pages["data"]["pages"].length === 0){
+		document.getElementById("status_panel").innerHTML = 'No pages found';
+		$(document).ready(function() { $(".status_box").fadeIn(); });
+		$(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
+	    } else {
+		__sig__.emit(__sig__.pages_loaded, pages["data"]);
+		__sig__.emit(__sig__.bokeh_insert_plot, pages);
+	    }
+	    Utils.setWaitCursorEnabled(false);
+	}
+    };
+
+    // Processes loaded terms.
+    var onMaybeUpdateCompleteTerms = function() {
+	updating = loadingPages || loadingTerms;
+
+	// Update status of the update button
+	d3.select('#pages_landscape_update')
+	    .classed('enabled', !updating)
+	    .classed('disabled', updating)
+
+	if (!loadingTerms) {
+	    if(termsSummary.length > 0){
+      		__sig__.emit(__sig__.terms_summary_fetched, termsSummary);
+	    }
+	}
+    }
 
  // Signals model creation completion
  var onModelCreated = function(model_file) {
@@ -126,6 +135,11 @@ var DataAccess = (function() {
   // Processes loaded queries
   var onAvailableQueriesLoaded = function(queriesData) {
     __sig__.emit(__sig__.queries_loaded, queriesData);
+  };
+
+  // Processes loaded tags
+  var onAvailableTagsLoaded = function(tagsData) {
+    __sig__.emit(__sig__.tags_loaded, tagsData);
   };
 
 
@@ -178,10 +192,10 @@ var DataAccess = (function() {
     }
   };
   // Loads pages summary until last pages update.
-  pub.loadPagesSummaryUntilLastUpdate = function(isFilter, session) {
+    pub.loadPagesSummaryUntilLastUpdate = function(isFilter, session) {
     //if (currentCrawler !== undefined) {
       runQueryForCurrentCrawler(
-        '/getPagesSummary', {'opt_ts2': lastUpdate, 'opt_applyFilter': isFilter, 'session': JSON.stringify(session)},
+          '/getPagesSummary', {'opt_ts2': lastUpdate, 'opt_applyFilter': isFilter, 'session': JSON.stringify(session)},
         function(summary) {
           onPagesSummaryUntilLastUpdateLoaded(summary, isFilter);
         });
@@ -220,6 +234,12 @@ var DataAccess = (function() {
   pub.loadAvailableQueries = function(session) {
       runQuery('/getAvailableQueries', {'session': JSON.stringify(session)}, onAvailableQueriesLoaded);
   };
+
+  // Returns public interface.
+  // Gets available tags from backend.
+  pub.loadAvailableTags = function(session) {
+      runQuery('/getAvailableTags', {'session': JSON.stringify(session)}, onAvailableTagsLoaded);
+  };
   
   // Queries the web for terms (used in Seed Crawler mode).
   pub.queryWeb = function(terms, session) {
@@ -247,25 +267,32 @@ var DataAccess = (function() {
 
   // Loads pages (complete data, including URL, x and y position etc) and terms.
   pub.update = function(session) {
-      Utils.setWaitCursorEnabled(true);
       
-      document.getElementById("status_panel").innerHTML = 'Processing pages and terms...';
-      $(document).ready(function() { $(".status_box").fadeIn(); });
-      $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
+      if (!updating && currentCrawler !== undefined) {
 
-    if (!updating && currentCrawler !== undefined) {
-      updating = true;
+	  Utils.setWaitCursorEnabled(true);
 
-      // Fetches pages summaries every n seconds.
-      loadingPages = true;
-      runQueryForCurrentCrawler(
-        '/getPages', {'session': JSON.stringify(session)}, onPagesLoaded, onMaybeUpdateComplete);
+	  document.getElementById("status_panel").innerHTML = 'Processing pages and terms...';
+	  $(document).ready(function() { $(".status_box").fadeIn(); });
+	  $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
 
-      // Fetches terms summaries.
-      loadingTerms = true;
-      runQueryForCurrentCrawler(
-        '/getTermsSummary', {'session': JSON.stringify(session)}, onTermsSummaryLoaded, onMaybeUpdateComplete);
-    }
+	  // Update status of the update button
+	  d3.select('#pages_landscape_update')
+	      .classed('enabled', false)
+	      .classed('disabled', true);
+
+	  updating = true;
+
+	  // Fetches pages summaries every n seconds.
+	  loadingPages = true;
+	  runQueryForCurrentCrawler(
+              '/getPages', {'session': JSON.stringify(session)}, onPagesLoaded, onMaybeUpdateCompletePages);
+	  
+	  // Fetches terms summaries.
+	  loadingTerms = true;
+	  runQueryForCurrentCrawler(
+              '/getTermsSummary', {'session': JSON.stringify(session)}, onTermsSummaryLoaded, onMaybeUpdateCompleteTerms);
+      }
   };
   // Loads snippets for a given term.
   pub.loadTermSnippets = function(term, session) {
@@ -287,7 +314,7 @@ var DataAccess = (function() {
   pub.setPagesTag = function(pages, tag, applyTagFlag, session) {
     if (pages.length > 0) {
       runQueryForCurrentCrawler(
-        '/setPagesTag', {'pages': pages.join('|'), 'tag': tag, 'applyTagFlag': applyTagFlag, 'session': JSON.stringify(session)});
+          '/setPagesTag', {'pages': pages.join('|'), 'tag': tag, 'applyTagFlag': applyTagFlag, 'session': JSON.stringify(session)}, onSetPagesTagCompleted);
     }
   };
   // Adds tag to term.

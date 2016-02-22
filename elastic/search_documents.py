@@ -98,16 +98,19 @@ def multifield_term_search(s_fields, pageCount=100, fields=[], es_index='memex',
         
     queries = []
     for k,v in s_fields.items():
-        query = {
-            "match": {
-                k: {
-                    "query": v,
+        if "queries" in k:
+            queries.extend(v)
+        else:
+            query = {
+                "match": {
+                    k: {
+                        "query": v,
                     "minimum_should_match":"100%"
+                    }
                 }
             }
-        }
-        queries.append(query)
-        
+            queries.append(query)
+            
     query = {
         "query" : {
             "bool": {
@@ -117,7 +120,7 @@ def multifield_term_search(s_fields, pageCount=100, fields=[], es_index='memex',
         },
         "fields": fields
     }
-    
+
     res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=pageCount)
     hits = res['hits']['hits']
     
@@ -189,14 +192,13 @@ def get_context(terms, field = "text", es_index='memex', es_doc_type='page', es=
 
         return context
 
-def range(field, from_val, to_val, ret_fields=[], epoch=None, pagesCount = 200, es_index='memex', es_doc_type='page', es=None):
+def range(field, from_val, to_val, ret_fields=[], epoch=True, pagesCount = 200, es_index='memex', es_doc_type='page', es=None):
     if es is None:
         es = default_es_elastic
 
-    if not (epoch is None):
-        if epoch:
-            from_val = datetime.utcfromtimestamp(long(from_val/1000)).strftime('%Y-%m-%dT%H:%M:%S')
-            to_val = datetime.utcfromtimestamp(long(to_val/1000)).strftime('%Y-%m-%dT%H:%M:%S')
+    if epoch:
+        from_val = datetime.utcfromtimestamp(long(from_val)).strftime('%Y-%m-%dT%H:%M:%S')
+        to_val = datetime.utcfromtimestamp(long(to_val)).strftime('%Y-%m-%dT%H:%M:%S')
             
     query = { 
         "query" : { 

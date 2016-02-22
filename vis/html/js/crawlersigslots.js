@@ -23,6 +23,7 @@ var SigSlots = (function() {
   __sig__.terms_snippets_loaded = function(snippetsData) {};
   __sig__.pages_loaded = function(pages) {};
   __sig__.queries_loaded = function(queries) {};
+  __sig__.tags_loaded = function(tags) {};
   __sig__.tag_focus = function(tag, onFocus) {};
   __sig__.tag_clicked = function(tag) {};
   __sig__.tag_action_clicked = function(tag, actionType, pages, refresh_plot) {};
@@ -36,7 +37,7 @@ var SigSlots = (function() {
   __sig__.add_neg_term = function(term) {};
   __sig__.delete_term = function(term) {};
   __sig__.load_new_pages_summary = function(isFilter) {};
-
+  __sig__.set_pages_tags_completed = function(){};
   __sig__.bokeh_insert_plot = function() {};
 
   //__sig__.pages_labels_changed = function() {};
