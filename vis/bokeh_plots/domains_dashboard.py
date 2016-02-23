@@ -4,6 +4,7 @@ from operator import itemgetter
 import datetime
 
 import numpy as np
+import pandas as pd
 
 from bokeh.plotting import figure, show, output_file
 from bokeh.embed import components
@@ -23,16 +24,6 @@ ENDING_TABLE_LIMIT = None
 BAR_WIDTH = 0.4
 
 
-def pages_timeseries(response):
-    parse_datetime = lambda x: datetime.datetime.strptime(x, "%Y-%m-%dT%H:%M:%S.%f")
-    parsed_dates = [parse_datetime(x[1]) for x in response]
-    dates = sorted(parsed_dates)
-    plot = figure(plot_width=584, x_axis_type="datetime", x_axis_label="Dates",
-            y_axis_label="Number Fetched")
-    plot.line(x=dates, y=range(len(dates)))
-    return Panel(child=plot, title="Fetched")
-
-
 def queries_table(response):
     source = ColumnDataSource(data=dict(x=response.keys(), y=response.values()))
     columns = [
@@ -48,7 +39,7 @@ def queries_plot(response):
     source = ColumnDataSource(data=dict(x=response.keys(), y=response.values()))
     queries_bar = Bar(source.data, values="y", label="x",
             title="Queries", bar_width=BAR_WIDTH,
-            height=584, xlabel="Query", ylabel="Occurences")
+            height=400, xlabel="Query", ylabel="Occurences")
     return queries_bar
 
 
@@ -56,6 +47,15 @@ def queries_dashboard(response):
     table = VBox(children=[queries_table(response)])
     plot = VBox(children=[queries_plot(response)])
     return components(vplot(HBox(children=[table, plot])))
+
+
+def pages_timeseries(response):
+    parsed_dates = pd.to_datetime([x[1] for x in response]).order()
+    dates_dataframe = pd.DataFrame(parsed_dates, columns=["datetimes"])
+    plot = figure(plot_width=584, x_axis_type="datetime", x_axis_label="Dates",
+            y_axis_label="Number Fetched")
+    plot.line(x=dates_dataframe["datetimes"], y=range(len(dates_dataframe.index)))
+    return Panel(child=plot, title="Fetched")
 
 
 def domains_dashboard(response, extra_plots=None):
