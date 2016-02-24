@@ -39,7 +39,7 @@ def queries_plot(response):
     source = ColumnDataSource(data=dict(x=response.keys(), y=response.values()))
     queries_bar = Bar(source.data, values="y", label="x",
             title="Queries", bar_width=BAR_WIDTH,
-            height=400, xlabel="Query", ylabel="Occurences")
+            height=400, xlabel="Query", ylabel="Pages")
     return queries_bar
 
 
@@ -50,11 +50,14 @@ def queries_dashboard(response):
 
 
 def pages_timeseries(response):
-    parsed_dates = pd.to_datetime([x[1] for x in response]).order()
-    dates_dataframe = pd.DataFrame(parsed_dates, columns=["datetimes"])
-    plot = figure(plot_width=584, x_axis_type="datetime", x_axis_label="Dates",
-            y_axis_label="Number Fetched")
-    plot.line(x=dates_dataframe["datetimes"], y=range(len(dates_dataframe.index)))
+    parsed_dates = pd.Series(pd.to_datetime([x[1] for x in response]).order(),
+            name="datetimes")
+    hits = pd.Series(range(1, len(parsed_dates) + 1), name="hits")
+    dates = pd.concat([hits, parsed_dates], axis=1).set_index("datetimes")
+    dates = dates.resample("30S").dropna()
+    plot = figure(plot_width=584, x_axis_type="datetime", x_axis_label="Time",
+            y_axis_label="Fetched")
+    plot.line(x=dates.index, y=dates["hits"])
     return Panel(child=plot, title="Fetched")
 
 
