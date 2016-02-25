@@ -25,7 +25,7 @@ from elasticsearch import Elasticsearch
 from seeds_generator.download import download, decode
 from seeds_generator.concat_nltk import get_bag_of_words
 from elastic.get_config import get_available_domains, get_mapping
-from elastic.search_documents import get_context, term_search, search, multifield_term_search, range, multifield_query_search 
+from elastic.search_documents import get_context, term_search, search, multifield_term_search, range, multifield_query_search, field_missing
 from elastic.add_documents import add_document, update_document, refresh
 from elastic.get_mtermvectors import getTermStatistics, getTermFrequency
 from elastic.get_documents import get_most_recent_documents, get_documents, get_all_ids, get_more_like_this, get_pages_datetimes
@@ -116,8 +116,11 @@ class CrawlerModel:
 
   def getAvailableTags(self, session):
     es_info = self.esInfo(session['domainId'])
+
+    tags_neutral = field_missing("tag", ["url"], self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)
+    unique_tags = {"Neutral": len(tags_neutral)}
+
     tags_str = get_unique_values('tag', self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)
-    unique_tags = {}
     for tags, num in tags_str.iteritems():
       tags_list = tags.split(";")
       for tag in tags_list:
@@ -125,7 +128,9 @@ class CrawlerModel:
           if unique_tags.get(tag) is not None:
             unique_tags[tag] = unique_tags[tag] + num
           else:
-            unique_tags[tag] = num  
+            unique_tags[tag] = num
+        else:
+          unique_tags["Neutral"] = unique_tags["Neutral"] + 1
     return unique_tags
 
   def encode(self, url):
@@ -597,16 +602,47 @@ class CrawlerModel:
     tags = session['selected_tags'].split(',')
     for tag in tags:
       if tag != "":
-        #Added a wildcard query as tag is not analyzed field
-        query = {
-          "wildcard": {es_info['mapping']["tag"]:"*" + tag + "*"}
-        }
-        s_fields["queries"] = [query]
-        results= multifield_term_search(s_fields, session['pagesCap'], ["url", "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], 
-                                        es_info['activeCrawlerIndex'], 
-                                        es_info['docType'],
-                                        self._es)
-        hits.extend(results)
+        if tag == "Neutral":
+          query_field_missing = {
+            "filtered" : {
+              "filter" : {
+                "missing" : { "field" : "tag" }
+              }
+            }
+          }
+
+          s_fields["queries"] = [query_field_missing]
+
+          results = multifield_term_search(s_fields, session['pagesCap'], ["url", "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], 
+                                           es_info['activeCrawlerIndex'], 
+                                           es_info['docType'],
+                                           self._es)
+
+          hits.extend(results)
+          
+          s_fields["tag"] = ""
+
+          results = multifield_term_search(s_fields, session['pagesCap'], ["url", "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], 
+                                           es_info['activeCrawlerIndex'], 
+                                           es_info['docType'],
+                                           self._es)
+
+          hits.extend(results)
+          
+          s_fields.pop("tag")
+
+        else:  
+          #Added a wildcard query as tag is not analyzed field
+          query = {
+            "wildcard": {es_info['mapping']["tag"]:"*" + tag + "*"}
+          }
+          s_fields["queries"] = [query]
+          results= multifield_term_search(s_fields, session['pagesCap'], ["url", "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], 
+                                          es_info['activeCrawlerIndex'], 
+                                          es_info['docType'],
+                                          self._es)
+          hits.extend(results)
+        
     return hits
 
   def _getRelevantPages(self, session):
