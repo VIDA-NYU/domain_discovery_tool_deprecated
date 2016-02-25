@@ -105,7 +105,7 @@ def multifield_term_search(s_fields, pageCount=100, fields=[], es_index='memex',
                 "match": {
                     k: {
                         "query": v,
-                    "minimum_should_match":"100%"
+                        "minimum_should_match":"100%"
                     }
                 }
             }
@@ -210,6 +210,32 @@ def range(field, from_val, to_val, ret_fields=[], epoch=True, pagesCount = 200, 
             },
         },
         "fields": ret_fields
+    }
+
+    res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=pagesCount)
+    hits = res['hits']['hits']
+    
+    results = []
+    for hit in hits:
+        fields = hit['fields']
+        fields['id'] = hit['_id']
+        results.append(fields)
+
+    return results
+
+def field_missing(field, fields, pagesCount, es_index='memex', es_doc_type='page', es=None):
+    if es is None:
+        es = default_es
+
+    query = {
+        "query" : {
+            "filtered" : {
+                "filter" : {
+                    "missing" : { "field" : field }
+                }
+            }
+        },
+        "fields": fields
     }
 
     res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=pagesCount)
