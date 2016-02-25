@@ -529,6 +529,10 @@ CrawlerVis.prototype.onLoadedQueries = function(queries) {
 CrawlerVis.prototype.onLoadedTags = function(tags) {
     var vis = this;
     vis.tags = tags;
+    var pageRetrievalCriteria = d3.select('#page_retrieval_criteria_select').node().value;
+    if(pageRetrievalCriteria === "More like"){
+	delete vis.tags['Neutral']
+    }
     vis.enableTagSelection(tags);
 };
 
