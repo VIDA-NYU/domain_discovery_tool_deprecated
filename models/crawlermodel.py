@@ -401,8 +401,10 @@ class CrawlerModel:
     s_fields["tag"]="Negative"
     neg_terms = [field['term'][0] for field in multifield_term_search(s_fields, self._capTerms, ['term'], self._termsIndex, 'terms', self._es)]
 
-    pos_urls = [field['id'] for field in term_search(es_info['mapping']['tag'], ['Relevant'], self._pagesCapTerms, ['url'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)]
+    results = term_search(es_info['mapping']['tag'], ['Relevant'], self._pagesCapTerms, ['url', es_info['mapping']['text']], es_info['activeCrawlerIndex'], es_info['docType'], self._es)
 
+    pos_urls = [field["id"] for field in results]
+    
     top_terms = []
     top_bigrams = []
     top_trigrams = []
@@ -411,9 +413,9 @@ class CrawlerModel:
       urls = []
       if len(pos_urls) > 0:
         # If positive urls are available search for more documents like them
-        
-        results = get_more_like_this(pos_urls, ['url', es_info['mapping']["text"]], self._pagesCapTerms,  es_info['activeCrawlerIndex'], es_info['docType'],  self._es)
-        urls = pos_urls[0:self._pagesCapTerms] + [field['id'] for field in results] 
+        results_more_like_pos = get_more_like_this(pos_urls, ['url', es_info['mapping']["text"]], self._pagesCapTerms,  es_info['activeCrawlerIndex'], es_info['docType'],  self._es)
+        results.extend(results_more_like_pos)
+        urls = pos_urls[0:self._pagesCapTerms] + [field['id'] for field in results_more_like_pos] 
         
       if not urls:
         # If positive urls are not available then get the most recent documents
