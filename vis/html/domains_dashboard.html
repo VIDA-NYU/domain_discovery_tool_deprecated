@@ -26,15 +26,22 @@
         <div class="container">
             <div class="row">
                 {% if ((pages_script and pages_div) or (queries_script and queries_div)) %}
+                {% if ((pages_script and pages_div) and (endings_div and endings_script)) %}
                 <div class="col-md-12">
-                    {% if (pages_script and pages_div) %}
                     <h4>Page Statistics</h4>
                         {{ pages_script | safe }}
                         {{ pages_div | safe }}
-                    {% else %}
-                        <center><h3>No page information available for this domain.</h3></center>
-                    {% endif %}
                 </div>
+                <div class="col-md-12">
+                    <h4>Endings Statistics</h4>
+                        {{ endings_script | safe }}
+                        {{ endings_div | safe }}
+                </div>
+                {% else %}
+                <div class="col-md-12">
+                    <center><h3>No page information available for this domain.</h3></center>
+                </div>
+                {% endif %}
                 <div class="col-md-12">
                     {% if (queries_script and queries_div) %}
                     <h4>Queries Statistics</h4>

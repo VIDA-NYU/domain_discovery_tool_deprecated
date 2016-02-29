@@ -10,7 +10,7 @@ import bokeh.resources
 
 from bokeh_plots.clustering import selection_plot, empty_plot
 from bokeh_plots.domains_dashboard import (domains_dashboard, pages_timeseries,
-        queries_dashboard)
+        queries_dashboard, endings_dashboard)
 
 from jinja2 import Template
 
@@ -356,13 +356,19 @@ class Page:
         else:
             timeseries_panel = None
         pages_script, pages_div = domains_dashboard(pages, timeseries_panel)
+        endings_script, endings_div = endings_dashboard(pages)
     else:
-        pages_script = None
+        endings_div = None
+        endings_script = None
         pages_div = None
+        pages_script = None
     with open(os.path.join(self._HTML_DIR, u"domains_dashboard.html")) as f:
         template = Template(f.read())
-    return template.render(pages_script=pages_script, pages_div=pages_div,
-            queries_script=queries_script, queries_div=queries_div)
+    return template.render(
+        pages_script=pages_script, pages_div=pages_div,
+        endings_script=endings_script, endings_div=endings_div,
+        queries_script=queries_script, queries_div=queries_div
+    )
 
 
 
