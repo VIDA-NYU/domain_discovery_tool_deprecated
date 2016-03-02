@@ -11,9 +11,11 @@ import bokeh.resources
 from bokeh_plots.clustering import selection_plot, empty_plot
 from bokeh_plots.domains_dashboard import (domains_dashboard, pages_timeseries,
         queries_dashboard, endings_dashboard)
+from bokeh_plots.cross_filter import create_queryframe, create_interactors, create_plot_components
 
-from jinja2 import Template
+from jinja2 import Template, Environment, FileSystemLoader
 
+env = Environment(loader=FileSystemLoader('vis/html'))
 cherrypy.engine.timeout_monitor.unsubscribe()
 
 class Page:
@@ -125,7 +127,7 @@ class Page:
   @cherrypy.expose
   def release(self):
     return open(os.path.join(self._HTML_DIR, u"release.html"))
-  
+
 
   @cherrypy.expose
   def index(self):
@@ -155,7 +157,7 @@ class Page:
     res = self._crawler.getAvailableQueries(session)
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
-  
+
   @cherrypy.expose
   def getAvailableTags(self, session):
     session = json.loads(session)
@@ -179,13 +181,13 @@ class Page:
   def createModel(self, session):
     session = json.loads(session)
     return self._crawler.createModel(session)
-    
+
   # Returns number of pages downloaded between ts1 and ts2 for active crawler.
   # ts1 and ts2 are Unix epochs (seconds after 1970).
   # If opt_applyFilter is True, the summary returned corresponds to the applied pages filter defined
   # previously in @applyFilter. Otherwise the returned summary corresponds to the entire dataset
   # between ts1 and ts2.
-  # 
+  #
   # For crawler vis, returns dictionary in the format:
   # {
   #   'Positive': {'Explored': #ExploredPgs, 'Exploited': #ExploitedPgs, 'Boosted': #BoostedPgs},
@@ -370,7 +372,23 @@ class Page:
         queries_script=queries_script, queries_div=queries_div
     )
 
+  @cherrypy.expose
+  def cross_filter(self, session):
+    session = json.loads(session)
+    pages = self._crawler.getPages(session)
+    dates = self._crawler.getPagesDates(session)
 
+    df = create_queryframe(pages, dates)
+    plots_script, plots_div = create_plot_components(df)
+    widgets_script, widgets_div = create_interactors(df)
+
+    template = env.get_template('cross_filter.html')
+
+    return template.render(plots_script=plots_script,
+                           plots_div=plots_div,
+                           widgets_script=widgets_script,
+                           widgets_div=widgets_div
+    )
 
 if __name__ == "__main__":
   page = Page()

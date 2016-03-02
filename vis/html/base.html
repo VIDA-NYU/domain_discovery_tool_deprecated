@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Domain Discovery Tool</title>
+
+    <link type="text/css" rel="stylesheet" href="css/bokeh-0.10.0.min.css" media="all">
+    <link type="text/css" rel="stylesheet" href="css/crawler-white.css" media="all">
+    <link type="text/css" rel="stylesheet" href="css/dashboard_styles.css" media="all">
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <img src="img/nyu_stacked_black.png" style="height:40px;margin-top:5px;padding-right:15px;" />
+        </div>
+        <div class="collapse navbar-collapse" id="crawlerSelection">
+          <ul class="nav navbar-nav">
+            <li><a class="navbar-brand" href="#">Domain Discovery Tool</a></li>
+          </ul>
+          {% block navigation %}
+          {% endblock navigation %}
+        </div>
+      </div>
+    </nav>
+    <div>
+      {% block content %}
+      {% endblock content %}
+    </div>
+      {% block scripts %}
+      {% endblock scripts %}
+  </body>
+</html>
