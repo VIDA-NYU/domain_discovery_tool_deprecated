@@ -4,6 +4,7 @@ from operator import itemgetter
 import datetime
 
 import numpy as np
+import pandas as pd
 
 from bokeh.plotting import figure, show, output_file
 from bokeh.embed import components
@@ -23,14 +24,71 @@ ENDING_TABLE_LIMIT = None
 BAR_WIDTH = 0.4
 
 
+def queries_table(response):
+    source = ColumnDataSource(data=dict(x=response.keys(), y=response.values()))
+    columns = [
+            TableColumn(field="x", title="Query"),
+            TableColumn(field="y", title="Pages"),
+        ]
+    table = DataTable(source=source, columns=columns, width=400,
+            height=280)
+    return table
+
+
+def queries_plot(response):
+    source = ColumnDataSource(data=dict(x=response.keys(), y=response.values()))
+    queries_bar = Bar(source.data, values="y", label="x",
+            title="Queries", bar_width=BAR_WIDTH,
+            height=400, xlabel="Query", ylabel="Pages")
+    return queries_bar
+
+
+def queries_dashboard(response):
+    table = VBox(children=[queries_table(response)])
+    plot = VBox(children=[queries_plot(response)])
+    return components(vplot(HBox(children=[table, plot])))
+
+
 def pages_timeseries(response):
-    parse_datetime = lambda x: datetime.datetime.strptime(x, "%Y-%m-%dT%H:%M:%S.%f")
-    parsed_dates = [parse_datetime(x[1]) for x in response]
-    dates = sorted(parsed_dates)
-    plot = figure(plot_width=584, x_axis_type="datetime", x_axis_label="Dates",
-            y_axis_label="Number Fetched")
-    plot.line(x=dates, y=range(len(dates)))
+    parsed_dates = pd.Series(pd.to_datetime([x[1] for x in response]).order(),
+            name="datetimes")
+    hits = pd.Series(range(1, len(parsed_dates) + 1), name="hits")
+    dates = pd.concat([hits, parsed_dates], axis=1).set_index("datetimes")
+    dates = dates.resample("30S").dropna()
+    plot = figure(plot_height=584, x_axis_type="datetime", x_axis_label="Time",
+            y_axis_label="Fetched")
+    plot.line(x=dates.index, y=dates["hits"])
     return Panel(child=plot, title="Fetched")
+
+
+def endings_table(source):
+    columns = [
+            TableColumn(field="x", title="Ending"),
+            TableColumn(field="y", title="Count"),
+        ]
+    table = DataTable(source=source,
+            columns=columns, width=400, height=280)
+    return table
+
+
+def endings_plot(source):
+    plot = Bar(source.data, values="y", label="x",
+            title="Most Common URL Endings by Number", bar_width=BAR_WIDTH,
+            height=584, xlabel="Endings", ylabel="Occurences")
+    return plot
+
+
+def endings_dashboard(response):
+    urls = [x[0][0] for x in response["pages"]]
+    parsed_urls = [urlparse(x).hostname for x in urls]
+    endings_counter = Counter([x[x.rfind("."):] for x in parsed_urls]).most_common(ENDING_PLOT_LIMIT)
+    xendings = [x[0] for x in endings_counter]
+    yendings = [y[1] for y in endings_counter]
+    source = ColumnDataSource(data=dict(x=xendings, y=yendings))
+
+    table = VBox(children=[endings_table(source)])
+    plot = VBox(children=[endings_plot(source)])
+    return components(vplot(HBox(children=[table, plot])))
 
 
 def domains_dashboard(response, extra_plots=None):
@@ -67,36 +125,11 @@ def domains_dashboard(response, extra_plots=None):
     data_table_domain = DataTable(source=source_table_domains, columns=columns_domain, width=400,
             height=280)
 
-    # Top level Domains Bar Chart
-    endings_counter = Counter([x[x.rfind("."):] for x in parsed_urls]).most_common(ENDING_PLOT_LIMIT)
-    xendings = [x[0] for x in endings_counter]
-    yendings = [y[1] for y in endings_counter]
-    source_top_level = ColumnDataSource(data=dict(x=xendings, y=yendings))
-
-    bar_top_level = Bar(source_top_level.data, values="y", label="x",
-            title="Most Common URL Endings by Number", bar_width=BAR_WIDTH,
-            height=584, xlabel="Endings", ylabel="Occurences")
-    panel_top_level = Panel(child=bar_top_level, title="Endings")
-
-    # Top level domains table
-    table_endings_counter = Counter([x[x.rfind("."):] for x in parsed_urls]).most_common(ENDING_TABLE_LIMIT)
-    xendings_table = [x[0] for x in table_endings_counter]
-    yendings_table = [y[1] for y in table_endings_counter]
-    source_table_top_level = ColumnDataSource(data=dict(x=xendings_table, y=yendings_table))
-
-    columns_top_level = [
-            TableColumn(field="x", title="Ending"),
-            TableColumn(field="y", title="Count"),
-        ]
-    data_table_top_level = DataTable(source=source_table_top_level,
-            columns=columns_top_level, width=400, height=280)
-
     # Add the plots and charts to a vform and organize them with VBox and HBox
-    plot_tabs = Tabs(tabs=[panel_domains, panel_top_level, extra_plots])
+    plot_tabs = Tabs(tabs=[panel_domains, extra_plots])
 
-    # Take the two tables and the graph, turn them into VBox, then organize them
-    # side by side in an HBox.
-    vbox_tables = VBox(children=[data_table_domain, data_table_top_level])
+    # Take the plot and table and arrange them in a hbox.
+    vbox_tables = VBox(children=[data_table_domain])
     vbox_plots = VBox(children=[plot_tabs])
     hbox_dashboard = HBox(children=[vbox_tables, vbox_plots])
     return components(vplot(hbox_dashboard))

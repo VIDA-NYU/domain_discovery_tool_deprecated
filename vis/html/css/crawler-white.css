@@ -1405,12 +1405,16 @@ textarea[name=seeds_text] {
   border-color: #ffce54;
 }
 
+.bk-bs-dropdown-menu {
+    left:inherit;
+    right:-75%;
+}
+
 .bk-widget-form-input {
     float:left;
     margin-left:5px;
     width: 150px;
 }
-
 
 #goto_statistics {
     background-color:inherit;
