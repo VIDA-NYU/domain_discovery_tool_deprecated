@@ -57,9 +57,12 @@ def multifield_query_search(s_fields, pageCount=100, fields = [], es_index='meme
 
         results = []
         for hit in hits:
-            fields = hit['fields']
-            fields['id'] = hit['_id']
-            results.append(fields)
+            if hit.get('fields') is None:
+                print hit
+            else:
+                fields = hit['fields']
+                fields['id'] = hit['_id']
+                results.append(fields)
 
         return results
 
@@ -85,9 +88,12 @@ def term_search(field, queryStr, pageCount=100, fields=[], es_index='memex', es_
 
         results = []
         for hit in hits:
-            fields = hit['fields']
-            fields['id'] = hit['_id']
-            results.append(fields)
+            if hit.get('fields') is None:
+                print hit
+            else:
+                fields = hit['fields']
+                fields['id'] = hit['_id']
+                results.append(fields)
             
         return results
 
