@@ -339,12 +339,22 @@ class Page:
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(empty_plot())
 
+  def getQueriesPages(self, session, queries):
+    queries_pages = {}
+    for x in queries.keys():
+      session["selected_queries"] = x
+      pages = self._crawler.getPagesDates(session)
+      pages = [y[0] for y in pages]
+      queries_pages[x] = pages
+    return queries_pages
+
   @cherrypy.expose
   def statistics(self, session):
     session = json.loads(session)
     pages = self._crawler.getPages(session)
     pages_dates = self._crawler.getPagesDates(session)
     queries = self._crawler.getAvailableQueries(session)
+    queries_pages_data = self.getQueriesPages(session, queries)
     if queries:
         queries_script, queries_div = queries_dashboard(queries)
     else:
