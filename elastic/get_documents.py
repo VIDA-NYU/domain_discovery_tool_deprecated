@@ -151,11 +151,13 @@ def get_all_ids(pageCount = 100000, es_index = 'memex', es_doc_type = 'page', es
         res = es.search(body=query, index = es_index, doc_type = es_doc_type, size = pageCount)
         hits = res['hits']['hits']
     
-        urls = []
+        results = []
         for hit in hits:
-            urls.append(hit['fields']['url'][0])
-            
-        return urls
+            fields = hit['fields']
+            fields['id'] = hit['_id']
+            results.append(fields)
+
+        return results
     except IndexMissingException:
         print 'Index Missing ', es_index
         return []
