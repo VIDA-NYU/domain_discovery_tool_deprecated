@@ -845,7 +845,25 @@ class CrawlerModel:
         except:
           update_try = update_try + 1
 
-    
+      if applyTagFlag and tag in "Relevant":
+        # Crawl forward
+        results = field_exists("crawled_forward", [es_info['url'], es_info['html']], self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)    
+        tagged_entries = [key for key in entries.keys()]
+        already_crawled = [result[id] for result in results]
+        not_crawled = list(Set(tagged_entries).difference(already_crawled))
+        not_crawled_urls = [result[es_info["url"]] for result in results if result["id"] in not_crawled]
+        not_crawled_html = [result[es_info["html"]] for result in results if result["id"] in not_crawled]
+        crawl_interface.forward(not_crawled_urls, not_crawled_html)
+
+        # Crawl backward
+        results = field_exists("crawled_backward", [es_info['url']], self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)    
+        tagged_entries = [key for key in entries.keys()]
+        already_crawled = [result[id] for result in results]
+        not_crawled = list(Set(tagged_entries).difference(already_crawled))
+        not_crawled_urls = [result[es_info["url"]] for result in results if result["id"] in not_crawled]
+        crawl_interface.backward(not_crawled_urls)
+
+        
   # Adds tag to terms (if applyTagFlag is True) or removes tag from terms (if applyTagFlag is
   # False).
   def setTermsTag(self, terms, tag, applyTagFlag, session):
