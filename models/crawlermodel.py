@@ -783,7 +783,56 @@ class CrawlerModel:
       tag = tags[0]['tag'][0].split(';')
 
     return {'term': term, 'tags': tag, 'context': get_context(term.split('_'), es_info['mapping']['text'], es_info['activeCrawlerIndex'], es_info['docType'],  self._es)}
-  
+
+  # Crawl forward
+  def getForwardLinks(self, urls, session):
+
+    es_info = self.esInfo(session['domainId'])
+    
+    results = field_exists("crawled_forward", [es_info['mapping']['url']], self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)    
+    already_crawled = [result[es_info["mapping"]["url"]][0] for result in results]
+    not_crawled = list(Set(urls).difference(already_crawled))
+    results = get_documents(not_crawled, es_info["mapping"]['url'], [es_info["mapping"]['url']], es_info['activeCrawlerIndex'], es_info['docType'], self._es)    
+    not_crawled_urls = [results[url][0][es_info["mapping"]["url"]][0] for url in not_crawled]
+    
+    chdir(environ['DDT_HOME']+'/seeds_generator')
+    
+    comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar StartCrawl -c forward"\
+           " -u \"" + ",".join(not_crawled_urls) + "\"" + \
+           " -i " + es_info['activeCrawlerIndex'] + \
+           " -d " + es_info['docType'] + \
+           " -s " + es_server 
+    
+    p=Popen(comm, shell=True, stderr=PIPE)
+    output, errors = p.communicate()
+    print output
+    print errors
+
+  # Crawl backward
+  def getBackwardLinks(self, urls, session):
+
+    es_info = self.esInfo(session['domainId'])
+    
+    results = field_exists("crawled_backward", [es_info['mapping']['url']], self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)    
+    already_crawled = [result[es_info["mapping"]["url"]][0] for result in results]
+    not_crawled = list(Set(urls).difference(already_crawled))
+    results = get_documents(not_crawled, es_info["mapping"]['url'], [es_info["mapping"]['url']], es_info['activeCrawlerIndex'], es_info['docType'], self._es)
+    not_crawled_urls = [results[url][0][es_info["mapping"]["url"]][0] for url in not_crawled]
+
+    chdir(environ['DDT_HOME']+'/seeds_generator')
+        
+    comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar StartCrawl -c backward"\
+           " -u \"" + ",".join(not_crawled_urls) + "\"" + \
+           " -i " + es_info['activeCrawlerIndex'] + \
+           " -d " + es_info['docType'] + \
+           " -s " + es_server 
+    
+    p=Popen(comm, shell=True, stderr=PIPE)
+    output, errors = p.communicate()
+    print output
+    print errors
+                         
+    
   # Adds tag tow pages (if applyTagFlag is True) or removes tag from pages (if applyTagFlag is
   # False).
   def setPagesTag(self, pages, tag, applyTagFlag, session):
@@ -849,50 +898,6 @@ class CrawlerModel:
         except:
           update_try = update_try + 1
 
-      if applyTagFlag and tag in "Relevant":
-        # Crawl forward
-        results = field_exists("crawled_forward", [es_info['mapping']['url']], self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)    
-        tagged_entries = [key for key in entries.keys()]
-        already_crawled = [result[id] for result in results]
-        not_crawled = list(Set(tagged_entries).difference(already_crawled))
-        results = get_documents_by_id(not_crawled, [es_info["mapping"]['url'], es_info["mapping"]['html']], es_info['activeCrawlerIndex'], es_info['docType'], self._es)    
-        not_crawled_urls = [result[es_info["mapping"]["url"]][0] for result in results]
-
-        print "\n\n\n\n", not_crawled_urls,"\n"
-        print "\n", ",".join(not_crawled_urls), "\n"
-        
-        chdir(environ['DDT_HOME']+'/seeds_generator')
-        
-        comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar StartCrawl -c forward"\
-           " -u \"" + ",".join(not_crawled_urls) + "\"" + \
-           " -i " + es_info['activeCrawlerIndex'] + \
-           " -d " + es_info['docType'] + \
-           " -s " + es_server 
-
-        p=Popen(comm, shell=True, stderr=PIPE)
-        output, errors = p.communicate()
-        print output
-        print errors
-
-        # Crawl backward
-        results = field_exists("crawled_backward", [es_info['mapping']['url']], self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)    
-        tagged_entries = [key for key in entries.keys()]
-        already_crawled = [result[id] for result in results]
-        not_crawled = list(Set(tagged_entries).difference(already_crawled))
-
-        results = get_documents_by_id(not_crawled, [es_info["mapping"]['url'], es_info["mapping"]['html']], es_info['activeCrawlerIndex'], es_info['docType'], self._es)    
-        not_crawled_urls = [result[es_info["mapping"]["url"]][0] for result in results]
-
-        comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar StartCrawl -c backward"\
-           " -u \"" + ",".join(not_crawled_urls) + "\"" + \
-           " -i " + es_info['activeCrawlerIndex'] + \
-           " -d " + es_info['docType'] + \
-           " -s " + es_server 
-
-        p=Popen(comm, shell=True, stderr=PIPE)
-        output, errors = p.communicate()
-        print output
-        print errors
         
   # Adds tag to terms (if applyTagFlag is True) or removes tag from terms (if applyTagFlag is
   # False).
