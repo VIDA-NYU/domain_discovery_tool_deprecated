@@ -146,6 +146,14 @@ public class CrawlerInterface implements Runnable{
 	
         ArrayList<String> res = new ArrayList<String>(links);
 	for(String f_url: res){
+	    String domain = this.es_index;
+	    try{
+		domain = (new URL(f_url)).getHost();
+	    } catch(Exception e) {
+		e.printStackTrace();
+	    }
+
+	    this.download.setQuery("Crawl: " + domain);
 	    this.download.addTask(f_url);
 	}
 
