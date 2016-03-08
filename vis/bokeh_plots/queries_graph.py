@@ -16,24 +16,29 @@ df = pd.DataFrame(graph_data)
 
 hover = HoverTool(
     tooltips=[
-        ("desc", "@desc")
+        ("query", "@query")
     ]
 )
 
-x = list(df.iloc[[0]].values[0])
-y = list(df.iloc[[1]].values[0])
+xvalues = list(df.iloc[[0]].values[0])
+yvalues = list(df.iloc[[1]].values[0])
 source = ColumnDataSource(
     data=dict(
-        x=x,
-        y=y,
-        desc=list(df.keys())
+        x=xvalues,
+        y=yvalues,
+        query=list(df.keys())
     )
 )
 
-p = figure(plot_width=400, plot_height=400, tools=[hover])
+# p = figure(plot_width=600, plot_height=600, tools=[hover])
+p = figure(plot_width=600, plot_height=600)
 
 # p.circle(x, y, size=40, color="navy", alpha=0.5)
 p.circle("x", "y", size=40, color="navy", alpha=0.5, source=source)
+p.line([xvalues[0], xvalues[1]], [yvalues[0], yvalues[1]], line_width=2)
+p.line([xvalues[1], xvalues[2]], [yvalues[1], yvalues[2]], line_width=2)
+p.line([xvalues[2], xvalues[3]], [yvalues[2], yvalues[3]], line_width=2)
+p.line([xvalues[3], xvalues[4]], [yvalues[3], yvalues[4]], line_width=2)
 
 
 output_file("image.html", title="image.py example")
