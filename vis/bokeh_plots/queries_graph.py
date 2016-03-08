@@ -30,15 +30,16 @@ source = ColumnDataSource(
     )
 )
 
-# p = figure(plot_width=600, plot_height=600, tools=[hover])
-p = figure(plot_width=600, plot_height=600)
+p = figure(plot_width=600, plot_height=600, tools=[hover])
 
-# p.circle(x, y, size=40, color="navy", alpha=0.5)
 p.circle("x", "y", size=40, color="navy", alpha=0.5, source=source)
-p.line([xvalues[0], xvalues[1]], [yvalues[0], yvalues[1]], line_width=2)
-p.line([xvalues[1], xvalues[2]], [yvalues[1], yvalues[2]], line_width=2)
-p.line([xvalues[2], xvalues[3]], [yvalues[2], yvalues[3]], line_width=2)
-p.line([xvalues[3], xvalues[4]], [yvalues[3], yvalues[4]], line_width=2)
+
+def add_line(df, x, y, p):
+    p.line([df[x][0], df[y][0]], [df[x][1], df[y][1]])
+
+add_line(df, "pkm", "m16", p)
+add_line(df, "ak47", "glock", p)
+add_line(df, "m16", "glock", p)
 
 
 output_file("image.html", title="image.py example")
