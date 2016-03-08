@@ -30,22 +30,24 @@ public class CrawlerInterface implements Runnable{
     ArrayList<String> html = null;
     String es_index = "memex";
     String es_doc_type = "page";
+    String es_host = "localhost";
     Client client = null;
     String crawlType = "";
     String top = "10";
     Download download = null;
     
-    public CrawlerInterface(ArrayList<String> urls, ArrayList<String> html, String crawl_type, String top, String es_index, String es_doc_type, Client client, Download download){
+    public CrawlerInterface(ArrayList<String> urls, ArrayList<String> html, String crawl_type, String top, String es_index, String es_doc_type, String es_host, Client client){
 	this.urls = urls;
 	this.html = html;
 	if(!es_index.isEmpty())
 	    this.es_index = es_index;
 	if(!es_doc_type.isEmpty())
 	    this.es_doc_type = es_doc_type;
+	this.es_host = es_host;
 	this.client = client;
 	this.crawlType = crawl_type;
 	this.top = top;
-	this.download = download;
+	this.download = new Download("Crawl: " + this.es_index, this.es_index, this.es_doc_type, this.es_host);
     }
 
     public ArrayList<String> crawl_backward(ArrayList<String> urls, String count){
@@ -96,8 +98,15 @@ public class CrawlerInterface implements Runnable{
         
         ArrayList<String> res = new ArrayList<String>(links);
 
+	System.out.println();
+	System.out.println("Backlinks");
+	System.out.println(res);
+	System.out.println();
+
 	for(String url: res){
 	    if(urls.indexOf(url) == -1){
+		System.out.println("Crawling forward " + url);
+		System.out.println();
 		String html = this.getContent(url);
 		this.crawl_forward(url, html);
 	    }
@@ -140,7 +149,6 @@ public class CrawlerInterface implements Runnable{
 	    this.download.addTask(f_url);
 	}
 
-	this.download.shutdown();
         return res;
     }
 
@@ -175,8 +183,9 @@ public class CrawlerInterface implements Runnable{
     }
 
     public void run() {
-	if(this.crawlType.equals("backward"))
+	if(this.crawlType.equals("backward")){
 	    this.crawl_backward(this.urls, this.top);
+	}
 	else if(this.crawlType.equals("forward")){
 	    for(int i=0; i < this.urls.size();++i){
 		SearchResponse response = null;
@@ -204,7 +213,7 @@ public class CrawlerInterface implements Runnable{
 		this.crawl_forward(this.urls.get(i), html);
 	    }
 	}
-
+	this.download.shutdown();
     }
     
 }

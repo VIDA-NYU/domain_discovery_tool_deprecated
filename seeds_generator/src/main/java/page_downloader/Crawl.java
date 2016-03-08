@@ -19,7 +19,6 @@ public class Crawl {
     private int poolSize = 100;
     private ExecutorService crawlForwardService = Executors.newFixedThreadPool(poolSize);
     private ExecutorService crawlBackwardService = Executors.newFixedThreadPool(poolSize);
-    private Download download = null;
     
     public Crawl(String es_index, String es_doc_type, String es_host){
 	if(es_host.isEmpty())
@@ -43,15 +42,14 @@ public class Crawl {
 	if(!es_doc_type.isEmpty())
 	    this.es_doc_type = es_doc_type;
 	
-	this.download = new Download("Crawl: " + this.es_index, this.es_index, this.es_doc_type, this.es_host);
     }
 
     public void addForwardCrawlTask(ArrayList<String> urls){
-	crawlForwardService.execute(new CrawlerInterface(urls, null, "forward", "", this.es_index, this.es_doc_type, this.client, this.download));
+	crawlForwardService.execute(new CrawlerInterface(urls, null, "forward", "", this.es_index, this.es_doc_type, this.es_host, this.client));
     }
 
     public void addBackwardCrawlTask(ArrayList<String> urls, String top){
-	crawlBackwardService.execute(new CrawlerInterface(urls, null, "backward", top, this.es_index, this.es_doc_type, this.client, this.download));
+	crawlBackwardService.execute(new CrawlerInterface(urls, null, "backward", top, this.es_index, this.es_doc_type, this.es_host, this.client));
     }
 
     public void shutdown(){
