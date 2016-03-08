@@ -1,37 +1,40 @@
-# from bokeh.plotting import figure, output_file, show
-# 
-# data = {u'ak47': 95, u'glock': 92, u'm16': 90, u'rpg': 91, u'ar15': 92, u'pkm': 92}
-# output_file("line.html")
-# 
-# p = figure(plot_width=400, plot_height=400)
-# 
-# # add a circle renderer with a size, color, and alpha
-# # p.circle([0, 1.5, 3], [0, 1, 0], size=20, color="navy", alpha=0.5)
-# # p.circle([0, 0, 3, 3], [0, 2, 2, 0], size=20, color="navy", alpha=0.5)
-# # p.circle([0, 1, 2, 3, 4], [2, 0, 4, 0 ,2], size=20, color="navy", alpha=0.5)
-# p.circle([0, 1, 2, 3, 4, 5], [0, 1, 2, 2, 1, 0], size=20, color="navy", alpha=0.5)
-# 
-# 
-# # show the results
-# show(p)
 import networkx as nx
 
 import pandas as pd
 
 from bokeh.plotting import show, output_file, figure
-from bokeh.models import ColumnDataSource
+from bokeh.models import ColumnDataSource, HoverTool
 
 
-G = nx.Graph()
-G.add_nodes_from([1, 2, 3, 4, 5, 6, 7])
-H = nx.circular_layout(G)
-df = pd.DataFrame(H)
+data = {u'ak47': 95, u'glock': 92, u'm16': 90, u'rpg': 91, u'ar15': 92, u'pkm': 92}
 
+graph = nx.Graph()
+graph.add_nodes_from(data.keys())
+graph_data = nx.circular_layout(graph)
 
-p = figure(plot_width=400, plot_height=400)
+df = pd.DataFrame(graph_data)
 
-for x in df:
-    p.circle(df[x][0], df[x][1], size=20, color="navy", alpha=0.5)
+hover = HoverTool(
+    tooltips=[
+        ("desc", "@desc")
+    ]
+)
+
+x = list(df.iloc[[0]].values[0])
+y = list(df.iloc[[1]].values[0])
+source = ColumnDataSource(
+    data=dict(
+        x=x,
+        y=y,
+        desc=list(df.keys())
+    )
+)
+
+p = figure(plot_width=400, plot_height=400, tools=[hover])
+
+# p.circle(x, y, size=40, color="navy", alpha=0.5)
+p.circle("x", "y", size=40, color="navy", alpha=0.5, source=source)
+
 
 output_file("image.html", title="image.py example")
 show(p)
