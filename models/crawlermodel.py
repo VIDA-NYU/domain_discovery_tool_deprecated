@@ -2,6 +2,7 @@ import time
 import calendar
 from datetime import datetime
 from dateutil import tz
+from sets import Set
 
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
@@ -25,10 +26,10 @@ from elasticsearch import Elasticsearch
 from seeds_generator.download import download, decode
 from seeds_generator.concat_nltk import get_bag_of_words
 from elastic.get_config import get_available_domains, get_mapping
-from elastic.search_documents import get_context, term_search, search, multifield_term_search, range, multifield_query_search, field_missing
+from elastic.search_documents import get_context, term_search, search, multifield_term_search, range, multifield_query_search, field_missing, field_exists
 from elastic.add_documents import add_document, update_document, refresh
 from elastic.get_mtermvectors import getTermStatistics, getTermFrequency
-from elastic.get_documents import get_most_recent_documents, get_documents, get_all_ids, get_more_like_this, get_pages_datetimes
+from elastic.get_documents import get_most_recent_documents, get_documents, get_all_ids, get_more_like_this, get_pages_datetimes, get_documents_by_id
 from elastic.aggregations import get_significant_terms, get_unique_values
 from elastic.create_index import create_index, create_terms_index, create_config_index
 from elastic.load_config import load_config
@@ -70,7 +71,7 @@ class CrawlerModel:
     create_config_index()
     create_terms_index()
 
-    self._mapping = {"timestamp":"retrieved", "text":"text", "html":"html", "tag":"tag", "query":"query"}
+    self._mapping = {"url":"url", "timestamp":"retrieved", "text":"text", "html":"html", "tag":"tag", "query":"query"}
     self._domains = None
     self.pos_tags = ['NN', 'NNS', 'NNP', 'NNPS', 'FW', 'JJ']
     
@@ -687,11 +688,14 @@ class CrawlerModel:
     
     format = '%m/%d/%Y %H:%M %Z'
     if not session['fromDate'] is None:
-      session['fromDate'] = long(CrawlerModel.convert_to_epoch(datetime.strptime(session['fromDate'], format)) * 1000)
+      session['fromDate'] = long(CrawlerModel.convert_to_epoch(datetime.strptime(session['fromDate'], format)))
 
     if not session['toDate'] is None:
-      session['toDate'] = long(CrawlerModel.convert_to_epoch(datetime.strptime(session['toDate'], format)) * 1000)
+      session['toDate'] = long(CrawlerModel.convert_to_epoch(datetime.strptime(session['toDate'], format)))
 
+    print "\n", session['fromDate'], "\n"
+    print "\n", session['toDate'], "\n"
+    
     hits = []
     if(session['pageRetrievalCriteria'] == 'Most Recent'):
       hits = self._getMostRecentPages(session)
@@ -847,22 +851,48 @@ class CrawlerModel:
 
       if applyTagFlag and tag in "Relevant":
         # Crawl forward
-        results = field_exists("crawled_forward", [es_info['url'], es_info['html']], self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)    
+        results = field_exists("crawled_forward", [es_info['mapping']['url']], self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)    
         tagged_entries = [key for key in entries.keys()]
         already_crawled = [result[id] for result in results]
         not_crawled = list(Set(tagged_entries).difference(already_crawled))
-        not_crawled_urls = [result[es_info["url"]] for result in results if result["id"] in not_crawled]
-        not_crawled_html = [result[es_info["html"]] for result in results if result["id"] in not_crawled]
-        crawl_interface.forward(not_crawled_urls, not_crawled_html)
+        results = get_documents_by_id(not_crawled, [es_info["mapping"]['url'], es_info["mapping"]['html']], es_info['activeCrawlerIndex'], es_info['docType'], self._es)    
+        not_crawled_urls = [result[es_info["mapping"]["url"]][0] for result in results]
+
+        print "\n\n\n\n", not_crawled_urls,"\n"
+        print "\n", ",".join(not_crawled_urls), "\n"
+        
+        chdir(environ['DDT_HOME']+'/seeds_generator')
+        
+        comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar StartCrawl -c forward"\
+           " -u \"" + ",".join(not_crawled_urls) + "\"" + \
+           " -i " + es_info['activeCrawlerIndex'] + \
+           " -d " + es_info['docType'] + \
+           " -s " + es_server 
+
+        p=Popen(comm, shell=True, stderr=PIPE)
+        output, errors = p.communicate()
+        print output
+        print errors
 
         # Crawl backward
-        results = field_exists("crawled_backward", [es_info['url']], self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)    
+        results = field_exists("crawled_backward", [es_info['mapping']['url']], self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)    
         tagged_entries = [key for key in entries.keys()]
         already_crawled = [result[id] for result in results]
         not_crawled = list(Set(tagged_entries).difference(already_crawled))
-        not_crawled_urls = [result[es_info["url"]] for result in results if result["id"] in not_crawled]
-        crawl_interface.backward(not_crawled_urls)
 
+        results = get_documents_by_id(not_crawled, [es_info["mapping"]['url'], es_info["mapping"]['html']], es_info['activeCrawlerIndex'], es_info['docType'], self._es)    
+        not_crawled_urls = [result[es_info["mapping"]["url"]][0] for result in results]
+
+        comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar StartCrawl -c backward"\
+           " -u \"" + ",".join(not_crawled_urls) + "\"" + \
+           " -i " + es_info['activeCrawlerIndex'] + \
+           " -d " + es_info['docType'] + \
+           " -s " + es_server 
+
+        p=Popen(comm, shell=True, stderr=PIPE)
+        output, errors = p.communicate()
+        print output
+        print errors
         
   # Adds tag to terms (if applyTagFlag is True) or removes tag from terms (if applyTagFlag is
   # False).
