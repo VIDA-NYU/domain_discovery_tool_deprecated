@@ -125,6 +125,17 @@ class CrawlerModelAdapter:
   # Download the pages of uploaded urls
   def downloadUrls(self, urls, session):
     self._crawlerModel.downloadUrls(urls, session)
+
+  # Crawl forward links   
+  def getForwardLinks(self, urls, session):
+    urls = CrawlerModelAdapter.extractListParam(urls)
+    self._crawlerModel.getForwardLinks(urls, session);
+
+  # Crawl backward links   
+  def getBackwardLinks(self, urls, session):
+    urls = CrawlerModelAdapter.extractListParam(urls)
+    self._crawlerModel.getBackwardLinks(urls, session);
+  
 #
 # Overwrites default functionality to serve for seed crawler model use.
 #

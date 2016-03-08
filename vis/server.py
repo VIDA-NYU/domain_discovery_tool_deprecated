@@ -254,7 +254,18 @@ class Page:
   def boostPages(self, pages):
     self._crawler.boostPages(pages)
 
+  # Crawl forward links   
+  @cherrypy.expose
+  def getForwardLinks(self, urls, session):
+    session = json.loads(session)
+    self._crawler.getForwardLinks(urls, session);
 
+  # Crawl backward links   
+  @cherrypy.expose
+  def getBackwardLinks(self, urls, session):
+    session = json.loads(session)
+    self._crawler.getBackwardLinks(urls, session);
+  
   # Fetches snippets for a given term.
   @cherrypy.expose
   def getTermSnippets(self, term, session):
