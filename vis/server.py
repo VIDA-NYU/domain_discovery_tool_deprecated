@@ -343,8 +343,8 @@ class Page:
     queries_pages = {}
     for x in queries.keys():
       session["selected_queries"] = x
-      pages = self._crawler.getPagesDates(session)
-      pages = [y[0] for y in pages]
+      pages = self._crawler.getPages(session)
+      pages = [y[0][0] for y in pages["pages"]]
       queries_pages[x] = pages
     return queries_pages
 
@@ -354,7 +354,7 @@ class Page:
     pages = self._crawler.getPages(session)
     pages_dates = self._crawler.getPagesDates(session)
     queries = self._crawler.getAvailableQueries(session)
-    queries_pages_data = self.getQueriesPages(session, queries)
+    # queries_pages_data = self.getQueriesPages(session, queries)
     if queries:
         queries_script, queries_div = queries_dashboard(queries)
     else:
