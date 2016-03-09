@@ -13,8 +13,8 @@
   <div class="container">
     <div class="panel panel-default col-md-4">
       <div class="panel-heading">Cross Filter Widgets</div>
-      <div class="panel-body plot">{{ widgets_div['tags'] | safe }}</div>
-      <div class="panel-body plot">{{ widgets_div['tlds'] | safe }}</div>
+      <div id="tags" class="panel-body plot">{{ widgets_div['tags'] | safe }}</div>
+      <div id="tlds" class="panel-body plot">{{ widgets_div['tlds'] | safe }}</div>
     </div>
     <div class="panel panel-default col-md-8">
       <div class="panel-heading">Cross Filter Charts</div>
@@ -27,6 +27,6 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <!-- Include all compiled plugins (below), or include individual files as needed -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-
+  <script type="text/javascript" src="js/cross_filter.js"></script>
 
 {% endblock content %}
