@@ -189,7 +189,7 @@ def get_context(terms, field = "text", es_index='memex', es_doc_type='page', es=
             "fields": ["url"]
         }
 
-        res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=500)
+        res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=500, request_timeout=600)
         hits = res['hits']
 
         context = {}
@@ -238,6 +238,33 @@ def field_missing(field, fields, pagesCount, es_index='memex', es_doc_type='page
             "filtered" : {
                 "filter" : {
                     "missing" : { "field" : field }
+                }
+            }
+        },
+        "fields": fields
+    }
+
+    res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=pagesCount)
+    hits = res['hits']['hits']
+    
+    results = []
+    for hit in hits:
+        fields = hit['fields']
+        fields['id'] = hit['_id']
+        results.append(fields)
+
+    return results
+
+
+def field_exists(field, fields, pagesCount, es_index='memex', es_doc_type='page', es=None):
+    if es is None:
+        es = default_es
+
+    query = {
+        "query" : {
+            "filtered" : {
+                "filter" : {
+                    "exists" : { "field" : field }
                 }
             }
         },

@@ -7,18 +7,20 @@ import java.util.concurrent.TimeUnit;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.client.Client;
+import java.util.ArrayList;
 
-public class Download {
+public class Crawl {
 
-    private String query = "";
+    private ArrayList<String> urls = null;
     private String es_index = "memex";
     private String es_doc_type = "page";
+    private String es_host = "localhost";
     private Client client = null;
     private int poolSize = 100;
-    private ExecutorService downloaderService = Executors.newFixedThreadPool(poolSize);
-
-    public Download(String query, String es_index, String es_doc_type, String es_host){
-	this.query = query;
+    private ExecutorService crawlForwardService = Executors.newFixedThreadPool(poolSize);
+    private ExecutorService crawlBackwardService = Executors.newFixedThreadPool(poolSize);
+    
+    public Crawl(String es_index, String es_doc_type, String es_host){
 	if(es_host.isEmpty())
 	    es_host = "localhost";
 	else {
@@ -31,27 +33,32 @@ public class Download {
 	    es_host = es_host.replaceAll("/","");
 	}
 
+	this.es_host = es_host;
+
 	this.client = new TransportClient().addTransportAddress(new InetSocketTransportAddress(es_host, 9300));
 	
 	if(!es_index.isEmpty())
 	    this.es_index = es_index;
 	if(!es_doc_type.isEmpty())
 	    this.es_doc_type = es_doc_type;
+	
     }
 
-    public void setQuery(String query){
-	this.query = query;
+    public void addForwardCrawlTask(ArrayList<String> urls){
+	crawlForwardService.execute(new CrawlerInterface(urls, null, "forward", "", this.es_index, this.es_doc_type, this.es_host, this.client));
     }
 
-    public void addTask(String url){
-	downloaderService.execute(new Download_URL(url.trim(), this.query, this.es_index, this.es_doc_type, this.client));
+    public void addBackwardCrawlTask(ArrayList<String> urls, String top){
+	crawlBackwardService.execute(new CrawlerInterface(urls, null, "backward", top, this.es_index, this.es_doc_type, this.es_host, this.client));
     }
 
     public void shutdown(){
 	try {
-	    downloaderService.shutdown();
-	    //downloaderService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-	    downloaderService.awaitTermination(60 , TimeUnit.SECONDS);
+	    crawlForwardService.shutdown();
+	    crawlBackwardService.shutdown();
+	    crawlForwardService.awaitTermination(60 , TimeUnit.SECONDS);
+	    crawlBackwardService.awaitTermination(60 , TimeUnit.SECONDS);
+	    System.out.println("SHUTDOWN");
 	    this.client.close();
 	} catch (InterruptedException e) {
 	    e.printStackTrace();

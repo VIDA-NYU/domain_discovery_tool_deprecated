@@ -1013,6 +1013,10 @@ CrawlerVis.prototype.onBrushedPagesChanged = function(indexOfSelectedItems) {
     .classed('disabled', indexOfSelectedItems.length == 0);
 };
 
+CrawlerVis.prototype.crawlPages = function(selectedURLs, crawl_type) {
+    var vis = this;
+    DataAccess.crawlPages(selectedURLs, crawl_type, vis.sessionInfo());
+}
 
 /**
  * Initializes addc crawler button

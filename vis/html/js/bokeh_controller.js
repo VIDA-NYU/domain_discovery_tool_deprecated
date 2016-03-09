@@ -15,6 +15,10 @@
     exports.vis.tagsGallery.applyOrRemoveTag(tag, action, selectedUrls, false);
   }
 
+  exports.crawlPages = function(selectedURLs, crawl_type){
+      exports.vis.crawlPages(selectedURLs, crawl_type);
+  }
+
   // Shows the selected pages on the pageGallery below the plot.
   exports.showPages = function(inds){
       exports.inds = inds;

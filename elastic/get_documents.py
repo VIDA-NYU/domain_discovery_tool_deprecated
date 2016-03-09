@@ -192,7 +192,7 @@ def get_pages_datetimes(index_name, es=None):
     if es is None:
         es = default_es
 
-    items = es.search(index_name, size=100000)["hits"]["hits"]
+    items = es.search(index_name, size=100000, request_timeout=600)["hits"]["hits"]
     url_info = []
 
     for item in items:
