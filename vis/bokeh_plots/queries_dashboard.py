@@ -24,28 +24,32 @@ def queries_table(response):
 def queries_plot(response):
     graph = nx.Graph()
     graph.add_nodes_from(response.keys())
-    graph_data = nx.spring_layout(graph)
+    graph_data = nx.circular_layout(graph)
 
-    df = pd.DataFrame(graph_data)
+    response_df = pd.DataFrame(response, index=["count"])
+    graph_df = pd.DataFrame(graph_data, index=["x", "y"])
+    df = pd.concat([graph_df, response_df])
 
     hover = HoverTool(
         tooltips=[
-            ("query", " @query")
+            ("query", "@query"),
+            ("count", "@count"),
         ],
         names=["nodes"],
     )
 
-    xvalues = list(df.iloc[[0]].values[0])
-    yvalues = list(df.iloc[[1]].values[0])
+    xvalues = df.loc["x"]
+    yvalues = df.loc["y"]
     source = ColumnDataSource(
         data=dict(
             x=xvalues,
             y=yvalues,
-            query=list(df.keys())
-        )
+            query=df.keys(),
+            count=df.loc["count"],
+        ),
     )
 
-    plot = figure(plot_width=600, plot_height=600, tools=[hover])
+    plot = figure(plot_height=584, tools=[hover])
     plot.axis.visible = None
     plot.xgrid.grid_line_color = None
     plot.ygrid.grid_line_color = None
