@@ -437,10 +437,9 @@ class CrawlerModel:
             top_terms = tfidf_all.getTopTerms(opt_maxNumberOfTerms)
         
         if len(text) > 0:
-          [_,_,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(text, opt_maxNumberOfTerms, self.w2v, self._es)
-          top_bigrams = [term for term in top_bigrams if term[0].replace('_',' ') not in neg_terms]
-          top_trigrams = [term for term in top_trigrams if term[0].replace('_',' ') not in neg_terms]
-
+          [_,_,_,_,_,_,_,_,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(text, urls, opt_maxNumberOfTerms+len(neg_terms), self.w2v, self._es)
+          top_bigrams = [term for term in top_bigrams if term not in neg_terms]
+          top_trigrams = [term for term in top_trigrams if term not in neg_terms]
     else:
       s_fields = {
         es_info['mapping']["text"]: "(" + session['filter'].replace('"','\"') + ")"
@@ -455,12 +454,13 @@ class CrawlerModel:
       
       ids = [field['id'] for field in results]
       text = [field[es_info['mapping']["text"]][0] for field in results]
+      urls = [field[es_info['mapping']["url"]][0] for field in results]
       top_terms = get_significant_terms(ids, opt_maxNumberOfTerms, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
       if len(text) > 0:
-        [_,_,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(text, opt_maxNumberOfTerms, self.w2v, self._es)
-        top_bigrams = [term for term in top_bigrams if term[0].replace('_', ' ') not in neg_terms]
-        top_trigrams = [term for term in top_trigrams if term[0].replace('_', ' ') not in neg_terms]
-     
+        [_,_,_,_,_,_,_,_,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(text, urls, opt_maxNumberOfTerms+len(neg_terms), self.w2v, self._es)
+        top_bigrams = [term for term in top_bigrams if term not in neg_terms]
+        top_trigrams = [term for term in top_trigrams if term not in neg_terms]
+
     s_fields = {
       "tag": "Custom",
       "index": es_info['activeCrawlerIndex'],
@@ -529,11 +529,11 @@ class CrawlerModel:
       terms.append(entry)
       
     for term in top_bigrams:
-      entry = [term[0].replace('_', ' '), 0, 0, []]
+      entry = [term, 0, 0, []]
       terms.append(entry)
 
     for term in top_trigrams:
-      entry = [term[0].replace('_', ' '), 0, 0, []]
+      entry = [term, 0, 0, []]
       terms.append(entry)
     
     return terms
@@ -693,9 +693,6 @@ class CrawlerModel:
     if not session['toDate'] is None:
       session['toDate'] = long(CrawlerModel.convert_to_epoch(datetime.strptime(session['toDate'], format)))
 
-    print "\n", session['fromDate'], "\n"
-    print "\n", session['toDate'], "\n"
-    
     hits = []
     if(session['pageRetrievalCriteria'] == 'Most Recent'):
       hits = self._getMostRecentPages(session)
