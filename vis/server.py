@@ -10,7 +10,8 @@ import bokeh.resources
 
 from bokeh_plots.clustering import selection_plot, empty_plot
 from bokeh_plots.domains_dashboard import (domains_dashboard, pages_timeseries,
-        queries_dashboard, endings_dashboard)
+        endings_dashboard)
+from bokeh_plots.queries_dashboard import queries_dashboard
 
 from jinja2 import Template
 
