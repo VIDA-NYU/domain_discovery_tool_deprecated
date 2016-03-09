@@ -162,9 +162,25 @@ class CrawlerModel:
     if (not isdir(data_negative)):
       makedirs(data_negative)
 
-    pos_urls = [field['url'][0] for field in term_search(es_info['mapping']['tag'], ['relevant'], ['url'], es_info['activeCrawlerIndex'], 'page', self._es)]
-    neg_urls = [field['url'][0] for field in term_search(es_info['mapping']['tag'], ['irrelevant'], ['url'], es_info['activeCrawlerIndex'], 'page', self._es)]
-    
+    s_fields = {}
+    query = {
+      "wildcard": {es_info['mapping']["tag"]:"*Relevant*"}
+    }
+    s_fields["queries"] = [query]
+    pos_urls = [field['url'][0] for field in multifield_term_search(s_fields, self._all, ["url", es_info['mapping']['tag']], 
+                                    es_info['activeCrawlerIndex'], 
+                                    es_info['docType'],
+                                    self._es) if "irrelevant" not in field["tag"]]
+
+    query = {
+      "wildcard": {es_info['mapping']["tag"]:"*Irrelevant*"}
+    }
+    s_fields["queries"] = [query]
+    neg_urls = [field['url'][0] for field in multifield_term_search(s_fields, self._all, ["url", es_info['mapping']['tag']], 
+                                    es_info['activeCrawlerIndex'], 
+                                    es_info['docType'],
+                                    self._es)]
+
     pos_html = get_documents(pos_urls, 'url', [es_info['mapping']["html"]], es_info['activeCrawlerIndex'], es_info['docType'])
     neg_html = get_documents(neg_urls, 'url', [es_info['mapping']["html"]], es_info['activeCrawlerIndex'], es_info['docType'])
 
@@ -177,7 +193,7 @@ class CrawlerModel:
           print file_positive
           s.write(url.encode('utf8') + '\n')
           with open(file_positive, 'w') as f:
-            f.write(pos_html[url][es_info['mapping']['html']][0])
+            f.write(pos_html[url][0][es_info['mapping']['html']][0])
 
         except IOError:
           _, exc_obj, tb = exc_info()
@@ -192,7 +208,7 @@ class CrawlerModel:
       try:
         file_negative = data_negative + self.encode(url.encode('utf8'))
         with open(file_negative, 'w') as f:
-          f.write(neg_html[url]['html'][0])
+          f.write(neg_html[url][0]['html'][0])
       except IOError:
         _, exc_obj, tb = exc_info()
         f = tb.tb_frame
