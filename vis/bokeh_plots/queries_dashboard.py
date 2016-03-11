@@ -46,6 +46,7 @@ def queries_plot(response):
             y=yvalues,
             query=df.keys(),
             count=df.loc["count"],
+            sizes=df.loc["count"] / 2,
         ),
     )
 
@@ -53,7 +54,7 @@ def queries_plot(response):
     plot.axis.visible = None
     plot.xgrid.grid_line_color = None
     plot.ygrid.grid_line_color = None
-    plot.circle("x", "y", size=40, color="navy", alpha=0.5, source=source,
+    plot.circle("x", "y", size="sizes", color="navy", alpha=0.5, source=source,
             name="nodes")
 
     return plot
