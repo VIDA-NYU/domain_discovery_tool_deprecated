@@ -68,6 +68,7 @@ def get_more_like_this(urls, fields=[], pageCount=200, es_index='memex', es_doc_
     for hit in hits:
         fields = hit['fields']
         fields['id'] = hit['_id']
+        fields['score'] = hit['_score']
         results.append(fields)
  
     return results
