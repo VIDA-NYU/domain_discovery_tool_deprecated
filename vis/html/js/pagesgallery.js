@@ -88,7 +88,6 @@ PagesGallery.prototype.setCbGetExistingTags = function(cb) {
   this.cbGetExistingTags = cb;
 };
 
-
 /**
  * Updates gallery.
  */
@@ -167,8 +166,9 @@ PagesGallery.prototype.update = function() {
     .html(function(item, i) {
       return '<div class="snippet"></div>' + gallery.getItemInfo(item, i);
     });
+
   var existingTags = this.cbGetExistingTags ? this.cbGetExistingTags() : [];
-  items.each(function(item, i) {
+    items.each(function(item, i) {
     // Creates tags.
     var tagsElem = d3.select(this).select('.tags').selectAll('span.tag')
       .data(item.tags, function(tag, i) { return tag; });
@@ -221,6 +221,19 @@ PagesGallery.prototype.update = function() {
         return tag;
       });
 
+    // Creates input box to add custom tag
+    var customTag = d3.select(this).select('.customTag');
+	customTag.on('change', function() {
+	    var defaultOption = 'Custom tag...';
+	    var tag = d3.select(this).node().value;
+	    if (tag != defaultOption) {
+		// Adds tag to item.
+		BokehPlots.updateCustomTags(tag);
+		BokehPlots.updateTags([item],tag, "Apply");
+		d3.select(this).node().value = defaultOption;
+	    }
+	});
+		     
     // Creates/updates select box to apply new tag.
     var selectBox = d3.select(this).select('.selectTag');
     var defaultOption = 'Add tag...';
@@ -279,7 +292,7 @@ PagesGallery.prototype.update = function() {
  */
 PagesGallery.prototype.getItemInfo = function(item, i) {
   return '<span class="item-url"><a target="_blank" href="'+item.url+'"">'+item.url+'</a></span>'
-    + '<span class="tags"><select class="selectTag"></select></span>';
+    + '<span class="tags"><input type="text"  placeholder="Custom tag... " class="customTag"><select class="selectTag"></select></span>';
 };
 
 
