@@ -228,7 +228,6 @@ PagesGallery.prototype.update = function() {
 	    var tag = d3.select(this).node().value;
 	    if (tag != defaultOption) {
 		// Adds tag to item.
-		BokehPlots.updateCustomTags(tag);
 		BokehPlots.updateTags([item],tag, "Apply");
 		d3.select(this).node().value = defaultOption;
 	    }
