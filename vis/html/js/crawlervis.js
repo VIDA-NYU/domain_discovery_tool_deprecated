@@ -908,31 +908,43 @@ CrawlerVis.prototype.onLoadedPages = function(pagesData) {
       tags: page[3],
     };
     });
-   
+
+    var tags = [];
     for(var i in pages){
 	var page = pages[i];
 	for(var j in page["tags"]){
 	    var tag = page["tags"][j];
-	    if(tag != ""){
-		if(this.availableTags.indexOf(tag) < 0) {
-		    this.tagsGallery.addItem(tag);
-		}
+	    if(tag != "" && tags.indexOf(tag) < 0){
+		tags.push(tag);
 	    }
 	}
     }
-  this.pagesLandscape.setPagesData(pages);
 
-  // Updates last update.
-  var lastUpdate = Utils.parseDateTime(DataAccess.getLastUpdateTime());
-  d3.select('#last_update_info_box')
-    .html('(last update: ' + lastUpdate + ')');
+    for(var i in tags){
+	tag = tags[i];
+	this.tagsGallery.addItem(tag);
+    }
+
+    for(var i in this.tagsGallery.getTags()){
+	tag = this.tagsGallery.getTags()[i];
+	if(tags.indexOf(tag) < 0 && this.availableTags.indexOf(tag) < 0){
+	    this.tagsGallery.removeItem(tag);
+	}
+    }
+    this.tagsGallery.update();
+    this.pagesLandscape.setPagesData(pages);
     
-  var vis = this;
-  // Fetches statistics for until last update happened.
-  DataAccess.loadPagesSummaryUntilLastUpdate(false, vis.sessionInfo());
-  DataAccess.loadPagesSummaryUntilLastUpdate(true, vis.sessionInfo());
-
-  return pages;
+    // Updates last update.
+    var lastUpdate = Utils.parseDateTime(DataAccess.getLastUpdateTime());
+    d3.select('#last_update_info_box')
+	.html('(last update: ' + lastUpdate + ')');
+    
+    var vis = this;
+    // Fetches statistics for until last update happened.
+    DataAccess.loadPagesSummaryUntilLastUpdate(false, vis.sessionInfo());
+    DataAccess.loadPagesSummaryUntilLastUpdate(true, vis.sessionInfo());
+    
+    return pages;
 };
 
 // Responds to tag focus.
