@@ -71,6 +71,25 @@ TagsGallery.prototype.addItem = function(tag, lazyUpdate) {
 
 
 /**
+ * Removes item from gallery.
+ */
+TagsGallery.prototype.removeItem = function(tag) {
+    var index = this.userItems.indexOf(tag);
+    if( index >= 0 && this.predefinedItems.indexOf(tag) < 0){
+	this.userItems.splice(index, 1);
+    }
+}
+
+/**
+ * Get items from gallery.
+ */
+TagsGallery.prototype.getTags = function() {
+    return this.userItems;
+}
+
+
+
+/**
  * Sets mechanism to handle tags logic: some tags are not applicable, and some tags when applied
  * should trigger the removal of other tags (e.g. when Yes is applied, No is removed).
  * Logic must be in the format:
