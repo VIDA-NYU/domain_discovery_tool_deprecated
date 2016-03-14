@@ -707,6 +707,11 @@ div.tooltip {
   margin-top: 3px;
 }
 
+#pages_items .item .customTag {
+    margin-bottom: 1px;
+    width: 100px;
+}
+
 
 div#mask,
 div#urlBgMask {
