@@ -83,11 +83,9 @@ TagsGallery.prototype.removeItem = function(tag) {
 /**
  * Get items from gallery.
  */
-TagsGallery.prototype.getTags = function() {
+TagsGallery.prototype.getCustomTags = function() {
     return this.userItems;
 }
-
-
 
 /**
  * Sets mechanism to handle tags logic: some tags are not applicable, and some tags when applied
