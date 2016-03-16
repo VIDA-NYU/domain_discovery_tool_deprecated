@@ -19,9 +19,15 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.search.SearchHit; 
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.index.query.MissingFilterBuilder;
+import org.elasticsearch.index.query.FilterBuilders;
+import org.elasticsearch.search.SearchHit; 
+import org.elasticsearch.search.SearchHits; 
 
 public class CrawlerInterface implements Runnable{
     private static final Pattern linkPattern = Pattern.compile("\\s*(?i)href\\s*=\\s*(\"([^\"]*\")|'[^']*'|([^'\">\\s]+))",  Pattern.CASE_INSENSITIVE|Pattern.DOTALL);
@@ -103,15 +109,76 @@ public class CrawlerInterface implements Runnable{
 	System.out.println(res);
 	System.out.println();
 
-	for(String url: res){
-	    if(urls.indexOf(url) == -1){
+	try{
+	    ArrayList<String> not_crawled = new ArrayList();
+	    for(String url: res){
+		SearchResponse searchResponse = client.prepareSearch(this.es_index)
+		    .setTypes(this.es_doc_type)
+		    .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+		    .setFetchSource(new String[]{"url","html","crawled_forward"}, null)
+		    .setQuery(QueryBuilders.termQuery("url", url))
+		    .setFrom(0).setExplain(true)
+		    .execute()
+		    .actionGet();
+		
+		SearchHit[] hits = searchResponse.getHits().getHits();
+		if(hits.length > 0){
+		    for (SearchHit hit : hits) {
+			Map map = hit.getSource();
+			if((Float)map.get("crawled_forward") == 0){
+			    UpdateRequest updateRequest = new UpdateRequest(this.es_index, this.es_doc_type, hit.getId())
+				.doc(XContentFactory.jsonBuilder()
+				     .startObject()
+				     .field("crawled_forward", 1)
+				     .endObject());
+			    this.client.update(updateRequest).get();
+			    
+			    System.out.println("Crawling forward " + url);
+			    System.out.println();
+			    this.crawl_forward(url, (String)map.get("html"));
+			}
+		    }
+		}else {
+		    not_crawled.add(url);
+		}
+	    }
+	    
+	    for(String url: not_crawled){
+		// Update the crawled flag
+		IndexResponse indexresponse = this.client.prepareIndex(this.es_index, this.es_doc_type)
+		    .setSource(XContentFactory.jsonBuilder()
+			       .startObject()
+			       .field("url", url)
+			       .field("crawled_forward", 1)
+			       .endObject()
+			       )
+		    .execute()
+		    .actionGet();
+		
+		//Download the page
+		String domain = null;
+		try{
+		    domain = (new URL(url)).getHost();
+		} catch(Exception e) {
+		    e.printStackTrace();
+		}
+		this.download.setQuery("Crawl: " + domain);
+		this.download.addTask(url);
+		
+		//Crawl page forward
 		System.out.println("Crawling forward " + url);
 		System.out.println();
+		
 		String html = this.getContent(url);
 		this.crawl_forward(url, html);
 	    }
+	
+	    return res;
 	}
-        return res;
+	catch(Exception e){
+	    e.printStackTrace();
+	}
+	return null;
     }
 
     public ArrayList<String> crawl_forward(String url, String html){
@@ -202,12 +269,12 @@ public class CrawlerInterface implements Runnable{
 			.setTypes(this.es_doc_type)
 			.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 			.setFetchSource(new String[]{"html"}, null)
-			.setQuery(QueryBuilders.termQuery("url", this.urls.get(i)))                 // Query
+			.setQuery(QueryBuilders.termQuery("url", this.urls.get(i)))                
 			.setFrom(0).setExplain(true)
 			.execute()
 			.actionGet();
-		} catch (Throwable e) {
-		    System.out.println(e);
+		} catch(Exception e){
+		    e.printStackTrace();
 		}
 
 		if(response == null)
