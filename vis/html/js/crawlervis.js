@@ -925,9 +925,9 @@ CrawlerVis.prototype.onLoadedPages = function(pagesData) {
 	this.tagsGallery.addItem(tag);
     }
 
-    for(var i in this.tagsGallery.getTags()){
-	tag = this.tagsGallery.getTags()[i];
-	if(tags.indexOf(tag) < 0 && this.availableTags.indexOf(tag) < 0){
+    for(var i in this.tagsGallery.getCustomTags()){
+	tag = this.tagsGallery.getCustomTags()[i];
+	if(tags.indexOf(tag) < 0){
 	    this.tagsGallery.removeItem(tag);
 	}
     }
