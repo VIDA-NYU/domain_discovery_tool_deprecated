@@ -196,7 +196,7 @@ p {
 #wordlist {
   width: 100%;
   height: 300px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 #wordlist svg {
@@ -268,7 +268,7 @@ p {
 
   width: 100%;
   height: 100px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 #customwordlist svg {
@@ -567,7 +567,7 @@ div.tooltip {
 
 #tags_items {
   width: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
   padding: 5px
 }
 
@@ -619,6 +619,13 @@ div.tooltip {
   background: #FECD57;
 }
 
+#pages_panel {
+    height: 300px;
+    width: 100%;
+    border:'gray';
+    overflow-y: auto;
+}
+
 /*
 
 #pages_panel {
@@ -644,12 +651,6 @@ div.tooltip {
   background-color: #fcfcfc;
 }
 */
-
-#pages_items
-{
-  height: 500px;
-  overflow-y: scroll;
-}
 
 
 #pages_items .item .item_info {
@@ -749,7 +750,7 @@ div#urlBgMask {
   vertical-align: top;
   width: 100%;
   height: 450px;
-  overflow-y: scroll;
+  overflow-y: auto;
   font-size: 14px;
   padding-top: 10px;
 }
@@ -833,12 +834,12 @@ div#urlBgMask {
 #filter_statslist {
   margin-top: 10px;
 }
-*/
 
 ::-webkit-scrollbar {
     -webkit-appearance: none;
     width: 0px;
 }
+*/
 
 #filter_cap {
   /* height: 40px; */
