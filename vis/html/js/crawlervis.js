@@ -1034,24 +1034,32 @@ CrawlerVis.prototype.crawlPages = function(selectedURLs, crawl_type) {
  * Initializes addc crawler button
  */
 CrawlerVis.prototype.initAddCrawlerButton = function() {
-  d3.select('#submit_add_crawler').on('click', function() {
+  var submit_add_domain = function() {
       var value = d3.select('#crawler_index_name').node().value;
       __sig__.emit(__sig__.add_crawler, value);
 
       // Hide domain modal after domain has been submitted.
       $("#addDomainModal").modal("hide");
-    });
+  };
+  d3.select('#crawler_index_name').on('change', submit_add_domain);
+  d3.select('#submit_add_crawler').on('click', submit_add_domain);
 };
 
 /**
  * Initializes query web button (useful for seed crawler vis).
  */
 CrawlerVis.prototype.initQueryWebButton = function() {
-  d3.select('#submit_query')
-    .on('click', function() {
+  var search_enter = function() {
       var value = d3.select('#query_box').node().value;
       __sig__.emit(__sig__.query_enter, value);
-    });
+  };
+    
+  d3.select('#query_box')
+	.on('change', search_enter);
+    
+  d3.select('#submit_query')
+	.on('click', search_enter);
+
   // Initializes history of queries.
   this.queriesList = [];
 };
@@ -1096,11 +1104,16 @@ CrawlerVis.prototype.initAddTermButton = function() {
  */
 CrawlerVis.prototype.initFilterButton = function() {
   var vis = this;
-  d3.select('#submit_filter')
-    .on('click', function() {
+  var submit_filter = function() {
       var value = d3.select('#filter_box').node().value;
       __sig__.emit(__sig__.filter_enter, value);
-    });
+  };
+
+  d3.select('#filter_box')
+    .on('change', submit_filter);
+
+  d3.select('#submit_filter')
+    .on('click', submit_filter);
   // Initializes history of filters.
   this.filtersList = [];
 };
