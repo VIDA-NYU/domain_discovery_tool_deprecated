@@ -1023,11 +1023,18 @@ class CrawlerModel:
     else:
       top = max_url_count
 
-    comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar GoogleSearch -t " + str(top) + \
-           " -q \"" + terms + "\"" + \
-           " -i " + es_info['activeCrawlerIndex'] + \
-           " -d " + es_info['docType'] + \
-           " -s " + es_server 
+    if 'GOOG' in session['search_engine']:
+      comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar GoogleSearch -t " + str(top) + \
+             " -q \"" + terms + "\"" + \
+             " -i " + es_info['activeCrawlerIndex'] + \
+             " -d " + es_info['docType'] + \
+             " -s " + es_server
+    elif 'BING' in session['search_engine']:
+      comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar BingSearch -t " + str(top) + \
+             " -q \"" + terms + "\"" + \
+             " -i " + es_info['activeCrawlerIndex'] + \
+             " -d " + es_info['docType'] + \
+             " -s " + es_server
 
     p=Popen(comm, shell=True, stderr=PIPE)
     output, errors = p.communicate()

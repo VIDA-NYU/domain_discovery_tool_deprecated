@@ -1371,6 +1371,9 @@ CrawlerVis.prototype.sessionInfo = function() {
     var vis = this;
     
     var session = {};
+
+    var search_engine = d3.select('#search_engine').node().value;
+    session['search_engine'] = search_engine;
     
     var algId = d3.select('#selectProjectionAlgorithm').node().value;
     session['activeProjectionAlg'] = algId;

@@ -782,6 +782,21 @@ div#urlBgMask {
   color: rgb(244, 68, 110);
 }
 
+#query_box {
+    width: 175px;  
+  margin-bottom: 10px;
+}
+#submit_query {
+    margin-bottom: 10px;
+}
+#search_engine{
+    margin-bottom: 10px;
+    width:85px;
+    height:33.6px;
+    background-color: #f0ad4e;
+    border-color: #eea236;
+    color: "white";
+}
 /*
 #query_panel ,
 #filter_panel {
@@ -808,9 +823,6 @@ div#urlBgMask {
   background-color: #fcfcfc;
 }
 
-#query_box {
-  margin-bottom: 40px;
-}
 
 #submit_query,
 #submit_filter {
