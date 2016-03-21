@@ -11,7 +11,7 @@ import bokeh.resources
 from bokeh_plots.clustering import selection_plot, empty_plot
 from bokeh_plots.domains_dashboard import (domains_dashboard, pages_timeseries,
         queries_dashboard, endings_dashboard)
-from bokeh_plots.cross_filter import create_queryframe, create_interactors, create_plot_components
+from bokeh_plots.cross_filter import create_queryframe, create_table_components, create_plot_components
 
 from jinja2 import Template, Environment, FileSystemLoader
 
@@ -380,7 +380,8 @@ class Page:
 
     df = create_queryframe(pages, dates)
     plots_script, plots_div = create_plot_components(df)
-    widgets_script, widgets_div = create_interactors(df)
+    # widgets_script, widgets_div = create_interactors(df)
+    widgets_script, widgets_div = create_table_components(df)
 
     template = env.get_template('cross_filter.html')
 
@@ -389,6 +390,25 @@ class Page:
                            widgets_script=widgets_script,
                            widgets_div=widgets_div
     )
+
+  @cherrypy.expose
+  @cherrypy.tools.json_out()
+  @cherrypy.tools.json_in()
+  def update_cross_filter_plots(self, session):
+    session = json.loads(session)
+    pages = self._crawler.getPages(session)
+    dates = self._crawler.getPagesDates(session)
+    df = create_queryframe(pages, dates)
+
+    state = cherrypy.request.json
+    df = df[df.hostname.isin(state['urls'])]
+    df = df[df.tld.isin(state['tlds'])]
+    print("Global State: ", state)
+    print("Sliced Shape: ", df.shape)
+
+    plots_script, plots_div = create_plot_components(df)
+
+    return {"plots_script": plots_script, "plots_div": plots_div}
 
 if __name__ == "__main__":
   page = Page()

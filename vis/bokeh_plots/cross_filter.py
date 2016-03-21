@@ -2,7 +2,8 @@ import itertools
 
 from bokeh.charts import Bar, Line
 from bokeh.embed import components
-from bokeh.models.widgets import CheckboxButtonGroup
+from bokeh.models.widgets import DataTable, TableColumn
+from bokeh.models import ColumnDataSource
 import numpy as np
 import pandas as pd
 from urlparse import urlparse
@@ -21,8 +22,8 @@ def create_queryframe(pages, dates):
 
     return df
 
-def most_common_url_bar(df, n=10):
-    p = Bar(df.groupby('hostname').count().sort('url',ascending=False).reset_index().iloc[:n],
+def most_common_url_bar(df):
+    p = Bar(df.groupby('hostname').count().sort('url',ascending=False).reset_index(),
             label='hostname', values='url', xlabel='Sites', ylabel='Occurences')
     return p
 
@@ -36,14 +37,29 @@ def create_plot_components(df):
     ts = pages_queried_timeseries(df)
     return components(dict(bar=bar, ts=ts))
 
-def create_interactors(df):
-    # unique tags
-    unique_tags = pd.unique(itertools.chain(*df.tags.dropna().ravel()))
-    if len(unique_tags) == 0:
-        unique_tags = np.array(["No tags found"])
-    tag_selector = CheckboxButtonGroup(labels=unique_tags.tolist())
+def most_common_url_table(df):
+    source = ColumnDataSource(df.groupby('hostname')
+                                .count()
+                                .sort('url',ascending=False)
+                                .reset_index())
+    columns = [TableColumn(field="hostname", title="Site Name"),
+               TableColumn(field="url", title="Count")]
+    t = DataTable(source=source, columns=columns,
+                  row_headers=False, width=400, height=280)
+    return t
 
-    # unique tlds
-    tld_selector = CheckboxButtonGroup(labels=df.tld.unique().tolist())
+def site_tld_table(df):
+    source = ColumnDataSource(df.groupby('tld')
+                                .count()
+                                .sort('url',ascending=False)
+                                .reset_index())
+    columns = [TableColumn(field="tld", title="Ending"),
+               TableColumn(field="url", title="Count")]
+    t = DataTable(source=source, columns=columns,
+                  row_headers=False, width=400, height=280)
+    return t
 
-    return components(dict(tags=tag_selector, tlds=tld_selector))
+def create_table_components(df):
+    urls = most_common_url_table(df)
+    tlds = site_tld_table(df)
+    return components(dict(urls=urls, tlds=tlds))

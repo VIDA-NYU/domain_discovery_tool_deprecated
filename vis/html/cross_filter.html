@@ -11,12 +11,12 @@
   {{ plots_script|safe }}
 
   <div class="container">
-    <div class="panel panel-default col-md-4">
+    <div class="panel panel-default col-md-5">
       <div class="panel-heading">Cross Filter Widgets</div>
-      <div id="tags" class="panel-body plot">{{ widgets_div['tags'] | safe }}</div>
+      <div id="urls" class="panel-body plot">{{ widgets_div['urls'] | safe }}</div>
       <div id="tlds" class="panel-body plot">{{ widgets_div['tlds'] | safe }}</div>
     </div>
-    <div class="panel panel-default col-md-8">
+    <div class="panel panel-default col-md-7">
       <div class="panel-heading">Cross Filter Charts</div>
       <div class="panel-body plot">{{ plots_div['bar'] | safe }}</div>
       <div class="panel-body plot">{{ plots_div['ts'] | safe }}</div>

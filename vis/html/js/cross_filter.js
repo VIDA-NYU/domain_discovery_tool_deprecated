@@ -1,34 +1,36 @@
-var button_group_tags = ['tags', 'tlds'];
+var data_table_ids = ['urls', 'tlds'];
 
 var add_interactor_listener = function() {
-  $(".bk-bs-btn-group").on('click', function() {
+  $('.grid-canvas').click(function() {
     setTimeout(function() { //pbly poor way to wait for class change
       var global_state = {};
-      for (i=0; i<button_group_tags.length; i++) {
-        global_state[button_group_tags[i]] = get_button_group_state(button_group_tags[i]);
+      for (i=0; i<data_table_ids.length; i++) {
+        global_state[data_table_ids[i]] = get_table_state(data_table_ids[i]);
       }
       $.ajax({
-        url: '/update_cross_filter_plots',
-        data: global_state,
+        type: "POST",
+        url: '/update_cross_filter_plots' + window.location.search, //ehh not great
+        data: JSON.stringify(global_state),
+        contentType: "application/json",
+        dataType: "json",
         success: function() {
           console.log('request sent');
         }
       });
-      console.log(global_state);
     }, 10);
   });
 };
 
-var get_button_group_state = function(id) {
-  var current = $("#".concat(id)).find(".bk-bs-active").children();
-  var active_buttons = [];
+var get_table_state = function(id) {
+  var current = $("#".concat(id)).find(".bk-slick-cell.l0.selected");
+  var active_cells = [];
   for (j = 0; j < current.length; j++) {
-    active_buttons.push(current[j].value);
+    active_cells.push(current[j].innerText);
   }
-  return active_buttons;
+  return active_cells;
 };
 
 $(document).ready(function() {
   console.log('page is ready');
-  add_interactor_listener();
+  setTimeout(add_interactor_listener, 100); //will fix
 });
