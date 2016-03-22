@@ -1,11 +1,7 @@
 {
   "page": {
     "_timestamp": {
-      "enabled": true,
-      "store": true
-    },
-    "_id": {
-      "path": "url"
+      "enabled": true
     },
     "properties": {
       "url": {
