@@ -767,8 +767,12 @@ class CrawlerModel:
               'pages': projectionData
             }
 
-    else:
-      return {'pages': []}
+    elif len(docs) == 0:
+      return {'pages':[]}
+      
+    elif len(docs) == 1:
+      doc = docs[0]
+      return {'pages': [[doc[0],1,1,doc[3]]]}
 
   # Boosts set of pages: crawler exploits outlinks for the given set of pages in active crawler.
   def boostPages(self, pages):
@@ -810,8 +814,9 @@ class CrawlerModel:
     
     chdir(environ['DDT_HOME']+'/seeds_generator')
     
-    comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar StartCrawl -c forward"\
+    comm = "java -cp target/seeds_generator-1.0-SNAPSHOT.jar StartCrawl -c forward"\
            " -u \"" + ",".join(not_crawled_urls) + "\"" + \
+           " -t " + session["pagesCap"] + \
            " -i " + es_info['activeCrawlerIndex'] + \
            " -d " + es_info['docType'] + \
            " -s " + es_server 
@@ -834,8 +839,9 @@ class CrawlerModel:
 
     chdir(environ['DDT_HOME']+'/seeds_generator')
         
-    comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar StartCrawl -c backward"\
+    comm = "java -cp target/seeds_generator-1.0-SNAPSHOT.jar StartCrawl -c backward"\
            " -u \"" + ",".join(not_crawled_urls) + "\"" + \
+           " -t " + session["pagesCap"] + \
            " -i " + es_info['activeCrawlerIndex'] + \
            " -d " + es_info['docType'] + \
            " -s " + es_server 
@@ -1024,13 +1030,13 @@ class CrawlerModel:
       top = max_url_count
 
     if 'GOOG' in session['search_engine']:
-      comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar GoogleSearch -t " + str(top) + \
+      comm = "java -cp target/seeds_generator-1.0-SNAPSHOT.jar GoogleSearch -t " + str(top) + \
              " -q \"" + terms + "\"" + \
              " -i " + es_info['activeCrawlerIndex'] + \
              " -d " + es_info['docType'] + \
              " -s " + es_server
     elif 'BING' in session['search_engine']:
-      comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar BingSearch -t " + str(top) + \
+      comm = "java -cp target/seeds_generator-1.0-SNAPSHOT.jar BingSearch -t " + str(top) + \
              " -q \"" + terms + "\"" + \
              " -i " + es_info['activeCrawlerIndex'] + \
              " -d " + es_info['docType'] + \
