@@ -88,7 +88,7 @@ def site_tld_table(df):
     columns = [TableColumn(field="tld", title="Ending"),
                TableColumn(field="url", title="Count")]
     t = DataTable(source=source, columns=columns,
-                  row_headers=False, width=400, height=280)
+                  row_headers=False, width=400)
     return t
 
 def create_table_components(df):

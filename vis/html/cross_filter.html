@@ -10,12 +10,23 @@
 
   <div class="container">
     <div class="panel panel-default col-md-5">
-      <div class="panel-heading">Cross Filter Widgets</div>
-      <div id="urls" class="panel-body plot">{{ widgets_div['urls'] | safe }}</div>
-      <div id="tlds" class="panel-body plot">{{ widgets_div['tlds'] | safe }}</div>
+      <!-- <div class="panel-heading">Cross Filter Widgets</div> -->
+      <div class="panel-heading">
+        <h4 class="panel-title">Cross Filter Widgets</h4>
+      </div>
+      <div class="panel-body">
+        <div id="urls">{{ widgets_div['urls'] | safe }}</div>
+        <br>
+        <div id="tlds">{{ widgets_div['tlds'] | safe }}</div>
+      </div>
     </div>
-    <div id="plot_area" class="panel panel-default col-md-7">
+    <div class="panel panel-default col-md-7">
+      <div class="panel-heading">
+        <h4 class="panel-title">Cross Filter Plots</h4>
+      </div>
+      <div id="plot_area" class="panel-body">
       {% include 'cross_filter_plot_area.html' %}
+      </div>
     </div>
   </div>
 
