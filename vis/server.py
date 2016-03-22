@@ -200,7 +200,7 @@ class Page:
   #   'Neutral': numNeutralPages,
   # }
   @cherrypy.expose
-  def getPagesSummary(self, opt_ts1 = None, opt_ts2 = None, opt_applyFilter = False, session = None):
+  def getPagesSummary(self, opt_ts1=None, opt_ts2=None, opt_applyFilter=False, session=None):
     session = json.loads(session)
     res = self._crawler.getPagesSummary(opt_ts1, opt_ts2, opt_applyFilter, session)
     cherrypy.response.headers["Content-Type"] = "application/json;"
@@ -340,11 +340,15 @@ class Page:
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(empty_plot())
 
-  def getQueriesPages(self, session, query):
-    session["selected_queries"] = query
-    pages = self._crawler.getPages(session)
-    pages = [x[0][0] for x in pages["pages"]]
-    return pages
+  def getQueriesPages(self, session, queries):
+    session["pageRetrievalCriteria"] = "Queries"
+    queries_pages = {}
+    print(queries.keys())
+    for query in queries.keys():
+        session["selected_queries"] = query
+        pages = self._crawler.getPages(session)
+        queries_pages[query] = [page[0][0] for page in pages["pages"]]
+    return queries_pages
 
   @cherrypy.expose
   def statistics(self, session):
