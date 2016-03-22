@@ -56,7 +56,7 @@ public class CrawlerInterface implements Runnable{
 	this.download = new Download("Crawl: " + this.es_index, this.es_index, this.es_doc_type, this.es_host);
     }
 
-    public ArrayList<String> crawl_backward(ArrayList<String> urls, String count){
+    public ArrayList<String> crawl_backward(ArrayList<String> urls){
         /*Using backlink search to find more similar webpages
         *Args:
         *- urls: a list of relevant urls
@@ -66,11 +66,10 @@ public class CrawlerInterface implements Runnable{
         HashSet<String> links = new HashSet<String>();
         byte[] accountKeyBytes = Base64.encodeBase64((accountKey + ":" + accountKey).getBytes());
         String accountKeyEnc = new String(accountKeyBytes);
-        String top = count;
         for (String url: urls){
             try{
                 String query = "inbody:" + url;
-                URL urlObj = new URL("https://api.datamarket.azure.com/Data.ashx/Bing/Search/v1/Web?Query=%27" + query + "%27&$top="+ top);
+                URL urlObj = new URL("https://api.datamarket.azure.com/Data.ashx/Bing/Search/v1/Web?Query=%27" + query + "%27&$top="+ this.top);
                 HttpURLConnection conn = (HttpURLConnection)urlObj.openConnection();
                 conn.setRequestMethod("GET");
                 conn.setRequestProperty("Authorization", "Basic " + accountKeyEnc);
@@ -125,17 +124,21 @@ public class CrawlerInterface implements Runnable{
 		if(hits.length > 0){
 		    for (SearchHit hit : hits) {
 			Map map = hit.getSource();
-			if((Float)map.get("crawled_forward") == 0){
-			    UpdateRequest updateRequest = new UpdateRequest(this.es_index, this.es_doc_type, hit.getId())
-				.doc(XContentFactory.jsonBuilder()
-				     .startObject()
-				     .field("crawled_forward", 1)
-				     .endObject());
-			    this.client.update(updateRequest).get();
-			    
-			    System.out.println("Crawling forward " + url);
-			    System.out.println();
-			    this.crawl_forward(url, (String)map.get("html"));
+			if(map != null){
+			    if(map.get("crawled_forward") != null){
+				if((Float)map.get("crawled_forward") == 0){
+				    UpdateRequest updateRequest = new UpdateRequest(this.es_index, this.es_doc_type, hit.getId())
+					.doc(XContentFactory.jsonBuilder()
+					     .startObject()
+					     .field("crawled_forward", 1)
+					     .endObject());
+				    this.client.update(updateRequest).get();
+				    
+				    System.out.println("Crawling forward " + url);
+				    System.out.println();
+				    this.crawl_forward(url, (String)map.get("html"));
+				}
+			    }
 			}
 		    }
 		}else {
@@ -191,9 +194,11 @@ public class CrawlerInterface implements Runnable{
         */
         HashSet<String> links = new HashSet<String>();
         try{
+	    int count = Integer.parseInt(this.top);
+	    int num = 0;
             Matcher pageMatcher = linkPattern.matcher(html);
             String domain = "http://" + (new URL(url)).getHost();
-            while(pageMatcher.find()){
+            while(pageMatcher.find() && num <= count){
                 String link = pageMatcher.group(2);
                 if (link != null){
                     //Validate and standarlize url
@@ -205,6 +210,7 @@ public class CrawlerInterface implements Runnable{
                     if (!link.startsWith("http://"))
                         continue;
                     links.add(link);
+		    num = num + 1;
                 }
             }
         } catch(Exception e) {
@@ -230,7 +236,7 @@ public class CrawlerInterface implements Runnable{
     public void test_backlink(String seed, String top){
         ArrayList<String> urls = new ArrayList<String>();
         urls.add(seed);
-        ArrayList<String> res = crawl_backward(urls, top);
+        ArrayList<String> res = crawl_backward(urls);
        
     }
 
@@ -259,7 +265,7 @@ public class CrawlerInterface implements Runnable{
 
     public void run() {
 	if(this.crawlType.equals("backward")){
-	    this.crawl_backward(this.urls, this.top);
+	    this.crawl_backward(this.urls);
 	}
 	else if(this.crawlType.equals("forward")){
 	    for(int i=0; i < this.urls.size();++i){

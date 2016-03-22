@@ -41,7 +41,7 @@ public class StartCrawl {
 	Crawl c = new Crawl(es_index, es_doc_type, es_server);
 
 	if(urls != null && crawl.equals("forward"))
-	    c.addForwardCrawlTask(urls);
+	    c.addForwardCrawlTask(urls, top);
 	else if(urls != null && crawl.equals("backward"))
 	    c.addBackwardCrawlTask(urls, top);
 

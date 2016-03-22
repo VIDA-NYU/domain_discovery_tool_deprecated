@@ -59,7 +59,7 @@ public class Crawl {
 	
     }
 
-    public void addForwardCrawlTask(ArrayList<String> urls){
+    public void addForwardCrawlTask(ArrayList<String> urls, String top){
 	try{
 	    MissingFilterBuilder filter=FilterBuilders.missingFilter("crawled_forward");
 	    QueryBuilder qb = QueryBuilders.filteredQuery(QueryBuilders.matchAllQuery(),filter);
@@ -88,7 +88,7 @@ public class Crawl {
 		}
 	    }
 
-	    crawlForwardService.execute(new CrawlerInterface(not_crawled, null, "forward", "", this.es_index, this.es_doc_type, this.es_host, this.client));
+	    crawlForwardService.execute(new CrawlerInterface(not_crawled, null, "forward", top, this.es_index, this.es_doc_type, this.es_host, this.client));
 	} catch (IOException e1) {
 	    // TODO Auto-generated catch block
 	    e1.printStackTrace();

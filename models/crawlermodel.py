@@ -766,7 +766,9 @@ class CrawlerModel:
               'last_downloaded_url_epoch':  last_download_epoch,
               'pages': projectionData
             }
-
+    elif len(docs) == 1:
+      doc = docs[0]
+      return {'pages': [[doc[0],1,1,doc[3]]]}
     else:
       return {'pages': []}
 
@@ -812,6 +814,7 @@ class CrawlerModel:
     
     comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar StartCrawl -c forward"\
            " -u \"" + ",".join(not_crawled_urls) + "\"" + \
+           " -t " + session["pagesCap"] + \
            " -i " + es_info['activeCrawlerIndex'] + \
            " -d " + es_info['docType'] + \
            " -s " + es_server 
@@ -836,6 +839,7 @@ class CrawlerModel:
         
     comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar StartCrawl -c backward"\
            " -u \"" + ",".join(not_crawled_urls) + "\"" + \
+           " -t " + session["pagesCap"] + \
            " -i " + es_info['activeCrawlerIndex'] + \
            " -d " + es_info['docType'] + \
            " -s " + es_server 
