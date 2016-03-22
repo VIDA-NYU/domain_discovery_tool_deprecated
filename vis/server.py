@@ -380,7 +380,6 @@ class Page:
 
     df = create_queryframe(pages, dates)
     plots_script, plots_div = create_plot_components(df)
-    # widgets_script, widgets_div = create_interactors(df)
     widgets_script, widgets_div = create_table_components(df)
 
     template = env.get_template('cross_filter.html')
@@ -401,14 +400,18 @@ class Page:
     df = create_queryframe(pages, dates)
 
     state = cherrypy.request.json
-    df = df[df.hostname.isin(state['urls'])]
-    df = df[df.tld.isin(state['tlds'])]
-    print("Global State: ", state)
-    print("Sliced Shape: ", df.shape)
+    if state['urls']:
+        df = df[df.hostname.isin(state['urls'])]
+    if state['tlds']:
+        df = df[df.tld.isin(state['tlds'])]
 
     plots_script, plots_div = create_plot_components(df)
 
-    return {"plots_script": plots_script, "plots_div": plots_div}
+    template = env.get_template('cross_filter_plot_area.html')
+
+    return template.render(plots_script=plots_script,
+                           plots_div=plots_div,
+                           )
 
 if __name__ == "__main__":
   page = Page()

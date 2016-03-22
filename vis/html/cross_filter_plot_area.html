@@ -1,2 +1,9 @@
-<div class="panel-body plot">{{ plots_div['bar'] | safe }}</div>
-<div class="panel-body plot">{{ plots_div['ts'] | safe }}</div>
+{% block content %}
+
+  {{ widgets_script | safe }}
+  {{ plots_script | safe }}
+  <div class="panel-heading">Cross Filter Charts</div>
+  <div class="panel-body plot">{{ plots_div['bar'] | safe }}</div>
+  <div class="panel-body plot">{{ plots_div['ts'] | safe }}</div>
+
+{% endblock content %}

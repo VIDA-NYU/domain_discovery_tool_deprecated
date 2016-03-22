@@ -7,8 +7,6 @@
   <link rel="stylesheet" type="text/css" href="http://cdn.pydata.org/bokeh/release/bokeh-0.10.0.min.css">
 
   <script src="http://cdn.pydata.org/bokeh/release/bokeh-0.10.0.min.js"></script>
-  {{ widgets_script|safe }}
-  {{ plots_script|safe }}
 
   <div class="container">
     <div class="panel panel-default col-md-5">
@@ -16,10 +14,8 @@
       <div id="urls" class="panel-body plot">{{ widgets_div['urls'] | safe }}</div>
       <div id="tlds" class="panel-body plot">{{ widgets_div['tlds'] | safe }}</div>
     </div>
-    <div class="panel panel-default col-md-7">
-      <div class="panel-heading">Cross Filter Charts</div>
-      <div class="panel-body plot">{{ plots_div['bar'] | safe }}</div>
-      <div class="panel-body plot">{{ plots_div['ts'] | safe }}</div>
+    <div id="plot_area" class="panel panel-default col-md-7">
+      {% include 'cross_filter_plot_area.html' %}
     </div>
   </div>
 
@@ -27,6 +23,5 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <!-- Include all compiled plugins (below), or include individual files as needed -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-  <script type="text/javascript" src="js/cross_filter.js"></script>
 
 {% endblock content %}
