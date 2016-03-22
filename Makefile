@@ -48,7 +48,7 @@ $(CONDA_ENV_TARGET): environment.yml
 $(DOWNLOADER_APP_TARGET): $(CONDA_ENV_TARGET) seeds_generator/pom.xml $(wildcard seeds_generator/src/main/java/page_downloader/*.java)
 	source activate ddt; \
 	pushd seeds_generator; \
-	mvn compile assembly:single; \
+	mvn package; \
 	popd
 
 $(CHERRY_PY_CONFIG_TARGET): vis/config.conf-in
