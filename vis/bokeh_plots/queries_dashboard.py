@@ -10,6 +10,20 @@ from bokeh.charts import Bar
 from bokeh.io import vform, vplot
 
 
+def parse_queries(queries):
+    # Take the values from the queries dictionary and convert them to sets.
+    for query in queries.keys():
+        queries[query] = {urlparse(url).hostname for url in queries[query]}
+
+    # Get combinations of keys in pairs of two.
+    key_combos = (keys for keys in itertools.combinations(queries.keys(), r=2))
+
+    # Create a dictionary with a key_combo as key and the result of the set
+    # operation as a value.
+    keys_sets = {key: tuple(queries[key[0]] & queries[key[1]]) for key in key_combos}
+    return keys_sets
+
+
 def queries_table(response):
     source = ColumnDataSource(data=dict(x=response.keys(), y=response.values()))
     columns = [
