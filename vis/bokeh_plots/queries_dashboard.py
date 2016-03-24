@@ -1,3 +1,6 @@
+from urlparse import urlparse
+import itertools
+
 import networkx as nx
 import pandas as pd
 
@@ -35,7 +38,7 @@ def queries_table(response):
     return table
 
 
-def queries_plot(response):
+def queries_plot(response, queries_pages):
     graph = nx.Graph()
     graph.add_nodes_from(response.keys())
     graph_data = nx.circular_layout(graph)
@@ -43,6 +46,8 @@ def queries_plot(response):
     response_df = pd.DataFrame(response, index=["count"])
     graph_df = pd.DataFrame(graph_data, index=["x", "y"])
     df = pd.concat([graph_df, response_df])
+
+    queries_line_data = parse_queries(queries_pages)
 
     hover = HoverTool(
         tooltips=[
@@ -71,10 +76,17 @@ def queries_plot(response):
     plot.circle("x", "y", size="sizes", color="navy", alpha=0.5, source=source,
             name="nodes")
 
+    # Create connection lines.
+    for key in queries_line_data.keys():
+        # import ipdb; ipdb.set_trace()
+        if queries_line_data[key]:
+            plot.line([df[key[0]]["x"], df[key[1]]["x"]], [df[key[0]]["y"],
+                    df[key[1]]["y"]], line_width=2)
+
     return plot
 
 
-def queries_dashboard(response):
+def queries_dashboard(response, queries_data):
     table = VBox(children=[queries_table(response)])
-    plot = VBox(children=[queries_plot(response)])
+    plot = VBox(children=[queries_plot(response, queries_data)])
     return components(vplot(HBox(children=[table, plot])))

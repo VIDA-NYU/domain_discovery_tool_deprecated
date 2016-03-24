@@ -356,8 +356,9 @@ class Page:
     pages = self._crawler.getPages(session)
     pages_dates = self._crawler.getPagesDates(session)
     queries = self._crawler.getAvailableQueries(session)
+    queries_data = self.getQueriesPages(session, queries)
     if queries:
-        queries_script, queries_div = queries_dashboard(queries)
+        queries_script, queries_div = queries_dashboard(queries, queries_data)
     else:
         queries_script = None
         queries_div = None
