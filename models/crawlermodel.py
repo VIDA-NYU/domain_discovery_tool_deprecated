@@ -418,64 +418,73 @@ class CrawlerModel:
     s_fields["tag"]="Negative"
     neg_terms = [field['term'][0] for field in multifield_term_search(s_fields, self._capTerms, ['term'], self._termsIndex, 'terms', self._es)]
 
-    results = term_search(es_info['mapping']['tag'], ['Relevant'], self._pagesCapTerms, ['url', es_info['mapping']['text']], es_info['activeCrawlerIndex'], es_info['docType'], self._es)
+    results = self._getPagesQuery(session)
 
-    pos_urls = [field["id"] for field in results]
-    
     top_terms = []
     top_bigrams = []
     top_trigrams = []
 
-    if session['filter'] is None:
-      urls = []
-      if len(pos_urls) > 0:
-        # If positive urls are available search for more documents like them
-        results_more_like_pos = get_more_like_this(pos_urls, ['url', es_info['mapping']["text"]], self._pagesCapTerms,  es_info['activeCrawlerIndex'], es_info['docType'],  self._es)
-        results.extend(results_more_like_pos)
-        urls = pos_urls[0:self._pagesCapTerms] + [field['id'] for field in results_more_like_pos] 
-        
-      if not urls:
-        # If positive urls are not available then get the most recent documents
-        results = get_most_recent_documents(self._pagesCapTerms, es_info['mapping'], ['url',es_info['mapping']["text"]], session['filter'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)
-        urls = [field['id'] for field in results]
-        
-      if len(results) > 0:
-        text = [field[es_info['mapping']["text"]][0] for field in results]
-                
-        if len(urls) > 0:
-          tfidf_all = tfidf.tfidf(urls, pos_tags=self.pos_tags, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
-          if pos_terms:
-            extract_terms_all = extract_terms.extract_terms(tfidf_all)
-            [ranked_terms, scores] = extract_terms_all.results(pos_terms)
-            top_terms = [ term for term in ranked_terms if (term not in neg_terms)]
-            top_terms = top_terms[0:opt_maxNumberOfTerms]
-          else:
-            top_terms = tfidf_all.getTopTerms(opt_maxNumberOfTerms)
-        
-        if len(text) > 0:
-          [_,_,_,_,_,_,_,_,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(text, urls, opt_maxNumberOfTerms+len(neg_terms), self.w2v, self._es)
-          top_bigrams = [term for term in top_bigrams if term not in neg_terms]
+    
+    text = []
+    urls = [hit["id"] for hit in results if (hit.get(es_info['mapping']["tag"]) is not None) and ("Relevant" in hit[es_info['mapping']["tag"]])]
+    if(len(urls) > 0):
+      text = [hit[es_info['mapping']["text"]][0] for hit in results if (hit.get(es_info['mapping']["tag"]) is not None) and ("Relevant" in hit[es_info['mapping']["tag"]])]
+    else:
+      urls = [hit["id"] for hit in results]
+      # If positive urls are not available then get the most recent documents
+      text = [hit[es_info['mapping']["text"]][0] for hit in results]
+
+    from nltk import corpus
+    ENGLISH_STOPWORDS = corpus.stopwords.words('english')
+
+    if session["filter"] == "" or session["filter"] is None:
+      if len(urls) > 0:
+
+        [bigram_tfidf_data, trigram_tfidf_data,_,_,bigram_corpus, trigram_corpus,_,_,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(text, urls, opt_maxNumberOfTerms+len(neg_terms), self.w2v, self._es)
+
+        tfidf_all = tfidf.tfidf(urls, pos_tags=self.pos_tags, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
+        if pos_terms:
+          extract_terms_all = extract_terms.extract_terms(tfidf_all)
+          [ranked_terms, scores] = extract_terms_all.results(pos_terms)
+          top_terms = [ term for term in ranked_terms if (term not in neg_terms)]
+          top_terms = top_terms[0:opt_maxNumberOfTerms]
+
+          tfidf_bigram = tfidf.tfidf()
+          tfidf_bigram.tfidfArray = bigram_tfidf_data
+          tfidf_bigram.opt_docs = urls
+          tfidf_bigram.corpus = bigram_corpus
+          tfidf_bigram.mapping = es_info['mapping']
+          extract_terms_all = extract_terms.extract_terms(tfidf_bigram)
+          [ranked_terms, scores] = extract_terms_all.results(pos_terms)
+          bigrams = [ term for term in ranked_terms if (term not in neg_terms)]
+
+          tfidf_trigram = tfidf.tfidf()
+          tfidf_trigram.tfidfArray = trigram_tfidf_data
+          tfidf_trigram.opt_docs = urls
+          tfidf_trigram.corpus = trigram_corpus
+          tfidf_trigram.mapping = es_info['mapping']
+          extract_terms_all = extract_terms.extract_terms(tfidf_trigram)
+          [ranked_terms, scores] = extract_terms_all.results(pos_terms)
+          top_trigrams = [ term for term in ranked_terms if (term not in neg_terms)]
+          top_trigrams = top_trigrams[0:opt_maxNumberOfTerms]
+        else:
+          top_terms = [term for term in tfidf_all.getTopTerms(opt_maxNumberOfTerms+len(neg_terms)) if (term not in neg_terms)]
+          bigrams = [term for term in top_bigrams if term not in neg_terms]
           top_trigrams = [term for term in top_trigrams if term not in neg_terms]
     else:
-      s_fields = {
-        es_info['mapping']["text"]: "(" + session['filter'].replace('"','\"') + ")"
-      }
-      if not session['fromDate'] is None:
-        s_fields[es_info['mapping']["timestamp"]] = "[" + str(session['fromDate']) + " TO " + str(session['toDate']) + "]" 
-        
-      results = multifield_query_search(s_fields, self._pagesCapTerms, ["url", es_info['mapping']["text"]], 
-                                        es_info['activeCrawlerIndex'], 
-                                        es_info['docType'],
-                                        self._es)
-      
-      ids = [field['id'] for field in results]
-      text = [field[es_info['mapping']["text"]][0] for field in results]
-      urls = [field[es_info['mapping']["url"]][0] for field in results]
-      top_terms = get_significant_terms(ids, opt_maxNumberOfTerms, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
+      top_terms = [term for term in get_significant_terms(urls, opt_maxNumberOfTerms+len(neg_terms), mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es) if (term not in neg_terms)]
       if len(text) > 0:
         [_,_,_,_,_,_,_,_,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(text, urls, opt_maxNumberOfTerms+len(neg_terms), self.w2v, self._es)
-        top_bigrams = [term for term in top_bigrams if term not in neg_terms]
+        bigrams = [term for term in top_bigrams if term not in neg_terms]
         top_trigrams = [term for term in top_trigrams if term not in neg_terms]
+
+    count = 0
+    top_bigrams = []
+    for phrase in bigrams:
+      words = phrase.split(" ")
+      if words[0] not in ENGLISH_STOPWORDS and words[1] not in ENGLISH_STOPWORDS and count <= opt_maxNumberOfTerms:
+        count = count + 1
+        top_bigrams.append(phrase)
 
     s_fields = {
       "tag": "Custom",
@@ -491,6 +500,7 @@ class CrawlerModel:
       return []
 
     pos_freq = {}
+    pos_urls = [field['id'] for field in term_search(es_info['mapping']['tag'], ['Relevant'], self._all, ['url'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)]
     if len(pos_urls) > 1:
       tfidf_pos = tfidf.tfidf(pos_urls, pos_tags=self.pos_tags, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
       [_,corpus,ttfs_pos] = tfidf_pos.getTfArray()
@@ -506,7 +516,7 @@ class CrawlerModel:
     else:
       pos_freq = { key: 0 for key in top_terms }      
 
-    neg_urls = [field['id'] for field in term_search(es_info['mapping']['tag'], ['Irrelevant'], self._pagesCapTerms, ['url'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)]
+    neg_urls = [field['id'] for field in term_search(es_info['mapping']['tag'], ['Irrelevant'], self._all, ['url'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)]
     neg_freq = {}
     if len(neg_urls) > 1:
       tfidf_neg = tfidf.tfidf(neg_urls, pos_tags=self.pos_tags, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
@@ -688,6 +698,28 @@ class CrawlerModel:
 
     return hits
 
+  def _getPagesQuery(self, session):
+    es_info = self.esInfo(session['domainId'])
+    
+    format = '%m/%d/%Y %H:%M %Z'
+    if not session['fromDate'] is None:
+      session['fromDate'] = long(CrawlerModel.convert_to_epoch(datetime.strptime(session['fromDate'], format)))
+
+    if not session['toDate'] is None:
+      session['toDate'] = long(CrawlerModel.convert_to_epoch(datetime.strptime(session['toDate'], format)))
+
+    hits = []
+    if(session['pageRetrievalCriteria'] == 'Most Recent'):
+      hits = self._getMostRecentPages(session)
+    elif (session['pageRetrievalCriteria'] == 'Queries'):
+      hits = self._getPagesForQueries(session)
+    elif (session['pageRetrievalCriteria'] == 'Tags'):
+      hits = self._getPagesForTags(session)
+    elif (session['pageRetrievalCriteria'] == 'More like'):
+      hits = self._getMoreLikePages(session)
+
+    return hits  
+
   # Returns most recent downloaded pages.
   # Returns dictionary in the format:
   # {
@@ -709,15 +741,7 @@ class CrawlerModel:
     if not session['toDate'] is None:
       session['toDate'] = long(CrawlerModel.convert_to_epoch(datetime.strptime(session['toDate'], format)))
 
-    hits = []
-    if(session['pageRetrievalCriteria'] == 'Most Recent'):
-      hits = self._getMostRecentPages(session)
-    elif (session['pageRetrievalCriteria'] == 'Queries'):
-      hits = self._getPagesForQueries(session)
-    elif (session['pageRetrievalCriteria'] == 'Tags'):
-      hits = self._getPagesForTags(session)
-    elif (session['pageRetrievalCriteria'] == 'More like'):
-      hits = self._getMoreLikePages(session)
+    hits = self._getPagesQuery(session)
 
     last_downloaded_url_epoch = None
     docs = []
