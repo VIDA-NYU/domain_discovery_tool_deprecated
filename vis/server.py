@@ -346,8 +346,8 @@ class Page:
     print(queries.keys())
     for query in queries.keys():
         session["selected_queries"] = query
-        pages = self._crawler.getPages(session)
-        queries_pages[query] = [page[0][0] for page in pages["pages"]]
+        pages = self._crawler.getPagesQuery(session)
+        queries_pages[query] = [page["url"][0] for page in pages]
     return queries_pages
 
   @cherrypy.expose
