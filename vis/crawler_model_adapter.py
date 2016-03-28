@@ -94,6 +94,9 @@ class CrawlerModelAdapter:
   def getPages(self, session):
     return self._crawlerModel.getPages(session)
 
+  def getPagesQuery(self, session):
+    return self._crawlerModel.getPagesQuery(session)
+  
   # Boosts set of pages: crawler exploits outlinks for the given set of pages.
   def boostPages(self, pages):
     pages = CrawlerModelAdapter.extractListParam(pages)
