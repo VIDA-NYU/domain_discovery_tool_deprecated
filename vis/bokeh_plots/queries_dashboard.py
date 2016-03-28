@@ -78,7 +78,6 @@ def queries_plot(response, queries_pages):
 
     # Create connection lines.
     for key in queries_line_data.keys():
-        # import ipdb; ipdb.set_trace()
         if queries_line_data[key]:
             plot.line([df[key[0]]["x"], df[key[1]]["x"]], [df[key[0]]["y"],
                     df[key[1]]["y"]], line_width=2)
