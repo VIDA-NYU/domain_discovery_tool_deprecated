@@ -1,0 +1,13 @@
+{% block content %}
+
+{{ plots_script | safe }}
+<div>{{ plots_div['p'] | safe }}</div>
+<div>{{ plots_div['custom_tag_input'] }}</div>
+<div>{{ plots_div['custom_tag_select'] }}</div>
+<div>{{ plots_div['but_neutral'] }}</div>
+<div>{{ plots_div['but_relevant'] }}</div>
+<div>{{ plots_div['but_irrelevant'] }}</div>
+<div>{{ plots_div['but_backward_crawl'] }}</div>
+<div>{{ plots_div['but_forward_crawl'] }}</div>
+
+{% endblock content %}

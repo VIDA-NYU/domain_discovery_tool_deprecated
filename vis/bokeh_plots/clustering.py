@@ -41,7 +41,7 @@ def selection_plot(response):
     tags = [x[3] for x in response["pages"]]
     color = []
     custom_tags = ["Custom tags"]
-    
+
     for tag in tags:
         custom = False
         if tag:
@@ -50,7 +50,7 @@ def selection_plot(response):
                     custom = True
                     if t not in custom_tags:
                         custom_tags.append(t)
-            if not custom:    
+            if not custom:
                 color.append(colormap(tag[0]))
             else:
                 color.append(colormap("Custom"))
@@ -138,7 +138,7 @@ def selection_plot(response):
         cb_obj.set("value", "Add custom tag...")
 
         if(tag.indexOf("Add custom tag...") < 0) {
-        //Update the custom tags selection list 
+        //Update the custom tags selection list
         var options = custom_tags_select.get("options");
         if(options.indexOf(tag) < 0){
             options.push(tag);
@@ -166,7 +166,7 @@ def selection_plot(response):
     var inds = source.get('selected')["1d"].indices;
     var data = source.get('data');
     var selected = [];
-    var tag = cb_obj.get("value");    
+    var tag = cb_obj.get("value");
 
     cb_obj.set("value", "Enter tags...")
     if(tag.indexOf("Add custom tag...") < 0) {
@@ -216,7 +216,7 @@ def selection_plot(response):
     custom_tag_input = TextInput(value="Add custom tag...")
     custom_tag_input.callback = CustomJS(args=dict(source=source),
                     code=textinput_code % (CUSTOM_COLOR))
-    
+
     custom_tag_select = Select(value="Custom tags", options=custom_tags)
     custom_tag_select.callback = CustomJS(args=dict(source=source),
                     code=selectinput_code % (CUSTOM_COLOR))
@@ -230,20 +230,21 @@ def selection_plot(response):
     but_forward_crawl.callback = CustomJS(args=dict(source=source),
                                           code=crawl_code % ("forward"))
 
-    
+
     # Adjust what attributes are displayed by the HoverTool
     hover = p.select(dict(type=HoverTool))
     hover.tooltips = [
         ("urls", "@urls"),
     ]
-    tags = hplot(custom_tag_input, custom_tag_select,  but_neutral, but_relevant, but_irrelevant)
-    tags_crawl = hplot(but_backward_crawl, but_forward_crawl)
-    layout = vplot(p, tags, tags_crawl)
-    
-    # Combine script and div into a single string.
-    plot_code = components(layout)
-    return plot_code[0] + plot_code[1]
 
+    return components(dict(custom_tag_input=custom_tag_input,
+                           custom_tag_select=custom_tag_select,
+                           but_neutral=but_neutral,
+                           but_relevant=but_relevant,
+                           but_irrelevant=but_irrelevant,
+                           but_backward_crawl=but_backward_crawl,
+                           but_forward_crawl=but_forward_crawl,
+                           p=p))
 
 def empty_plot():
     p = figure(
@@ -272,11 +273,12 @@ def empty_plot():
     custom_tag_select = Select(value="Custom tags", options=["Custom tags"])
     but_backward_crawl = Button(label="Backlinks", type="success")
     but_forward_crawl = Button(label="Forwardlinks", type="success")
-    
-    tags = hplot(custom_tag_input, custom_tag_select, but_relevant, but_irrelevant, but_neutral)
-    tags_crawl = hplot(but_backward_crawl, but_forward_crawl)
-    layout = vform(p, tags, tags_crawl)
 
-    # Combine script and div into a single string.
-    plot_code = components(layout)
-    return plot_code[0] + plot_code[1]
+    return components(dict(custom_tag_input=custom_tag_input,
+                           custom_tag_select=custom_tag_select,
+                           but_neutral=but_neutral,
+                           but_relevant=but_relevant,
+                           but_irrelevant=but_irrelevant,
+                           but_backward_crawl=but_backward_crawl,
+                           but_forward_crawl=but_forward_crawl,
+                           p=p))

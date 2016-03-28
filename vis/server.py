@@ -12,8 +12,9 @@ from bokeh_plots.clustering import selection_plot, empty_plot
 from bokeh_plots.domains_dashboard import (domains_dashboard, pages_timeseries,
         queries_dashboard, endings_dashboard)
 
-from jinja2 import Template
+from jinja2 import Template, Environment, FileSystemLoader
 
+env = Environment(loader=FileSystemLoader('vis/html'))
 cherrypy.engine.timeout_monitor.unsubscribe()
 
 class Page:
@@ -125,7 +126,7 @@ class Page:
   @cherrypy.expose
   def release(self):
     return open(os.path.join(self._HTML_DIR, u"release.html"))
-  
+
 
   @cherrypy.expose
   def index(self):
@@ -155,7 +156,7 @@ class Page:
     res = self._crawler.getAvailableQueries(session)
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
-  
+
   @cherrypy.expose
   def getAvailableTags(self, session):
     session = json.loads(session)
@@ -179,13 +180,13 @@ class Page:
   def createModel(self, session):
     session = json.loads(session)
     return self._crawler.createModel(session)
-    
+
   # Returns number of pages downloaded between ts1 and ts2 for active crawler.
   # ts1 and ts2 are Unix epochs (seconds after 1970).
   # If opt_applyFilter is True, the summary returned corresponds to the applied pages filter defined
   # previously in @applyFilter. Otherwise the returned summary corresponds to the entire dataset
   # between ts1 and ts2.
-  # 
+  #
   # For crawler vis, returns dictionary in the format:
   # {
   #   'Positive': {'Explored': #ExploredPgs, 'Exploited': #ExploitedPgs, 'Boosted': #BoostedPgs},
@@ -254,18 +255,18 @@ class Page:
   def boostPages(self, pages):
     self._crawler.boostPages(pages)
 
-  # Crawl forward links   
+  # Crawl forward links
   @cherrypy.expose
   def getForwardLinks(self, urls, session):
     session = json.loads(session)
     self._crawler.getForwardLinks(urls, session);
 
-  # Crawl backward links   
+  # Crawl backward links
   @cherrypy.expose
   def getBackwardLinks(self, urls, session):
     session = json.loads(session)
     self._crawler.getBackwardLinks(urls, session);
-  
+
   # Fetches snippets for a given term.
   @cherrypy.expose
   def getTermSnippets(self, term, session):
@@ -345,10 +346,13 @@ class Page:
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps({"positive": posData, "negative": negData})
 
+  @cherrypy.tools.json_out()
   @cherrypy.expose
   def getEmptyBokehPlot(self):
-    cherrypy.response.headers["Content-Type"] = "application/json;"
-    return json.dumps(empty_plot())
+    template = env.get_template('domains_bokeh.html')
+    plots_script, plots_div = empty_plot()
+    return template.render(plots_script=plots_script,
+                           plots_div=plots_div)
 
   @cherrypy.expose
   def statistics(self, session):
