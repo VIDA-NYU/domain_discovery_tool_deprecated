@@ -294,6 +294,14 @@ var DataAccess = (function() {
               '/getTermsSummary', {'session': JSON.stringify(session)}, onTermsSummaryLoaded, onMaybeUpdateCompleteTerms);
       }
   };
+
+    pub.crawlPages = function(urls, crawl_type, session){
+      if(crawl_type === "forward")
+	  runQueryForCurrentCrawler('/getForwardLinks', {'urls': urls.join('|'), 'session': JSON.stringify(session)});
+      else if(crawl_type === "backward") 
+	  runQueryForCurrentCrawler('/getBackwardLinks', {'urls': urls.join('|'), 'session': JSON.stringify(session)});
+  };
+    
   // Loads snippets for a given term.
   pub.loadTermSnippets = function(term, session) {
     runQueryForCurrentCrawler('/getTermSnippets', {'term': term, 'session': JSON.stringify(session)}, onLoadedTermsSnippets);

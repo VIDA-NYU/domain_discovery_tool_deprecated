@@ -200,6 +200,12 @@
               
               <div class="input-group">
                 <input type="text" class="form-control" placeholder="Search on the Web..." id="query_box" list="query_box_previous_queries">
+		<div style="float:left;">
+                  <select name="search_engine" id="search_engine" class="form-control">
+                    <option value="GOOG">GOOG</option>
+                    <option value="BING">BING</option>
+                  </select>
+		</div>
                 <span class="input-group-btn">
                   <button type="button" class="btn btn-warning" data-type="last" id="submit_query"><span class="glyphicon glyphicon-search"></span></button>
                 </span>
@@ -415,7 +421,7 @@
     </div>
 
     <div class="container-fluid footer">
-      <a href="./release" target="_blank">Domain Discovery Tool v2.8.3</a>
+      <a href="./release" target="_blank">Domain Discovery Tool v2.8.4</a>
     </div>
 
     <div id="mask"></div>

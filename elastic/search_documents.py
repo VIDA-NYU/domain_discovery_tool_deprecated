@@ -51,15 +51,18 @@ def multifield_query_search(s_fields, pageCount=100, fields = [], es_index='meme
             "fields": fields
         }
 
-        res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=pageCount)
+        res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=pageCount, request_timeout=600)
         
         hits = res['hits']['hits']
 
         results = []
         for hit in hits:
-            fields = hit['fields']
-            fields['id'] = hit['_id']
-            results.append(fields)
+            if hit.get('fields') is None:
+                print hit
+            else:
+                fields = hit['fields']
+                fields['id'] = hit['_id']
+                results.append(fields)
 
         return results
 
@@ -85,9 +88,12 @@ def term_search(field, queryStr, pageCount=100, fields=[], es_index='memex', es_
 
         results = []
         for hit in hits:
-            fields = hit['fields']
-            fields['id'] = hit['_id']
-            results.append(fields)
+            if hit.get('fields') is None:
+                print hit
+            else:
+                fields = hit['fields']
+                fields['id'] = hit['_id']
+                results.append(fields)
             
         return results
 
@@ -183,7 +189,7 @@ def get_context(terms, field = "text", es_index='memex', es_doc_type='page', es=
             "fields": ["url"]
         }
 
-        res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=500)
+        res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=500, request_timeout=600)
         hits = res['hits']
 
         context = {}
@@ -212,7 +218,7 @@ def range(field, from_val, to_val, ret_fields=[], epoch=True, pagesCount = 200, 
         "fields": ret_fields
     }
 
-    res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=pagesCount)
+    res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=pagesCount, request_timeout=600)
     hits = res['hits']['hits']
     
     results = []
@@ -232,6 +238,33 @@ def field_missing(field, fields, pagesCount, es_index='memex', es_doc_type='page
             "filtered" : {
                 "filter" : {
                     "missing" : { "field" : field }
+                }
+            }
+        },
+        "fields": fields
+    }
+
+    res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=pagesCount, request_timeout=600)
+    hits = res['hits']['hits']
+    
+    results = []
+    for hit in hits:
+        fields = hit['fields']
+        fields['id'] = hit['_id']
+        results.append(fields)
+
+    return results
+
+
+def field_exists(field, fields, pagesCount, es_index='memex', es_doc_type='page', es=None):
+    if es is None:
+        es = default_es
+
+    query = {
+        "query" : {
+            "filtered" : {
+                "filter" : {
+                    "exists" : { "field" : field }
                 }
             }
         },

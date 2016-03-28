@@ -908,31 +908,43 @@ CrawlerVis.prototype.onLoadedPages = function(pagesData) {
       tags: page[3],
     };
     });
-   
+
+    var tags = [];
     for(var i in pages){
 	var page = pages[i];
 	for(var j in page["tags"]){
 	    var tag = page["tags"][j];
-	    if(tag != ""){
-		if(this.availableTags.indexOf(tag) < 0) {
-		    this.tagsGallery.addItem(tag);
-		}
+	    if(tag != "" && tags.indexOf(tag) < 0){
+		tags.push(tag);
 	    }
 	}
     }
-  this.pagesLandscape.setPagesData(pages);
 
-  // Updates last update.
-  var lastUpdate = Utils.parseDateTime(DataAccess.getLastUpdateTime());
-  d3.select('#last_update_info_box')
-    .html('(last update: ' + lastUpdate + ')');
+    for(var i in tags){
+	tag = tags[i];
+	this.tagsGallery.addItem(tag);
+    }
+
+    for(var i in this.tagsGallery.getCustomTags()){
+	tag = this.tagsGallery.getCustomTags()[i];
+	if(tags.indexOf(tag) < 0){
+	    this.tagsGallery.removeItem(tag);
+	}
+    }
+    this.tagsGallery.update();
+    this.pagesLandscape.setPagesData(pages);
     
-  var vis = this;
-  // Fetches statistics for until last update happened.
-  DataAccess.loadPagesSummaryUntilLastUpdate(false, vis.sessionInfo());
-  DataAccess.loadPagesSummaryUntilLastUpdate(true, vis.sessionInfo());
-
-  return pages;
+    // Updates last update.
+    var lastUpdate = Utils.parseDateTime(DataAccess.getLastUpdateTime());
+    d3.select('#last_update_info_box')
+	.html('(last update: ' + lastUpdate + ')');
+    
+    var vis = this;
+    // Fetches statistics for until last update happened.
+    DataAccess.loadPagesSummaryUntilLastUpdate(false, vis.sessionInfo());
+    DataAccess.loadPagesSummaryUntilLastUpdate(true, vis.sessionInfo());
+    
+    return pages;
 };
 
 // Responds to tag focus.
@@ -1013,29 +1025,41 @@ CrawlerVis.prototype.onBrushedPagesChanged = function(indexOfSelectedItems) {
     .classed('disabled', indexOfSelectedItems.length == 0);
 };
 
+CrawlerVis.prototype.crawlPages = function(selectedURLs, crawl_type) {
+    var vis = this;
+    DataAccess.crawlPages(selectedURLs, crawl_type, vis.sessionInfo());
+}
 
 /**
  * Initializes addc crawler button
  */
 CrawlerVis.prototype.initAddCrawlerButton = function() {
-  d3.select('#submit_add_crawler').on('click', function() {
+  var submit_add_domain = function() {
       var value = d3.select('#crawler_index_name').node().value;
       __sig__.emit(__sig__.add_crawler, value);
 
       // Hide domain modal after domain has been submitted.
       $("#addDomainModal").modal("hide");
-    });
+  };
+  d3.select('#crawler_index_name').on('change', submit_add_domain);
+  d3.select('#submit_add_crawler').on('click', submit_add_domain);
 };
 
 /**
  * Initializes query web button (useful for seed crawler vis).
  */
 CrawlerVis.prototype.initQueryWebButton = function() {
-  d3.select('#submit_query')
-    .on('click', function() {
+  var search_enter = function() {
       var value = d3.select('#query_box').node().value;
       __sig__.emit(__sig__.query_enter, value);
-    });
+  };
+    
+  d3.select('#query_box')
+	.on('change', search_enter);
+    
+  d3.select('#submit_query')
+	.on('click', search_enter);
+
   // Initializes history of queries.
   this.queriesList = [];
 };
@@ -1080,11 +1104,16 @@ CrawlerVis.prototype.initAddTermButton = function() {
  */
 CrawlerVis.prototype.initFilterButton = function() {
   var vis = this;
-  d3.select('#submit_filter')
-    .on('click', function() {
+  var submit_filter = function() {
       var value = d3.select('#filter_box').node().value;
       __sig__.emit(__sig__.filter_enter, value);
-    });
+  };
+
+  d3.select('#filter_box')
+    .on('change', submit_filter);
+
+  d3.select('#submit_filter')
+    .on('click', submit_filter);
   // Initializes history of filters.
   this.filtersList = [];
 };
@@ -1342,6 +1371,9 @@ CrawlerVis.prototype.sessionInfo = function() {
     var vis = this;
     
     var session = {};
+
+    var search_engine = d3.select('#search_engine').node().value;
+    session['search_engine'] = search_engine;
     
     var algId = d3.select('#selectProjectionAlgorithm').node().value;
     session['activeProjectionAlg'] = algId;

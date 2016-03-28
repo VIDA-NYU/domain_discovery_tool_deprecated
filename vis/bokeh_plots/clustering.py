@@ -186,6 +186,20 @@ def selection_plot(response):
     }
     """
 
+    # Create buttons and their callbacks, use button_code string for callbacks.
+    crawl_code = """
+        event.preventDefault();
+        var inds = source.get('selected')["1d"].indices;
+        var data = source.get('data');
+        var selected = [];
+        var crawl = '%s';
+        for(var i = 0; i < inds.length; i++){
+            selected.push(data.urls[inds[i]]);
+        }
+        BokehPlots.crawlPages(selected, crawl);
+        source.trigger("change");
+    """
+
     # Supply color with print formatting.
     but_relevant = Button(label="Relevant", type="success")
     but_relevant.callback = CustomJS(args=dict(source=source),
@@ -208,13 +222,23 @@ def selection_plot(response):
                     code=selectinput_code % (CUSTOM_COLOR))
     custom_tag_input.callback.args["custom_tags_select"] = custom_tag_select
 
+    but_backward_crawl = Button(label="Backlinks", type="success")
+    but_backward_crawl.callback = CustomJS(args=dict(source=source),
+                                           code=crawl_code % ("backward"))
+
+    but_forward_crawl = Button(label="Forwardlinks", type="success")
+    but_forward_crawl.callback = CustomJS(args=dict(source=source),
+                                          code=crawl_code % ("forward"))
+
+    
     # Adjust what attributes are displayed by the HoverTool
     hover = p.select(dict(type=HoverTool))
     hover.tooltips = [
         ("urls", "@urls"),
     ]
     tags = hplot(custom_tag_input, custom_tag_select,  but_neutral, but_relevant, but_irrelevant)
-    layout = vplot(p, tags)
+    tags_crawl = hplot(but_backward_crawl, but_forward_crawl)
+    layout = vplot(p, tags, tags_crawl)
     
     # Combine script and div into a single string.
     plot_code = components(layout)
@@ -246,9 +270,12 @@ def empty_plot():
     but_neutral = Button(label="Neutral", type="success")
     custom_tag_input = TextInput(value="Add custom tag...")
     custom_tag_select = Select(value="Custom tags", options=["Custom tags"])
-
+    but_backward_crawl = Button(label="Backlinks", type="success")
+    but_forward_crawl = Button(label="Forwardlinks", type="success")
+    
     tags = hplot(custom_tag_input, custom_tag_select, but_relevant, but_irrelevant, but_neutral)
-    layout = vform(p, tags)
+    tags_crawl = hplot(but_backward_crawl, but_forward_crawl)
+    layout = vform(p, tags, tags_crawl)
 
     # Combine script and div into a single string.
     plot_code = components(layout)
