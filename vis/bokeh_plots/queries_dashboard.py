@@ -69,18 +69,20 @@ def queries_plot(response, queries_pages):
         ),
     )
 
-    plot = figure(plot_height=584, tools=[hover])
+    plot = figure(plot_height=584, tools=[hover, "wheel_zoom"])
     plot.axis.visible = None
     plot.xgrid.grid_line_color = None
     plot.ygrid.grid_line_color = None
-    plot.circle("x", "y", size="sizes", color="navy", alpha=0.5, source=source,
-            name="nodes")
 
     # Create connection lines.
     for key in queries_line_data.keys():
         if queries_line_data[key]:
+            line_width = abs(len(queries_line_data[key]) / float(len(queries_line_data.keys())))
             plot.line([df[key[0]]["x"], df[key[1]]["x"]], [df[key[0]]["y"],
-                    df[key[1]]["y"]], line_width=2)
+                    df[key[1]]["y"]], line_width=line_width)
+
+    plot.circle("x", "y", size="sizes", color="green", alpha=1, source=source,
+            name="nodes")
 
     return plot
 
