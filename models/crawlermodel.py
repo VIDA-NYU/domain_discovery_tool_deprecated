@@ -671,6 +671,29 @@ class CrawlerModel:
 
     return hits
 
+
+  def getPagesQuery(self, session):
+    es_info = self.esInfo(session['domainId'])
+    
+    format = '%m/%d/%Y %H:%M %Z'
+    if not session['fromDate'] is None:
+      session['fromDate'] = long(CrawlerModel.convert_to_epoch(datetime.strptime(session['fromDate'], format)))
+
+    if not session['toDate'] is None:
+      session['toDate'] = long(CrawlerModel.convert_to_epoch(datetime.strptime(session['toDate'], format)))
+
+    hits = []
+    if(session['pageRetrievalCriteria'] == 'Most Recent'):
+      hits = self._getMostRecentPages(session)
+    elif (session['pageRetrievalCriteria'] == 'Queries'):
+      hits = self._getPagesForQueries(session)
+    elif (session['pageRetrievalCriteria'] == 'Tags'):
+      hits = self._getPagesForTags(session)
+    elif (session['pageRetrievalCriteria'] == 'More like'):
+      hits = self._getMoreLikePages(session)
+
+    return hits  
+
   # Returns most recent downloaded pages.
   # Returns dictionary in the format:
   # {
@@ -692,16 +715,8 @@ class CrawlerModel:
     if not session['toDate'] is None:
       session['toDate'] = long(CrawlerModel.convert_to_epoch(datetime.strptime(session['toDate'], format)) * 1000)
 
-    hits = []
-    if(session['pageRetrievalCriteria'] == 'Most Recent'):
-      hits = self._getMostRecentPages(session)
-    elif (session['pageRetrievalCriteria'] == 'Queries'):
-      hits = self._getPagesForQueries(session)
-    elif (session['pageRetrievalCriteria'] == 'Tags'):
-      hits = self._getPagesForTags(session)
-    elif (session['pageRetrievalCriteria'] == 'More like'):
-      hits = self._getMoreLikePages(session)
-
+    hits = self.getPagesQuery(session)
+    
     last_downloaded_url_epoch = None
     docs = []
 
