@@ -195,8 +195,11 @@ def get_pages_datetimes(index_name, es=None):
 
     for item in items:
         url = item["_source"]["url"]
-        timestamp = item["_source"]["retrieved"]
-        url_info.append((url, timestamp))
+        try:
+            timestamp = item["_source"]["retrieved"]
+            url_info.append((url, timestamp))
+        except KeyError:
+            print "\nRetrieved not found for ",url, "\n" 
     return url_info
 
 
