@@ -77,7 +77,7 @@ def queries_plot(response, queries_pages):
     # Create connection lines.
     for key in queries_line_data.keys():
         if queries_line_data[key]:
-            line_width = abs(len(queries_line_data[key]) / float(len(queries_line_data.keys())))
+            line_width = abs(len(queries_line_data[key]) / float(len(queries_line_data.keys()))) * 2
             plot.line([df[key[0]]["x"], df[key[1]]["x"]], [df[key[0]]["y"],
                     df[key[1]]["y"]], line_width=line_width)
 
