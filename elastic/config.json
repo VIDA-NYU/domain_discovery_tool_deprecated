@@ -35,6 +35,16 @@
 			"type": "string"
 		    }
 		}
+	    },
+	    "tag_colors": {
+		"properties": {
+		    "index": {
+			"type": "integer"
+		    },
+		    "colors": {
+			"type": "string"
+		    }
+		}
 	    }
 	}
     }
