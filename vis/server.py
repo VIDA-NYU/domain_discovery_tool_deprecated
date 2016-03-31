@@ -163,6 +163,20 @@ class Page:
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
 
+  @cherrypy.expose
+  def getTagColors(self, domainId):
+    res = self._crawler.getTagColors(domainId)
+    cherrypy.response.headers["Content-Type"] = "application/json;"
+    return json.dumps(res)
+
+  @cherrypy.expose
+  def updateColors(self, session, colors):
+    session = json.loads(session)
+    colors = json.loads(colors)
+    res = self._crawler.updateColors(session, colors)
+    cherrypy.response.headers["Content-Type"] = "application/json;"
+    return json.dumps(res)
+
   # Submits a web query for a list of terms, e.g. 'ebola disease'
   @cherrypy.expose
   def queryWeb(self, terms, session):
@@ -245,7 +259,8 @@ class Page:
   def getPages(self, session):
     session = json.loads(session)
     data = self._crawler.getPages(session)
-    res = {"data": data, "plot": selection_plot(data)}
+    colors = self._crawler.getTagColors(session['domainId'])
+    res = {"data": data, "plot": selection_plot(data, colors)}
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
 
