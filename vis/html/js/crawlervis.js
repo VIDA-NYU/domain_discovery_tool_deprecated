@@ -6,7 +6,6 @@
  */
 
 var CrawlerVis = function() {
-  var currentCrawler = undefined;
   this.availableTags = [
     'Relevant',
     'Irrelevant',
@@ -33,6 +32,9 @@ var CrawlerVis = function() {
     var currentCrawler = undefined;
     var queries = undefined;
     var tags = undefined;
+    this.CUSTOM_COLORS = ["Coral","GoldenRod","Gold","PaleGreen","MediumTurquoise","SteelBlue","SlateBlue","Purple", "RebeccaPurple"]
+    this.color_index = 0;
+    this.tag_colors = {};
 };
 
 
@@ -132,6 +134,7 @@ CrawlerVis.prototype.initSignalSlotsSeedCrawler = function() {
   SigSlots.connect(__sig__.pages_loaded, this, this.onLoadedPages);
   SigSlots.connect(__sig__.queries_loaded, this, this.onLoadedQueries);
   SigSlots.connect(__sig__.tags_loaded, this, this.onLoadedTags);
+  SigSlots.connect(__sig__.tags_colors_loaded, this, this.onLoadedTagColors);
   SigSlots.connect(__sig__.tag_focus, this, this.onTagFocus);
   SigSlots.connect(__sig__.tag_clicked, this, this.onTagClicked);
   SigSlots.connect(__sig__.tag_action_clicked, this, this.onTagActionClicked);
@@ -363,6 +366,7 @@ CrawlerVis.prototype.setActiveCrawler = function(crawlerId) {
     this.initWordlist();
     // Changes active crawler and forces update.
     DataAccess.setActiveCrawler(crawlerId);
+    DataAccess.loadTagColors(crawlerId);
 };
 
 
@@ -536,6 +540,16 @@ CrawlerVis.prototype.onLoadedTags = function(tags) {
     vis.enableTagSelection(tags);
 };
 
+CrawlerVis.prototype.onLoadedTagColors = function(colors_data) {
+    if(colors_data != undefined) {
+	this.tag_colors = colors_data["colors"];
+	this.color_index = colors_data["index"];
+    }
+    else {
+	this.tag_colors={};
+	this.color_index = 0;
+    }
+};
 
 CrawlerVis.prototype.enableTagSelection = function(tags){
     var vis = this;
@@ -963,6 +977,8 @@ CrawlerVis.prototype.onTagClicked = function(tag) {
 
 // Responds to clicked tag action.
 CrawlerVis.prototype.onTagActionClicked = function(tag, action, opt_items, refresh_plot) {
+    var vis = this;
+
     // If items is empty array, applies action to selected pages in the landscape.
     if (!opt_items || opt_items.length == 0) {
 	opt_items = this.pagesLandscape.getSelectedItems();
@@ -972,10 +988,13 @@ CrawlerVis.prototype.onTagActionClicked = function(tag, action, opt_items, refre
     var applyTagFlag = action == 'Apply';
     var urls = [];
     var updated_tags = {};
+    var update_color_index = false;
+    
     for (var i in opt_items) {
 	var item = opt_items[i];
 	var tags = item.tags;
-	
+	var color = item.color;
+
 	// Removes tag when the tag is present for item, and applies only when tag is not present for
 	// item.
 	var isTagPresent = item.tags.some(function(itemTag) {
@@ -986,16 +1005,52 @@ CrawlerVis.prototype.onTagActionClicked = function(tag, action, opt_items, refre
 	    
 	    // Updates tag list for items.
 	    if (applyTagFlag) {
+		if(tags.indexOf("") >= 0){
+		    tags.splice(tags.indexOf(""), 1);
+		}
 		tags.push(tag);
+		current_tag = tag;
+		
 	    } else {
 		tags.splice(tags.indexOf(tag), 1);
+		current_tag = tags[tags.length - 1]
+
 	    }
+
+	    // Set color
+	    if(current_tag == "Relevant"){
+		color = "blue";
+	    } else if(current_tag == "Irrelevant"){
+		color = "crimson";
+	    } else if(current_tag == "Neutral" || current_tag == "" || current_tag == undefined){
+		color = "#7F7F7F";
+	    } else {
+		if(current_tag in vis.tag_colors){
+		    color = vis.tag_colors[current_tag];
+		}
+		else {
+		    color = vis.CUSTOM_COLORS[vis.color_index];
+		    update_color_index = true;
+		    vis.tag_colors[tag] = vis.CUSTOM_COLORS[vis.color_index];
+		}
+	    }
+
 	    // Track the updated tags to update the bokeh plot data
-	    updated_tags[item.url] = tags;	
+	    updated_tags[item.url] = {"color": color};
+	    updated_tags[item.url]["tags"] = tags;
 	}
     }
+
+    if(update_color_index){
+	vis.color_index = (vis.color_index + 1) % vis.CUSTOM_COLORS.length;
+	var colors = [];
+	for(var tag_color in vis.tag_colors){
+	    colors.push(tag_color+";"+vis.tag_colors[tag_color]);
+	}
+	var update_colors = {"index": vis.color_index, "colors": colors};
+	DataAccess.updateColors(vis.sessionInfo(), update_colors);
+    }
     
-    var vis = this;
     if (urls.length > 0) {
 	DataAccess.setPagesTag(urls, tag, applyTagFlag, vis.sessionInfo());
     }

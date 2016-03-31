@@ -47,18 +47,9 @@
   };
 
 
-  exports.updatePlotColors = function(url, type) {
+  exports.updatePlotColors = function(url, color) {
     var renderer = exports.getGlyphRenderersByType("Circle")[0];
-	var d = renderer.get("data_source").get("data");
-    if(type == "Relevant"){
-      var color = "blue";
-    } else if(type == "Irrelevant"){
-      var color = "crimson";
-    } else if(type == "Neutral"){
-      var color = "#7F7F7F";
-    } else {
-      var color = "green";
-    }
+    var d = renderer.get("data_source").get("data");
     url_index = -1;
     urls = [].concat.apply([], d.urls);
     for(var i in urls){
@@ -98,11 +89,8 @@
     for(var i in data){
 	var url = data[i]["url"];
 	if(updated_tags[url] != undefined){
-	    tags = updated_tags[url];
-	    data[i]["tags"] = tags;
-	    if(tags.length != 0 && tags[tags.length - 1] != "")
-		exports.updatePlotColors(url, tags[tags.length - 1]);
-	    else exports.updatePlotColors(url, "Neutral");
+	    data[i]["tags"] = updated_tags[url]["tags"];
+	    exports.updatePlotColors(url, updated_tags[url]["color"]);
 	}
     }
     exports.vis.pagesLandscape.setPagesData(data);

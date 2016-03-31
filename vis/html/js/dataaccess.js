@@ -142,11 +142,14 @@ var DataAccess = (function() {
     __sig__.emit(__sig__.tags_loaded, tagsData);
   };
 
+  // Processes loaded tag color mapping
+  var onAvailableTagColorsLoaded = function(tagColors){
+      __sig__.emit(__sig__.tags_colors_loaded, tagColors);
+  };
 
   //Signal load of new pages after certain interval
   var loadNewPagesSummary = function(isFilter) {
       __sig__.emit(__sig__.load_new_pages_summary, isFilter);
-      __sig__.emit(__sig__.bokeh_get_session);
   };
 
   // Runs async post query.
@@ -240,7 +243,13 @@ var DataAccess = (function() {
   pub.loadAvailableTags = function(session) {
       runQuery('/getAvailableTags', {'session': JSON.stringify(session)}, onAvailableTagsLoaded);
   };
-  
+
+  // Returns public interface.
+  // Gets available tag color mapping from backend.
+  pub.loadTagColors = function(crawlerId) {
+      runQuery('/getTagColors', {'domainId': crawlerId}, onAvailableTagColorsLoaded);
+  };
+
   // Queries the web for terms (used in Seed Crawler mode).
   pub.queryWeb = function(terms, session) {
       document.getElementById("status_panel").innerHTML = 'Querying the Web...see page summary for real-time page download status';
@@ -353,7 +362,14 @@ var DataAccess = (function() {
       Utils.setWaitCursorEnabled(true);
       runQueryForCurrentCrawler(
 	  '/createModel', {'session': JSON.stringify(session)}, onModelCreated);
-  }
+  };
+
+  // Update tag color mapping  
+  pub.updateColors = function(session, colors){
+      runQueryForCurrentCrawler(
+	  '/updateColors', {'session': JSON.stringify(session), 'colors': JSON.stringify(colors)});
+  };
+    
   // Fetches new pages summaries every n seconds.
   window.setInterval(function() {loadNewPagesSummary(false);}, REFRESH_EVERY_N_MILLISECONDS);
   window.setInterval(function() {loadNewPagesSummary(true);}, REFRESH_EVERY_N_MILLISECONDS);
