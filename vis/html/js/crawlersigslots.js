@@ -24,6 +24,7 @@ var SigSlots = (function() {
   __sig__.pages_loaded = function(pages) {};
   __sig__.queries_loaded = function(queries) {};
   __sig__.tags_loaded = function(tags) {};
+  __sig__.tags_colors_loaded = function(tagColors){};
   __sig__.tag_focus = function(tag, onFocus) {};
   __sig__.tag_clicked = function(tag) {};
   __sig__.tag_action_clicked = function(tag, actionType, pages, refresh_plot) {};
