@@ -25,7 +25,7 @@ from elasticsearch import Elasticsearch
 
 from seeds_generator.download import download, decode
 from seeds_generator.concat_nltk import get_bag_of_words
-from elastic.get_config import get_available_domains, get_mapping
+from elastic.get_config import get_available_domains, get_mapping, get_tag_colors
 from elastic.search_documents import get_context, term_search, search, multifield_term_search, range, multifield_query_search, field_missing, field_exists
 from elastic.add_documents import add_document, update_document, refresh
 from elastic.get_mtermvectors import getTermStatistics, getTermFrequency
@@ -372,8 +372,6 @@ class CrawlerModel:
       'Neutral': neutral
     }
 
-
-
   # Returns number of terms present in positive and negative pages.
   # Returns array in the format:
   # [
@@ -418,7 +416,7 @@ class CrawlerModel:
     s_fields["tag"]="Negative"
     neg_terms = [field['term'][0] for field in multifield_term_search(s_fields, self._capTerms, ['term'], self._termsIndex, 'terms', self._es)]
 
-    results = self._getPagesQuery(session)
+    results = self.getPagesQuery(session)
 
     top_terms = []
     top_bigrams = []
@@ -439,7 +437,6 @@ class CrawlerModel:
 
     if session["filter"] == "" or session["filter"] is None:
       if len(urls) > 0:
-
         [bigram_tfidf_data, trigram_tfidf_data,_,_,bigram_corpus, trigram_corpus,_,_,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(text, urls, opt_maxNumberOfTerms+len(neg_terms), self.w2v, self._es)
 
         tfidf_all = tfidf.tfidf(urls, pos_tags=self.pos_tags, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
@@ -456,7 +453,7 @@ class CrawlerModel:
           tfidf_bigram.mapping = es_info['mapping']
           extract_terms_all = extract_terms.extract_terms(tfidf_bigram)
           [ranked_terms, scores] = extract_terms_all.results(pos_terms)
-          bigrams = [ term for term in ranked_terms if (term not in neg_terms)]
+          top_bigrams = [ term for term in ranked_terms if (term not in neg_terms)]
 
           tfidf_trigram = tfidf.tfidf()
           tfidf_trigram.tfidfArray = trigram_tfidf_data
@@ -469,16 +466,17 @@ class CrawlerModel:
           top_trigrams = top_trigrams[0:opt_maxNumberOfTerms]
         else:
           top_terms = [term for term in tfidf_all.getTopTerms(opt_maxNumberOfTerms+len(neg_terms)) if (term not in neg_terms)]
-          bigrams = [term for term in top_bigrams if term not in neg_terms]
+          top_bigrams = [term for term in top_bigrams if term not in neg_terms]
           top_trigrams = [term for term in top_trigrams if term not in neg_terms]
     else:
       top_terms = [term for term in get_significant_terms(urls, opt_maxNumberOfTerms+len(neg_terms), mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es) if (term not in neg_terms)]
       if len(text) > 0:
         [_,_,_,_,_,_,_,_,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(text, urls, opt_maxNumberOfTerms+len(neg_terms), self.w2v, self._es)
-        bigrams = [term for term in top_bigrams if term not in neg_terms]
+        top_bigrams = [term for term in top_bigrams if term not in neg_terms]
         top_trigrams = [term for term in top_trigrams if term not in neg_terms]
 
     count = 0
+    bigrams = top_bigrams
     top_bigrams = []
     for phrase in bigrams:
       words = phrase.split(" ")
@@ -698,7 +696,7 @@ class CrawlerModel:
 
     return hits
 
-  def _getPagesQuery(self, session):
+  def getPagesQuery(self, session):
     es_info = self.esInfo(session['domainId'])
     
     format = '%m/%d/%Y %H:%M %Z'
@@ -741,7 +739,7 @@ class CrawlerModel:
     if not session['toDate'] is None:
       session['toDate'] = long(CrawlerModel.convert_to_epoch(datetime.strptime(session['toDate'], format)))
 
-    hits = self._getPagesQuery(session)
+    hits = self.getPagesQuery(session)
 
     last_downloaded_url_epoch = None
     docs = []
@@ -765,7 +763,7 @@ class CrawlerModel:
         doc[4] = hit['id']
       if not hit.get(es_info['mapping']["text"]) is None:
         doc[5] = hit[es_info['mapping']["text"]][0]
-
+        
       docs.append(doc)
 
     if len(docs) > 1:
@@ -1036,6 +1034,30 @@ class CrawlerModel:
 
     load_config([entry])
 
+  def updateColors(self, session, colors):
+    es_info = self.esInfo(session['domainId'])
+
+    entry = {
+      session['domainId']: {
+        "colors": colors["colors"],
+        "index": colors["index"] 
+      }
+    }
+    
+    update_document(entry, "config", "tag_colors", self._es)
+
+  def getTagColors(self, domainId):
+    tag_colors = get_tag_colors(self._es).get(domainId)
+
+    colors = None
+    if tag_colors is not None:
+      colors = {"index": tag_colors["index"]}
+      colors["colors"] = {}
+      for color in tag_colors["colors"]:
+        fields  = color.split(";")
+        colors["colors"][fields[0]] = fields[1]
+
+    return colors
     
   # Submits a web query for a list of terms, e.g. 'ebola disease'
   def queryWeb(self, terms, max_url_count = 100, session = None):

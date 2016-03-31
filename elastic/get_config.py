@@ -47,7 +47,32 @@ def get_mapping(es=None):
         res[hit['_source']['field']] = hit['_source']['value']
 
     return res
+
+def get_tag_colors(es=None):
+    if es is None:
+        es = default_es
+        
+    query = {
+        "query": {
+            "match_all": {}
+        }
+    }
+    res = es.search(body=query, 
+                    index='config',
+                    doc_type='tag_colors',
+                    size=100
+                )
     
+    hits = res['hits']['hits']
+
+    res = {}
+    for hit in hits:
+        res[hit['_id']] = {'index': hit['_source']['index']}
+        res[hit['_id']]['colors'] = hit['_source']['colors']
+
+    return res
+
+
 def convert_to_epoch(dt):
     epoch = datetime.utcfromtimestamp(0)
     delta = dt - epoch
