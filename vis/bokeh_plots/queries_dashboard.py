@@ -22,8 +22,9 @@ def parse_queries(queries):
     key_combos = (keys for keys in itertools.combinations(queries.keys(), r=2))
 
     # Create a dictionary with a key_combo as key and the result of the set
-    # operation as a value.
+    # operation as a value. Get rid of the key sets which have no similarities.
     keys_sets = {key: tuple(queries[key[0]] & queries[key[1]]) for key in key_combos}
+    keys_sets = {key: keys_sets[key] for key in keys_sets if keys_sets[key]}
     return keys_sets
 
 
@@ -69,7 +70,7 @@ def queries_plot(response, queries_pages):
         ),
     )
 
-    plot = figure(plot_height=584, tools=[hover, "wheel_zoom"])
+    plot = figure(plot_height=584, tools=[hover, "wheel_zoom", "reset"])
     plot.axis.visible = None
     plot.xgrid.grid_line_color = None
     plot.ygrid.grid_line_color = None

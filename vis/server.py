@@ -369,11 +369,11 @@ class Page:
   def getQueriesPages(self, session, queries):
     session["pageRetrievalCriteria"] = "Queries"
     queries_pages = {}
-    print(queries.keys())
     for query in queries.keys():
         session["selected_queries"] = query
         pages = self._crawler.getPagesQuery(session)
-        queries_pages[query] = [page["url"][0] for page in pages]
+        query_page_list = [page["url"][0] for page in pages]
+        queries_pages[query] = query_page_list
     return queries_pages
 
   @cherrypy.expose
@@ -381,13 +381,18 @@ class Page:
     session = json.loads(session)
     pages = self._crawler.getPages(session)
     pages_dates = self._crawler.getPagesDates(session)
+
+    # Grab all queries and remove the ones that have only 1 entry
     queries = self._crawler.getAvailableQueries(session)
+    queries = {x: queries[x] for x in queries if queries[x] > 1}
+
     queries_data = self.getQueriesPages(session, queries)
     if queries:
         queries_script, queries_div = queries_dashboard(queries, queries_data)
     else:
         queries_script = None
         queries_div = None
+
     if pages["pages"]:
         if pages_dates:
             timeseries_panel = pages_timeseries(pages_dates)
@@ -400,6 +405,7 @@ class Page:
         endings_script = None
         pages_div = None
         pages_script = None
+
     with open(os.path.join(self._HTML_DIR, u"domains_dashboard.html")) as f:
         template = Template(f.read())
     return template.render(
