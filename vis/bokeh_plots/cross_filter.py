@@ -53,7 +53,7 @@ def create_queryframe(pages, dates):
     return df
 
 def most_common_url_bar(df):
-    p = Bar(df.groupby('hostname').count().sort('url',ascending=False).reset_index(),
+    p = Bar(df.groupby('hostname').count().sort_values('url',ascending=False).reset_index(),
             label='hostname', values='url', xlabel='Sites', ylabel='Occurences')
     return p
 
@@ -70,7 +70,7 @@ def create_plot_components(df):
 def most_common_url_table(df):
     source = ColumnDataSource(df.groupby('hostname')
                                 .count()
-                                .sort('url',ascending=False)
+                                .sort_values('url',ascending=False)
                                 .reset_index(),
                               callback=js_callback)
     columns = [TableColumn(field="hostname", title="Site Name"),
@@ -82,7 +82,7 @@ def most_common_url_table(df):
 def site_tld_table(df):
     source = ColumnDataSource(df.groupby('tld')
                                 .count()
-                                .sort('url',ascending=False)
+                                .sort_values('url',ascending=False)
                                 .reset_index(),
                               callback=js_callback)
     columns = [TableColumn(field="tld", title="Ending"),

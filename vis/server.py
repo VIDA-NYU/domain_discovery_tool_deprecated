@@ -1,19 +1,20 @@
+import bokeh.embed
+import bokeh.resources
 import cherrypy
 from ConfigParser import ConfigParser
 import json
 import os
-import urlparse
-from crawler_model_adapter import *
 from threading import Lock
-import bokeh.embed
-import bokeh.resources
+import urlparse
+
+from functools32 import lru_cache
+from jinja2 import Template, Environment, FileSystemLoader
 
 from bokeh_plots.clustering import selection_plot, empty_plot
 from bokeh_plots.domains_dashboard import (domains_dashboard, pages_timeseries,
         queries_dashboard, endings_dashboard)
 from bokeh_plots.cross_filter import create_queryframe, create_table_components, create_plot_components
-
-from jinja2 import Template, Environment, FileSystemLoader
+from crawler_model_adapter import *
 
 env = Environment(loader=FileSystemLoader('vis/html'))
 cherrypy.engine.timeout_monitor.unsubscribe()
@@ -372,13 +373,18 @@ class Page:
         queries_script=queries_script, queries_div=queries_div
     )
 
-  @cherrypy.expose
-  def cross_filter(self, session):
+  @lru_cache(maxsize=5)
+  def make_pages_query(self, session):
     session = json.loads(session)
     pages = self._crawler.getPages(session)
     dates = self._crawler.getPagesDates(session)
-
     df = create_queryframe(pages, dates)
+    return df
+
+  @cherrypy.expose
+  def cross_filter(self, session):
+    df = self.make_pages_query(session)
+
     plots_script, plots_div = create_plot_components(df)
     widgets_script, widgets_div = create_table_components(df)
 
@@ -394,10 +400,7 @@ class Page:
   @cherrypy.tools.json_out()
   @cherrypy.tools.json_in()
   def update_cross_filter_plots(self, session):
-    session = json.loads(session)
-    pages = self._crawler.getPages(session)
-    dates = self._crawler.getPagesDates(session)
-    df = create_queryframe(pages, dates)
+    df = self.make_pages_query(session)
 
     state = cherrypy.request.json
     if state['urls']:
