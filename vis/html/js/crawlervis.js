@@ -1465,7 +1465,6 @@ CrawlerVis.prototype.sessionInfo = function() {
     if (pageRetrievalCriteria == 'Tags' || pageRetrievalCriteria == 'More like'){
 	session['selected_tags'] = vis.getCheckedValues('tags_checkbox').toString();
     }
-    
     return session;
 };
 

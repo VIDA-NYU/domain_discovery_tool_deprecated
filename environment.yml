@@ -22,3 +22,4 @@ dependencies:
     - jinja2
     - bokeh=0.10.0
     - topik
+    - networkx=1.11
