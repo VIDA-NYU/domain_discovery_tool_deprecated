@@ -12,12 +12,11 @@ from bokeh.embed import components
 
 FIGURE_WIDTH=1000
 FIGURE_HEIGHT=375
-CUSTOM_COLOR = "green"
 NEUTRAL_COLOR = "#7F7F7F"
 POSITIVE_COLOR = "blue"
 NEGATIVE_COLOR = "crimson"
+CUSTOM_COLOR = "green"
 CIRCLE_SIZE=10
-
 
 def colormap(key):
     color = {
@@ -28,7 +27,7 @@ def colormap(key):
     return color
 
 
-def selection_plot(response):
+def selection_plot(response, tag_colors):
     # Let's move these into a settings file somewhere?
     # height/width could potentially be driven by the request?
 
@@ -41,22 +40,21 @@ def selection_plot(response):
     tags = [x[3] for x in response["pages"]]
     color = []
     custom_tags = ["Custom tags"]
-    
+
     for tag in tags:
-        custom = False
         if tag:
-            for t in tag:
-                if t not in ["Relevant", "Irrelevant", ""]:
-                    custom = True
-                    if t not in custom_tags:
-                        custom_tags.append(t)
-            if not custom:    
-                color.append(colormap(tag[0]))
+            t = tag[len(tag) - 1]
+            if t not in ["Relevant", "Irrelevant", ""]:
+                if t not in custom_tags:
+                    custom_tags.append(t)
+                if((tag_colors != None) and (t in tag_colors["colors"])):    
+                    color.append(tag_colors["colors"][t])
+                else:
+                    color.append(colormap("Custom"))
             else:
-                color.append(colormap("Custom"))
+                color.append(colormap(t))
         else:
             color.append(colormap(None))
-
     source = ColumnDataSource(
         data=dict(
             x=xdata,
@@ -118,10 +116,10 @@ def selection_plot(response):
                 y: data.y[inds[i]],
                 url: data.urls[inds[i]],
                 tags: data.tags[inds[i]],
+                color: data.color[inds[i]],
                 selected: true,
                 possible: false,
             });
-            data["color"][inds[i]] = "%s";
         }
         BokehPlots.updateTags(selected, tag, "Apply");
         source.trigger("change");
@@ -151,10 +149,10 @@ def selection_plot(response):
                 y: data.y[inds[i]],
                 url: data.urls[inds[i]],
                 tags: data.tags[inds[i]],
+                color: data.color[inds[i]],
                 selected: true,
                 possible: false,
             });
-            data["color"][inds[i]] = "%s";
         }
         BokehPlots.updateTags(selected, tag, "Apply");
         source.trigger("change");
@@ -176,45 +174,69 @@ def selection_plot(response):
             y: data.y[inds[i]],
             url: data.urls[inds[i]],
             tags: data.tags[inds[i]],
+            color: data.color[inds[i]],
             selected: true,
             possible: false,
          });
-         data["color"][inds[i]] = "%s";
     }
     BokehPlots.updateTags(selected, tag, "Apply");
     source.trigger("change");
     }
     """
 
+    # Create buttons and their callbacks, use button_code string for callbacks.
+    crawl_code = """
+        event.preventDefault();
+        var inds = source.get('selected')["1d"].indices;
+        var data = source.get('data');
+        var selected = [];
+        var crawl = '%s';
+        for(var i = 0; i < inds.length; i++){
+            selected.push(data.urls[inds[i]]);
+        }
+        BokehPlots.crawlPages(selected, crawl);
+        source.trigger("change");
+    """
+
     # Supply color with print formatting.
     but_relevant = Button(label="Relevant", type="success")
     but_relevant.callback = CustomJS(args=dict(source=source),
-                    code=button_code % ("Relevant", POSITIVE_COLOR))
+                    code=button_code % ("Relevant"))
 
     but_irrelevant = Button(label="Irrelevant", type="success")
     but_irrelevant.callback = CustomJS(args=dict(source=source),
-                    code=button_code % ("Irrelevant", NEGATIVE_COLOR))
+                    code=button_code % ("Irrelevant"))
 
     but_neutral = Button(label="Neutral", type="success")
     but_neutral.callback = CustomJS(args=dict(source=source),
-                    code=button_code % ("Neutral", NEUTRAL_COLOR))
+                    code=button_code % ("Neutral"))
 
     custom_tag_input = TextInput(value="Add custom tag...")
     custom_tag_input.callback = CustomJS(args=dict(source=source),
-                    code=textinput_code % (CUSTOM_COLOR))
+                                         code=textinput_code % ())
     
     custom_tag_select = Select(value="Custom tags", options=custom_tags)
     custom_tag_select.callback = CustomJS(args=dict(source=source),
-                    code=selectinput_code % (CUSTOM_COLOR))
+                                          code=selectinput_code % ())
     custom_tag_input.callback.args["custom_tags_select"] = custom_tag_select
 
+    but_backward_crawl = Button(label="Backlinks", type="success")
+    but_backward_crawl.callback = CustomJS(args=dict(source=source),
+                                           code=crawl_code % ("backward"))
+
+    but_forward_crawl = Button(label="Forwardlinks", type="success")
+    but_forward_crawl.callback = CustomJS(args=dict(source=source),
+                                          code=crawl_code % ("forward"))
+
+    
     # Adjust what attributes are displayed by the HoverTool
     hover = p.select(dict(type=HoverTool))
     hover.tooltips = [
         ("urls", "@urls"),
     ]
     tags = hplot(custom_tag_input, custom_tag_select,  but_neutral, but_relevant, but_irrelevant)
-    layout = vplot(p, tags)
+    tags_crawl = hplot(but_backward_crawl, but_forward_crawl)
+    layout = vplot(p, tags, tags_crawl)
     
     # Combine script and div into a single string.
     plot_code = components(layout)
@@ -246,9 +268,12 @@ def empty_plot():
     but_neutral = Button(label="Neutral", type="success")
     custom_tag_input = TextInput(value="Add custom tag...")
     custom_tag_select = Select(value="Custom tags", options=["Custom tags"])
-
+    but_backward_crawl = Button(label="Backlinks", type="success")
+    but_forward_crawl = Button(label="Forwardlinks", type="success")
+    
     tags = hplot(custom_tag_input, custom_tag_select, but_relevant, but_irrelevant, but_neutral)
-    layout = vform(p, tags)
+    tags_crawl = hplot(but_backward_crawl, but_forward_crawl)
+    layout = vform(p, tags, tags_crawl)
 
     # Combine script and div into a single string.
     plot_code = components(layout)

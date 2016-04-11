@@ -94,6 +94,9 @@ class CrawlerModelAdapter:
   def getPages(self, session):
     return self._crawlerModel.getPages(session)
 
+  def getPagesQuery(self, session):
+    return self._crawlerModel.getPagesQuery(session)
+  
   # Boosts set of pages: crawler exploits outlinks for the given set of pages.
   def boostPages(self, pages):
     pages = CrawlerModelAdapter.extractListParam(pages)
@@ -125,6 +128,17 @@ class CrawlerModelAdapter:
   # Download the pages of uploaded urls
   def downloadUrls(self, urls, session):
     self._crawlerModel.downloadUrls(urls, session)
+
+  # Crawl forward links   
+  def getForwardLinks(self, urls, session):
+    urls = CrawlerModelAdapter.extractListParam(urls)
+    self._crawlerModel.getForwardLinks(urls, session);
+
+  # Crawl backward links   
+  def getBackwardLinks(self, urls, session):
+    urls = CrawlerModelAdapter.extractListParam(urls)
+    self._crawlerModel.getBackwardLinks(urls, session);
+  
 #
 # Overwrites default functionality to serve for seed crawler model use.
 #
@@ -152,6 +166,12 @@ class SeedCrawlerModelAdapter(CrawlerModelAdapter):
 
   def getAvailableTags(self, session):
     return self._crawlerModel.getAvailableTags(session)
+
+  def updateColors(self, session, colors):
+    return self._crawlerModel.updateColors(session, colors)
+    
+  def getTagColors(self, domainId):
+    return self._crawlerModel.getTagColors(domainId)
 
   # Returns number of pages downloaded between ts1 and ts2 for active crawler.
   # ts1 and ts2 are Unix epochs (seconds after 1970).

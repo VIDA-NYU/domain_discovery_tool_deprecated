@@ -39,10 +39,14 @@ public class Download {
 	    this.es_doc_type = es_doc_type;
     }
 
+    public void setQuery(String query){
+	this.query = query;
+    }
+
     public void addTask(String url){
 	downloaderService.execute(new Download_URL(url.trim(), this.query, this.es_index, this.es_doc_type, this.client));
     }
-    
+
     public void shutdown(){
 	try {
 	    downloaderService.shutdown();

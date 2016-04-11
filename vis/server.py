@@ -12,8 +12,10 @@ from jinja2 import Template, Environment, FileSystemLoader
 
 from bokeh_plots.clustering import selection_plot, empty_plot
 from bokeh_plots.domains_dashboard import (domains_dashboard, pages_timeseries,
-        queries_dashboard, endings_dashboard)
-from bokeh_plots.cross_filter import create_queryframe, create_table_components, create_plot_components
+  endings_dashboard)
+from bokeh_plots.cross_filter import (create_queryframe,
+  create_table_components, create_plot_components)
+from bokeh_plots.queries_dashboard import queries_dashboard
 from crawler_model_adapter import *
 
 env = Environment(loader=FileSystemLoader('vis/html'))
@@ -166,6 +168,20 @@ class Page:
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
 
+  @cherrypy.expose
+  def getTagColors(self, domainId):
+    res = self._crawler.getTagColors(domainId)
+    cherrypy.response.headers["Content-Type"] = "application/json;"
+    return json.dumps(res)
+
+  @cherrypy.expose
+  def updateColors(self, session, colors):
+    session = json.loads(session)
+    colors = json.loads(colors)
+    res = self._crawler.updateColors(session, colors)
+    cherrypy.response.headers["Content-Type"] = "application/json;"
+    return json.dumps(res)
+
   # Submits a web query for a list of terms, e.g. 'ebola disease'
   @cherrypy.expose
   def queryWeb(self, terms, session):
@@ -202,7 +218,7 @@ class Page:
   #   'Neutral': numNeutralPages,
   # }
   @cherrypy.expose
-  def getPagesSummary(self, opt_ts1 = None, opt_ts2 = None, opt_applyFilter = False, session = None):
+  def getPagesSummary(self, opt_ts1=None, opt_ts2=None, opt_applyFilter=False, session=None):
     session = json.loads(session)
     res = self._crawler.getPagesSummary(opt_ts1, opt_ts2, opt_applyFilter, session)
     cherrypy.response.headers["Content-Type"] = "application/json;"
@@ -248,7 +264,8 @@ class Page:
   def getPages(self, session):
     session = json.loads(session)
     data = self._crawler.getPages(session)
-    res = {"data": data, "plot": selection_plot(data)}
+    colors = self._crawler.getTagColors(session['domainId'])
+    res = {"data": data, "plot": selection_plot(data, colors)}
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
 
@@ -257,6 +274,17 @@ class Page:
   def boostPages(self, pages):
     self._crawler.boostPages(pages)
 
+  # Crawl forward links
+  @cherrypy.expose
+  def getForwardLinks(self, urls, session):
+    session = json.loads(session)
+    self._crawler.getForwardLinks(urls, session);
+
+  # Crawl backward links
+  @cherrypy.expose
+  def getBackwardLinks(self, urls, session):
+    session = json.loads(session)
+    self._crawler.getBackwardLinks(urls, session);
 
   # Fetches snippets for a given term.
   @cherrypy.expose
@@ -342,17 +370,33 @@ class Page:
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(empty_plot())
 
+  def getQueriesPages(self, session, queries):
+    session["pageRetrievalCriteria"] = "Queries"
+    queries_pages = {}
+    for query in queries.keys():
+        session["selected_queries"] = query
+        pages = self._crawler.getPagesQuery(session)
+        query_page_list = [page["url"][0] for page in pages]
+        queries_pages[query] = query_page_list
+    return queries_pages
+
   @cherrypy.expose
   def statistics(self, session):
     session = json.loads(session)
     pages = self._crawler.getPages(session)
     pages_dates = self._crawler.getPagesDates(session)
+
+    # Grab all queries and remove the ones that have only 1 entry
     queries = self._crawler.getAvailableQueries(session)
+    queries = {x: queries[x] for x in queries if queries[x] > 1}
+
+    queries_data = self.getQueriesPages(session, queries)
     if queries:
-        queries_script, queries_div = queries_dashboard(queries)
+        queries_script, queries_div = queries_dashboard(queries, queries_data)
     else:
         queries_script = None
         queries_div = None
+
     if pages["pages"]:
         if pages_dates:
             timeseries_panel = pages_timeseries(pages_dates)
@@ -365,6 +409,7 @@ class Page:
         endings_script = None
         pages_div = None
         pages_script = None
+
     with open(os.path.join(self._HTML_DIR, u"domains_dashboard.html")) as f:
         template = Template(f.read())
     return template.render(

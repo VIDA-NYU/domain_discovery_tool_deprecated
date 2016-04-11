@@ -6,7 +6,6 @@
  */
 
 var CrawlerVis = function() {
-  var currentCrawler = undefined;
   this.availableTags = [
     'Relevant',
     'Irrelevant',
@@ -33,6 +32,9 @@ var CrawlerVis = function() {
     var currentCrawler = undefined;
     var queries = undefined;
     var tags = undefined;
+    this.CUSTOM_COLORS = ["Coral","GoldenRod","Gold","PaleGreen","MediumTurquoise","SteelBlue","SlateBlue","Purple", "RebeccaPurple"]
+    this.color_index = 0;
+    this.tag_colors = {};
 };
 
 
@@ -132,6 +134,7 @@ CrawlerVis.prototype.initSignalSlotsSeedCrawler = function() {
   SigSlots.connect(__sig__.pages_loaded, this, this.onLoadedPages);
   SigSlots.connect(__sig__.queries_loaded, this, this.onLoadedQueries);
   SigSlots.connect(__sig__.tags_loaded, this, this.onLoadedTags);
+  SigSlots.connect(__sig__.tags_colors_loaded, this, this.onLoadedTagColors);
   SigSlots.connect(__sig__.tag_focus, this, this.onTagFocus);
   SigSlots.connect(__sig__.tag_clicked, this, this.onTagClicked);
   SigSlots.connect(__sig__.tag_action_clicked, this, this.onTagActionClicked);
@@ -363,6 +366,7 @@ CrawlerVis.prototype.setActiveCrawler = function(crawlerId) {
     this.initWordlist();
     // Changes active crawler and forces update.
     DataAccess.setActiveCrawler(crawlerId);
+    DataAccess.loadTagColors(crawlerId);
 };
 
 
@@ -529,9 +533,23 @@ CrawlerVis.prototype.onLoadedQueries = function(queries) {
 CrawlerVis.prototype.onLoadedTags = function(tags) {
     var vis = this;
     vis.tags = tags;
+    var pageRetrievalCriteria = d3.select('#page_retrieval_criteria_select').node().value;
+    if(pageRetrievalCriteria === "More like"){
+	delete vis.tags['Neutral']
+    }
     vis.enableTagSelection(tags);
 };
 
+CrawlerVis.prototype.onLoadedTagColors = function(colors_data) {
+    if(colors_data != undefined) {
+	this.tag_colors = colors_data["colors"];
+	this.color_index = colors_data["index"];
+    }
+    else {
+	this.tag_colors={};
+	this.color_index = 0;
+    }
+};
 
 CrawlerVis.prototype.enableTagSelection = function(tags){
     var vis = this;
@@ -904,31 +922,43 @@ CrawlerVis.prototype.onLoadedPages = function(pagesData) {
       tags: page[3],
     };
     });
-   
+
+    var tags = [];
     for(var i in pages){
 	var page = pages[i];
 	for(var j in page["tags"]){
 	    var tag = page["tags"][j];
-	    if(tag != ""){
-		if(this.availableTags.indexOf(tag) < 0) {
-		    this.tagsGallery.addItem(tag);
-		}
+	    if(tag != "" && tags.indexOf(tag) < 0){
+		tags.push(tag);
 	    }
 	}
     }
-  this.pagesLandscape.setPagesData(pages);
 
-  // Updates last update.
-  var lastUpdate = Utils.parseDateTime(DataAccess.getLastUpdateTime());
-  d3.select('#last_update_info_box')
-    .html('(last update: ' + lastUpdate + ')');
+    for(var i in tags){
+	tag = tags[i];
+	this.tagsGallery.addItem(tag);
+    }
+
+    for(var i in this.tagsGallery.getCustomTags()){
+	tag = this.tagsGallery.getCustomTags()[i];
+	if(tags.indexOf(tag) < 0){
+	    this.tagsGallery.removeItem(tag);
+	}
+    }
+    this.tagsGallery.update();
+    this.pagesLandscape.setPagesData(pages);
     
-  var vis = this;
-  // Fetches statistics for until last update happened.
-  DataAccess.loadPagesSummaryUntilLastUpdate(false, vis.sessionInfo());
-  DataAccess.loadPagesSummaryUntilLastUpdate(true, vis.sessionInfo());
-
-  return pages;
+    // Updates last update.
+    var lastUpdate = Utils.parseDateTime(DataAccess.getLastUpdateTime());
+    d3.select('#last_update_info_box')
+	.html('(last update: ' + lastUpdate + ')');
+    
+    var vis = this;
+    // Fetches statistics for until last update happened.
+    DataAccess.loadPagesSummaryUntilLastUpdate(false, vis.sessionInfo());
+    DataAccess.loadPagesSummaryUntilLastUpdate(true, vis.sessionInfo());
+    
+    return pages;
 };
 
 // Responds to tag focus.
@@ -947,6 +977,8 @@ CrawlerVis.prototype.onTagClicked = function(tag) {
 
 // Responds to clicked tag action.
 CrawlerVis.prototype.onTagActionClicked = function(tag, action, opt_items, refresh_plot) {
+    var vis = this;
+
     // If items is empty array, applies action to selected pages in the landscape.
     if (!opt_items || opt_items.length == 0) {
 	opt_items = this.pagesLandscape.getSelectedItems();
@@ -956,10 +988,13 @@ CrawlerVis.prototype.onTagActionClicked = function(tag, action, opt_items, refre
     var applyTagFlag = action == 'Apply';
     var urls = [];
     var updated_tags = {};
+    var update_color_index = false;
+    
     for (var i in opt_items) {
 	var item = opt_items[i];
 	var tags = item.tags;
-	
+	var color = item.color;
+
 	// Removes tag when the tag is present for item, and applies only when tag is not present for
 	// item.
 	var isTagPresent = item.tags.some(function(itemTag) {
@@ -970,16 +1005,52 @@ CrawlerVis.prototype.onTagActionClicked = function(tag, action, opt_items, refre
 	    
 	    // Updates tag list for items.
 	    if (applyTagFlag) {
+		if(tags.indexOf("") >= 0){
+		    tags.splice(tags.indexOf(""), 1);
+		}
 		tags.push(tag);
+		current_tag = tag;
+		
 	    } else {
 		tags.splice(tags.indexOf(tag), 1);
+		current_tag = tags[tags.length - 1]
+
 	    }
+
+	    // Set color
+	    if(current_tag == "Relevant"){
+		color = "blue";
+	    } else if(current_tag == "Irrelevant"){
+		color = "crimson";
+	    } else if(current_tag == "Neutral" || current_tag == "" || current_tag == undefined){
+		color = "#7F7F7F";
+	    } else {
+		if(current_tag in vis.tag_colors){
+		    color = vis.tag_colors[current_tag];
+		}
+		else {
+		    color = vis.CUSTOM_COLORS[vis.color_index];
+		    update_color_index = true;
+		    vis.tag_colors[tag] = vis.CUSTOM_COLORS[vis.color_index];
+		}
+	    }
+
 	    // Track the updated tags to update the bokeh plot data
-	    updated_tags[item.url] = tags;	
+	    updated_tags[item.url] = {"color": color};
+	    updated_tags[item.url]["tags"] = tags;
 	}
     }
+
+    if(update_color_index){
+	vis.color_index = (vis.color_index + 1) % vis.CUSTOM_COLORS.length;
+	var colors = [];
+	for(var tag_color in vis.tag_colors){
+	    colors.push(tag_color+";"+vis.tag_colors[tag_color]);
+	}
+	var update_colors = {"index": vis.color_index, "colors": colors};
+	DataAccess.updateColors(vis.sessionInfo(), update_colors);
+    }
     
-    var vis = this;
     if (urls.length > 0) {
 	DataAccess.setPagesTag(urls, tag, applyTagFlag, vis.sessionInfo());
     }
@@ -1009,29 +1080,41 @@ CrawlerVis.prototype.onBrushedPagesChanged = function(indexOfSelectedItems) {
     .classed('disabled', indexOfSelectedItems.length == 0);
 };
 
+CrawlerVis.prototype.crawlPages = function(selectedURLs, crawl_type) {
+    var vis = this;
+    DataAccess.crawlPages(selectedURLs, crawl_type, vis.sessionInfo());
+}
 
 /**
  * Initializes addc crawler button
  */
 CrawlerVis.prototype.initAddCrawlerButton = function() {
-  d3.select('#submit_add_crawler').on('click', function() {
+  var submit_add_domain = function() {
       var value = d3.select('#crawler_index_name').node().value;
       __sig__.emit(__sig__.add_crawler, value);
 
       // Hide domain modal after domain has been submitted.
       $("#addDomainModal").modal("hide");
-    });
+  };
+  d3.select('#crawler_index_name').on('change', submit_add_domain);
+  d3.select('#submit_add_crawler').on('click', submit_add_domain);
 };
 
 /**
  * Initializes query web button (useful for seed crawler vis).
  */
 CrawlerVis.prototype.initQueryWebButton = function() {
-  d3.select('#submit_query')
-    .on('click', function() {
+  var search_enter = function() {
       var value = d3.select('#query_box').node().value;
       __sig__.emit(__sig__.query_enter, value);
-    });
+  };
+    
+  d3.select('#query_box')
+	.on('change', search_enter);
+    
+  d3.select('#submit_query')
+	.on('click', search_enter);
+
   // Initializes history of queries.
   this.queriesList = [];
 };
@@ -1076,11 +1159,16 @@ CrawlerVis.prototype.initAddTermButton = function() {
  */
 CrawlerVis.prototype.initFilterButton = function() {
   var vis = this;
-  d3.select('#submit_filter')
-    .on('click', function() {
+  var submit_filter = function() {
       var value = d3.select('#filter_box').node().value;
       __sig__.emit(__sig__.filter_enter, value);
-    });
+  };
+
+  d3.select('#filter_box')
+    .on('change', submit_filter);
+
+  d3.select('#submit_filter')
+    .on('click', submit_filter);
   // Initializes history of filters.
   this.filtersList = [];
 };
@@ -1338,6 +1426,9 @@ CrawlerVis.prototype.sessionInfo = function() {
     var vis = this;
     
     var session = {};
+
+    var search_engine = d3.select('#search_engine').node().value;
+    session['search_engine'] = search_engine;
     
     var algId = d3.select('#selectProjectionAlgorithm').node().value;
     session['activeProjectionAlg'] = algId;
@@ -1374,7 +1465,6 @@ CrawlerVis.prototype.sessionInfo = function() {
     if (pageRetrievalCriteria == 'Tags' || pageRetrievalCriteria == 'More like'){
 	session['selected_tags'] = vis.getCheckedValues('tags_checkbox').toString();
     }
-    
     return session;
 };
 

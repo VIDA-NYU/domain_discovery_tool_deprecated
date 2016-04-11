@@ -23,3 +23,4 @@ dependencies:
     - bokeh=0.10.0
     - topik
     - functools32
+    - networkx=1.11
