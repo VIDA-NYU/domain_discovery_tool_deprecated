@@ -783,7 +783,7 @@ div#urlBgMask {
 }
 
 #query_box {
-    width: 175px;  
+    width: 175px;
   margin-bottom: 10px;
 }
 #submit_query {
@@ -1258,7 +1258,7 @@ h1 {
     border-top: 1px solid #e5e5e5;
     padding-right: 15px;
     padding-left: 15px;
-    background-color: rgb(241, 242, 246); 
+    background-color: rgb(241, 242, 246);
     text-align: center;
 }
 
@@ -1444,6 +1444,10 @@ textarea[name=seeds_text] {
 #topicVis {
     padding-top:0px;
     padding-bottom:0px;
+}
+
+.bk-hbox {
+  height: 40px;
 }
 
 /* .control-label { */

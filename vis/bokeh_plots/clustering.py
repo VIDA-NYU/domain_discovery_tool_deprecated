@@ -9,9 +9,12 @@ from bokeh.models.widgets import RadioButtonGroup, Button
 from bokeh.models.widgets.inputs import TextInput, Select
 from bokeh.embed import components
 
-
 FIGURE_WIDTH=1000
-FIGURE_HEIGHT=375
+FIGURE_HEIGHT=400
+MIN_BORDER_LEFT=10
+MIN_BORDER_RIGHT=10
+MIN_BORDER_TOP=10
+MIN_BORDER_BOTTOM=10
 NEUTRAL_COLOR = "#7F7F7F"
 POSITIVE_COLOR = "blue"
 NEGATIVE_COLOR = "crimson"
@@ -47,7 +50,7 @@ def selection_plot(response, tag_colors):
             if t not in ["Relevant", "Irrelevant", ""]:
                 if t not in custom_tags:
                     custom_tags.append(t)
-                if((tag_colors != None) and (t in tag_colors["colors"])):    
+                if((tag_colors != None) and (t in tag_colors["colors"])):
                     color.append(tag_colors["colors"][t])
                 else:
                     color.append(colormap("Custom"))
@@ -76,8 +79,13 @@ def selection_plot(response, tag_colors):
     p = figure(
         tools="hover,wheel_zoom,reset",
         width=FIGURE_WIDTH,
+        height=FIGURE_HEIGHT,
         responsive=True,
         tags=["clusterPlot"],
+        min_border_bottom=MIN_BORDER_BOTTOM,
+        min_border_top=MIN_BORDER_TOP,
+        min_border_left=MIN_BORDER_LEFT,
+        min_border_right=MIN_BORDER_RIGHT,
     )
 
     # Ensure that the lasso only selects with mouseup, not mousemove.
@@ -136,7 +144,7 @@ def selection_plot(response, tag_colors):
         cb_obj.set("value", "Add custom tag...")
 
         if(tag.indexOf("Add custom tag...") < 0) {
-        //Update the custom tags selection list 
+        //Update the custom tags selection list
         var options = custom_tags_select.get("options");
         if(options.indexOf(tag) < 0){
             options.push(tag);
@@ -164,7 +172,7 @@ def selection_plot(response, tag_colors):
     var inds = source.get('selected')["1d"].indices;
     var data = source.get('data');
     var selected = [];
-    var tag = cb_obj.get("value");    
+    var tag = cb_obj.get("value");
 
     cb_obj.set("value", "Enter tags...")
     if(tag.indexOf("Add custom tag...") < 0) {
@@ -214,7 +222,7 @@ def selection_plot(response, tag_colors):
     custom_tag_input = TextInput(value="Add custom tag...")
     custom_tag_input.callback = CustomJS(args=dict(source=source),
                                          code=textinput_code % ())
-    
+
     custom_tag_select = Select(value="Custom tags", options=custom_tags)
     custom_tag_select.callback = CustomJS(args=dict(source=source),
                                           code=selectinput_code % ())
@@ -228,16 +236,16 @@ def selection_plot(response, tag_colors):
     but_forward_crawl.callback = CustomJS(args=dict(source=source),
                                           code=crawl_code % ("forward"))
 
-    
+
     # Adjust what attributes are displayed by the HoverTool
     hover = p.select(dict(type=HoverTool))
     hover.tooltips = [
         ("urls", "@urls"),
     ]
-    tags = hplot(custom_tag_input, custom_tag_select,  but_neutral, but_relevant, but_irrelevant)
+    tags = hplot(but_neutral, but_relevant, but_irrelevant, custom_tag_input, custom_tag_select)
     tags_crawl = hplot(but_backward_crawl, but_forward_crawl)
     layout = vplot(p, tags, tags_crawl)
-    
+
     # Combine script and div into a single string.
     plot_code = components(layout)
     return plot_code[0] + plot_code[1]
@@ -247,8 +255,13 @@ def empty_plot():
     p = figure(
         tools="hover,wheel_zoom,reset",
         width=FIGURE_WIDTH,
+        height=FIGURE_HEIGHT,
         responsive=True,
         tags=["clusterPlot"],
+        min_border_bottom=MIN_BORDER_BOTTOM,
+        min_border_top=MIN_BORDER_TOP,
+        min_border_left=MIN_BORDER_LEFT,
+        min_border_right=MIN_BORDER_RIGHT,
     )
 
     # Ensure that the lasso only selects with mouseup, not mousemove.
@@ -270,8 +283,8 @@ def empty_plot():
     custom_tag_select = Select(value="Custom tags", options=["Custom tags"])
     but_backward_crawl = Button(label="Backlinks", type="success")
     but_forward_crawl = Button(label="Forwardlinks", type="success")
-    
-    tags = hplot(custom_tag_input, custom_tag_select, but_relevant, but_irrelevant, but_neutral)
+
+    tags = hplot(but_relevant, but_irrelevant, but_neutral, custom_tag_input, custom_tag_select)
     tags_crawl = hplot(but_backward_crawl, but_forward_crawl)
     layout = vform(p, tags, tags_crawl)
 
