@@ -399,8 +399,9 @@ class Page:
     plots_script, plots_div = create_plot_components(df)
     widgets_script, widgets_div = create_table_components(df)
 
-    queries, queries_data = self.getQueriesPages(session)
-    queries_script, queries_div = queries_dashboard(queries, queries_data)
+    # queries, queries_data = self.getQueriesPages(session)
+    # queries_script, queries_div = queries_dashboard(queries, queries_data)
+    queries_script, queries_div = "", ""
 
     template = env.get_template('cross_filter.html')
 
@@ -419,11 +420,16 @@ class Page:
     df = self.make_pages_query(session)
 
     state = cherrypy.request.json
+
     if state['urls']:
         df = df[df.hostname.isin(state['urls'])]
     if state['tlds']:
         df = df[df.tld.isin(state['tlds'])]
+    if state['tags']:
+        df = df[df.tags.apply(lambda x: any((True for t in state['tags'] if t in x)))]
 
+    if len(df) == 0:
+        return
     plots_script, plots_div = create_plot_components(df)
 
     template = env.get_template('cross_filter_plot_area.html')
