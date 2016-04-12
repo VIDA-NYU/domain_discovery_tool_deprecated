@@ -242,7 +242,7 @@ def selection_plot(response, tag_colors):
     hover.tooltips = [
         ("urls", "@urls"),
     ]
-    tags = hplot(custom_tag_input, custom_tag_select,  but_neutral, but_relevant, but_irrelevant)
+    tags = hplot(but_neutral, but_relevant, but_irrelevant, custom_tag_input, custom_tag_select)
     tags_crawl = hplot(but_backward_crawl, but_forward_crawl)
     layout = vplot(p, tags, tags_crawl)
 
@@ -284,7 +284,7 @@ def empty_plot():
     but_backward_crawl = Button(label="Backlinks", type="success")
     but_forward_crawl = Button(label="Forwardlinks", type="success")
 
-    tags = hplot(custom_tag_input, custom_tag_select, but_relevant, but_irrelevant, but_neutral)
+    tags = hplot(but_relevant, but_irrelevant, but_neutral, custom_tag_input, custom_tag_select)
     tags_crawl = hplot(but_backward_crawl, but_forward_crawl)
     layout = vform(p, tags, tags_crawl)
 
