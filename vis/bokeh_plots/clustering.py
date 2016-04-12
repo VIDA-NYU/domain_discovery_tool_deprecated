@@ -9,9 +9,12 @@ from bokeh.models.widgets import RadioButtonGroup, Button
 from bokeh.models.widgets.inputs import TextInput, Select
 from bokeh.embed import components
 
-
 FIGURE_WIDTH=1000
-FIGURE_HEIGHT=375
+FIGURE_HEIGHT=300
+MIN_BORDER_LEFT=10
+MIN_BORDER_RIGHT=10
+MIN_BORDER_TOP=10
+MIN_BORDER_BOTTOM=10
 NEUTRAL_COLOR = "#7F7F7F"
 POSITIVE_COLOR = "blue"
 NEGATIVE_COLOR = "crimson"
@@ -76,12 +79,13 @@ def selection_plot(response, tag_colors):
     p = figure(
         tools="hover,wheel_zoom,reset",
         width=FIGURE_WIDTH,
+        height=FIGURE_HEIGHT,
         responsive=True,
         tags=["clusterPlot"],
-        min_border_bottom=10,
-        min_border_top=10,
-        min_border_left=10,
-        min_border_right=10,
+        min_border_bottom=MIN_BORDER_BOTTOM,
+        min_border_top=MIN_BORDER_TOP,
+        min_border_left=MIN_BORDER_LEFT,
+        min_border_right=MIN_BORDER_RIGHT,
     )
 
     # Ensure that the lasso only selects with mouseup, not mousemove.
@@ -251,12 +255,13 @@ def empty_plot():
     p = figure(
         tools="hover,wheel_zoom,reset",
         width=FIGURE_WIDTH,
+        height=FIGURE_HEIGHT,
         responsive=True,
         tags=["clusterPlot"],
-        min_border_bottom=10,
-        min_border_top=10,
-        min_border_left=10,
-        min_border_right=10,
+        min_border_bottom=MIN_BORDER_BOTTOM,
+        min_border_top=MIN_BORDER_TOP,
+        min_border_left=MIN_BORDER_LEFT,
+        min_border_right=MIN_BORDER_RIGHT,
     )
 
     # Ensure that the lasso only selects with mouseup, not mousemove.
