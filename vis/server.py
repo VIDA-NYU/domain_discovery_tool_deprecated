@@ -370,7 +370,12 @@ class Page:
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(empty_plot())
 
-  def getQueriesPages(self, session, queries):
+  @lru_cache(maxsize=5)
+  def getQueriesPages(self, session):
+    session = json.loads(session)
+    queries = self._crawler.getAvailableQueries(session)
+    queries = {x: queries[x] for x in queries if queries[x] > 1}
+
     session["pageRetrievalCriteria"] = "Queries"
     queries_pages = {}
     for query in queries.keys():
@@ -378,45 +383,7 @@ class Page:
         pages = self._crawler.getPagesQuery(session)
         query_page_list = [page["url"][0] for page in pages]
         queries_pages[query] = query_page_list
-    return queries_pages
-
-  @cherrypy.expose
-  def statistics(self, session):
-    session = json.loads(session)
-    pages = self._crawler.getPages(session)
-    pages_dates = self._crawler.getPagesDates(session)
-
-    # Grab all queries and remove the ones that have only 1 entry
-    queries = self._crawler.getAvailableQueries(session)
-    queries = {x: queries[x] for x in queries if queries[x] > 1}
-
-    queries_data = self.getQueriesPages(session, queries)
-    if queries:
-        queries_script, queries_div = queries_dashboard(queries, queries_data)
-    else:
-        queries_script = None
-        queries_div = None
-
-    if pages["pages"]:
-        if pages_dates:
-            timeseries_panel = pages_timeseries(pages_dates)
-        else:
-            timeseries_panel = None
-        pages_script, pages_div = domains_dashboard(pages, timeseries_panel)
-        endings_script, endings_div = endings_dashboard(pages)
-    else:
-        endings_div = None
-        endings_script = None
-        pages_div = None
-        pages_script = None
-
-    with open(os.path.join(self._HTML_DIR, u"domains_dashboard.html")) as f:
-        template = Template(f.read())
-    return template.render(
-        pages_script=pages_script, pages_div=pages_div,
-        endings_script=endings_script, endings_div=endings_div,
-        queries_script=queries_script, queries_div=queries_div
-    )
+    return queries, queries_pages
 
   @lru_cache(maxsize=5)
   def make_pages_query(self, session):
@@ -427,18 +394,22 @@ class Page:
     return df
 
   @cherrypy.expose
-  def cross_filter(self, session):
+  def statistics(self, session):
     df = self.make_pages_query(session)
-
     plots_script, plots_div = create_plot_components(df)
     widgets_script, widgets_div = create_table_components(df)
+
+    queries, queries_data = self.getQueriesPages(session)
+    queries_script, queries_div = queries_dashboard(queries, queries_data)
 
     template = env.get_template('cross_filter.html')
 
     return template.render(plots_script=plots_script,
                            plots_div=plots_div,
                            widgets_script=widgets_script,
-                           widgets_div=widgets_div
+                           widgets_div=widgets_div,
+                           queries_script=queries_script,
+                           queries_div=queries_div
     )
 
   @cherrypy.expose

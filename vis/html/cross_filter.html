@@ -28,6 +28,11 @@
       {% include 'cross_filter_plot_area.html' %}
       </div>
     </div>
+    <div>
+      <h4>Queries Statistics</h4>
+      {{ queries_script | safe }}
+      {{ queries_div | safe }}
+    </div>
   </div>
 
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
