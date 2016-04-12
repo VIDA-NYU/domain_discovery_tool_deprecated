@@ -443,7 +443,7 @@ svg text {
   width: 100%;
   padding: 10px;
   height: auto;
-  min-height: 400px;
+  min-height: 300px;
 }
 
 #pages_landscape {
