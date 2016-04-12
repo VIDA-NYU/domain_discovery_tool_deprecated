@@ -10,7 +10,7 @@ from bokeh.models.widgets.inputs import TextInput, Select
 from bokeh.embed import components
 
 FIGURE_WIDTH=1000
-FIGURE_HEIGHT=300
+FIGURE_HEIGHT=400
 MIN_BORDER_LEFT=10
 MIN_BORDER_RIGHT=10
 MIN_BORDER_TOP=10
