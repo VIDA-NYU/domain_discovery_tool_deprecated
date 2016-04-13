@@ -85,7 +85,7 @@ def most_common_url_table(df):
 def site_tld_table(df):
     source = ColumnDataSource(df.groupby('tld')
                                 .count()
-                                .sort_values('url',ascending=False)
+                                .sort_values('url', ascending=False)
                                 .reset_index(),
                               callback=js_callback)
     columns = [TableColumn(field="tld", title="Ending"),
@@ -96,8 +96,10 @@ def site_tld_table(df):
 
 def tags_table(df):
     data = Counter(list(chain(*df.tags.tolist())))
-    source = ColumnDataSource(dict(count=data.values(),
-                                   tags=data.keys()),
+    tags = [k for k, v in sorted(data.items(), key=lambda x: x[1], reverse=True)]
+    counts = [v for k, v in sorted(data.items(), key=lambda x: x[1], reverse=True)]
+
+    source = ColumnDataSource(data=dict(count=counts, tags=tags),
                               callback=js_callback)
 
     columns = [TableColumn(field='tags', title="Tags"),
