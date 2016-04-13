@@ -427,6 +427,10 @@ class Page:
         df = df[df.tld.isin(state['tlds'])]
     if state['tags']:
         df = df[df.tags.apply(lambda x: any((True for t in state['tags'] if t in x)))]
+    if state['datetimepicker_start']:
+        df = df[state['datetimepicker_start']:]
+    if state['datetimepicker_end']:
+        df = df[:state['datetimepicker_end']]
 
     if len(df) == 0:
         return

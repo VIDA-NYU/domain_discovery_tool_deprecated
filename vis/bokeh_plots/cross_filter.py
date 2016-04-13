@@ -17,6 +17,9 @@ js_callback = CustomJS(code="""
       for (i=0; i<data_table_ids.length; i++) {
         global_state[data_table_ids[i]] = get_table_state(data_table_ids[i]);
       }
+
+      global_state['datetimepicker_start'] = $('#datetimepicker_start').data('date') || ''
+      global_state['datetimepicker_end'] = $('#datetimepicker_end').data('date') || ''
       $.ajax({
         type: "POST",
         url: '/update_cross_filter_plots' + window.location.search, //session info
@@ -107,7 +110,7 @@ def tags_table(df):
                ]
 
     t = DataTable(source=source, columns=columns, row_headers=False,
-                  width=400, height=120)
+                  width=400, height=140)
     return t
 
 def create_table_components(df):
