@@ -67,7 +67,8 @@ def most_common_url_bar(df):
     return p
 
 def pages_queried_timeseries(df, rule='1T', width=600, height=200):
-    ts = df.resample(rule, how='count').cumsum()
+    ts = df[['url']].resample(rule, how='count').cumsum()
+    
     ts = pd.concat([ts[:1], ts]) # prepend 0-value for Line chart compat
     ts.iloc[0]['url'] = 0
 
@@ -78,7 +79,7 @@ def pages_queried_timeseries(df, rule='1T', width=600, height=200):
                min_border_left=MIN_BORDER, min_border_right=10,
                min_border_top=MIN_BORDER, min_border_bottom=10)
     p.line(x='timestamp', y='url', line_width=3, line_alpha=0.8, source=source)
-    
+
     return p
 
 def create_plot_components(df):
