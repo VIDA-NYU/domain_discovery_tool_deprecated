@@ -1,13 +1,16 @@
 from collections import Counter
 from itertools import chain
 
-from bokeh.charts import Bar, Line
+from bokeh.charts import Bar
+from bokeh.plotting import figure
 from bokeh.embed import components
 from bokeh.models.widgets import DataTable, TableColumn
 from bokeh.models import ColumnDataSource, CustomJS
 import numpy as np
 import pandas as pd
 from urlparse import urlparse
+
+MIN_BORDER=10
 
 js_callback = CustomJS(code="""
     var data_table_ids = ['urls', 'tlds', 'tags'];
@@ -63,13 +66,19 @@ def most_common_url_bar(df):
             label='hostname', values='url', xlabel='Sites', ylabel='Occurences')
     return p
 
-def pages_queried_timeseries(df, rule='30S'):
+def pages_queried_timeseries(df, rule='1T', width=600, height=200):
     ts = df.resample(rule, how='count').cumsum()
-    ts['msse'] = ts.index.astype(np.int64) // 10**6
+    ts = pd.concat([ts[:1], ts]) # prepend 0-value for Line chart compat
+    ts.iloc[0]['url'] = 0
 
-    p = Line(ts, x='msse', y='url', ylabel='No. Pages Queried')
-    p.renderers.pop(1) # hack to remove old linear x-axis
-    p.make_axis('x', 'below', 'datetime', 'Time') # add new datetime axis
+    source = ColumnDataSource(ts)
+
+    p = figure(width=width, height=height, title="No. Pages Queried",
+               x_axis_type='datetime', tools='box_zoom, reset',
+               min_border_left=MIN_BORDER, min_border_right=10,
+               min_border_top=MIN_BORDER, min_border_bottom=10)
+    p.line(x='timestamp', y='url', line_width=3, line_alpha=0.8, source=source)
+    
     return p
 
 def create_plot_components(df):
