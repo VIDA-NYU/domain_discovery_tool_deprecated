@@ -64,8 +64,12 @@ def most_common_url_bar(df):
     return p
 
 def pages_queried_timeseries(df, rule='30S'):
-    p = Line(df.resample(rule, how='count').cumsum(),
-             y='url', xlabel='Time', ylabel='No. Pages Queried')
+    ts = df.resample(rule, how='count').cumsum()
+    ts['msse'] = ts.index.astype(np.int64) // 10**6
+
+    p = Line(ts, x='msse', y='url', ylabel='No. Pages Queried')
+    p.renderers.pop(1) # hack to remove old linear x-axis
+    p.make_axis('x', 'below', 'datetime', 'Time') # add new datetime axis
     return p
 
 def create_plot_components(df):
