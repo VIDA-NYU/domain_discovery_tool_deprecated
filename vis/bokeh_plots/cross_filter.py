@@ -10,6 +10,8 @@ import numpy as np
 import pandas as pd
 from urlparse import urlparse
 
+from .utils import empty_plot_on_empty_df
+
 MIN_BORDER=10
 
 js_callback = CustomJS(code="""
@@ -61,29 +63,54 @@ def create_queryframe(pages, dates):
 
     return df
 
-def most_common_url_bar(df):
-    p = Bar(df.groupby('hostname').count().sort_values('url',ascending=False).reset_index(),
-            label='hostname', values='url', xlabel='Sites', ylabel='Occurences')
+@empty_plot_on_empty_df
+def most_common_url_bar(df, title="Frequency of Pages Scraped",
+                        plot_width=600, plot_height=400, top_n=10):
+
+    bars = df[['hostname','url']].groupby('hostname').count().sort_values('url', ascending=False)
+    bars['y'] = bars.url / 2.
+
+    if top_n:
+        bars = bars.iloc[:10]
+
+    source = ColumnDataSource(bars)
+
+    p = figure(plot_width=plot_width, plot_height=plot_height, title=title,
+               tools='box_zoom, reset',
+               min_border_left=50, min_border_right=50,
+               min_border_top=MIN_BORDER, min_border_bottom=MIN_BORDER,
+               x_range=bars.index.tolist(), y_range=(0,bars.url.max()))
+    p.xgrid.grid_line_color = None
+    p.xaxis.major_label_orientation = 0.785
+    p.logo=None
+
+    p.rect(x='hostname', y='y', height='url', width=0.8, source=source)
+
     return p
 
-def pages_queried_timeseries(df, rule='1T', width=600, height=200):
+@empty_plot_on_empty_df
+def pages_queried_timeseries(df, title="No. Pages Queried",
+                             plot_width=600, plot_height=200, rule='1T'):
+
     ts = df[['url']].resample(rule, how='count').cumsum()
-    
+
     ts = pd.concat([ts[:1], ts]) # prepend 0-value for Line chart compat
     ts.iloc[0]['url'] = 0
 
     source = ColumnDataSource(ts)
 
-    p = figure(width=width, height=height, title="No. Pages Queried",
+    p = figure(plot_width=plot_width, plot_height=plot_height, title=title,
                x_axis_type='datetime', tools='box_zoom, reset',
                min_border_left=MIN_BORDER, min_border_right=10,
                min_border_top=MIN_BORDER, min_border_bottom=10)
+    p.logo=None
+
     p.line(x='timestamp', y='url', line_width=3, line_alpha=0.8, source=source)
 
     return p
 
-def create_plot_components(df):
-    bar = most_common_url_bar(df)
+def create_plot_components(df, **kwargs):
+    bar = most_common_url_bar(df, **kwargs)
     ts = pages_queried_timeseries(df)
     return components(dict(bar=bar, ts=ts))
 
