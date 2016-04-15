@@ -4,6 +4,7 @@ from itertools import chain
 from bokeh.charts import Bar
 from bokeh.plotting import figure
 from bokeh.embed import components
+from bokeh.io import VBox
 from bokeh.models.widgets import DataTable, TableColumn
 from bokeh.models import ColumnDataSource, CustomJS
 import numpy as np
@@ -124,7 +125,7 @@ def most_common_url_table(df):
                TableColumn(field="url", title="Count")]
     t = DataTable(source=source, columns=columns,
                   row_headers=False, width=400, height=280)
-    return t
+    return VBox(t)
 
 def site_tld_table(df):
     source = ColumnDataSource(df.groupby('tld')
@@ -136,7 +137,7 @@ def site_tld_table(df):
                TableColumn(field="url", title="Count")]
     t = DataTable(source=source, columns=columns,
                   row_headers=False, width=400, height=80)
-    return t
+    return VBox(t)
 
 def tags_table(df):
     data = Counter(list(chain(*df.tags.tolist())))
@@ -152,7 +153,7 @@ def tags_table(df):
 
     t = DataTable(source=source, columns=columns, row_headers=False,
                   width=400, height=140)
-    return t
+    return VBox(t)
 
 def create_table_components(df):
     urls = most_common_url_table(df)
