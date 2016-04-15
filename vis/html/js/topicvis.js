@@ -58,7 +58,7 @@
   $("#ldavisPlot, #termitePlot").on("click", function(){
     exports.visSettings.visualizer = $(this).attr("value");
     exports.visSettings.domain = $('input[name="crawlerRadio"]:checked')
-      .attr("placeholder").toLowerCase()
+	  .attr("placeholder").toLowerCase().replace(" ","_")
     var url = "/topicvis?" + $.param(exports.visSettings);
     $(this).attr("href", url);
   });

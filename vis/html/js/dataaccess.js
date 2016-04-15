@@ -304,11 +304,19 @@ var DataAccess = (function() {
       }
   };
 
-    pub.crawlPages = function(urls, crawl_type, session){
-      if(crawl_type === "forward")
+  pub.crawlPages = function(urls, crawl_type, session){
+      if(crawl_type === "forward"){
+	  document.getElementById("status_panel").innerHTML = 'Querying forward links in selected pages...see page summary for real-time page download status';
+	  $(document).ready(function() { $(".status_box").fadeIn(); });
+	  $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
 	  runQueryForCurrentCrawler('/getForwardLinks', {'urls': urls.join('|'), 'session': JSON.stringify(session)});
-      else if(crawl_type === "backward") 
+      }
+      else if(crawl_type === "backward"){
+	  document.getElementById("status_panel").innerHTML = 'Querying back links of selected pages...see page summary for real-time page download status';
+	  $(document).ready(function() { $(".status_box").fadeIn(); });
+	  $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
 	  runQueryForCurrentCrawler('/getBackwardLinks', {'urls': urls.join('|'), 'session': JSON.stringify(session)});
+      }
   };
     
   // Loads snippets for a given term.
