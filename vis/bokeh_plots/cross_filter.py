@@ -6,12 +6,12 @@ from bokeh.plotting import figure
 from bokeh.embed import components
 from bokeh.io import VBox
 from bokeh.models.widgets import DataTable, TableColumn
-from bokeh.models import ColumnDataSource, CustomJS
+from bokeh.models import ColumnDataSource, CustomJS, DatetimeTickFormatter
 import numpy as np
 import pandas as pd
 from urlparse import urlparse
 
-from .utils import empty_plot_on_empty_df
+from .utils import DATETIME_FORMAT, empty_plot_on_empty_df
 
 MIN_BORDER=10
 
@@ -105,6 +105,7 @@ def pages_queried_timeseries(df, title="No. Pages Queried",
                min_border_left=MIN_BORDER, min_border_right=10,
                min_border_top=MIN_BORDER, min_border_bottom=10)
     p.logo=None
+    p.xaxis[0].formatter = DatetimeTickFormatter(formats=DATETIME_FORMAT)
 
     p.line(x='timestamp', y='url', line_width=3, line_alpha=0.8, source=source)
 

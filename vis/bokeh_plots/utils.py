@@ -1,6 +1,17 @@
 from bokeh.plotting import figure
 from functools32 import wraps
 
+DATETIME_FORMAT = dict(
+    microseconds=["%m/%d %X"],
+    milliseconds=["%X"],
+    seconds=["%X"],
+    minsec=["%X"],
+    minutes=["%H:%M"],
+    hourmin=["%H:%M"],
+    hours=["%H:%M"],
+    days=["%m/%d"],
+)
+
 def make_empty_plot(title, plot_width, plot_height):
     return figure(title=title, plot_height=plot_height, plot_width=plot_width,
                   tools="", logo=None)
