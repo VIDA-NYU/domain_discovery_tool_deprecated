@@ -64,6 +64,18 @@ def create_queryframe(pages, dates):
 
     return df
 
+def parse_es_response(response):
+    df = pd.DataFrame(response)
+    df['query'] = df['query'].apply(lambda x: x[0])
+    df['retrieved'] = pd.DatetimeIndex(df.retrieved.apply(lambda x: x[0]))
+    df['url'] = df.url.apply(lambda x: x[0])
+    df['hostname'] = [urlparse(x).hostname.lstrip('www.') for x in df.url]
+    df['tld'] = [x[x.rfind('.'):] for x in df.hostname]
+    df['tag'] = df.tag.apply(lambda x:[] if isinstance(x, float) else x) # fill nan with []
+
+    return df.set_index('retrieved').sort_index()
+
+
 @empty_plot_on_empty_df
 def most_common_url_bar(df, title="Frequency of Pages Scraped",
                         plot_width=600, plot_height=400, top_n=10):
