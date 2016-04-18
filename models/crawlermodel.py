@@ -115,10 +115,6 @@ class CrawlerModel:
     es_info = self.esInfo(session['domainId'])
     return get_unique_values('query', self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)
 
-  def getQueriesPages(self, session):
-    es_info = self.esInfo(session['domainId'])
-    return get_queries_pages('query', self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)
-
   def getAvailableTags(self, session):
     es_info = self.esInfo(session['domainId'])
 
