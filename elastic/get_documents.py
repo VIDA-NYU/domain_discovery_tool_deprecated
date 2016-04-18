@@ -1,6 +1,5 @@
-#!/usr/bin/python
-from os import environ
 from config import es as default_es
+from utils.stop_words import STOP_WORDS
 
 def get_documents(terms, term_field, fields=["text"], es_index='memex', es_doc_type='page', es=None):
     if es is None:
@@ -20,7 +19,7 @@ def get_documents(terms, term_field, fields=["text"], es_index='memex', es_doc_t
                 "fields": fields
             }
 
-            res = es.search(body=query, 
+            res = es.search(body=query,
                             index=es_index,
                             doc_type=es_doc_type)
 
@@ -34,8 +33,8 @@ def get_documents(terms, term_field, fields=["text"], es_index='memex', es_doc_t
                         record = hit['fields']
                     record['id'] =hit['_id']
                     records.append(record)
-                results[term] = records           
-            
+                results[term] = records
+
     return results
 
 
@@ -45,16 +44,13 @@ def get_more_like_this(urls, fields=[], pageCount=200, es_index='memex', es_doc_
 
     docs = [{"_index": es_index, "_type": es_doc_type, "_id": url} for url in urls]
 
-    with open(environ['DDT_HOME']+'/elastic/stopwords.txt', 'r') as f:
-        stopwords = [word.strip() for word in f.readlines()] 
-
     query = {
         "query":{
             "more_like_this": {
                 "fields" : ["text"],
                 "docs": docs,
                 "min_term_freq": 1,
-                "stop_words": stopwords
+                "stop_words": STOP_WORDS
             }
         },
         "fields": fields,
@@ -70,7 +66,7 @@ def get_more_like_this(urls, fields=[], pageCount=200, es_index='memex', es_doc_
         fields['id'] = hit['_id']
         fields['score'] = hit['_score']
         results.append(fields)
- 
+
     return results
 
 def get_most_recent_documents(opt_maxNumberOfPages = 200, mapping=None, fields = [], opt_filter = None, es_index = 'memex', es_doc_type = 'page', es = None):
@@ -82,7 +78,7 @@ def get_most_recent_documents(opt_maxNumberOfPages = 200, mapping=None, fields =
     if es is None:
         es = default_es
 
-    query = { 
+    query = {
         "size": opt_maxNumberOfPages,
         "sort": [
             {
@@ -96,7 +92,7 @@ def get_most_recent_documents(opt_maxNumberOfPages = 200, mapping=None, fields =
     match_q = {
         "match_all": {}
     }
-            
+
     if not mapping.get("content_type") is None:
         match_q = {
             "match": {
@@ -120,15 +116,15 @@ def get_most_recent_documents(opt_maxNumberOfPages = 200, mapping=None, fields =
         query["query"] = {
             "query_string": {
                 "query": "(" + mapping['text'] + ":" + opt_filter.replace('"', '\"') + ")"
-            }   
+            }
         }
-    
+
     if len(fields) > 0:
         query["fields"] = fields
 
     res = es.search(body=query, index = es_index, doc_type = es_doc_type)
     hits = res['hits']['hits']
-    
+
     results = []
     for hit in hits:
         fields = hit['fields']
@@ -151,7 +147,7 @@ def get_all_ids(pageCount = 100000, es_index = 'memex', es_doc_type = 'page', es
     try:
         res = es.search(body=query, index = es_index, doc_type = es_doc_type, size = pageCount)
         hits = res['hits']['hits']
-    
+
         results = []
         for hit in hits:
             fields = hit['fields']
@@ -166,7 +162,7 @@ def get_all_ids(pageCount = 100000, es_index = 'memex', es_doc_type = 'page', es
 def get_documents_by_id(ids=[], fields=[], es_index = 'memex', es_doc_type = 'page', es = None):
     if es is None:
         es = default_es
-        
+
     query = {
         "query": {
             "ids": {
@@ -174,14 +170,14 @@ def get_documents_by_id(ids=[], fields=[], es_index = 'memex', es_doc_type = 'pa
             }
         },
         "fields": fields
-    } 
+    }
 
     res = es.search(body=query, index = es_index, doc_type = es_doc_type, size=len(ids))
 
     hits = res['hits']['hits']
 
     results = []
-    for hit in hits: 
+    for hit in hits:
         if hit.get('fields'):
             fields = hit['fields']
             fields['id'] = hit['_id']
@@ -202,7 +198,7 @@ def get_pages_datetimes(index_name, es=None):
             timestamp = item["_source"]["retrieved"]
             url_info.append((url, timestamp))
         except KeyError:
-            print "\nRetrieved not found for ",url, "\n" 
+            print "\nRetrieved not found for ",url, "\n"
     return url_info
 
 

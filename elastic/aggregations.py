@@ -1,13 +1,9 @@
-#!/usr/bin/python
-from os import environ
 from config import es as default_es
+from utils.stop_words import STOP_WORDS
 
 def get_significant_terms(ids, termCount = 50, mapping=None, es_index='memex', es_doc_type='page', es=None):
     if es is None:
         es = default_es
-
-    with open(environ['DDT_HOME']+'/elastic/stopwords.txt', 'r') as f:
-        stopwords = [word.strip() for word in f.readlines()]
 
     query = {
         "query":{
@@ -17,10 +13,10 @@ def get_significant_terms(ids, termCount = 50, mapping=None, es_index='memex', e
         },
         "aggregations" : {
             "significantTerms" : {
-                "significant_terms" : { 
+                "significant_terms" : {
                     "field" : mapping["text"],
                     "size" : termCount,
-                    "exclude": stopwords
+                    "exclude": STOP_WORDS
                 }
             },
         },
@@ -35,7 +31,7 @@ def get_significant_terms(ids, termCount = 50, mapping=None, es_index='memex', e
 def get_unique_values(field, size, es_index='memex', es_doc_type='page', es=None):
     if es is None:
         es = default_es
-        
+
 
     query = {
         "size": 0,
@@ -43,11 +39,10 @@ def get_unique_values(field, size, es_index='memex', es_doc_type='page', es=None
             "unique_values" : {
                 "terms" : { "field" : field,
                             "size": size}
-                
+
             }
         }
     }
     res = es.search(body=query, index=es_index, doc_type=es_doc_type, timeout=30)
 
     return {item['key']:item['doc_count'] for item in res['aggregations']['unique_values']['buckets']}
-    

@@ -1,4 +1,5 @@
 from datetime import datetime
+
 from config import es as default_es
 
 def get_available_domains(es=None):
