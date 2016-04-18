@@ -15,7 +15,6 @@ from bokeh_plots.domains_dashboard import (domains_dashboard, pages_timeseries,
   endings_dashboard)
 from bokeh_plots.cross_filter import (parse_es_response,
   create_table_components, create_plot_components)
-from bokeh_plots.queries_dashboard import queries_dashboard
 from crawler_model_adapter import *
 
 env = Environment(loader=FileSystemLoader('vis/html'))
@@ -371,21 +370,6 @@ class Page:
     return json.dumps(empty_plot())
 
   @lru_cache(maxsize=5)
-  def getQueriesPages(self, session):
-    session = json.loads(session)
-    queries = self._crawler.getAvailableQueries(session)
-    queries = {x: queries[x] for x in queries if queries[x] > 1}
-
-    session["pageRetrievalCriteria"] = "Queries"
-    queries_pages = {}
-    for query in queries.keys():
-        session["selected_queries"] = query
-        pages = self._crawler.getPagesQuery(session)
-        query_page_list = [page["url"][0] for page in pages]
-        queries_pages[query] = query_page_list
-    return queries, queries_pages
-
-  @lru_cache(maxsize=5)
   def make_pages_query(self, session):
     session = json.loads(session)
     pages = self._crawler.getPlottingData(session)
@@ -413,6 +397,7 @@ class Page:
 
     state = cherrypy.request.json
 
+    ## applying the 'filter' of the cross_filter
     if state['urls']:
         df = df[df.hostname.isin(state['urls'])]
     if state['tlds']:
@@ -420,7 +405,7 @@ class Page:
     if state['tags']:
         df = df[df.tags.apply(lambda x: any((True for t in state['tags'] if t in x)))]
     if state['queries']:
-        df = df[df['query'].isin(state['queries'])]        
+        df = df[df['query'].isin(state['queries'])]
     if state['datetimepicker_start']:
         df = df[state['datetimepicker_start']:]
     if state['datetimepicker_end']:
