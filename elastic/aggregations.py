@@ -46,3 +46,29 @@ def get_unique_values(field, size, es_index='memex', es_doc_type='page', es=None
     res = es.search(body=query, index=es_index, doc_type=es_doc_type, timeout=30)
 
     return {item['key']:item['doc_count'] for item in res['aggregations']['unique_values']['buckets']}
+
+def get_queries_pages(size, es_index='memex', es_doc_type='page', es=None):
+    if es is None:
+        es = default_es
+
+    query = {
+        "size": 0,
+        "aggregations": {
+            "queries": {
+                "terms": {
+                    "field": field,
+                    "size": size
+                },
+                "aggregations": {
+                    "urls": {
+                        "terms": {
+                            "field": "url",
+                            "size": size
+                        },
+                    }
+                }
+            }
+        }
+    }
+    res = es.search(body=query, index=es_index, doc_type=es_doc_type, timeout=30)
+    return res

@@ -399,10 +399,8 @@ class Page:
     plots_script, plots_div = create_plot_components(df)
     widgets_script, widgets_div = create_table_components(df)
 
-    # queries, queries_data = self.getQueriesPages(session)
-    # queries, second = self.getQueriesPages(session)
-    # print(queries, second)
-    # queries_script, queries_div = queries_dashboard(queries, queries_data)
+    queries, queries_data = self.getQueriesPages(session)
+    queries_script, queries_div = queries_dashboard(queries, queries_data)
     queries_script, queries_div = "", ""
 
     template = env.get_template('cross_filter.html')
