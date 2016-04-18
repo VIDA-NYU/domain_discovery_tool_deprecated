@@ -1,12 +1,13 @@
 from collections import Counter
-from itertools import chain
+from itertools import chain, combinations
 
 from bokeh.charts import Bar
 from bokeh.plotting import figure
 from bokeh.embed import components
 from bokeh.io import VBox
 from bokeh.models.widgets import DataTable, TableColumn
-from bokeh.models import ColumnDataSource, CustomJS, DatetimeTickFormatter
+from bokeh.models import ColumnDataSource, CustomJS, DatetimeTickFormatter, HoverTool
+import networkx as nx
 import numpy as np
 import pandas as pd
 from urlparse import urlparse
@@ -16,7 +17,7 @@ from .utils import DATETIME_FORMAT, empty_plot_on_empty_df
 MIN_BORDER=10
 
 js_callback = CustomJS(code="""
-    var data_table_ids = ['urls', 'tlds', 'tags'];
+    var data_table_ids = ['urls', 'tlds', 'tags', 'queries'];
 
     setTimeout(function() { //need timeout to wait for class change
       var global_state = {};
@@ -48,22 +49,6 @@ js_callback = CustomJS(code="""
     };
 """)
 
-def create_queryframe(pages, dates):
-    dates = pd.DataFrame(dates, columns=['url', 'timestamp'])
-    dates['timestamp'] = pd.DatetimeIndex(dates.timestamp)
-
-    pages = pd.DataFrame(pages["pages"], columns=['url', 'x', 'y', 'tags'])
-    pages['url'] = [x[0] for x in pages.url]
-
-    df = pd.merge(left=dates, right=pages, on='url', how='left')
-    df['hostname'] = [urlparse(x).hostname.lstrip('www.') for x in df.url]
-    df['tld'] = [x[x.rfind('.'):] for x in df.hostname]
-    df['tags'] = df.tags.apply(lambda x:[] if isinstance(x, float) else x) # fill nan with []
-
-    df.set_index('timestamp', inplace=True)
-
-    return df
-
 def parse_es_response(response):
     df = pd.DataFrame(response)
     df['query'] = df['query'].apply(lambda x: x[0])
@@ -75,6 +60,25 @@ def parse_es_response(response):
 
     return df.set_index('retrieved').sort_index()
 
+def calculate_graph_coords(df):
+    df2 = df.groupby('query').count().sort_index()
+
+    graph = nx.Graph()
+    graph.add_nodes_from(df2.index)
+    graph_coords = nx.circular_layout(graph)
+
+    return pd.concat([df2, pd.DataFrame(graph_coords, index=["x", "y"]).T], axis=1)
+
+def calculate_query_correlation(df):
+    key_combos = combinations(df['query'].unique(), r=2)
+
+    correlation = dict()
+
+    for i in key_combos:
+        k0 = df[df['query'].isin([i[0]])]['hostname']
+        k1 = df[df['query'].isin([i[1]])]['hostname']
+        correlation[i] = len(set(k0).intersection(k1))
+    return correlation
 
 @empty_plot_on_empty_df
 def most_common_url_bar(df, title="Frequency of Pages Scraped",
@@ -119,14 +123,40 @@ def pages_queried_timeseries(df, title="No. Pages Queried",
     p.logo=None
     p.xaxis[0].formatter = DatetimeTickFormatter(formats=DATETIME_FORMAT)
 
-    p.line(x='timestamp', y='url', line_width=3, line_alpha=0.8, source=source)
+    p.line(x='retrieved', y='url', line_width=3, line_alpha=0.8, source=source)
 
     return p
 
-def create_plot_components(df, **kwargs):
-    bar = most_common_url_bar(df, **kwargs)
-    ts = pages_queried_timeseries(df)
-    return components(dict(bar=bar, ts=ts))
+def queries_plot(df):
+    df2 = calculate_graph_coords(df)
+
+    source = ColumnDataSource(df2)
+
+    line_coords = calculate_query_correlation(df)
+
+    hover = HoverTool(
+        tooltips=[
+            ("Query", "@query"),
+            ("No. Results", "@url"),
+        ],
+        names=["nodes"],
+    )
+
+    plot = figure(plot_height=584, tools=[hover, "wheel_zoom", "reset"])
+    plot.axis.visible = None
+    plot.xgrid.grid_line_color = None
+    plot.ygrid.grid_line_color = None
+
+    # Create connection lines.
+    for k, v in line_coords.items():
+        plot.line([df2.loc[k[0]]['x'], df2.loc[k[1]]['x']],
+                  [df2.loc[k[0]]['y'], df2.loc[k[1]]['y']],
+                  line_width=v)
+
+    plot.circle("x", "y", size="url", color="green", alpha=1, source=source,
+            name="nodes")
+
+    return plot
 
 def most_common_url_table(df):
     source = ColumnDataSource(df.groupby('hostname')
@@ -153,7 +183,7 @@ def site_tld_table(df):
     return VBox(t)
 
 def tags_table(df):
-    data = Counter(list(chain(*df.tags.tolist())))
+    data = Counter(list(chain(*df.tag.tolist())))
     tags = [k for k, v in sorted(data.items(), key=lambda x: x[1], reverse=True)]
     counts = [v for k, v in sorted(data.items(), key=lambda x: x[1], reverse=True)]
 
@@ -168,8 +198,30 @@ def tags_table(df):
                   width=400, height=140)
     return VBox(t)
 
+def queries_table(df):
+    source = ColumnDataSource(df.groupby(by='query')
+                                .count()
+                                .sort_values('url', ascending=False)
+                                .reset_index(),
+                              callback=js_callback)
+
+    columns = [TableColumn(field="query", title="Query"),
+               TableColumn(field="url", title="Pages")
+               ]
+
+    t = DataTable(source=source, columns=columns, row_headers=False,
+                  width=400, height=280)
+    return VBox(t)
+
+def create_plot_components(df, **kwargs):
+    bar = most_common_url_bar(df, **kwargs)
+    ts = pages_queried_timeseries(df)
+    queries = queries_plot(df)
+    return components(dict(bar=bar, ts=ts, queries=queries))
+
 def create_table_components(df):
     urls = most_common_url_table(df)
     tlds = site_tld_table(df)
     tags = tags_table(df)
-    return components(dict(urls=urls, tlds=tlds, tags=tags))
+    queries = queries_table(df)
+    return components(dict(urls=urls, tlds=tlds, tags=tags, queries=queries))

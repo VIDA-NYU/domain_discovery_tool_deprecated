@@ -19,6 +19,7 @@
         <div id="urls">{{ widgets_div['urls'] | safe }}</div>
         <div id="tlds">{{ widgets_div['tlds'] | safe }}</div>
         <div id="tags">{{ widgets_div['tags'] | safe }}</div>
+        <div id="queries">{{ widgets_div['queries'] | safe }}</div>
         <div class="form-group">
             <div class='input-group date' id='datetimepicker_start'>
                 <input type='text' class="form-control" />
@@ -44,11 +45,6 @@
       <div id="plot_area" class="panel-body">
       {% include 'cross_filter_plot_area.html' %}
       </div>
-    </div>
-    <div>
-      <h4>Queries Statistics</h4>
-      {{ queries_script | safe }}
-      {{ queries_div | safe }}
     </div>
   </div>
 

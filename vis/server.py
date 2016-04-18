@@ -13,7 +13,7 @@ from jinja2 import Template, Environment, FileSystemLoader
 from bokeh_plots.clustering import selection_plot, empty_plot
 from bokeh_plots.domains_dashboard import (domains_dashboard, pages_timeseries,
   endings_dashboard)
-from bokeh_plots.cross_filter import (create_queryframe,
+from bokeh_plots.cross_filter import (parse_es_response,
   create_table_components, create_plot_components)
 from bokeh_plots.queries_dashboard import queries_dashboard
 from crawler_model_adapter import *
@@ -388,10 +388,8 @@ class Page:
   @lru_cache(maxsize=5)
   def make_pages_query(self, session):
     session = json.loads(session)
-    pages = self._crawler.getPages(session)
-    dates = self._crawler.getPagesDates(session)
-    df = create_queryframe(pages, dates)
-    return df
+    pages = self._crawler.getPlottingData(session)
+    return parse_es_response(pages)
 
   @cherrypy.expose
   def statistics(self, session):
@@ -399,18 +397,12 @@ class Page:
     plots_script, plots_div = create_plot_components(df)
     widgets_script, widgets_div = create_table_components(df)
 
-    queries, queries_data = self.getQueriesPages(session)
-    queries_script, queries_div = queries_dashboard(queries, queries_data)
-    # queries_script, queries_div = "", ""
-
     template = env.get_template('cross_filter.html')
 
     return template.render(plots_script=plots_script,
                            plots_div=plots_div,
                            widgets_script=widgets_script,
                            widgets_div=widgets_div,
-                           queries_script=queries_script,
-                           queries_div=queries_div
     )
 
   @cherrypy.expose
@@ -427,6 +419,8 @@ class Page:
         df = df[df.tld.isin(state['tlds'])]
     if state['tags']:
         df = df[df.tags.apply(lambda x: any((True for t in state['tags'] if t in x)))]
+    if state['queries']:
+        df = df[df['query'].isin(state['queries'])]        
     if state['datetimepicker_start']:
         df = df[state['datetimepicker_start']:]
     if state['datetimepicker_end']:
