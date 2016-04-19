@@ -81,8 +81,7 @@ def calculate_query_correlation(df):
     return correlation
 
 @empty_plot_on_empty_df
-def most_common_url_bar(df, title="Frequency of Pages Scraped",
-                        plot_width=600, plot_height=400, top_n=10):
+def most_common_url_bar(df, plot_width=600, plot_height=200, top_n=10):
 
     bars = df[['hostname','url']].groupby('hostname').count().sort_values('url')
     bars['y'] = bars.url / 2.
@@ -92,13 +91,14 @@ def most_common_url_bar(df, title="Frequency of Pages Scraped",
 
     source = ColumnDataSource(bars)
 
-    p = figure(plot_width=plot_width, plot_height=plot_height, title=title,
+    p = figure(plot_width=plot_width, plot_height=plot_height,
                tools='box_zoom, reset',
                min_border_left=50, min_border_right=50,
                min_border_top=MIN_BORDER, min_border_bottom=MIN_BORDER,
                x_range=(0,bars.url.max()), y_range=bars.index.tolist()
                )
     p.ygrid.grid_line_color = None
+    p.xaxis.axis_label = "Frequency of Pages Scraped"
     p.logo=None
 
     p.rect(x='y', y='hostname', height=0.8, width='url', source=source)
@@ -106,8 +106,7 @@ def most_common_url_bar(df, title="Frequency of Pages Scraped",
     return p
 
 @empty_plot_on_empty_df
-def pages_queried_timeseries(df, title="No. Pages Queried",
-                             plot_width=600, plot_height=200, rule='1T'):
+def pages_queried_timeseries(df, plot_width=600, plot_height=200, rule='1T'):
 
     ts = df[['url']].resample(rule, how='count').cumsum()
 
@@ -116,19 +115,20 @@ def pages_queried_timeseries(df, title="No. Pages Queried",
 
     source = ColumnDataSource(ts)
 
-    p = figure(plot_width=plot_width, plot_height=plot_height, title=title,
+    p = figure(plot_width=plot_width, plot_height=plot_height,
                x_axis_type='datetime', tools='box_zoom, reset',
                min_border_left=MIN_BORDER, min_border_right=MIN_BORDER,
                min_border_top=MIN_BORDER, min_border_bottom=MIN_BORDER)
     p.logo=None
     p.xaxis[0].formatter = DatetimeTickFormatter(formats=DATETIME_FORMAT)
+    p.yaxis.axis_label = "Pages Queried"
 
     p.line(x='retrieved', y='url', line_width=3, line_alpha=0.8, source=source)
 
     return p
 
 @empty_plot_on_empty_df
-def queries_plot(df, title=None, plot_width=584, plot_height=584):
+def queries_plot(df, plot_width=600, plot_height=300):
     df2 = calculate_graph_coords(df)
 
     source = ColumnDataSource(df2)
@@ -143,7 +143,7 @@ def queries_plot(df, title=None, plot_width=584, plot_height=584):
         names=["nodes"],
     )
 
-    plot = figure(plot_width=plot_width, plot_height=plot_height, title=title,
+    plot = figure(plot_width=plot_width, plot_height=plot_height,
                   tools=[hover, "wheel_zoom", "reset"])
     plot.axis.visible = None
     plot.xgrid.grid_line_color = None
@@ -198,7 +198,7 @@ def tags_table(df):
                ]
 
     t = DataTable(source=source, columns=columns, row_headers=False,
-                  width=400, height=140)
+                  width=400, height=80)
     return VBox(t)
 
 def queries_table(df):
@@ -213,7 +213,7 @@ def queries_table(df):
                ]
 
     t = DataTable(source=source, columns=columns, row_headers=False,
-                  width=400, height=280)
+                  width=400, height=80)
     return VBox(t)
 
 def create_plot_components(df, **kwargs):

@@ -16,10 +16,10 @@
         <h4 class="panel-title">Cross Filter Widgets</h4>
       </div>
       <div class="panel-body">
+        <div id="queries">{{ widgets_div['queries'] | safe }}</div>
+        <div id="tags">{{ widgets_div['tags'] | safe }}</div>
         <div id="urls">{{ widgets_div['urls'] | safe }}</div>
         <div id="tlds">{{ widgets_div['tlds'] | safe }}</div>
-        <div id="tags">{{ widgets_div['tags'] | safe }}</div>
-        <div id="queries">{{ widgets_div['queries'] | safe }}</div>
         <div class="form-group">
             <div class='input-group date' id='datetimepicker_start'>
                 <input type='text' class="form-control" />

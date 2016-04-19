@@ -2,8 +2,9 @@
 
   {{ widgets_script | safe }}
   {{ plots_script | safe }}
+  <div>{{ plots_div['queries'] | safe }}</div>
   <div>{{ plots_div['bar'] | safe }}</div>
   <div>{{ plots_div['ts'] | safe }}</div>
-  <div>{{ plots_div['queries'] | safe }}</div>
+
 
 {% endblock content %}
