@@ -118,8 +118,8 @@ def pages_queried_timeseries(df, title="No. Pages Queried",
 
     p = figure(plot_width=plot_width, plot_height=plot_height, title=title,
                x_axis_type='datetime', tools='box_zoom, reset',
-               min_border_left=MIN_BORDER, min_border_right=10,
-               min_border_top=MIN_BORDER, min_border_bottom=10)
+               min_border_left=MIN_BORDER, min_border_right=MIN_BORDER,
+               min_border_top=MIN_BORDER, min_border_bottom=MIN_BORDER)
     p.logo=None
     p.xaxis[0].formatter = DatetimeTickFormatter(formats=DATETIME_FORMAT)
 
