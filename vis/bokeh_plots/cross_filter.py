@@ -50,7 +50,7 @@ js_callback = CustomJS(code="""
 """)
 
 def parse_es_response(response):
-    df = pd.DataFrame(response)
+    df = pd.DataFrame(response, columns=['query', 'retrieved', 'url', 'tag'])
     df['query'] = df['query'].apply(lambda x: x[0])
     df['retrieved'] = pd.DatetimeIndex(df.retrieved.apply(lambda x: x[0]))
     df['url'] = df.url.apply(lambda x: x[0])
@@ -127,7 +127,8 @@ def pages_queried_timeseries(df, title="No. Pages Queried",
 
     return p
 
-def queries_plot(df):
+@empty_plot_on_empty_df
+def queries_plot(df, title=None, plot_width=584, plot_height=584):
     df2 = calculate_graph_coords(df)
 
     source = ColumnDataSource(df2)
@@ -142,7 +143,8 @@ def queries_plot(df):
         names=["nodes"],
     )
 
-    plot = figure(plot_height=584, tools=[hover, "wheel_zoom", "reset"])
+    plot = figure(plot_width=plot_width, plot_height=plot_height, title=title,
+                  tools=[hover, "wheel_zoom", "reset"])
     plot.axis.visible = None
     plot.xgrid.grid_line_color = None
     plot.ygrid.grid_line_color = None

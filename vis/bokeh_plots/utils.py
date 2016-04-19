@@ -13,7 +13,7 @@ DATETIME_FORMAT = dict(
 )
 
 def make_empty_plot(title, plot_width, plot_height):
-    return figure(title=title, plot_height=plot_height, plot_width=plot_width,
+    return figure(title=title, plot_width=plot_width, plot_height=plot_height,
                   tools="", logo=None)
 
 def empty_plot_on_empty_df(func):
