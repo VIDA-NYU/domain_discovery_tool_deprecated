@@ -84,7 +84,7 @@ def calculate_query_correlation(df):
 def most_common_url_bar(df, title="Frequency of Pages Scraped",
                         plot_width=600, plot_height=400, top_n=10):
 
-    bars = df[['hostname','url']].groupby('hostname').count().sort_values('url', ascending=False)
+    bars = df[['hostname','url']].groupby('hostname').count().sort_values('url')
     bars['y'] = bars.url / 2.
 
     if top_n:
@@ -96,12 +96,12 @@ def most_common_url_bar(df, title="Frequency of Pages Scraped",
                tools='box_zoom, reset',
                min_border_left=50, min_border_right=50,
                min_border_top=MIN_BORDER, min_border_bottom=MIN_BORDER,
-               x_range=bars.index.tolist(), y_range=(0,bars.url.max()))
-    p.xgrid.grid_line_color = None
-    p.xaxis.major_label_orientation = 0.785
+               x_range=(0,bars.url.max()), y_range=bars.index.tolist()
+               )
+    p.ygrid.grid_line_color = None
     p.logo=None
 
-    p.rect(x='hostname', y='y', height='url', width=0.8, source=source)
+    p.rect(x='y', y='hostname', height=0.8, width='url', source=source)
 
     return p
 
@@ -148,6 +148,7 @@ def queries_plot(df, title=None, plot_width=584, plot_height=584):
     plot.axis.visible = None
     plot.xgrid.grid_line_color = None
     plot.ygrid.grid_line_color = None
+    plot.logo = None
 
     # Create connection lines.
     for k, v in line_coords.items():
