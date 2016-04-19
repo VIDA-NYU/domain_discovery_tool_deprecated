@@ -192,7 +192,7 @@ def get_plotting_data(index_name, es=None):
     if es is None:
         es = default_es
 
-    res = es.search(index_name, fields=["retrieved", "url", "tag", "query"])
+    res = es.search(index_name, size=100000, fields=["retrieved", "url", "tag", "query"])
 
     return [item['fields'] for item in res['hits']['hits']]
 
