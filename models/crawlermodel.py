@@ -508,7 +508,7 @@ class CrawlerModel:
       total_pos_tf = np.sum(ttfs_pos, axis=0)
       total_pos = np.sum(total_pos_tf)
 
-      [_,_,bigram_tf_data,trigram_tf_data,bigram_corpus, trigram_corpus,_,_,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(pos_text, pos_urls, opt_maxNumberOfTerms, self.w2v, self._es)
+      [_,_,bigram_tf_data,trigram_tf_data,bigram_corpus, trigram_corpus,_,_,_,_] = get_bigrams_trigrams.get_bigrams_trigrams(pos_text, pos_urls, opt_maxNumberOfTerms, self.w2v, self._es)
 
       total_bigram_pos_tf = np.sum(bigram_tf_data, axis=0)
       total_bigram_pos = np.sum(total_bigram_pos_tf)
@@ -558,7 +558,7 @@ class CrawlerModel:
       total_neg_tf = np.sum(ttfs_neg, axis=0)
       total_neg = np.sum(total_neg_tf)
 
-      [_,_,bigram_tf_data,trigram_tf_data,bigram_corpus, trigram_corpus,_,_,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(neg_text, neg_urls, opt_maxNumberOfTerms, self.w2v, self._es)
+      [_,_,bigram_tf_data,trigram_tf_data,bigram_corpus, trigram_corpus,_,_,_,_] = get_bigrams_trigrams.get_bigrams_trigrams(neg_text, neg_urls, opt_maxNumberOfTerms, self.w2v, self._es)
 
       total_bigram_neg_tf = np.sum(bigram_tf_data, axis=0)
       total_bigram_neg = np.sum(total_bigram_neg_tf)
