@@ -438,7 +438,7 @@ class CrawlerModel:
     if session["filter"] == "" or session["filter"] is None:
       if len(urls) > 0:
         [bigram_tfidf_data, trigram_tfidf_data,_,_,bigram_corpus, trigram_corpus,_,_,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(text, urls, opt_maxNumberOfTerms+len(neg_terms), self.w2v, self._es)
-
+         
         tfidf_all = tfidf.tfidf(urls, pos_tags=self.pos_tags, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
         if pos_terms:
           extract_terms_all = extract_terms.extract_terms(tfidf_all)
@@ -498,38 +498,106 @@ class CrawlerModel:
       return []
 
     pos_freq = {}
-    pos_urls = [field['id'] for field in term_search(es_info['mapping']['tag'], ['Relevant'], self._all, ['url'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)]
+    pos_data = {field['id']:field['text'][0] for field in term_search(es_info['mapping']['tag'], ['Relevant'], self._all, ['url', 'text'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)}
+    pos_urls = pos_data.keys();
+    pos_text = pos_data.values();
     if len(pos_urls) > 1:
       tfidf_pos = tfidf.tfidf(pos_urls, pos_tags=self.pos_tags, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
       [_,corpus,ttfs_pos] = tfidf_pos.getTfArray()
       
       total_pos_tf = np.sum(ttfs_pos, axis=0)
       total_pos = np.sum(total_pos_tf)
+
+      [_,_,bigram_tf_data,trigram_tf_data,bigram_corpus, trigram_corpus,_,_,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(pos_text, pos_urls, opt_maxNumberOfTerms, self.w2v, self._es)
+
+      total_bigram_pos_tf = np.sum(bigram_tf_data, axis=0)
+      total_bigram_pos = np.sum(total_bigram_pos_tf)
+
+      total_trigram_pos_tf = np.sum(trigram_tf_data, axis=0)
+      total_trigram_pos = np.sum(total_trigram_pos_tf)
+
       pos_freq={}
       for key in top_terms:
         try:
           pos_freq[key] = (float(total_pos_tf[corpus.index(key)])/total_pos)
         except ValueError:
-          pos_freq[key] = 0
-    else:
-      pos_freq = { key: 0 for key in top_terms }      
+          if key not in custom_terms:
+            pos_freq[key] = 0
+        
+      for key in top_bigrams + custom_terms:
+        try:
+          pos_freq[key] = (float(total_bigram_pos_tf[bigram_corpus.index(key)])/total_bigram_pos)
+        except ValueError:
+          if key not in custom_terms:
+            pos_freq[key] = 0
+          
+      for key in top_trigrams + custom_terms:
+        try:
+          pos_freq[key] = (float(total_trigram_pos_tf[trigram_corpus.index(key)])/total_trigram_pos)
+        except ValueError:
+          if key not in custom_terms:
+            pos_freq[key] = 0
 
-    neg_urls = [field['id'] for field in term_search(es_info['mapping']['tag'], ['Irrelevant'], self._all, ['url'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)]
+      for term in custom_terms:
+        if pos_freq.get(term) == None:
+          pos_freq[term] = 0
+    else:
+      pos_freq = { key: 0 for key in top_terms }
+      pos_freq = { key: 0 for key in top_bigrams }
+      pos_freq = { key: 0 for key in top_trigrams }      
+      pos_freq = { key: 0 for key in custom_terms }
+      
+    neg_data = {field['id']:field['text'][0] for field in term_search(es_info['mapping']['tag'], ['Irrelevant'], self._all, ['url', 'text'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)}
+    neg_urls = neg_data.keys();
+    neg_text = neg_data.values();
+
     neg_freq = {}
     if len(neg_urls) > 1:
       tfidf_neg = tfidf.tfidf(neg_urls, pos_tags=self.pos_tags, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
       [_,corpus,ttfs_neg] = tfidf_neg.getTfArray()
       total_neg_tf = np.sum(ttfs_neg, axis=0)
       total_neg = np.sum(total_neg_tf)
+
+      [_,_,bigram_tf_data,trigram_tf_data,bigram_corpus, trigram_corpus,_,_,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(neg_text, neg_urls, opt_maxNumberOfTerms, self.w2v, self._es)
+
+      total_bigram_neg_tf = np.sum(bigram_tf_data, axis=0)
+      total_bigram_neg = np.sum(total_bigram_neg_tf)
+
+      total_trigram_neg_tf = np.sum(trigram_tf_data, axis=0)
+      total_trigram_neg = np.sum(total_trigram_neg_tf)
+
       neg_freq={}
-      for key in top_terms:
+      for key in top_terms + custom_terms:
         try:
           neg_freq[key] = (float(total_neg_tf[corpus.index(key)])/total_neg)
         except ValueError:
-          neg_freq[key] = 0
+          if key not in custom_terms:
+            neg_freq[key] = 0
+
+      for key in top_bigrams + custom_terms:
+        try:
+          neg_freq[key] = (float(total_bigram_neg_tf[bigram_corpus.index(key)])/total_bigram_neg)
+        except ValueError:
+          if key not in custom_terms:
+            neg_freq[key] = 0
+          
+      for key in top_trigrams + custom_terms:
+        try:
+          neg_freq[key] = (float(total_trigram_neg_tf[trigram_corpus.index(key)])/total_trigram_neg)
+        except ValueError:
+          if key not in custom_terms:
+            neg_freq[key] = 0
+
+      for term in custom_terms:
+        if neg_freq.get(term) == None:
+          neg_freq[term] = 0
+    
     else:
       neg_freq = { key: 0 for key in top_terms }      
-
+      neg_freq = { key: 0 for key in top_bigrams }      
+      neg_freq = { key: 0 for key in top_trigrams }
+      neg_freq = { key: 0 for key in custom_terms }      
+      
     terms = []
 
     s_fields = {
@@ -547,17 +615,44 @@ class CrawlerModel:
     tags = {result['term'][0]: result['tag'][0] for result in results}    
 
     for term in top_terms:
-      entry = [term, pos_freq[term], neg_freq[term], []]
+      try:
+        term_pos_freq = pos_freq[term]
+      except KeyError:
+        term_pos_freq = 0
+      try:
+        term_neg_freq = neg_freq[term]
+      except KeyError:
+        term_neg_freq = 0
+      entry = [term, term_pos_freq, term_neg_freq, []]
+
       if tags and not tags.get(term) is None:
         entry[3] = tags[term].split(';')
       terms.append(entry)
       
     for term in top_bigrams:
-      entry = [term, 0, 0, []]
+      try:
+        term_pos_freq = pos_freq[term]
+      except KeyError:
+        term_pos_freq = 0
+      try:
+        term_neg_freq = neg_freq[term]
+      except KeyError:
+        term_neg_freq = 0
+
+      entry = [term, term_pos_freq, term_neg_freq, []]
       terms.append(entry)
 
     for term in top_trigrams:
-      entry = [term, 0, 0, []]
+      try:
+        term_pos_freq = pos_freq[term]
+      except KeyError:
+        term_pos_freq = 0
+      try:
+        term_neg_freq = neg_freq[term]
+      except KeyError:
+        term_neg_freq = 0
+
+      entry = [term, term_pos_freq, term_neg_freq, []]
       terms.append(entry)
     
     return terms
