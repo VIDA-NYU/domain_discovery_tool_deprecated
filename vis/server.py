@@ -411,7 +411,7 @@ class Page:
     if state['datetimepicker_end']:
         df = df[:state['datetimepicker_end']]
 
-    plots_script, plots_div = create_plot_components(df, top_n=False)
+    plots_script, plots_div = create_plot_components(df)
 
     template = env.get_template('cross_filter_plot_area.html')
 
