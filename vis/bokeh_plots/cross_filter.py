@@ -56,12 +56,12 @@ def parse_es_response(response):
     df['url'] = df.url.apply(lambda x: x[0])
     df['hostname'] = [urlparse(x).hostname.lstrip('www.') for x in df.url]
     df['tld'] = [x[x.rfind('.'):] for x in df.hostname]
-    df['tag'] = df.tag.apply(lambda x:[] if isinstance(x, float) else x) # fill nan with []
+    df['tag'] = df.tag.apply(lambda x:"" if isinstance(x, float) else x[0]) # fill nan with []
 
     return df.set_index('retrieved').sort_index()
 
-def calculate_graph_coords(df):
-    df2 = df.groupby('query').count().sort_index()
+def calculate_graph_coords(df, groupby_column):
+    df2 = df.groupby(groupby_column).count().sort_index()
 
     graph = nx.Graph()
     graph.add_nodes_from(df2.index)
@@ -69,25 +69,25 @@ def calculate_graph_coords(df):
 
     return pd.concat([df2, pd.DataFrame(graph_coords, index=["x", "y"]).T], axis=1)
 
-def calculate_query_correlation(df):
-    key_combos = combinations(df['query'].unique(), r=2)
+def calculate_query_correlation(df, groupby_column):
+    key_combos = combinations(df[groupby_column].unique(), r=2)
 
     correlation = dict()
 
     for i in key_combos:
-        k0 = df[df['query'].isin([i[0]])]['hostname']
-        k1 = df[df['query'].isin([i[1]])]['hostname']
+        k0 = df[df[groupby_column].isin([i[0]])]['hostname']
+        k1 = df[df[groupby_column].isin([i[1]])]['hostname']
         correlation[i] = len(set(k0).intersection(k1))
     return correlation
 
 @empty_plot_on_empty_df
 def most_common_url_bar(df, plot_width=600, plot_height=200, top_n=10):
 
-    bars = df[['hostname','url']].groupby('hostname').count().sort_values('url')
+    bars = df[['hostname','url']].groupby('hostname').count().sort_values('url', ascending=False)
     bars['y'] = bars.url / 2.
 
     if top_n:
-        bars = bars.iloc[:10]
+        bars = bars.iloc[:top_n]
 
     source = ColumnDataSource(bars)
 
@@ -95,7 +95,7 @@ def most_common_url_bar(df, plot_width=600, plot_height=200, top_n=10):
                tools='box_zoom, reset',
                min_border_left=50, min_border_right=50,
                min_border_top=MIN_BORDER, min_border_bottom=MIN_BORDER,
-               x_range=(0,bars.url.max()), y_range=bars.index.tolist()
+               x_range=(0,bars.url.max()), y_range=bars.index.tolist()[::-1]
                )
     p.ygrid.grid_line_color = None
     p.xaxis.axis_label = "Frequency of Pages Scraped"
@@ -129,15 +129,49 @@ def pages_queried_timeseries(df, plot_width=600, plot_height=200, rule='1T'):
 
 @empty_plot_on_empty_df
 def queries_plot(df, plot_width=600, plot_height=300):
-    df2 = calculate_graph_coords(df)
+    df2 = calculate_graph_coords(df, 'query')
 
     source = ColumnDataSource(df2)
 
-    line_coords = calculate_query_correlation(df)
+    line_coords = calculate_query_correlation(df, 'query')
 
     hover = HoverTool(
         tooltips=[
             ("Query", "@query"),
+            ("No. Results", "@url"),
+        ],
+        names=["nodes"],
+    )
+
+    plot = figure(plot_width=plot_width, plot_height=plot_height,
+                  tools=[hover, "wheel_zoom", "reset"])
+    plot.axis.visible = None
+    plot.xgrid.grid_line_color = None
+    plot.ygrid.grid_line_color = None
+    plot.logo = None
+
+    # Create connection lines.
+    for k, v in line_coords.items():
+        plot.line([df2.loc[k[0]]['x'], df2.loc[k[1]]['x']],
+                  [df2.loc[k[0]]['y'], df2.loc[k[1]]['y']],
+                  line_width=v)
+
+    plot.circle("x", "y", size="url", color="green", alpha=1, source=source,
+            name="nodes")
+
+    return plot
+
+@empty_plot_on_empty_df
+def tags_plot(df, plot_width=600, plot_height=300):
+    df2 = calculate_graph_coords(df, 'tag')
+
+    source = ColumnDataSource(df2)
+
+    line_coords = calculate_query_correlation(df, 'tag')
+
+    hover = HoverTool(
+        tooltips=[
+            ("Tag", "@tag"),
             ("No. Results", "@url"),
         ],
         names=["nodes"],
@@ -186,7 +220,7 @@ def site_tld_table(df):
     return VBox(t)
 
 def tags_table(df):
-    data = Counter(list(chain(*df.tag.tolist())))
+    data = Counter(df.tag.tolist())
     tags = [k for k, v in sorted(data.items(), key=lambda x: x[1], reverse=True)]
     counts = [v for k, v in sorted(data.items(), key=lambda x: x[1], reverse=True)]
 
@@ -198,7 +232,7 @@ def tags_table(df):
                ]
 
     t = DataTable(source=source, columns=columns, row_headers=False,
-                  width=400, height=80)
+                  width=400, height=120)
     return VBox(t)
 
 def queries_table(df):
@@ -213,14 +247,15 @@ def queries_table(df):
                ]
 
     t = DataTable(source=source, columns=columns, row_headers=False,
-                  width=400, height=80)
+                  width=400, height=120)
     return VBox(t)
 
 def create_plot_components(df, **kwargs):
     bar = most_common_url_bar(df, **kwargs)
     ts = pages_queried_timeseries(df)
     queries = queries_plot(df)
-    return components(dict(bar=bar, ts=ts, queries=queries))
+    tags = tags_plot(df)
+    return components(dict(bar=bar, ts=ts, queries=queries, tags=tags))
 
 def create_table_components(df):
     urls = most_common_url_table(df)
