@@ -1,3 +1,4 @@
+from __future__ import division
 from collections import Counter
 from itertools import chain, combinations
 
@@ -15,6 +16,8 @@ from urlparse import urlparse
 from .utils import DATETIME_FORMAT, empty_plot_on_empty_df
 
 MIN_BORDER=10
+MAX_CIRCLE_SIZE = 50
+MIN_CIRCLE_SIZE = 7.5
 
 js_callback = CustomJS(code="""
     var data_table_ids = ['urls', 'tlds', 'tags', 'queries'];
@@ -48,6 +51,18 @@ js_callback = CustomJS(code="""
       return active_cells;
     };
 """)
+
+def normalize_size(count, max_count, max_size=MAX_CIRCLE_SIZE, min_size=MIN_CIRCLE_SIZE):
+    size = count / max_count * max_size
+    if size < min_size:
+        return min_size
+    else:
+        return size
+
+def get_size_series(df, column):
+    sizes = df[column]
+    sizes = sizes.apply(normalize_size, args=(sizes.max(),))
+    return sizes
 
 def parse_es_response(response):
     df = pd.DataFrame(response, columns=['query', 'retrieved', 'url', 'tag'])
@@ -160,6 +175,7 @@ def pages_queried_timeseries(df, plot_width=600, plot_height=200, rule='1T'):
 @empty_plot_on_empty_df
 def queries_plot(df, plot_width=600, plot_height=300):
     df2 = calculate_graph_coords(df, 'query')
+    df2["size"] = get_size_series(df2, "url")
 
     source = ColumnDataSource(df2)
 
@@ -186,7 +202,7 @@ def queries_plot(df, plot_width=600, plot_height=300):
                   [df2.loc[k[0]]['y'], df2.loc[k[1]]['y']],
                   line_width=v)
 
-    plot.circle("x", "y", size="url", color="green", alpha=1, source=source,
+    plot.circle("x", "y", size="size", color="green", alpha=1, source=source,
             name="nodes")
 
     return plot
@@ -194,6 +210,7 @@ def queries_plot(df, plot_width=600, plot_height=300):
 @empty_plot_on_empty_df
 def tags_plot(df, plot_width=600, plot_height=300):
     df2 = calculate_graph_coords(df, 'tag')
+    df2["size"] = get_size_series(df2, "url")
 
     source = ColumnDataSource(df2)
 
@@ -220,7 +237,7 @@ def tags_plot(df, plot_width=600, plot_height=300):
                   [df2.loc[k[0]]['y'], df2.loc[k[1]]['y']],
                   line_width=v)
 
-    plot.circle("x", "y", size="url", color="green", alpha=1, source=source,
+    plot.circle("x", "y", size="size", color="green", alpha=1, source=source,
             name="nodes")
 
     return plot
