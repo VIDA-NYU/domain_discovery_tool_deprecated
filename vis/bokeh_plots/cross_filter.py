@@ -56,7 +56,7 @@ def parse_es_response(response):
     df['url'] = df.url.apply(lambda x: x[0])
     df['hostname'] = [urlparse(x).hostname.lstrip('www.') for x in df.url]
     df['tld'] = [x[x.rfind('.'):] for x in df.hostname]
-    df['tag'] = df.tag.apply(lambda x: "Untagged" if isinstance(x, float) else x[0]) # fill nan with "Untagged"
+    df['tag'] = df.tag.apply(lambda x: "Untagged" if isinstance(x, float) else x[0])
 
     return df.set_index('retrieved').sort_index()
 
@@ -80,13 +80,13 @@ def calculate_query_correlation(df, groupby_column):
         correlation[i] = len(set(k0).intersection(k1))
     return correlation
 
-def munge_tags(seq, sep=';'):
-    c = Counter(seq)
-    for k in c.keys():
-        if sep in k:
-            freq = c.pop(k)
-            map(lambda tag: c.update([tag]*freq), k.split(sep))
-    return c
+def duplicate_multitag_rows(df, sep=';'):
+    """
+    Makes copy of column for each tag in multitag
+    """
+    return pd.DataFrame([row.copy().set_value('tag', i)
+                        for _, row in df.iterrows()
+                        for i in row.tag.split(';')])
 
 @empty_plot_on_empty_df
 def most_common_url_bar(df, plot_width=600, plot_height=200, top_n=10):
@@ -193,11 +193,12 @@ def queries_plot(df, plot_width=600, plot_height=300):
 
 @empty_plot_on_empty_df
 def tags_plot(df, plot_width=600, plot_height=300):
-    df2 = calculate_graph_coords(df, 'tag')
+    df2 = duplicate_multitag_rows(df)
+    graph_df = calculate_graph_coords(df2, 'tag')
 
-    source = ColumnDataSource(df2)
+    source = ColumnDataSource(graph_df)
 
-    line_coords = calculate_query_correlation(df, 'tag')
+    line_coords = calculate_query_correlation(df2, 'tag')
 
     hover = HoverTool(
         tooltips=[
@@ -216,8 +217,8 @@ def tags_plot(df, plot_width=600, plot_height=300):
 
     # Create connection lines.
     for k, v in line_coords.items():
-        plot.line([df2.loc[k[0]]['x'], df2.loc[k[1]]['x']],
-                  [df2.loc[k[0]]['y'], df2.loc[k[1]]['y']],
+        plot.line([graph_df.loc[k[0]]['x'], graph_df.loc[k[1]]['x']],
+                  [graph_df.loc[k[0]]['y'], graph_df.loc[k[1]]['y']],
                   line_width=v)
 
     plot.circle("x", "y", size="url", color="green", alpha=1, source=source,
@@ -250,16 +251,16 @@ def site_tld_table(df):
     return VBox(t)
 
 def tags_table(df):
-    data = munge_tags(df.tag.tolist())
+    df2 = duplicate_multitag_rows(df)
 
-    tags = [k for k, v in sorted(data.items(), key=lambda x: x[1], reverse=True)]
-    counts = [v for k, v in sorted(data.items(), key=lambda x: x[1], reverse=True)]
-
-    source = ColumnDataSource(data=dict(count=counts, tags=tags),
+    source = ColumnDataSource(df2.groupby('tag')
+                                .count()
+                                .sort_values('url', ascending=False)
+                                .reset_index(),
                               callback=js_callback)
 
-    columns = [TableColumn(field='tags', title="Tags"),
-               TableColumn(field='count', title="Count"),
+    columns = [TableColumn(field='tag', title="Tags"),
+               TableColumn(field='url', title="Count"),
                ]
 
     t = DataTable(source=source, columns=columns, row_headers=False,

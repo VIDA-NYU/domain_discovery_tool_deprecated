@@ -4,7 +4,7 @@ from pandas.util.testing import assert_frame_equal
 import pytest
 
 from ..cross_filter import (parse_es_response, calculate_query_correlation,
-    calculate_graph_coords, munge_tags)
+    calculate_graph_coords, duplicate_multitag_rows)
 
 @pytest.fixture
 def es_response():
@@ -69,8 +69,11 @@ def test_calculate_graph_coords(es_response):
     assert graph.url.tolist() == [3, 2, 1]
     assert graph.index.tolist() == [u'apple', u'banana', u'carrot']
 
-def test_munge_tags():
-    data = ['Sports', 'Sports;Basketball', 'Sports;Baseball', 'Basketball', 'Sports;Basketball;NBA']
-    counter = munge_tags(data)
+def test_duplicate_multitag_rows(es_response):
+    df = parse_es_response(es_response)
 
-    assert counter == {'Sports': 4, 'Basketball': 3, 'Baseball': 1, 'NBA': 1}
+    df2 = duplicate_multitag_rows(df)
+
+    assert df2.shape == (8,5)
+    assert df2.tag.tolist() == ["Untagged", "Untagged", u'Relevant', u'Relevant',
+                                u'Irrelevant', u'Relevant', u'Irrelevant', u'Relevant']
