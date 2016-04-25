@@ -56,7 +56,7 @@ def parse_es_response(response):
     df['url'] = df.url.apply(lambda x: x[0])
     df['hostname'] = [urlparse(x).hostname.lstrip('www.') for x in df.url]
     df['tld'] = [x[x.rfind('.'):] for x in df.hostname]
-    df['tag'] = df.tag.apply(lambda x:"" if isinstance(x, float) else x[0]) # fill nan with []
+    df['tag'] = df.tag.apply(lambda x: "Untagged" if isinstance(x, float) else x[0]) # fill nan with "Untagged"
 
     return df.set_index('retrieved').sort_index()
 
@@ -79,6 +79,14 @@ def calculate_query_correlation(df, groupby_column):
         k1 = df[df[groupby_column].isin([i[1]])]['hostname']
         correlation[i] = len(set(k0).intersection(k1))
     return correlation
+
+def munge_tags(seq, sep=';'):
+    c = Counter(seq)
+    for k in c.keys():
+        if sep in k:
+            freq = c.pop(k)
+            map(lambda tag: c.update([tag]*freq), k.split(sep))
+    return c
 
 @empty_plot_on_empty_df
 def most_common_url_bar(df, plot_width=600, plot_height=200, top_n=10):
@@ -242,7 +250,8 @@ def site_tld_table(df):
     return VBox(t)
 
 def tags_table(df):
-    data = Counter(df.tag.tolist())
+    data = munge_tags(df.tag.tolist())
+
     tags = [k for k, v in sorted(data.items(), key=lambda x: x[1], reverse=True)]
     counts = [v for k, v in sorted(data.items(), key=lambda x: x[1], reverse=True)]
 

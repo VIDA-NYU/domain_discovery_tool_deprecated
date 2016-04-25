@@ -4,7 +4,7 @@ from pandas.util.testing import assert_frame_equal
 import pytest
 
 from ..cross_filter import (parse_es_response, calculate_query_correlation,
-    calculate_graph_coords)
+    calculate_graph_coords, munge_tags)
 
 @pytest.fixture
 def es_response():
@@ -39,7 +39,7 @@ def test_parse_es_response(es_response):
     data = {'hostname': [u'reuters.com', u'nytimes.com', u'politico.com',
                          u'politico.com', u'applevacations.com', u'applevacations.com'],
             u'query': [u'apple', u'carrot', u'apple', u'banana', u'apple', u'banana'],
-            u'tag': ["", "", u'Relevant', u'Relevant', u'Irrelevant;Relevant',
+            u'tag': ["Untagged", "Untagged", u'Relevant', u'Relevant', u'Irrelevant;Relevant',
                      u'Irrelevant;Relevant'],
             'tld': [u'.com', u'.com', u'.com', u'.com', u'.com', u'.com'],
             u'url': [u'http://www.reuters.com/article/us-apple-encryption-hearing-idUSKCN0XB2RU',
@@ -68,3 +68,9 @@ def test_calculate_graph_coords(es_response):
     assert np.allclose(graph.y.tolist(), [1.0, 0.0, 0.5])
     assert graph.url.tolist() == [3, 2, 1]
     assert graph.index.tolist() == [u'apple', u'banana', u'carrot']
+
+def test_munge_tags():
+    data = ['Sports', 'Sports;Basketball', 'Sports;Baseball', 'Basketball', 'Sports;Basketball;NBA']
+    counter = munge_tags(data)
+
+    assert counter == {'Sports': 4, 'Basketball': 3, 'Baseball': 1, 'NBA': 1}
