@@ -18,6 +18,8 @@ from .utils import DATETIME_FORMAT, empty_plot_on_empty_df
 MIN_BORDER=10
 MAX_CIRCLE_SIZE = 50
 MIN_CIRCLE_SIZE = 7.5
+MAX_LINE_SIZE = 10
+MIN_LINE_SIZE = 1
 
 js_callback = CustomJS(code="""
     var data_table_ids = ['urls', 'tlds', 'tags', 'queries'];
@@ -52,7 +54,7 @@ js_callback = CustomJS(code="""
     };
 """)
 
-def normalize_size(count, max_count, max_size=MAX_CIRCLE_SIZE, min_size=MIN_CIRCLE_SIZE):
+def normalize_size(count, max_count, max_size, min_size):
     size = count / max_count * max_size
     if size < min_size:
         return min_size
@@ -61,7 +63,8 @@ def normalize_size(count, max_count, max_size=MAX_CIRCLE_SIZE, min_size=MIN_CIRC
 
 def get_size_series(df, column):
     sizes = df[column]
-    sizes = sizes.apply(normalize_size, args=(sizes.max(),))
+    sizes = sizes.apply(normalize_size, args=(sizes.max(), MAX_CIRCLE_SIZE,
+        MIN_CIRCLE_SIZE))
     return sizes
 
 def parse_es_response(response):
@@ -180,6 +183,7 @@ def queries_plot(df, plot_width=600, plot_height=300):
     source = ColumnDataSource(df2)
 
     line_coords = calculate_query_correlation(df, 'query')
+    max_correlation = max([x[1] for x in line_coords.items()])
 
     hover = HoverTool(
         tooltips=[
@@ -200,7 +204,8 @@ def queries_plot(df, plot_width=600, plot_height=300):
     for k, v in line_coords.items():
         plot.line([df2.loc[k[0]]['x'], df2.loc[k[1]]['x']],
                   [df2.loc[k[0]]['y'], df2.loc[k[1]]['y']],
-                  line_width=v)
+                  line_width=normalize_size(v, max_correlation, MAX_LINE_SIZE,
+                      MIN_LINE_SIZE))
 
     plot.circle("x", "y", size="size", color="green", alpha=1, source=source,
             name="nodes")
@@ -215,6 +220,7 @@ def tags_plot(df, plot_width=600, plot_height=300):
     source = ColumnDataSource(df2)
 
     line_coords = calculate_query_correlation(df, 'tag')
+    max_correlation = max([x[1] for x in line_coords.items()])
 
     hover = HoverTool(
         tooltips=[
@@ -235,7 +241,8 @@ def tags_plot(df, plot_width=600, plot_height=300):
     for k, v in line_coords.items():
         plot.line([df2.loc[k[0]]['x'], df2.loc[k[1]]['x']],
                   [df2.loc[k[0]]['y'], df2.loc[k[1]]['y']],
-                  line_width=v)
+                  line_width=normalize_size(v, max_correlation, MAX_LINE_SIZE,
+                      MIN_LINE_SIZE))
 
     plot.circle("x", "y", size="size", color="green", alpha=1, source=source,
             name="nodes")
