@@ -106,6 +106,28 @@ def most_common_url_bar(df, plot_width=600, plot_height=200, top_n=10):
     return p
 
 @empty_plot_on_empty_df
+def site_tld_bar(df, plot_width=600, plot_height=200):
+
+    bars = df[['tld','url']].groupby('tld').count().sort_values('url', ascending=False)
+    bars['y'] = bars.url / 2.
+
+    source = ColumnDataSource(bars)
+
+    p = figure(plot_width=plot_width, plot_height=plot_height,
+               tools='box_zoom, reset',
+               min_border_left=50, min_border_right=50,
+               min_border_top=MIN_BORDER, min_border_bottom=MIN_BORDER,
+               x_range=(0,bars.url.max()), y_range=bars.index.tolist()[::-1]
+               )
+    p.ygrid.grid_line_color = None
+    p.xaxis.axis_label = "Site TLDS"
+    p.logo=None
+
+    p.rect(x='y', y='tld', height=0.8, width='url', source=source)
+
+    return p
+
+@empty_plot_on_empty_df
 def pages_queried_timeseries(df, plot_width=600, plot_height=200, rule='1T'):
 
     ts = df[['url']].resample(rule, how='count').cumsum()
@@ -250,12 +272,13 @@ def queries_table(df):
                   width=400, height=120)
     return VBox(t)
 
-def create_plot_components(df, **kwargs):
-    bar = most_common_url_bar(df, **kwargs)
+def create_plot_components(df):
+    hostnames = most_common_url_bar(df)
+    tlds = site_tld_bar(df)
     ts = pages_queried_timeseries(df)
     queries = queries_plot(df)
     tags = tags_plot(df)
-    return components(dict(bar=bar, ts=ts, queries=queries, tags=tags))
+    return components(dict(hostnames=hostnames, tlds=tlds, ts=ts, queries=queries, tags=tags))
 
 def create_table_components(df):
     urls = most_common_url_table(df)
