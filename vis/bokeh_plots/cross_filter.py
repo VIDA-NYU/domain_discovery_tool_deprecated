@@ -1,5 +1,5 @@
 from __future__ import division
-from collections import Counter
+from collections import Counter, defaultdict
 from itertools import chain, combinations
 
 from bokeh.charts import Bar
@@ -10,14 +10,14 @@ from bokeh.io import VBox
 from bokeh.models.widgets import DataTable, TableColumn
 from bokeh.models import (ColumnDataSource, CustomJS, DatetimeTickFormatter,
     HoverTool, Range1d, Plot, LinearAxis, Rect, FactorRange, CategoricalAxis,
-    DatetimeAxis, Line)
+    DatetimeAxis, Line, DataRange1d, MultiLine, Text, Circle)
 import networkx as nx
 import numpy as np
 import pandas as pd
 from urlparse import urlparse
 
 from .utils import (DATETIME_FORMAT, PLOT_FORMATS, AXIS_FORMATS, LINE_FORMATS,
-    empty_plot_on_empty_df)
+    FONT_PROPS_SM, empty_plot_on_empty_df)
 
 NX_COLOR = Spectral4[1]
 
@@ -173,43 +173,65 @@ def pages_queried_timeseries(df, plot_width=600, plot_height=200, rule='1T'):
     )
     plot.add_layout(DatetimeAxis(**AXIS_FORMATS), 'below')
     plot.add_layout(LinearAxis(**AXIS_FORMATS), 'left')
-    #
-    # p.line(x='retrieved', y='url', line_width=3, line_alpha=0.8, source=source)
 
     return plot
 
 @empty_plot_on_empty_df
-def queries_plot(df, plot_width=400, plot_height=400):
+def queries_plot(df, plot_width=500, plot_height=500):
     df2 = calculate_graph_coords(df, 'query')
     df2["radius"] = normalize(df2.url, MAX_CIRCLE_SIZE, MIN_CIRCLE_SIZE)
     df2["label"] = df2.index + ' (' + df2.url.astype(str) + ')'
-    df2["text_y"] = df2.y - df2.radius
+    df2["text_y"] = df2.y - df2.radius - 0.075 ## fudge factor
+    df2["text_width"] = df2.label.str.len() / 35 ## fudge factor
 
     source = ColumnDataSource(df2)
 
     line_coords = calculate_query_correlation(df, 'query')
 
-    plot = figure(plot_width=plot_width, plot_height=plot_height,
-                  x_range=Range1d(-0.25,1.25), y_range=Range1d(-0.25,1.25),
-                  tools="", toolbar_location=None,
-                #   outline_line_color=None,
-                  min_border_left=0,
-                  min_border_right=0, min_border_top=0, min_border_bottom=0)
-
-    plot.axis.visible = None
-    plot.xgrid.grid_line_color = None
-    plot.ygrid.grid_line_color = None
-    plot.logo = None
-
     # Create connection lines.
+    lines = defaultdict(list)
     for k, v in line_coords.items():
-        plot.line([df2.loc[k[0]]['x'], df2.loc[k[1]]['x']],
-                  [df2.loc[k[0]]['y'], df2.loc[k[1]]['y']],
-                  line_width=v*MAX_LINE_SIZE, line_color=Spectral4[1])
+        lines['xs'].append([df2.loc[k[0]]['x'], df2.loc[k[1]]['x']])
+        lines['ys'].append([df2.loc[k[0]]['y'], df2.loc[k[1]]['y']])
+        lines['line_width'].append(v*MAX_LINE_SIZE)
 
-    plot.circle("x", "y", radius="radius", fill_color=Spectral4[1], line_color='black', line_alpha=0.2, source=source)
+    line_source = ColumnDataSource(lines)
 
-    plot.text("x", "text_y", text="label", text_baseline='top', text_align='center', text_alpha=0.6, source=source)
+    if len(df2) == 1:
+        x_range = Range1d(0.2, 1.8)
+        y_range = Range1d(0.1, 1.7)
+    elif len(df2) == 2:
+        x_range = Range1d(-0.3, 1.3)
+        y_range = Range1d(-0.9, 0.7)
+    else:
+        x_range = Range1d(-0.3, 1.3)
+        y_range = Range1d(-0.4, 1.2)
+
+    plot = Plot(title="Queries Network",
+                plot_width=plot_width, plot_height=plot_height,
+                x_range=x_range, y_range=y_range,
+                **PLOT_FORMATS)
+
+    plot.add_glyph(
+        line_source,
+        MultiLine(xs="xs", ys="ys", line_width="line_width", line_color=Spectral4[1])
+    )
+    plot.add_glyph(
+        source,
+        Circle(x="x", y="y", radius="radius", fill_color=Spectral4[1], line_color=Spectral4[1])
+    )
+    plot.add_glyph(
+        source,
+        Rect(x="x", y="text_y", width="text_width", height=0.1, fill_color="#ffffff",
+            # line_color="#ffffff",
+            line_alpha=0.2
+            )
+    )
+    plot.add_glyph(
+        source,
+        Text(x="x", y="text_y", text="label", text_baseline='middle',
+            text_align="center", text_alpha=0.6, **FONT_PROPS_SM)
+    )
 
     return plot
 

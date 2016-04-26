@@ -42,15 +42,19 @@ AXIS_FORMATS = dict(
 )
 PLOT_FORMATS = dict(
     toolbar_location=None,
-    outline_line_color="#FFFFFF",
+    # outline_line_color="#FFFFFF",
     title_text_font=FONT,
-    title_text_align='left',
+    title_text_align='right',
     title_text_color=DARK_GRAY,
     title_text_font_size="9pt",
     title_text_baseline='bottom',
-    min_border_left=5,
-    min_border_right=10,
-    min_border_top=25,
+    # min_border_left=5,
+    # min_border_right=10,
+    # min_border_top=25,
+    # min_border_bottom=0,
+    min_border_left=0,
+    min_border_right=0,
+    min_border_top=0,
     min_border_bottom=0,
 )
 LINE_FORMATS = dict(
