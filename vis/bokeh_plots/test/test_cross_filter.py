@@ -4,7 +4,7 @@ from pandas.util.testing import assert_frame_equal
 import pytest
 
 from ..cross_filter import (parse_es_response, calculate_query_correlation,
-    calculate_graph_coords, duplicate_multitag_rows)
+    calculate_graph_coords, duplicate_multitag_rows, normalize)
 
 @pytest.fixture
 def es_response():
@@ -58,7 +58,7 @@ def test_calculate_query_correlation(es_response):
     df = parse_es_response(es_response)
     graph = calculate_query_correlation(df, 'query')
 
-    assert graph == {(u'apple', u'banana'): 2, (u'apple', u'carrot'): 0, (u'carrot', u'banana'): 0}
+    assert graph == {(u'apple', u'banana'): 1.0, (u'apple', u'carrot'): 0.0, (u'carrot', u'banana'): 0.0}
 
 def test_calculate_graph_coords(es_response):
     df = parse_es_response(es_response)
@@ -77,3 +77,6 @@ def test_duplicate_multitag_rows(es_response):
     assert df2.shape == (8,5)
     assert df2.tag.tolist() == ["Untagged", "Untagged", u'Relevant', u'Relevant',
                                 u'Irrelevant', u'Relevant', u'Irrelevant', u'Relevant']
+
+def test_normalize():
+    assert np.allclose(normalize(pd.Series([1,2,3]), 3, 1.5).tolist(), [1.5, 2.0, 3.0])

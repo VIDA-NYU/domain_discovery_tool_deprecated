@@ -1,12 +1,15 @@
+from __future__ import division
 from collections import Counter
 from itertools import chain, combinations
 
 from bokeh.charts import Bar
 from bokeh.plotting import figure
+from bokeh.palettes import Spectral4
 from bokeh.embed import components
 from bokeh.io import VBox
 from bokeh.models.widgets import DataTable, TableColumn
-from bokeh.models import ColumnDataSource, CustomJS, DatetimeTickFormatter, HoverTool
+from bokeh.models import (ColumnDataSource, CustomJS, DatetimeTickFormatter,
+        HoverTool, Range1d)
 import networkx as nx
 import numpy as np
 import pandas as pd
@@ -14,7 +17,13 @@ from urlparse import urlparse
 
 from .utils import DATETIME_FORMAT, empty_plot_on_empty_df
 
+NX_COLOR = Spectral4[1]
+
 MIN_BORDER=10
+MAX_CIRCLE_SIZE = 0.1
+MIN_CIRCLE_SIZE = 0.01
+MAX_LINE_SIZE = 10
+MIN_LINE_SIZE = 1
 
 js_callback = CustomJS(code="""
     var data_table_ids = ['urls', 'tlds', 'tags', 'queries'];
@@ -49,6 +58,11 @@ js_callback = CustomJS(code="""
     };
 """)
 
+def normalize(seq, max_val, min_val):
+    s = seq / seq.max() * max_val
+    s[s < min_val] = min_val
+    return s
+
 def parse_es_response(response):
     df = pd.DataFrame(response, columns=['query', 'retrieved', 'url', 'tag'])
     df['query'] = df['query'].apply(lambda x: x[0])
@@ -78,7 +92,12 @@ def calculate_query_correlation(df, groupby_column):
         k0 = df[df[groupby_column].isin([i[0]])]['hostname']
         k1 = df[df[groupby_column].isin([i[1]])]['hostname']
         correlation[i] = len(set(k0).intersection(k1))
-    return correlation
+
+    if len(correlation) == 0:
+        return correlation
+
+    max_corr = max(correlation.values())
+    return {k: v/max_corr for k,v in correlation.items()}
 
 def duplicate_multitag_rows(df, sep=';'):
     """
@@ -100,11 +119,12 @@ def most_common_url_bar(df, plot_width=600, plot_height=200, top_n=10):
     source = ColumnDataSource(bars)
 
     p = figure(plot_width=plot_width, plot_height=plot_height,
-               tools='box_zoom, reset',
+               tools='', toolbar_location=None,
                min_border_left=50, min_border_right=50,
                min_border_top=MIN_BORDER, min_border_bottom=MIN_BORDER,
                x_range=(0,bars.url.max()), y_range=bars.index.tolist()[::-1]
                )
+    p.xgrid.grid_line_color = None
     p.ygrid.grid_line_color = None
     p.xaxis.axis_label = "Frequency of Pages Scraped"
     p.logo=None
@@ -122,11 +142,12 @@ def site_tld_bar(df, plot_width=600, plot_height=200):
     source = ColumnDataSource(bars)
 
     p = figure(plot_width=plot_width, plot_height=plot_height,
-               tools='box_zoom, reset',
+               tools='', toolbar_location=None,
                min_border_left=50, min_border_right=50,
                min_border_top=MIN_BORDER, min_border_bottom=MIN_BORDER,
                x_range=(0,bars.url.max()), y_range=bars.index.tolist()[::-1]
                )
+    p.xgrid.grid_line_color = None
     p.ygrid.grid_line_color = None
     p.xaxis.axis_label = "Site TLDS"
     p.logo=None
@@ -146,11 +167,12 @@ def pages_queried_timeseries(df, plot_width=600, plot_height=200, rule='1T'):
     source = ColumnDataSource(ts)
 
     p = figure(plot_width=plot_width, plot_height=plot_height,
-               x_axis_type='datetime', tools='box_zoom, reset',
+               x_axis_type='datetime', tools='', toolbar_location=None,
                min_border_left=MIN_BORDER, min_border_right=MIN_BORDER,
                min_border_top=MIN_BORDER, min_border_bottom=MIN_BORDER)
     p.logo=None
     p.xaxis[0].formatter = DatetimeTickFormatter(formats=DATETIME_FORMAT)
+    p.xaxis.minor_tick_out = None
     p.yaxis.axis_label = "Pages Queried"
 
     p.line(x='retrieved', y='url', line_width=3, line_alpha=0.8, source=source)
@@ -158,23 +180,23 @@ def pages_queried_timeseries(df, plot_width=600, plot_height=200, rule='1T'):
     return p
 
 @empty_plot_on_empty_df
-def queries_plot(df, plot_width=600, plot_height=300):
+def queries_plot(df, plot_width=400, plot_height=400):
     df2 = calculate_graph_coords(df, 'query')
+    df2["radius"] = normalize(df2.url, MAX_CIRCLE_SIZE, MIN_CIRCLE_SIZE)
+    df2["label"] = df2.index + ' (' + df2.url.astype(str) + ')'
+    df2["text_y"] = df2.y - df2.radius
 
     source = ColumnDataSource(df2)
 
     line_coords = calculate_query_correlation(df, 'query')
 
-    hover = HoverTool(
-        tooltips=[
-            ("Query", "@query"),
-            ("No. Results", "@url"),
-        ],
-        names=["nodes"],
-    )
-
     plot = figure(plot_width=plot_width, plot_height=plot_height,
-                  tools=[hover, "wheel_zoom", "reset"])
+                  x_range=Range1d(-0.25,1.25), y_range=Range1d(-0.25,1.25),
+                  tools="", toolbar_location=None,
+                #   outline_line_color=None,
+                  min_border_left=0,
+                  min_border_right=0, min_border_top=0, min_border_bottom=0)
+
     plot.axis.visible = None
     plot.xgrid.grid_line_color = None
     plot.ygrid.grid_line_color = None
@@ -184,32 +206,33 @@ def queries_plot(df, plot_width=600, plot_height=300):
     for k, v in line_coords.items():
         plot.line([df2.loc[k[0]]['x'], df2.loc[k[1]]['x']],
                   [df2.loc[k[0]]['y'], df2.loc[k[1]]['y']],
-                  line_width=v)
+                  line_width=v*MAX_LINE_SIZE, line_color=Spectral4[1])
 
-    plot.circle("x", "y", size="url", color="green", alpha=1, source=source,
-            name="nodes")
+    plot.circle("x", "y", radius="radius", fill_color=Spectral4[1], line_color='black', line_alpha=0.2, source=source)
+
+    plot.text("x", "text_y", text="label", text_baseline='top', text_align='center', text_alpha=0.6, source=source)
 
     return plot
 
 @empty_plot_on_empty_df
-def tags_plot(df, plot_width=600, plot_height=300):
+def tags_plot(df, plot_width=400, plot_height=400):
     df2 = duplicate_multitag_rows(df)
     graph_df = calculate_graph_coords(df2, 'tag')
+    graph_df["radius"] = normalize(graph_df.url, MAX_CIRCLE_SIZE, MIN_CIRCLE_SIZE)
+    graph_df["label"] = graph_df.index + ' (' + graph_df.url.astype(str) + ')'
+    graph_df["text_y"] = graph_df.y - graph_df.radius
 
     source = ColumnDataSource(graph_df)
 
     line_coords = calculate_query_correlation(df2, 'tag')
 
-    hover = HoverTool(
-        tooltips=[
-            ("Tag", "@tag"),
-            ("No. Results", "@url"),
-        ],
-        names=["nodes"],
-    )
-
     plot = figure(plot_width=plot_width, plot_height=plot_height,
-                  tools=[hover, "wheel_zoom", "reset"])
+                  x_range=Range1d(-0.25,1.25), y_range=Range1d(-0.25,1.25),
+                  tools="", toolbar_location=None,
+                #   outline_line_color=None,
+                  min_border_left=0,
+                  min_border_right=0, min_border_top=0, min_border_bottom=0)
+
     plot.axis.visible = None
     plot.xgrid.grid_line_color = None
     plot.ygrid.grid_line_color = None
@@ -219,10 +242,12 @@ def tags_plot(df, plot_width=600, plot_height=300):
     for k, v in line_coords.items():
         plot.line([graph_df.loc[k[0]]['x'], graph_df.loc[k[1]]['x']],
                   [graph_df.loc[k[0]]['y'], graph_df.loc[k[1]]['y']],
-                  line_width=v)
+                  line_width=v*MAX_LINE_SIZE, color=NX_COLOR)
 
-    plot.circle("x", "y", size="url", color="green", alpha=1, source=source,
-            name="nodes")
+    plot.circle("x", "y", radius="radius", color=NX_COLOR, alpha=1, source=source,
+                name="nodes")
+
+    plot.text("x", "text_y", text="label", text_baseline='top', text_align='center', text_alpha=0.6, source=source)
 
     return plot
 
