@@ -923,29 +923,6 @@ CrawlerVis.prototype.onLoadedPages = function(pagesData) {
     };
     });
 
-    var tags = [];
-    for(var i in pages){
-	var page = pages[i];
-	for(var j in page["tags"]){
-	    var tag = page["tags"][j];
-	    if(tag != "" && tags.indexOf(tag) < 0){
-		tags.push(tag);
-	    }
-	}
-    }
-
-    for(var i in tags){
-	tag = tags[i];
-	this.tagsGallery.addItem(tag);
-    }
-
-    for(var i in this.tagsGallery.getCustomTags()){
-	tag = this.tagsGallery.getCustomTags()[i];
-	if(tags.indexOf(tag) < 0){
-	    this.tagsGallery.removeItem(tag);
-	}
-    }
-    this.tagsGallery.update();
     this.pagesLandscape.setPagesData(pages);
     
     // Updates last update.
@@ -1477,6 +1454,7 @@ CrawlerVis.prototype.clearAll = function() {
     d3.select('#filter_box').node().value = "";
     $('#queryCheckBox').empty();
     this.pagesGallery.clear();
+    this.tagsGallery.clear();
     this.termsSnippetsViewer.clear();
     BokehPlots.clear();
 };
