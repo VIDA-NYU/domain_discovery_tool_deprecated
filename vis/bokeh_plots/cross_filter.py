@@ -9,13 +9,14 @@ from bokeh.embed import components
 from bokeh.io import VBox
 from bokeh.models.widgets import DataTable, TableColumn
 from bokeh.models import (ColumnDataSource, CustomJS, DatetimeTickFormatter,
-    HoverTool, Range1d, Plot, LinearAxis, Rect, FactorRange, CategoricalAxis)
+    HoverTool, Range1d, Plot, LinearAxis, Rect, FactorRange, CategoricalAxis,
+    DatetimeAxis, Line)
 import networkx as nx
 import numpy as np
 import pandas as pd
 from urlparse import urlparse
 
-from .utils import (DATETIME_FORMAT, PLOT_FORMATS, AXIS_FORMATS,
+from .utils import (DATETIME_FORMAT, PLOT_FORMATS, AXIS_FORMATS, LINE_FORMATS,
     empty_plot_on_empty_df)
 
 NX_COLOR = Spectral4[1]
@@ -155,26 +156,27 @@ def site_tld_bar(df, plot_width=600, plot_height=200):
 
 @empty_plot_on_empty_df
 def pages_queried_timeseries(df, plot_width=600, plot_height=200, rule='1T'):
-
     ts = df[['url']].resample(rule, how='count').cumsum()
-
     ts = pd.concat([ts[:1], ts]) # prepend 0-value for Line chart compat
     ts.iloc[0]['url'] = 0
 
     source = ColumnDataSource(ts)
 
-    p = figure(plot_width=plot_width, plot_height=plot_height,
-               x_axis_type='datetime', tools='', toolbar_location=None,
-               min_border_left=MIN_BORDER, min_border_right=MIN_BORDER,
-               min_border_top=MIN_BORDER, min_border_bottom=MIN_BORDER)
-    p.logo=None
-    p.xaxis[0].formatter = DatetimeTickFormatter(formats=DATETIME_FORMAT)
-    p.xaxis.minor_tick_out = None
-    p.yaxis.axis_label = "Pages Queried"
+    plot = Plot(title="Sites Timeseries",
+                plot_width=plot_width, plot_height=plot_height,
+                x_range=Range1d(ts.index.min(),ts.index.max()),
+                y_range=Range1d(0, ts.iloc[-1].url),
+                **PLOT_FORMATS)
+    plot.add_glyph(
+        source,
+        Line(x='retrieved', y='url', **LINE_FORMATS)
+    )
+    plot.add_layout(DatetimeAxis(**AXIS_FORMATS), 'below')
+    plot.add_layout(LinearAxis(**AXIS_FORMATS), 'left')
+    #
+    # p.line(x='retrieved', y='url', line_width=3, line_alpha=0.8, source=source)
 
-    p.line(x='retrieved', y='url', line_width=3, line_alpha=0.8, source=source)
-
-    return p
+    return plot
 
 @empty_plot_on_empty_df
 def queries_plot(df, plot_width=400, plot_height=400):
