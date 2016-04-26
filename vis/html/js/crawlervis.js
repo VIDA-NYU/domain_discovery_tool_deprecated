@@ -1108,9 +1108,12 @@ CrawlerVis.prototype.initQueryWebButton = function() {
       var value = d3.select('#query_box').node().value;
       __sig__.emit(__sig__.query_enter, value);
   };
-    
-  d3.select('#query_box')
-	.on('change', search_enter);
+
+    $( "#query_box" ).on( "keydown", function(event) {
+	if(event.which == 13) {
+	    search_enter();
+	}
+    });
     
   d3.select('#submit_query')
 	.on('click', search_enter);
