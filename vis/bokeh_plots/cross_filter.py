@@ -164,15 +164,15 @@ def pages_queried_timeseries(df, plot_width=600, plot_height=200, rule='1T'):
 
     plot = Plot(title="Sites Timeseries",
                 plot_width=plot_width, plot_height=plot_height,
-                x_range=Range1d(ts.index.min(),ts.index.max()),
-                y_range=Range1d(0, ts.iloc[-1].url),
+                x_range=DataRange1d(range_padding=0.1),
+                y_range=DataRange1d(start=0),
                 **PLOT_FORMATS)
     plot.add_glyph(
         source,
         Line(x='retrieved', y='url', **LINE_FORMATS)
     )
     plot.add_layout(DatetimeAxis(**AXIS_FORMATS), 'below')
-    plot.add_layout(LinearAxis(**AXIS_FORMATS), 'left')
+    plot.add_layout(LinearAxis(axis_label="Total Pages", **AXIS_FORMATS), 'left')
 
     return plot
 
@@ -211,7 +211,6 @@ def queries_plot(df, plot_width=500, plot_height=500):
                 plot_width=plot_width, plot_height=plot_height,
                 x_range=x_range, y_range=y_range,
                 **PLOT_FORMATS)
-
     plot.add_glyph(
         line_source,
         MultiLine(xs="xs", ys="ys", line_width="line_width", line_color=Spectral4[1])
@@ -236,39 +235,61 @@ def queries_plot(df, plot_width=500, plot_height=500):
     return plot
 
 @empty_plot_on_empty_df
-def tags_plot(df, plot_width=400, plot_height=400):
+def tags_plot(df, plot_width=500, plot_height=500):
     df2 = duplicate_multitag_rows(df)
     graph_df = calculate_graph_coords(df2, 'tag')
     graph_df["radius"] = normalize(graph_df.url, MAX_CIRCLE_SIZE, MIN_CIRCLE_SIZE)
     graph_df["label"] = graph_df.index + ' (' + graph_df.url.astype(str) + ')'
-    graph_df["text_y"] = graph_df.y - graph_df.radius
+    graph_df["text_y"] = graph_df.y - graph_df.radius - 0.075 ## fudge factor
+    graph_df["text_width"] = graph_df.label.str.len() / 35 ## fudge factor
 
     source = ColumnDataSource(graph_df)
 
     line_coords = calculate_query_correlation(df2, 'tag')
 
-    plot = figure(plot_width=plot_width, plot_height=plot_height,
-                  x_range=Range1d(-0.25,1.25), y_range=Range1d(-0.25,1.25),
-                  tools="", toolbar_location=None,
-                #   outline_line_color=None,
-                  min_border_left=0,
-                  min_border_right=0, min_border_top=0, min_border_bottom=0)
-
-    plot.axis.visible = None
-    plot.xgrid.grid_line_color = None
-    plot.ygrid.grid_line_color = None
-    plot.logo = None
-
     # Create connection lines.
+    lines = defaultdict(list)
     for k, v in line_coords.items():
-        plot.line([graph_df.loc[k[0]]['x'], graph_df.loc[k[1]]['x']],
-                  [graph_df.loc[k[0]]['y'], graph_df.loc[k[1]]['y']],
-                  line_width=v*MAX_LINE_SIZE, color=NX_COLOR)
+        lines['xs'].append([graph_df.loc[k[0]]['x'], graph_df.loc[k[1]]['x']])
+        lines['ys'].append([graph_df.loc[k[0]]['y'], graph_df.loc[k[1]]['y']])
+        lines['line_width'].append(v*MAX_LINE_SIZE)
 
-    plot.circle("x", "y", radius="radius", color=NX_COLOR, alpha=1, source=source,
-                name="nodes")
+    line_source = ColumnDataSource(lines)
 
-    plot.text("x", "text_y", text="label", text_baseline='top', text_align='center', text_alpha=0.6, source=source)
+    if len(graph_df) == 1:
+        x_range = Range1d(0.2, 1.8)
+        y_range = Range1d(0.1, 1.7)
+    elif len(graph_df) == 2:
+        x_range = Range1d(-0.3, 1.3)
+        y_range = Range1d(-0.9, 0.7)
+    else:
+        x_range = Range1d(-0.3, 1.3)
+        y_range = Range1d(-0.4, 1.2)
+
+    plot = Plot(title="Tags Network",
+                plot_width=plot_width, plot_height=plot_height,
+                x_range=x_range, y_range=y_range,
+                **PLOT_FORMATS)
+    plot.add_glyph(
+        line_source,
+        MultiLine(xs="xs", ys="ys", line_width="line_width", line_color=Spectral4[1])
+    )
+    plot.add_glyph(
+        source,
+        Circle(x="x", y="y", radius="radius", fill_color=Spectral4[1], line_color=Spectral4[1])
+    )
+    plot.add_glyph(
+        source,
+        Rect(x="x", y="text_y", width="text_width", height=0.1, fill_color="#ffffff",
+            # line_color="#ffffff",
+            line_alpha=0.2
+            )
+    )
+    plot.add_glyph(
+        source,
+        Text(x="x", y="text_y", text="label", text_baseline='middle',
+            text_align="center", text_alpha=0.6, **FONT_PROPS_SM)
+    )
 
     return plot
 
