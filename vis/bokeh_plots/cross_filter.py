@@ -134,26 +134,24 @@ def most_common_url_bar(df, plot_width=600, plot_height=200, top_n=10):
 
 @empty_plot_on_empty_df
 def site_tld_bar(df, plot_width=600, plot_height=200):
-
     bars = df[['tld','url']].groupby('tld').count().sort_values('url', ascending=False)
     bars['y'] = bars.url / 2.
 
     source = ColumnDataSource(bars)
 
-    p = figure(plot_width=plot_width, plot_height=plot_height,
-               tools='', toolbar_location=None,
-               min_border_left=50, min_border_right=50,
-               min_border_top=MIN_BORDER, min_border_bottom=MIN_BORDER,
-               x_range=(0,bars.url.max()), y_range=bars.index.tolist()[::-1]
-               )
-    p.xgrid.grid_line_color = None
-    p.ygrid.grid_line_color = None
-    p.xaxis.axis_label = "Site TLDS"
-    p.logo=None
+    plot = Plot(title="Most Common Top-level Domains",
+                plot_width=plot_width, plot_height=plot_height,
+                x_range=Range1d(0,bars.url.max()),
+                y_range=FactorRange(factors=bars.index.tolist()[::-1]),
+                **PLOT_FORMATS)
+    plot.add_glyph(
+        source,
+        Rect(x='y', y='tld', height=0.8, width='url')
+    )
+    plot.add_layout(LinearAxis(axis_label="Occurences", **AXIS_FORMATS), 'below')
+    plot.add_layout(CategoricalAxis(**AXIS_FORMATS), 'left')
 
-    p.rect(x='y', y='tld', height=0.8, width='url', source=source)
-
-    return p
+    return plot
 
 @empty_plot_on_empty_df
 def pages_queried_timeseries(df, plot_width=600, plot_height=200, rule='1T'):
