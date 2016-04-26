@@ -34,9 +34,9 @@ def selection_plot(response, tag_colors):
     # Let's move these into a settings file somewhere?
     # height/width could potentially be driven by the request?
 
-
     # Include color data in the ColumnDataSource to allow for changing the color on
     # the client side.
+
     urls = [x[0] for x in response["pages"]]
     xdata = [x[1] for x in response["pages"]]
     ydata = [x[2] for x in response["pages"]]
@@ -58,6 +58,12 @@ def selection_plot(response, tag_colors):
                 color.append(colormap(t))
         else:
             color.append(colormap(None))
+            
+    if tag_colors != None:
+        for tag in tag_colors["colors"].keys():
+            if tag not in custom_tags:
+                custom_tags.append(tag);
+    
     source = ColumnDataSource(
         data=dict(
             x=xdata,
@@ -65,12 +71,14 @@ def selection_plot(response, tag_colors):
             urls=urls,
             tags=tags,
             color=color,
+            custom_tags=custom_tags
         )
     )
     # Callback code for CDS.
     source.callback = CustomJS(code="""
         var inds = cb_obj.get('selected')["1d"].indices;
         var data = cb_obj.get('data');
+        BokehPlots.addCustomTags(data['custom_tags']);
         BokehPlots.showPages(inds);
     """)
 
