@@ -9,13 +9,14 @@ from bokeh.embed import components
 from bokeh.io import VBox
 from bokeh.models.widgets import DataTable, TableColumn
 from bokeh.models import (ColumnDataSource, CustomJS, DatetimeTickFormatter,
-        HoverTool, Range1d)
+    HoverTool, Range1d, Plot, LinearAxis, Rect, FactorRange, CategoricalAxis)
 import networkx as nx
 import numpy as np
 import pandas as pd
 from urlparse import urlparse
 
-from .utils import DATETIME_FORMAT, empty_plot_on_empty_df
+from .utils import (DATETIME_FORMAT, PLOT_FORMATS, AXIS_FORMATS,
+    empty_plot_on_empty_df)
 
 NX_COLOR = Spectral4[1]
 
@@ -109,7 +110,6 @@ def duplicate_multitag_rows(df, sep=';'):
 
 @empty_plot_on_empty_df
 def most_common_url_bar(df, plot_width=600, plot_height=200, top_n=10):
-
     bars = df[['hostname','url']].groupby('hostname').count().sort_values('url', ascending=False)
     bars['y'] = bars.url / 2.
 
@@ -118,20 +118,19 @@ def most_common_url_bar(df, plot_width=600, plot_height=200, top_n=10):
 
     source = ColumnDataSource(bars)
 
-    p = figure(plot_width=plot_width, plot_height=plot_height,
-               tools='', toolbar_location=None,
-               min_border_left=50, min_border_right=50,
-               min_border_top=MIN_BORDER, min_border_bottom=MIN_BORDER,
-               x_range=(0,bars.url.max()), y_range=bars.index.tolist()[::-1]
-               )
-    p.xgrid.grid_line_color = None
-    p.ygrid.grid_line_color = None
-    p.xaxis.axis_label = "Frequency of Pages Scraped"
-    p.logo=None
+    plot = Plot(title="Top {} Most Common Sites".format(top_n),
+                plot_width=plot_width, plot_height=plot_height,
+                x_range=Range1d(0,bars.url.max()),
+                y_range=FactorRange(factors=bars.index.tolist()[::-1]),
+                **PLOT_FORMATS)
+    plot.add_glyph(
+        source,
+        Rect(x='y', y='hostname', height=0.8, width='url')
+    )
+    plot.add_layout(LinearAxis(axis_label="Occurences", **AXIS_FORMATS), 'below')
+    plot.add_layout(CategoricalAxis(**AXIS_FORMATS), 'left')
 
-    p.rect(x='y', y='hostname', height=0.8, width='url', source=source)
-
-    return p
+    return plot
 
 @empty_plot_on_empty_df
 def site_tld_bar(df, plot_width=600, plot_height=200):
