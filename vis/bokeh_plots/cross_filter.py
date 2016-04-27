@@ -110,7 +110,7 @@ def duplicate_multitag_rows(df, sep=';'):
                         for i in row.tag.split(';')])
 
 @empty_plot_on_empty_df
-def most_common_url_bar(df, plot_width=600, plot_height=200, top_n=10):
+def most_common_url_bar(df, plot_width=325, plot_height=200, top_n=10):
     bars = df[['hostname','url']].groupby('hostname').count().sort_values('url', ascending=False)
     bars['y'] = bars.url / 2.
 
@@ -126,7 +126,8 @@ def most_common_url_bar(df, plot_width=600, plot_height=200, top_n=10):
                 **PLOT_FORMATS)
     plot.add_glyph(
         source,
-        Rect(x='y', y='hostname', height=0.8, width='url')
+        Rect(x='y', y='hostname', height=0.8, width='url', fill_color=Spectral4[0],
+            fill_alpha=0.6, line_color=None)
     )
     plot.add_layout(LinearAxis(axis_label="Occurences", **AXIS_FORMATS), 'below')
     plot.add_layout(CategoricalAxis(**AXIS_FORMATS), 'left')
@@ -134,7 +135,7 @@ def most_common_url_bar(df, plot_width=600, plot_height=200, top_n=10):
     return plot
 
 @empty_plot_on_empty_df
-def site_tld_bar(df, plot_width=600, plot_height=200):
+def site_tld_bar(df, plot_width=325, plot_height=200):
     bars = df[['tld','url']].groupby('tld').count().sort_values('url', ascending=False)
     bars['y'] = bars.url / 2.
 
@@ -147,7 +148,8 @@ def site_tld_bar(df, plot_width=600, plot_height=200):
                 **PLOT_FORMATS)
     plot.add_glyph(
         source,
-        Rect(x='y', y='tld', height=0.8, width='url')
+        Rect(x='y', y='tld', height=0.8, width='url', fill_color=Spectral4[0],
+            fill_alpha=0.6, line_color=None)
     )
     plot.add_layout(LinearAxis(axis_label="Occurences", **AXIS_FORMATS), 'below')
     plot.add_layout(CategoricalAxis(**AXIS_FORMATS), 'left')
@@ -171,13 +173,13 @@ def pages_queried_timeseries(df, plot_width=600, plot_height=200, rule='1T'):
         source,
         Line(x='retrieved', y='url', **LINE_FORMATS)
     )
-    plot.add_layout(DatetimeAxis(**AXIS_FORMATS), 'below')
+    plot.add_layout(DatetimeAxis(axis_label="Date Retrieved", **AXIS_FORMATS), 'below')
     plot.add_layout(LinearAxis(axis_label="Total Pages", **AXIS_FORMATS), 'left')
 
     return plot
 
 @empty_plot_on_empty_df
-def queries_plot(df, plot_width=500, plot_height=500):
+def queries_plot(df, plot_width=325, plot_height=325):
     df2 = calculate_graph_coords(df, 'query')
     df2["radius"] = normalize(df2.url, MAX_CIRCLE_SIZE, MIN_CIRCLE_SIZE)
     df2["label"] = df2.index + ' (' + df2.url.astype(str) + ')'
@@ -222,9 +224,7 @@ def queries_plot(df, plot_width=500, plot_height=500):
     plot.add_glyph(
         source,
         Rect(x="x", y="text_y", width="text_width", height=0.1, fill_color="#ffffff",
-            # line_color="#ffffff",
-            line_alpha=0.2
-            )
+            line_color="#ffffff")
     )
     plot.add_glyph(
         source,
@@ -235,7 +235,7 @@ def queries_plot(df, plot_width=500, plot_height=500):
     return plot
 
 @empty_plot_on_empty_df
-def tags_plot(df, plot_width=500, plot_height=500):
+def tags_plot(df, plot_width=325, plot_height=325):
     df2 = duplicate_multitag_rows(df)
     graph_df = calculate_graph_coords(df2, 'tag')
     graph_df["radius"] = normalize(graph_df.url, MAX_CIRCLE_SIZE, MIN_CIRCLE_SIZE)
@@ -281,9 +281,7 @@ def tags_plot(df, plot_width=500, plot_height=500):
     plot.add_glyph(
         source,
         Rect(x="x", y="text_y", width="text_width", height=0.1, fill_color="#ffffff",
-            # line_color="#ffffff",
-            line_alpha=0.2
-            )
+            line_color="#ffffff")
     )
     plot.add_glyph(
         source,

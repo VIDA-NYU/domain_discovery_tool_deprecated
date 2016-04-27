@@ -2,11 +2,14 @@
 
   {{ widgets_script | safe }}
   {{ plots_script | safe }}
-  <div>{{ plots_div['queries'] | safe }}</div>
-  <div>{{ plots_div['tags'] | safe }}</div>
-  <div>{{ plots_div['hostnames'] | safe }}</div>
-  <div>{{ plots_div['tlds'] | safe }}</div>
+  <div class="row">
+    <div class="col-md-4">{{ plots_div['queries'] | safe }}</div>
+    <div class="col-md-4">{{ plots_div['tags'] | safe }}</div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">{{ plots_div['hostnames'] | safe }}</div>
+    <div class="col-md-4">{{ plots_div['tlds'] | safe }}</div>
+  </div>
   <div>{{ plots_div['ts'] | safe }}</div>
-
 
 {% endblock content %}

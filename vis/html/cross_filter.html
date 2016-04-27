@@ -9,12 +9,8 @@
 
   <script src="http://cdn.pydata.org/bokeh/release/bokeh-0.10.0.min.js"></script>
 
-  <div class="container">
-    <div class="panel panel-default col-md-5">
-      <!-- <div class="panel-heading">Cross Filter Widgets</div> -->
-      <div class="panel-heading">
-        <h4 class="panel-title">Cross Filter Widgets</h4>
-      </div>
+  <div class="container-fluid">
+    <div class="col-md-4">
       <div class="panel-body">
         <div id="queries">{{ widgets_div['queries'] | safe }}</div>
         <div id="tags">{{ widgets_div['tags'] | safe }}</div>
@@ -38,11 +34,8 @@
         </div>
       </div>
     </div>
-    <div class="panel panel-default col-md-7">
-      <div class="panel-heading">
-        <h4 class="panel-title">Cross Filter Plots</h4>
-      </div>
-      <div id="plot_area" class="panel-body">
+    <div class="col-md-8">
+      <div id="plot_area">
       {% include 'cross_filter_plot_area.html' %}
       </div>
     </div>
