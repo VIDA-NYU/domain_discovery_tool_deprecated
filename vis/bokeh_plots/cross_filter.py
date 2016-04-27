@@ -2,22 +2,19 @@ from __future__ import division
 from collections import Counter, defaultdict
 from itertools import chain, combinations
 
-from bokeh.charts import Bar
-from bokeh.plotting import figure
 from bokeh.palettes import Spectral4
 from bokeh.embed import components
 from bokeh.io import VBox
 from bokeh.models.widgets import DataTable, TableColumn
-from bokeh.models import (ColumnDataSource, CustomJS, DatetimeTickFormatter,
-    HoverTool, Range1d, Plot, LinearAxis, Rect, FactorRange, CategoricalAxis,
-    DatetimeAxis, Line, DataRange1d, MultiLine, Text, Circle)
+from bokeh.models import (ColumnDataSource, CustomJS, HoverTool, Range1d, Plot,
+    LinearAxis, Rect, FactorRange, CategoricalAxis, DatetimeAxis, Line,
+    DataRange1d, MultiLine, Text, Circle)
 import networkx as nx
-import numpy as np
 import pandas as pd
 from urlparse import urlparse
 
 from .utils import (DATETIME_FORMAT, PLOT_FORMATS, AXIS_FORMATS, LINE_FORMATS,
-    FONT_PROPS_SM, empty_plot_on_empty_df)
+    FONT_PROPS_SM, RED, BLUE, empty_plot_on_empty_df)
 
 NX_COLOR = Spectral4[1]
 
@@ -95,7 +92,7 @@ def calculate_query_correlation(df, groupby_column):
         k1 = df[df[groupby_column].isin([i[1]])]['hostname']
         correlation[i] = len(set(k0).intersection(k1))
 
-    if len(correlation) == 0:
+    if len(correlation) == 0 or max(correlation.values()) == 0:
         return correlation
 
     max_corr = max(correlation.values())
@@ -114,8 +111,7 @@ def most_common_url_bar(df, plot_width=325, plot_height=200, top_n=10):
     bars = df[['hostname','url']].groupby('hostname').count().sort_values('url', ascending=False)
     bars['y'] = bars.url / 2.
 
-    if top_n:
-        bars = bars.iloc[:top_n]
+    bars = bars.nlargest(top_n, 'url')
 
     source = ColumnDataSource(bars)
 
@@ -126,7 +122,7 @@ def most_common_url_bar(df, plot_width=325, plot_height=200, top_n=10):
                 **PLOT_FORMATS)
     plot.add_glyph(
         source,
-        Rect(x='y', y='hostname', height=0.8, width='url', fill_color=Spectral4[0],
+        Rect(x='y', y='hostname', height=0.8, width='url', fill_color=BLUE,
             fill_alpha=0.6, line_color=None)
     )
     plot.add_layout(LinearAxis(axis_label="Occurences", **AXIS_FORMATS), 'below')
@@ -148,7 +144,7 @@ def site_tld_bar(df, plot_width=325, plot_height=200):
                 **PLOT_FORMATS)
     plot.add_glyph(
         source,
-        Rect(x='y', y='tld', height=0.8, width='url', fill_color=Spectral4[0],
+        Rect(x='y', y='tld', height=0.8, width='url', fill_color=BLUE,
             fill_alpha=0.6, line_color=None)
     )
     plot.add_layout(LinearAxis(axis_label="Occurences", **AXIS_FORMATS), 'below')
@@ -164,8 +160,7 @@ def pages_queried_timeseries(df, plot_width=600, plot_height=200, rule='1T'):
 
     source = ColumnDataSource(ts)
 
-    plot = Plot(title="Sites Timeseries",
-                plot_width=plot_width, plot_height=plot_height,
+    plot = Plot(plot_width=plot_width, plot_height=plot_height,
                 x_range=DataRange1d(range_padding=0.1),
                 y_range=DataRange1d(start=0),
                 **PLOT_FORMATS)
@@ -215,11 +210,11 @@ def queries_plot(df, plot_width=325, plot_height=325):
                 **PLOT_FORMATS)
     plot.add_glyph(
         line_source,
-        MultiLine(xs="xs", ys="ys", line_width="line_width", line_color=Spectral4[1])
+        MultiLine(xs="xs", ys="ys", line_width="line_width", line_color=RED)
     )
     plot.add_glyph(
         source,
-        Circle(x="x", y="y", radius="radius", fill_color=Spectral4[1], line_color=Spectral4[1])
+        Circle(x="x", y="y", radius="radius", fill_color=RED, line_color=RED)
     )
     plot.add_glyph(
         source,
