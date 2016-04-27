@@ -1,0 +1,11 @@
+.bokeh_plot {
+    padding-bottom:30px;
+}
+
+.bokeh_table {
+  padding-bottom:10px;
+}
+
+#queries_plot {
+  padding-top:70px
+}

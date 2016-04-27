@@ -6,32 +6,38 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="http://cdn.pydata.org/bokeh/release/bokeh-0.10.0.min.css">
   <link rel="stylesheet" href="bootstrap-datetimepicker-4.15.35/css/bootstrap-datetimepicker.min.css">
+  <link rel="stylesheet" href="css/cross_filter.css">
 
   <script src="http://cdn.pydata.org/bokeh/release/bokeh-0.10.0.min.js"></script>
 
   <div class="container-fluid">
     <div class="col-md-4">
-      <div class="panel-body">
-        <div id="queries">{{ widgets_div['queries'] | safe }}</div>
-        <div id="tags">{{ widgets_div['tags'] | safe }}</div>
-        <div id="urls">{{ widgets_div['urls'] | safe }}</div>
-        <div id="tlds">{{ widgets_div['tlds'] | safe }}</div>
-        <div class="form-group">
-            <div class='input-group date' id='datetimepicker_start'>
-                <input type='text' class="form-control" />
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class='input-group date' id='datetimepicker_end'>
-                <input type='text' class="form-control" />
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-            </div>
-        </div>
+      <p>
+        Click on table rows to filter the data in the visualizations and use
+        Super + Click (Cmd on OSX, Ctl on Linux, Windows) to deselect. Shift +
+        Click will select or deselect multiple rows at a time.
+      </p>
+      <div class="bokeh_table" id="queries">{{ widgets_div['queries'] | safe }}</div>
+      <div class="bokeh_table" id="tags">{{ widgets_div['tags'] | safe }}</div>
+      <div class="bokeh_table" id="urls">{{ widgets_div['urls'] | safe }}</div>
+      <div class="bokeh_table" id="tlds">{{ widgets_div['tlds'] | safe }}</div>
+      <div class="h6">Start Date</div>
+      <div class="form-group">
+          <div class='input-group date' id='datetimepicker_start'>
+              <input type='text' class="form-control" />
+              <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+          </div>
+      </div>
+      <div class="h6">End Date</div>
+      <div class="form-group">
+          <div class='input-group date' id='datetimepicker_end'>
+              <input type='text' class="form-control" />
+              <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+          </div>
       </div>
     </div>
     <div class="col-md-8">

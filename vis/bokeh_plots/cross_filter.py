@@ -107,15 +107,16 @@ def duplicate_multitag_rows(df, sep=';'):
                         for i in row.tag.split(';')])
 
 @empty_plot_on_empty_df
-def most_common_url_bar(df, plot_width=325, plot_height=200, top_n=10):
+def most_common_url_bar(df, plot_width=400, plot_height=250, top_n=None):
     bars = df[['hostname','url']].groupby('hostname').count().sort_values('url', ascending=False)
     bars['y'] = bars.url / 2.
 
-    bars = bars.nlargest(top_n, 'url')
+    if top_n:
+        bars = bars.nlargest(top_n, 'url')
 
     source = ColumnDataSource(bars)
 
-    plot = Plot(title="Top {} Most Common Sites".format(top_n),
+    plot = Plot(title="Most Common Sites",
                 plot_width=plot_width, plot_height=plot_height,
                 x_range=Range1d(0,bars.url.max()),
                 y_range=FactorRange(factors=bars.index.tolist()[::-1]),
@@ -174,7 +175,7 @@ def pages_queried_timeseries(df, plot_width=600, plot_height=200, rule='1T'):
     return plot
 
 @empty_plot_on_empty_df
-def queries_plot(df, plot_width=325, plot_height=325):
+def queries_plot(df, plot_width=400, plot_height=400):
     df2 = calculate_graph_coords(df, 'query')
     df2["radius"] = normalize(df2.url, MAX_CIRCLE_SIZE, MIN_CIRCLE_SIZE)
     df2["label"] = df2.index + ' (' + df2.url.astype(str) + ')'
@@ -230,7 +231,7 @@ def queries_plot(df, plot_width=325, plot_height=325):
     return plot
 
 @empty_plot_on_empty_df
-def tags_plot(df, plot_width=325, plot_height=325):
+def tags_plot(df, plot_width=400, plot_height=400):
     df2 = duplicate_multitag_rows(df)
     graph_df = calculate_graph_coords(df2, 'tag')
     graph_df["radius"] = normalize(graph_df.url, MAX_CIRCLE_SIZE, MIN_CIRCLE_SIZE)
@@ -295,7 +296,7 @@ def most_common_url_table(df):
     columns = [TableColumn(field="hostname", title="Site Name"),
                TableColumn(field="url", title="Count")]
     t = DataTable(source=source, columns=columns,
-                  row_headers=False, width=400, height=280)
+                  row_headers=False, width=400, height=250)
     return VBox(t)
 
 def site_tld_table(df):
@@ -307,7 +308,7 @@ def site_tld_table(df):
     columns = [TableColumn(field="tld", title="Ending"),
                TableColumn(field="url", title="Count")]
     t = DataTable(source=source, columns=columns,
-                  row_headers=False, width=400, height=80)
+                  row_headers=False, width=400, height=200)
     return VBox(t)
 
 def tags_table(df):
@@ -324,7 +325,7 @@ def tags_table(df):
                ]
 
     t = DataTable(source=source, columns=columns, row_headers=False,
-                  width=400, height=120)
+                  width=400, height=400)
     return VBox(t)
 
 def queries_table(df):
@@ -339,11 +340,11 @@ def queries_table(df):
                ]
 
     t = DataTable(source=source, columns=columns, row_headers=False,
-                  width=400, height=120)
+                  width=400, height=400)
     return VBox(t)
 
-def create_plot_components(df):
-    hostnames = most_common_url_bar(df)
+def create_plot_components(df, **kwargs):
+    hostnames = most_common_url_bar(df, **kwargs)
     tlds = site_tld_bar(df)
     ts = pages_queried_timeseries(df)
     queries = queries_plot(df)

@@ -378,7 +378,7 @@ class Page:
   @cherrypy.expose
   def statistics(self, session):
     df = self.make_pages_query(session)
-    plots_script, plots_div = create_plot_components(df)
+    plots_script, plots_div = create_plot_components(df, top_n=10)
     widgets_script, widgets_div = create_table_components(df)
 
     template = env.get_template('cross_filter.html')
