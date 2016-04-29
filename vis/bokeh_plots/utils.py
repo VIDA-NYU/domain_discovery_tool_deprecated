@@ -97,7 +97,7 @@ BLANK_AXIS = dict(
 
 def make_empty_plot(plot_width, plot_height):
     return figure(plot_width=plot_width, plot_height=plot_height,
-                  tools="", logo=None)
+                  tools="", toolbar_location=None)
 
 def empty_plot_on_empty_df(func):
     @wraps(func)
