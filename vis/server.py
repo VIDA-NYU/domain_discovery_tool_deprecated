@@ -397,9 +397,13 @@ class Page:
 
     state = cherrypy.request.json
 
+    # limit number of hostnames to 10
+    top_n = 10
+
     ## applying the 'filter' of the cross_filter
     if state['urls']:
         df = df[df.hostname.isin(state['urls'])]
+        top_n = None
     if state['tlds']:
         df = df[df.tld.isin(state['tlds'])]
     if state['tags']:
@@ -412,7 +416,7 @@ class Page:
     if state['datetimepicker_end']:
         df = df[:state['datetimepicker_end']]
 
-    plots_script, plots_div = create_plot_components(df)
+    plots_script, plots_div = create_plot_components(df, top_n=top_n)
 
     template = env.get_template('cross_filter_plot_area.html')
 
