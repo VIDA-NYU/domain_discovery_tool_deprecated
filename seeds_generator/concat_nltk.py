@@ -5,18 +5,21 @@ import nltk
 import codecs
 from elastic.get_documents import get_documents
 
+#patch path to nltk_data directory
+nltk.data.path.append("../nltk_data/")
+
 ENGLISH_STOPWORDS = set(nltk.corpus.stopwords.words('english'))
 NON_ENGLISH_STOPWORDS = set(nltk.corpus.stopwords.words()) - ENGLISH_STOPWORDS
- 
+
 STOPWORDS_DICT = {}
 for lang in nltk.corpus.stopwords.fileids():
  STOPWORDS_DICT[lang] = set(nltk.corpus.stopwords.words(lang))
- 
+
 def get_language(text):
     words = set(nltk.wordpunct_tokenize(text.lower()))
     return max(((lang, len(words & stopwords)) for lang, stopwords in STOPWORDS_DICT.items()), key = lambda x: x[1])[0]
- 
- 
+
+
 def is_english(text):
     text = text.lower()
     words = set(nltk.wordpunct_tokenize(text))
@@ -71,7 +74,7 @@ def main(argv):
  #for file in files:
  for content in codecs.getreader("utf-8")(sys.stdin):
   if (count % 1000) == 0:
-   print "all count:\t" + str(count) + "\tless-100 count:\t" + str(len_count) 
+   print "all count:\t" + str(count) + "\tless-100 count:\t" + str(len_count)
   count += 1
   content = content.strip()
   url, text = content.split("\t")
