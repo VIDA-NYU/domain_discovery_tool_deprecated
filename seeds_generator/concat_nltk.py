@@ -1,12 +1,12 @@
 import sys
-from os import walk
+from os
 import re
 import nltk
 import codecs
 from elastic.get_documents import get_documents
 
 #patch path to nltk_data directory
-nltk.data.path.append("../nltk_data/")
+nltk.data.path.append(os.path.join(os.getcwd(), "..", "nltk_data/"))
 
 ENGLISH_STOPWORDS = set(nltk.corpus.stopwords.words('english'))
 NON_ENGLISH_STOPWORDS = set(nltk.corpus.stopwords.words()) - ENGLISH_STOPWORDS
@@ -52,7 +52,7 @@ def check_key_terms(content):
 def get_all_files(dirname):
   print "Loading all filenames"
   files = []
-  for [path, dirnames, filenames] in walk(dirname):
+  for [path, dirnames, filenames] in os.walk(dirname):
       for filename in filenames:
         files.append(path + "/" + filename)
   print "Done loading files", len(files)
