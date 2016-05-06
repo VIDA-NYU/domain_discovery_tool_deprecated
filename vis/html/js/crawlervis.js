@@ -474,7 +474,7 @@ CrawlerVis.prototype.createSelectForAvailablePageRetrievalCriteria = function() 
     });
 
     d3.select('#select_tags').on('click', function() {
-      DataAccess.loadAvailableTags(vis.sessionInfo());
+	DataAccess.loadAvailableTags(vis.sessionInfo(), 'Tags');
   });
 
     $('#listTagsModal').on('shown.bs.modal', function(){
@@ -530,14 +530,9 @@ CrawlerVis.prototype.onLoadedQueries = function(queries) {
     vis.enableQuerySelection(queries);
 };
 
-CrawlerVis.prototype.onLoadedTags = function(tags) {
+CrawlerVis.prototype.onLoadedTags = function(result) {
     var vis = this;
-    vis.tags = tags;
-    var pageRetrievalCriteria = d3.select('#page_retrieval_criteria_select').node().value;
-    if(pageRetrievalCriteria === "More like"){
-	delete vis.tags['Neutral']
-    }
-    vis.enableTagSelection(tags);
+    vis.enableTagSelection(result['tags'], result['event']);
 };
 
 CrawlerVis.prototype.onLoadedTagColors = function(colors_data) {
@@ -551,10 +546,21 @@ CrawlerVis.prototype.onLoadedTagColors = function(colors_data) {
     }
 };
 
-CrawlerVis.prototype.enableTagSelection = function(tags){
+CrawlerVis.prototype.enableTagSelection = function(tags, event){
     var vis = this;
-    // Show the tags list modal
-    $('#listTagsModal').modal("show");
+    vis.tags = tags;
+    if(event == 'Tags'){
+	var pageRetrievalCriteria = d3.select('#page_retrieval_criteria_select').node().value;
+	if(pageRetrievalCriteria === "More like"){
+	    delete vis.tags['Neutral']
+	}
+	
+	// Show the tags list modal
+	$('#listTagsModal').modal("show");
+    }
+    if(event == 'Model')
+	// Show the tags list modal
+	$('#modelSettingModal').modal("show");
 };
 
 CrawlerVis.prototype.enableQuerySelection = function(queries){
@@ -1172,6 +1178,92 @@ CrawlerVis.prototype.initModelButton = function() {
   .on('click', function() {
       vis.createModelData();
   });
+
+    d3.select('#ModelSettings').on('click', function() {
+	DataAccess.loadAvailableTags(vis.sessionInfo(), 'Model');
+    });
+
+    $('#modelSettingsModal').on('shown.bs.modal', function(){
+
+	var prev_pos_checked_tags = vis.getCheckedValues("posTagsCheckBox");
+	var prev_neg_checked_tags = vis.getCheckedValues("negTagsCheckBox");
+	var pos_check_all = false;
+	var neg_check_all = false;
+	if (prev_pos_checked_tags.indexOf('select_all') > -1)
+	    pos_check_all = true;
+	if (prev_neg_checked_tags.indexOf('select_all') > -1)
+	    neg_check_all = true;
+
+
+	$('#posTagsCheckBox').empty();
+	$('#negTagsCheckBox').empty();
+	
+	var newli_pos_select_all = document.createElement('li');
+	if(pos_check_all)
+	    newli_pos_select_all.innerHTML = "<input type='checkbox' name='posTagsCheckBox' id='pos_select_all' value='select_all' checked='true'><label for='select_all'>Select All</label>";
+	else
+	    newli_pos_select_all.innerHTML = "<input type='checkbox' name='posTagsCheckBox' id='pos_select_all' value='select_all'><label for='select_all'>Select All</label>";
+	
+	document.getElementById('posTagsCheckBox').appendChild(newli_pos_select_all);
+
+	d3.select('#pos_select_all').on('click', function(){
+	    checkboxes = document.getElementsByName('posTagsCheckBox');
+	    for (var checkbox in checkboxes){
+	    	checkboxes[checkbox].checked = this.checked;
+	    }
+	});
+
+	var newli_neg_select_all = document.createElement('li');
+	if(neg_check_all)
+	    newli_neg_select_all.innerHTML = "<input type='checkbox' name='negTagsCheckBox' id='neg_select_all' value='select_all' checked='true'><label for='select_all'>Select All</label>";
+	else
+	    newli_neg_select_all.innerHTML = "<input type='checkbox' name='negTagsCheckBox' id='neg_select_all' value='select_all'><label for='select_all'>Select All</label>";
+	
+	document.getElementById('negTagsCheckBox').appendChild(newli_neg_select_all);
+
+	d3.select('#neg_select_all').on('click', function(){
+	    checkboxes = document.getElementsByName('negTagsCheckBox');
+	    for (var checkbox in checkboxes){
+	    	checkboxes[checkbox].checked = this.checked;
+	    }
+	});
+
+	tags = vis.tags;
+	// Sort the tags by number of documents
+	keysSorted = Object.keys(tags).sort(function(a,b){
+	    return tags[b] - tags[a]
+	});
+
+	var count;
+	for (count = 0; count < keysSorted.length; count++) {
+	    if(keysSorted[count] != 'Irrelevant'){
+		var pos_checked = false;
+		if (prev_pos_checked_tags.indexOf(keysSorted[count]) > -1 || keysSorted[count] == 'Relevant')
+		    pos_checked = true;
+		var newli_pos = document.createElement('li');
+		var pos_label = "pos_tag_" + count.toString();
+		if(pos_check_all || pos_checked)
+		    newli_pos.innerHTML = "<input type='checkbox' name='posTagsCheckBox' checked='true' 'id='" + pos_label +"' value='"+keysSorted[count]+"'><label for='"+pos_label+"'>"+keysSorted[count]+" ("+tags[keysSorted[count]]+")"+"</label>";
+		else
+		    newli_pos.innerHTML = "<input type='checkbox' name='posTagsCheckBox' 'id='" + pos_label +"' value='"+keysSorted[count]+"'><label for='"+pos_label+"'>"+keysSorted[count]+" ("+tags[keysSorted[count]]+")"+"</label>";
+		document.getElementById('posTagsCheckBox').appendChild(newli_pos);
+	    }
+
+	    if(keysSorted[count] != 'Relevant'){
+		var neg_checked = false;
+		if (prev_neg_checked_tags.indexOf(keysSorted[count]) > -1  || keysSorted[count] == 'Irrelevant')
+		    neg_checked = true;
+		var newli_neg = document.createElement('li');
+		var neg_label = "neg_tag_" + count.toString();
+		if(neg_check_all || neg_checked)
+		    newli_neg.innerHTML = "<input type='checkbox' name='negTagsCheckBox' checked='true' 'id='" + neg_label +"' value='"+keysSorted[count]+"'><label for='"+neg_label+"'>"+keysSorted[count]+" ("+tags[keysSorted[count]]+")"+"</label>";
+		else
+		    newli_neg.innerHTML = "<input type='checkbox' name='negTagsCheckBox' 'id='" + neg_label +"' value='"+keysSorted[count]+"'><label for='"+neg_label+"'>"+keysSorted[count]+" ("+tags[keysSorted[count]]+")"+"</label>";
+		document.getElementById('negTagsCheckBox').appendChild(newli_neg);
+	    }
+	}
+    });
+    
 };
 
 CrawlerVis.prototype.createModelData = function() {
@@ -1445,6 +1537,15 @@ CrawlerVis.prototype.sessionInfo = function() {
     if (pageRetrievalCriteria == 'Tags' || pageRetrievalCriteria == 'More like'){
 	session['selected_tags'] = vis.getCheckedValues('tags_checkbox').toString();
     }
+
+    session['model'] = {}
+    if(vis.getCheckedValues('posTagsCheckBox').toString() != undefined && vis.getCheckedValues('posTagsCheckBox').toString() != "")
+	session['model']['positive'] = vis.getCheckedValues('posTagsCheckBox').toString();
+    else session['model']['positive'] = 'Relevant';
+    if(vis.getCheckedValues('negTagsCheckBox'.toString()) != undefined && vis.getCheckedValues('negTagsCheckBox').toString() != "")
+	session['model']['negative'] = vis.getCheckedValues('negTagsCheckBox').toString();
+    else session['model']['nagative'] = 'Irrelevant';
+
     return session;
 };
 
