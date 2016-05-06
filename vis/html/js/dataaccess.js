@@ -240,8 +240,8 @@ var DataAccess = (function() {
 
   // Returns public interface.
   // Gets available tags from backend.
-  pub.loadAvailableTags = function(session) {
-      runQuery('/getAvailableTags', {'session': JSON.stringify(session)}, onAvailableTagsLoaded);
+    pub.loadAvailableTags = function(session, event) {
+	runQuery('/getAvailableTags', {'session': JSON.stringify(session), 'event': event}, onAvailableTagsLoaded);
   };
 
   // Returns public interface.
