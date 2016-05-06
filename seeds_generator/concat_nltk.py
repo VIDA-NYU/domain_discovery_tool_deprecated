@@ -6,7 +6,7 @@ import codecs
 from elastic.get_documents import get_documents
 
 #patch path to nltk_data directory
-nltk.data.path.append(os.path.join(os.path.dirname(__file__), "..", "nltk_data/"))
+nltk.data.path.append(os.environ.get('NLTK_DATA'))
 
 ENGLISH_STOPWORDS = set(nltk.corpus.stopwords.words('english'))
 NON_ENGLISH_STOPWORDS = set(nltk.corpus.stopwords.words()) - ENGLISH_STOPWORDS
