@@ -121,17 +121,15 @@ class CrawlerModel:
     tags_neutral = field_missing("tag", ["url"], self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)
     unique_tags = {"Neutral": len(tags_neutral)}
 
-    tags_str = get_unique_values('tag', self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)
-    for tags, num in tags_str.iteritems():
-      tags_list = tags.split(";")
-      for tag in tags_list:
-        if tag != "":
-          if unique_tags.get(tag) is not None:
-            unique_tags[tag] = unique_tags[tag] + num
-          else:
-            unique_tags[tag] = num
+    tags = get_unique_values('tag', self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)
+    for tag, num in tags.iteritems():
+      if tag != "":
+        if unique_tags.get(tag) is not None:
+          unique_tags[tag] = unique_tags[tag] + num
         else:
-          unique_tags["Neutral"] = unique_tags["Neutral"] + 1
+          unique_tags[tag] = num
+      else:
+        unique_tags["Neutral"] = unique_tags["Neutral"] + 1
     return unique_tags
 
   def encode(self, url):
@@ -162,27 +160,34 @@ class CrawlerModel:
     if (not isdir(data_negative)):
       makedirs(data_negative)
 
-    s_fields = {}
-    query = {
-      "wildcard": {es_info['mapping']["tag"]:"*Relevant*"}
-    }
-    s_fields["queries"] = [query]
-    pos_urls = [field['url'][0] for field in multifield_term_search(s_fields, self._all, ["url", es_info['mapping']['tag']], 
-                                    es_info['activeCrawlerIndex'], 
-                                    es_info['docType'],
-                                    self._es) if "irrelevant" not in field["tag"]]
+    pos_tags = session['model']['positive']
+    neg_tags = session['model']['negative']
 
-    query = {
-      "wildcard": {es_info['mapping']["tag"]:"*Irrelevant*"}
-    }
-    s_fields["queries"] = [query]
-    neg_urls = [field['url'][0] for field in multifield_term_search(s_fields, self._all, ["url", es_info['mapping']['tag']], 
-                                    es_info['activeCrawlerIndex'], 
-                                    es_info['docType'],
-                                    self._es)]
-
-    pos_html = get_documents(pos_urls, 'url', [es_info['mapping']["html"]], es_info['activeCrawlerIndex'], es_info['docType'])
-    neg_html = get_documents(neg_urls, 'url', [es_info['mapping']["html"]], es_info['activeCrawlerIndex'], es_info['docType'])
+    pos_docs = []
+    for tag in pos_tags.split(','):
+      s_fields = {}
+      query = {
+        "wildcard": {es_info['mapping']["tag"]:"*"+tag+"*"}
+      }
+      s_fields["queries"] = [query]
+      pos_docs = pos_docs + multifield_term_search(s_fields, self._all, ["url", es_info['mapping']['html']], 
+                                                   es_info['activeCrawlerIndex'], 
+                                                   es_info['docType'],
+                                                   self._es)
+    neg_docs = []
+    for tag in neg_tags.split(','):
+      s_fields = {}
+      query = {
+        "wildcard": {es_info['mapping']["tag"]:"*"+tag+"*"}
+      }
+      s_fields["queries"] = [query]
+      neg_docs = neg_docs + multifield_term_search(s_fields, self._all, ["url", es_info['mapping']['html']], 
+                                                   es_info['activeCrawlerIndex'], 
+                                                   es_info['docType'],
+                                                   self._es)
+      
+    pos_html = {field['url'][0]:field[es_info['mapping']["html"]][0] for field in pos_docs}
+    neg_html = {field['url'][0]:field[es_info['mapping']["html"]][0] for field in neg_docs}
 
     seeds_file = data_crawler +"/seeds.txt"
     print "Seeds path ", seeds_file
@@ -193,7 +198,7 @@ class CrawlerModel:
           print file_positive
           s.write(url.encode('utf8') + '\n')
           with open(file_positive, 'w') as f:
-            f.write(pos_html[url][0][es_info['mapping']['html']][0])
+            f.write(pos_html[url])
 
         except IOError:
           _, exc_obj, tb = exc_info()
@@ -208,7 +213,7 @@ class CrawlerModel:
       try:
         file_negative = data_negative + self.encode(url.encode('utf8'))
         with open(file_negative, 'w') as f:
-          f.write(neg_html[url][0]['html'][0])
+          f.write(neg_html[url])
       except IOError:
         _, exc_obj, tb = exc_info()
         f = tb.tb_frame
@@ -853,7 +858,7 @@ class CrawlerModel:
       if not hit.get('y') is None:
         doc[2] = hit['y'][0]
       if not hit.get(es_info['mapping']['tag']) is None:
-        doc[3] = hit[es_info['mapping']['tag']][0].split(';')
+        doc[3] = hit[es_info['mapping']['tag']]
       if not hit.get('id') is None:
         doc[4] = hit['id']
       if not hit.get(es_info['mapping']["text"]) is None:
@@ -987,22 +992,18 @@ class CrawlerModel:
             entry = {}
             if record.get(es_info['mapping']['tag']) is None:
               # there are no previous tags
-              entry[es_info['mapping']['tag']] = tag
+              entry[es_info['mapping']['tag']] = [tag]
             else:
-              current_tag = record[es_info['mapping']['tag']][0]
-              tags = []
-              if  current_tag != '':
-                # all previous tags were removed
-                tags = list(set(current_tag.split(';')))
-                
+              tags = record[es_info['mapping']['tag']]
               if len(tags) != 0:
                 # previous tags exist
                 if not tag in tags:
-                  # append new tag    
-                  entry[es_info['mapping']['tag']] = ';'.join(tags)+';'+tag
+                  # append new tag
+                  tags.append(tag)
+                  entry[es_info['mapping']['tag']] = tags
               else:
                 # add new tag
-                entry[es_info['mapping']['tag']] = tag
+                entry[es_info['mapping']['tag']] = [tag]
 
             if entry:
                   entries[record['id']] =  entry
@@ -1016,13 +1017,12 @@ class CrawlerModel:
           for record in records:
             entry = {}
             if not record.get(es_info['mapping']['tag']) is None:
-              current_tag = record[es_info['mapping']['tag']][0]
-              if tag in current_tag:
-                tags = list(set(current_tag.split(';')))
+              tags = record[es_info['mapping']['tag']]
+              if tag in tags:
                 tags.remove(tag)
-                entry[es_info['mapping']['tag']] = ';'.join(tags)
+                entry[es_info['mapping']['tag']] = tags
                 entries[record['id']] = entry
-    
+
     if entries:
       update_try = 0
       while (update_try < 10):
