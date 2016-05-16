@@ -34,6 +34,15 @@ def update_document(update_entries, es_index='memex', es_doc_type='page', es=Non
                        "doc_as_upsert": True,
                        "_id": key} for key, value in update_entries.items()], refresh=True, request_timeout=600)
 
+def delete_document(delete_entries, es_index='memex', es_doc_type='page', es=None):
+    if es is None:
+        es = default_es
+    
+    helpers.bulk(es, [{"_op_type": "delete",
+                       "_index": es_index,
+                       "_type": es_doc_type,
+                       "_id": key} for key in delete_entries], refresh=True, request_timeout=600)
+
 def refresh(es_index='memex', es_doc_type='page', es=None):
     if es is None:
         es = default_es
