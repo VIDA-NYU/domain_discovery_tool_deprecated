@@ -27,13 +27,14 @@ from seeds_generator.download import download, decode
 from seeds_generator.concat_nltk import get_bag_of_words
 from elastic.get_config import get_available_domains, get_mapping, get_tag_colors
 from elastic.search_documents import get_context, term_search, search, multifield_term_search, range, multifield_query_search, field_missing, field_exists
-from elastic.add_documents import add_document, update_document, refresh
+from elastic.add_documents import add_document, update_document, delete_document, refresh
 from elastic.get_mtermvectors import getTermStatistics, getTermFrequency
 from elastic.get_documents import get_most_recent_documents, get_documents, get_all_ids, get_more_like_this, get_pages_datetimes, get_documents_by_id
 from elastic.aggregations import get_significant_terms, get_unique_values
 from elastic.create_index import create_index, create_terms_index, create_config_index
 from elastic.load_config import load_config
 from elastic.create_index import create_config_index
+from elastic.delete_index import delete_index
 from elastic.config import es, es_doc_type, es_server
 from elastic.delete import delete
 
@@ -42,7 +43,6 @@ from ranking import tfidf, rank, extract_terms, word2vec, get_bigrams_trigrams
 from topik import read_input, tokenize, vectorize, run_model, visualize, TopikProject
 
 import urllib2
-import json
 
 class CrawlerModel:
 
@@ -1129,6 +1129,14 @@ class CrawlerModel:
 
     load_config([entry])
 
+  # Delete crawler
+  def delCrawler(self, domains):
+
+    for index in domains.values():
+      delete_index(index, self._es)
+
+    delete_document(domains.keys(), "config", "domains", self._es)
+    
   def updateColors(self, session, colors):
     es_info = self.esInfo(session['domainId'])
 
