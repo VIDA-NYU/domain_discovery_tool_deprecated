@@ -89,15 +89,24 @@
             <li class="dropdown">
               <a data-toggle="dropdown" role="button" class="dropdown-toggle" id="currentDomain"></a>
               <ul class="dropdown-menu" id="selectCrawler">
-                <li id="addDomainButton">
-                  <button type="button" id="addDomain"
-                    class="btn btn-warning btn-duo center link-button"
-                    data-toggle="modal"
-                    data-target="#addDomainModal">
-                      <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Add Domain
+		<li id="delDomainButton">
+		  <button type="button" id="delDomain"
+			  class="btn btn-warning"
+			  data-toggle="modal"
+			  data-target="#delDomainModal">
+                    <span class="glyphicon glyphicon-minus-sign"></span>&nbsp;&nbsp;Del Domain
                   </button>
                 </li>
-              </ul>
+        
+                <li id="addDomainButton">
+                  <button type="button" id="addDomain"
+			  class="btn btn-warning"
+			  data-toggle="modal"
+			  data-target="#addDomainModal">
+                    <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Add Domain
+                  </button>
+                </li>
+	      </ul>
             </li>
           </ul>
         </div>
@@ -117,6 +126,23 @@
             <div class="modal-footer">
               <input type="text" class="form-control" id="crawler_index_name">
               <button type="button" class="btn btn-warning center-block" data-type="last" id="submit_add_crawler"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="delDomainModal" tabindex="-1" role="dialog" aria-labelledby="delDomainModalLabel">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="delDomainModalLabel" style="text-align:center;"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Delete Domain</h4>
+            </div>
+	    <div class="modal-body">
+	      <ul id="delDomainCheckBox"></ul>
+	    </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-warning center-block" data-type="last" id="submit_del_crawler"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Delete</button>
             </div>
           </div>
         </div>
