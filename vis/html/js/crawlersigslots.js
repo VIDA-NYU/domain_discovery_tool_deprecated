@@ -32,6 +32,7 @@ var SigSlots = (function() {
   __sig__.brushed_pages_changed = function(pagesIndices) {};
 
   __sig__.add_crawler = function(index_name) {};
+  __sig__.del_crawler = function(domains) {};
   __sig__.query_enter = function(terms) {};
   __sig__.filter_enter = function(terms) {};
   __sig__.add_term = function(term) {};

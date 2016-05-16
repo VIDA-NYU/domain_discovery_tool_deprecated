@@ -139,10 +139,10 @@ class Page:
   #   ...
   # ]
   @cherrypy.expose
-  def getAvailableCrawlers(self):
+  def getAvailableCrawlers(self, type):
     res = self._crawler.getAvailableCrawlers()
     cherrypy.response.headers["Content-Type"] = "application/json;"
-    return json.dumps(res)
+    return json.dumps({"crawlers":res, "type":type})
 
   @cherrypy.expose
   def getAvailableProjectionAlgorithms(self):
@@ -193,6 +193,11 @@ class Page:
   def addCrawler(self, index_name):
     self._crawler.addCrawler(index_name)
 
+  # Delete crawler
+  @cherrypy.expose
+  def delCrawler(self, domains):
+    self._crawler.delCrawler(json.loads(domains))
+  
   # Create model
   @cherrypy.expose
   def createModel(self, session):
