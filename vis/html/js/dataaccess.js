@@ -108,18 +108,22 @@ var DataAccess = (function() {
  }
 
   // Processes loaded list of available crawlers.
-  var onAvailableCrawlersLoaded = function(crawlers) {
-    __sig__.emit(__sig__.available_crawlers_list_loaded, crawlers);
+    var onAvailableCrawlersLoaded = function(crawlers) {
+    __sig__.emit(__sig__.available_crawlers_list_loaded, crawlers["crawlers"]);
   };
 
   // Reloads list of available crawlers.
-  var onAvailableCrawlersReLoaded = function(crawlers) {
-    __sig__.emit(__sig__.available_crawlers_list_reloaded, crawlers);
+    var onAvailableCrawlersReLoaded = function(result) {
+    __sig__.emit(__sig__.available_crawlers_list_reloaded, result);
   };
 
   // Reloads the select crawlers when the new crawler is added
   var onCrawlerAdded = function(){
-      pub.reloadAvailableCrawlers()
+      pub.reloadAvailableCrawlers("add")
+  }
+
+  var onCrawlerDeleted = function(){
+      pub.reloadAvailableCrawlers("delete")
   }
 
   // Processes loaded list of available projection algorithms.
@@ -163,7 +167,7 @@ var DataAccess = (function() {
 
   // Runs async post query for current crawler.
   var runQueryForCurrentCrawler = function(query, args, onCompletion, doneCb) {
-    if (currentCrawler !== undefined || query === "/addCrawler") {
+    if (currentCrawler !== undefined || query === "/addCrawler" || query === "/delCrawler") {
       runQuery(query, args, onCompletion, doneCb);
     }
   };
@@ -207,13 +211,13 @@ var DataAccess = (function() {
   // Returns public interface.
   // Gets available crawlers from backend.
   pub.loadAvailableCrawlers = function() {
-    runQuery('/getAvailableCrawlers', {}, onAvailableCrawlersLoaded);
+      runQuery('/getAvailableCrawlers', {"type": "init"}, onAvailableCrawlersLoaded);
   };
 
   // Returns public interface.
   // Gets available crawlers from backend.
-  pub.reloadAvailableCrawlers = function() {
-    runQuery('/getAvailableCrawlers', {}, onAvailableCrawlersReLoaded);
+  pub.reloadAvailableCrawlers = function(type) {
+      runQuery('/getAvailableCrawlers', {"type": type}, onAvailableCrawlersReLoaded);
   };
 
   // Sets current crawler Id.
@@ -240,13 +244,13 @@ var DataAccess = (function() {
 
   // Returns public interface.
   // Gets available tags from backend.
-  pub.loadAvailableTags = function(session) {
-      runQuery('/getAvailableTags', {'session': JSON.stringify(session)}, onAvailableTagsLoaded);
+    pub.loadAvailableTags = function(session, event) {
+	runQuery('/getAvailableTags', {'session': JSON.stringify(session), 'event': event}, onAvailableTagsLoaded);
   };
 
   // Returns public interface.
   // Gets available tag color mapping from backend.
-  pub.loadTagColors = function(crawlerId) {
+    pub.loadTagColors = function(crawlerId) {
       runQuery('/getTagColors', {'domainId': crawlerId}, onAvailableTagColorsLoaded);
   };
 
@@ -272,6 +276,14 @@ var DataAccess = (function() {
       $(document).ready(function() { $(".status_box").fadeIn(); });
       $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
       runQueryForCurrentCrawler('/addCrawler', {'index_name': index_name}, onCrawlerAdded);
+  }
+
+  // Add new crawler
+  pub.delCrawler = function(domains) {
+      document.getElementById("status_panel").innerHTML = 'Deleting crawler';
+      $(document).ready(function() { $(".status_box").fadeIn(); });
+      $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
+      runQueryForCurrentCrawler('/delCrawler', {'domains': JSON.stringify(domains)}, onCrawlerDeleted);
   }
 
   // Loads pages (complete data, including URL, x and y position etc) and terms.

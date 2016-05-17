@@ -1357,7 +1357,7 @@ h1 {
   padding-top:0px;
 }
 
-#addDomain, #build_model, #topicVisSettings {
+#addDomain, #delDomain, #build_model, #topicVisSettings, #ModelSettings{
   margin-top:0px;
   width: 100%;
   border-top-left-radius: 0px;

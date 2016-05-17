@@ -27,7 +27,7 @@ from seeds_generator.download import download, decode
 from seeds_generator.concat_nltk import get_bag_of_words
 from elastic.get_config import get_available_domains, get_mapping, get_tag_colors
 from elastic.search_documents import get_context, term_search, search, multifield_term_search, range, multifield_query_search, field_missing, field_exists
-from elastic.add_documents import add_document, update_document, refresh
+from elastic.add_documents import add_document, update_document, delete_document, refresh
 from elastic.get_mtermvectors import getTermStatistics, getTermFrequency
 from elastic.get_documents import (get_most_recent_documents, get_documents,
     get_all_ids, get_more_like_this, get_pages_datetimes, get_documents_by_id,
@@ -36,6 +36,7 @@ from elastic.aggregations import get_significant_terms, get_unique_values
 from elastic.create_index import create_index, create_terms_index, create_config_index
 from elastic.load_config import load_config
 from elastic.create_index import create_config_index
+from elastic.delete_index import delete_index
 from elastic.config import es, es_doc_type, es_server
 from elastic.delete import delete
 
@@ -44,7 +45,6 @@ from ranking import tfidf, rank, extract_terms, word2vec, get_bigrams_trigrams
 from topik import read_input, tokenize, vectorize, run_model, visualize, TopikProject
 
 import urllib2
-import json
 
 class CrawlerModel:
 
@@ -123,17 +123,15 @@ class CrawlerModel:
     tags_neutral = field_missing("tag", ["url"], self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)
     unique_tags = {"Neutral": len(tags_neutral)}
 
-    tags_str = get_unique_values('tag', self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)
-    for tags, num in tags_str.iteritems():
-      tags_list = tags.split(";")
-      for tag in tags_list:
-        if tag != "":
-          if unique_tags.get(tag) is not None:
-            unique_tags[tag] = unique_tags[tag] + num
-          else:
-            unique_tags[tag] = num
+    tags = get_unique_values('tag', self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)
+    for tag, num in tags.iteritems():
+      if tag != "":
+        if unique_tags.get(tag) is not None:
+          unique_tags[tag] = unique_tags[tag] + num
         else:
-          unique_tags["Neutral"] = unique_tags["Neutral"] + 1
+          unique_tags[tag] = num
+      else:
+        unique_tags["Neutral"] = unique_tags["Neutral"] + 1
     return unique_tags
 
   def encode(self, url):
@@ -164,27 +162,34 @@ class CrawlerModel:
     if (not isdir(data_negative)):
       makedirs(data_negative)
 
-    s_fields = {}
-    query = {
-      "wildcard": {es_info['mapping']["tag"]:"*Relevant*"}
-    }
-    s_fields["queries"] = [query]
-    pos_urls = [field['url'][0] for field in multifield_term_search(s_fields, self._all, ["url", es_info['mapping']['tag']],
-                                    es_info['activeCrawlerIndex'],
-                                    es_info['docType'],
-                                    self._es) if "irrelevant" not in field["tag"]]
+    pos_tags = session['model']['positive']
+    neg_tags = session['model']['negative']
 
-    query = {
-      "wildcard": {es_info['mapping']["tag"]:"*Irrelevant*"}
-    }
-    s_fields["queries"] = [query]
-    neg_urls = [field['url'][0] for field in multifield_term_search(s_fields, self._all, ["url", es_info['mapping']['tag']],
-                                    es_info['activeCrawlerIndex'],
-                                    es_info['docType'],
-                                    self._es)]
-
-    pos_html = get_documents(pos_urls, 'url', [es_info['mapping']["html"]], es_info['activeCrawlerIndex'], es_info['docType'])
-    neg_html = get_documents(neg_urls, 'url', [es_info['mapping']["html"]], es_info['activeCrawlerIndex'], es_info['docType'])
+    pos_docs = []
+    for tag in pos_tags.split(','):
+      s_fields = {}
+      query = {
+        "wildcard": {es_info['mapping']["tag"]:"*"+tag+"*"}
+      }
+      s_fields["queries"] = [query]
+      pos_docs = pos_docs + multifield_term_search(s_fields, self._all, ["url", es_info['mapping']['html']], 
+                                                   es_info['activeCrawlerIndex'], 
+                                                   es_info['docType'],
+                                                   self._es)
+    neg_docs = []
+    for tag in neg_tags.split(','):
+      s_fields = {}
+      query = {
+        "wildcard": {es_info['mapping']["tag"]:"*"+tag+"*"}
+      }
+      s_fields["queries"] = [query]
+      neg_docs = neg_docs + multifield_term_search(s_fields, self._all, ["url", es_info['mapping']['html']], 
+                                                   es_info['activeCrawlerIndex'], 
+                                                   es_info['docType'],
+                                                   self._es)
+      
+    pos_html = {field['url'][0]:field[es_info['mapping']["html"]][0] for field in pos_docs}
+    neg_html = {field['url'][0]:field[es_info['mapping']["html"]][0] for field in neg_docs}
 
     seeds_file = data_crawler +"/seeds.txt"
     print "Seeds path ", seeds_file
@@ -195,7 +200,7 @@ class CrawlerModel:
           print file_positive
           s.write(url.encode('utf8') + '\n')
           with open(file_positive, 'w') as f:
-            f.write(pos_html[url][0][es_info['mapping']['html']][0])
+            f.write(pos_html[url])
 
         except IOError:
           _, exc_obj, tb = exc_info()
@@ -210,7 +215,7 @@ class CrawlerModel:
       try:
         file_negative = data_negative + self.encode(url.encode('utf8'))
         with open(file_negative, 'w') as f:
-          f.write(neg_html[url][0]['html'][0])
+          f.write(neg_html[url])
       except IOError:
         _, exc_obj, tb = exc_info()
         f = tb.tb_frame
@@ -510,7 +515,7 @@ class CrawlerModel:
       total_pos_tf = np.sum(ttfs_pos, axis=0)
       total_pos = np.sum(total_pos_tf)
 
-      [_,_,bigram_tf_data,trigram_tf_data,bigram_corpus, trigram_corpus,_,_,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(pos_text, pos_urls, opt_maxNumberOfTerms, self.w2v, self._es)
+      [_,_,bigram_tf_data,trigram_tf_data,bigram_corpus, trigram_corpus,_,_,_,_] = get_bigrams_trigrams.get_bigrams_trigrams(pos_text, pos_urls, opt_maxNumberOfTerms, self.w2v, self._es)
 
       total_bigram_pos_tf = np.sum(bigram_tf_data, axis=0)
       total_bigram_pos = np.sum(total_bigram_pos_tf)
@@ -560,7 +565,7 @@ class CrawlerModel:
       total_neg_tf = np.sum(ttfs_neg, axis=0)
       total_neg = np.sum(total_neg_tf)
 
-      [_,_,bigram_tf_data,trigram_tf_data,bigram_corpus, trigram_corpus,_,_,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(neg_text, neg_urls, opt_maxNumberOfTerms, self.w2v, self._es)
+      [_,_,bigram_tf_data,trigram_tf_data,bigram_corpus, trigram_corpus,_,_,_,_] = get_bigrams_trigrams.get_bigrams_trigrams(neg_text, neg_urls, opt_maxNumberOfTerms, self.w2v, self._es)
 
       total_bigram_neg_tf = np.sum(bigram_tf_data, axis=0)
       total_bigram_neg = np.sum(total_bigram_neg_tf)
@@ -855,7 +860,7 @@ class CrawlerModel:
       if not hit.get('y') is None:
         doc[2] = hit['y'][0]
       if not hit.get(es_info['mapping']['tag']) is None:
-        doc[3] = hit[es_info['mapping']['tag']][0].split(';')
+        doc[3] = hit[es_info['mapping']['tag']]
       if not hit.get('id') is None:
         doc[4] = hit['id']
       if not hit.get(es_info['mapping']["text"]) is None:
@@ -989,22 +994,18 @@ class CrawlerModel:
             entry = {}
             if record.get(es_info['mapping']['tag']) is None:
               # there are no previous tags
-              entry[es_info['mapping']['tag']] = tag
+              entry[es_info['mapping']['tag']] = [tag]
             else:
-              current_tag = record[es_info['mapping']['tag']][0]
-              tags = []
-              if  current_tag != '':
-                # all previous tags were removed
-                tags = list(set(current_tag.split(';')))
-
+              tags = record[es_info['mapping']['tag']]
               if len(tags) != 0:
                 # previous tags exist
                 if not tag in tags:
                   # append new tag
-                  entry[es_info['mapping']['tag']] = ';'.join(tags)+';'+tag
+                  tags.append(tag)
+                  entry[es_info['mapping']['tag']] = tags
               else:
                 # add new tag
-                entry[es_info['mapping']['tag']] = tag
+                entry[es_info['mapping']['tag']] = [tag]
 
             if entry:
                   entries[record['id']] =  entry
@@ -1018,11 +1019,10 @@ class CrawlerModel:
           for record in records:
             entry = {}
             if not record.get(es_info['mapping']['tag']) is None:
-              current_tag = record[es_info['mapping']['tag']][0]
-              if tag in current_tag:
-                tags = list(set(current_tag.split(';')))
+              tags = record[es_info['mapping']['tag']]
+              if tag in tags:
                 tags.remove(tag)
-                entry[es_info['mapping']['tag']] = ';'.join(tags)
+                entry[es_info['mapping']['tag']] = tags
                 entries[record['id']] = entry
 
     if entries:
@@ -1131,6 +1131,14 @@ class CrawlerModel:
 
     load_config([entry])
 
+  # Delete crawler
+  def delCrawler(self, domains):
+
+    for index in domains.values():
+      delete_index(index, self._es)
+
+    delete_document(domains.keys(), "config", "domains", self._es)
+    
   def updateColors(self, session, colors):
     es_info = self.esInfo(session['domainId'])
 

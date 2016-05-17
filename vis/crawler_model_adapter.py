@@ -43,6 +43,10 @@ class CrawlerModelAdapter:
   def addCrawler(self, index_name):
     self._crawlerModel.addCrawler(index_name)
 
+  # Delete crawler
+  def delCrawler(self, domains):
+    self._crawlerModel.delCrawler(domains)
+
   # Create model
   def createModel(self, session):
     return self._crawlerModel.createModel(session)

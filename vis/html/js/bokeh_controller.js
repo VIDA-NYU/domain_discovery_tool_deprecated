@@ -15,6 +15,13 @@
     exports.vis.tagsGallery.applyOrRemoveTag(tag, action, selectedUrls, false);
   }
 
+ exports.addCustomTags = function(custom_tags){
+     for(var i in custom_tags){
+	 if(custom_tags[i] != "Custom tags")
+	     exports.vis.tagsGallery.addItem(custom_tags[i], false);
+     }
+ }
+    
   exports.crawlPages = function(selectedURLs, crawl_type){
       exports.vis.crawlPages(selectedURLs, crawl_type);
   }
@@ -26,7 +33,7 @@
   }
 
   // Inserts the bokeh plot at the specified dom element.
-  exports.insertPlot = function(plotData){
+    exports.insertPlot = function(plotData){
     $("#pages_landscape").html(plotData);
   }
 

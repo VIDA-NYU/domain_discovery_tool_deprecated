@@ -74,20 +74,39 @@
                     <span class="glyphicon glyphicon-download"></span> Build
                   </button>
                 </li>
+		<li>
+                  <button type="button"
+			  class="btn btn-warning btn-duo center link-button"
+			  data-type="last"
+			  id="ModelSettings"
+			  data-toggle="modal"
+			  data-target="#modelSettingsModal">
+                    <span class="glyphicon glyphicon-cog"></span> Settings
+                  </button>
+                </li>
               </ul>
             </li>
             <li class="dropdown">
               <a data-toggle="dropdown" role="button" class="dropdown-toggle" id="currentDomain"></a>
               <ul class="dropdown-menu" id="selectCrawler">
-                <li id="addDomainButton">
-                  <button type="button" id="addDomain"
-                    class="btn btn-warning btn-duo center link-button"
-                    data-toggle="modal"
-                    data-target="#addDomainModal">
-                      <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Add Domain
+		<li id="delDomainButton">
+		  <button type="button" id="delDomain"
+			  class="btn btn-warning"
+			  data-toggle="modal"
+			  data-target="#delDomainModal">
+                    <span class="glyphicon glyphicon-minus-sign"></span>&nbsp;&nbsp;Del Domain
                   </button>
                 </li>
-              </ul>
+        
+                <li id="addDomainButton">
+                  <button type="button" id="addDomain"
+			  class="btn btn-warning"
+			  data-toggle="modal"
+			  data-target="#addDomainModal">
+                    <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Add Domain
+                  </button>
+                </li>
+	      </ul>
             </li>
           </ul>
         </div>
@@ -107,6 +126,23 @@
             <div class="modal-footer">
               <input type="text" class="form-control" id="crawler_index_name">
               <button type="button" class="btn btn-warning center-block" data-type="last" id="submit_add_crawler"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="delDomainModal" tabindex="-1" role="dialog" aria-labelledby="delDomainModalLabel">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="delDomainModalLabel" style="text-align:center;"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Delete Domain</h4>
+            </div>
+	    <div class="modal-body">
+	      <ul id="delDomainCheckBox"></ul>
+	    </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-warning center-block" data-type="last" id="submit_del_crawler"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Delete</button>
             </div>
           </div>
         </div>
@@ -148,40 +184,60 @@
       </div>
 
       <div class="modal fade" id="listQueriesModal" tabindex="-1" role="dialog" aria-labelledby="listQueriesModalLabel">
-		<div class="modal-dialog">
-		  <div class="modal-content">
-		    <div class="modal-header">
-		      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		      <h4 class="modal-title" id="listQueriesModalLabel" style="text-align:center;"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Queries</h4>
-		    </div>
-		    <div class="modal-body">
-		      <ul id="queryCheckBox"></ul>
-		    </div>
-		    <div class="modal-footer">
-		      <button type="button" class="btn btn-warning center-block" data-type="last" id="submit_queries" data-dismiss="modal">Close</button>
-		    </div>
-		  </div>
-		</div>
+	<div class="modal-dialog">
+	  <div class="modal-content">
+	    <div class="modal-header">
+	      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	      <h4 class="modal-title" id="listQueriesModalLabel" style="text-align:center;"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Queries</h4>
+	    </div>
+	    <div class="modal-body">
+	      <ul id="queryCheckBox"></ul>
+	    </div>
+	    <div class="modal-footer">
+	      <button type="button" class="btn btn-warning center-block" data-type="last" id="submit_queries" data-dismiss="modal">Close</button>
+	    </div>
+	  </div>
+	</div>
       </div>
-            <div class="modal fade" id="listTagsModal" tabindex="-1" role="dialog" aria-labelledby="listTagsModalLabel">
-		<div class="modal-dialog">
-		  <div class="modal-content">
-		    <div class="modal-header">
-		      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		      <h4 class="modal-title" id="listTagsModalLabel" style="text-align:center;"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Tags</h4>
-		    </div>
-		    <div class="modal-body">
-		      <ul id="tagsCheckBox"></ul>
-		    </div>
-		    <div class="modal-footer">
-		      <button type="button" class="btn btn-warning center-block" data-type="last" id="submit_Tags" data-dismiss="modal">Close</button>
-		    </div>
-		  </div>
-		</div>
+      <div class="modal fade" id="listTagsModal" tabindex="-1" role="dialog" aria-labelledby="listTagsModalLabel">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+	    <div class="modal-header">
+	      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	      <h4 class="modal-title" id="listTagsModalLabel" style="text-align:center;"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Tags</h4>
+	    </div>
+	    <div class="modal-body">
+	      <ul id="tagsCheckBox"></ul>
+	    </div>
+	    <div class="modal-footer">
+	      <button type="button" class="btn btn-warning center-block" data-type="last" id="submit_Tags" data-dismiss="modal">Close</button>
+	    </div>
+	  </div>
+	</div>
+      </div>
+
+      <div class="modal fade" id="modelSettingsModal" tabindex="-1" role="dialog" aria-labelledby="modelSetttingsModalLabel">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+	    <div class="modal-header">
+	      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	      <h4 class="modal-title" id="modelSettingstModalLabel" style="text-align:center;"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Tags</h4>
+	    </div>
+	    <div class="modal-body">
+	      <ul>
+		<li>Positive</li>
+		<ul id="posTagsCheckBox"></ul>
+	      </ul>
+	      <ul>
+		<li>Negative</li>
+		<ul id="negTagsCheckBox"></ul>
+	      </ul>
+	    </div>
+	  </div>
+	</div>
       </div>
 
         <div class="panel panel-default">
-          
           <div class="panel-heading">
             <h4 class="panel-title">
             <div class="panel-heading-left" >

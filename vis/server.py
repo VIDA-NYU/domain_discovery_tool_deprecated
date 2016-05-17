@@ -142,10 +142,10 @@ class Page:
   #   ...
   # ]
   @cherrypy.expose
-  def getAvailableCrawlers(self):
+  def getAvailableCrawlers(self, type):
     res = self._crawler.getAvailableCrawlers()
     cherrypy.response.headers["Content-Type"] = "application/json;"
-    return json.dumps(res)
+    return json.dumps({"crawlers":res, "type":type})
 
   @cherrypy.expose
   def getAvailableProjectionAlgorithms(self):
@@ -161,11 +161,15 @@ class Page:
     return json.dumps(res)
 
   @cherrypy.expose
-  def getAvailableTags(self, session):
+  def getAvailableTags(self, session, event):
     session = json.loads(session)
     res = self._crawler.getAvailableTags(session)
+    result = {
+      'tags': res,
+      'event':event
+    }
     cherrypy.response.headers["Content-Type"] = "application/json;"
-    return json.dumps(res)
+    return json.dumps(result)
 
   @cherrypy.expose
   def getTagColors(self, domainId):
@@ -192,6 +196,11 @@ class Page:
   def addCrawler(self, index_name):
     self._crawler.addCrawler(index_name)
 
+  # Delete crawler
+  @cherrypy.expose
+  def delCrawler(self, domains):
+    self._crawler.delCrawler(json.loads(domains))
+  
   # Create model
   @cherrypy.expose
   def createModel(self, session):
