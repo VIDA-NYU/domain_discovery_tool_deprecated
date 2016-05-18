@@ -64,8 +64,8 @@ def test_calculate_graph_coords(es_response):
     df = parse_es_response(es_response)
     graph = calculate_graph_coords(df, 'query')
 
-    assert np.allclose(graph.x.tolist(), [0.0, 8.6031889e-08, 0.86602539])
-    assert np.allclose(graph.y.tolist(), [1.0, 0.0, 0.5])
+    assert np.allclose(graph.x.tolist(), [-0.5, -0.5, 1.0])
+    assert np.allclose(graph.y.tolist(), [0.8660254037, -0.8660254037, 0.0])
     assert graph.url.tolist() == [3, 2, 1]
     assert graph.index.tolist() == [u'apple', u'banana', u'carrot']
 
