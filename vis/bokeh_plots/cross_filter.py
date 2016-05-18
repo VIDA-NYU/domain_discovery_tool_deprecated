@@ -23,8 +23,8 @@ MAX_CIRCLE_SIZE = 0.1
 MIN_CIRCLE_SIZE = 0.01
 MAX_LINE_SIZE = 10
 MIN_LINE_SIZE = 1
-X_RANGE = Range1d(-0.25, 1.25)
-Y_RANGE = Range1d(-0.25, 1.25)
+X_RANGE = Range1d(-1.25, 1.25)
+Y_RANGE = Range1d(-1.25, 1.25)
 
 js_callback = CustomJS(code="""
     var data_table_ids = ['urls', 'tlds', 'tags', 'queries'];
@@ -80,7 +80,7 @@ def calculate_graph_coords(df, groupby_column):
 
     graph = nx.Graph()
     graph.add_nodes_from(df2.index)
-    graph_coords = nx.circular_layout(graph)
+    graph_coords = nx.circular_layout(graph, center=(0,0))
 
     return pd.concat([df2, pd.DataFrame(graph_coords, index=["x", "y"]).T], axis=1)
 
@@ -180,9 +180,9 @@ def pages_queried_timeseries(df, plot_width=600, plot_height=200, rule='1T'):
 def queries_plot(df, plot_width=400, plot_height=400):
     df2 = calculate_graph_coords(df, 'query')
     df2["radius"] = normalize(df2.url, MAX_CIRCLE_SIZE, MIN_CIRCLE_SIZE)
-    df2["label"] = df2.index + ' (' + df2.url.astype(str) + ')'
-    df2["text_y"] = df2.y - df2.radius - 0.075 ## fudge factor
-    df2["text_width"] = df2.label.str.len() / 35 ## fudge factor
+    df2["label"] = df2.index.astype(str) + ' (' + df2.url.astype(str) + ')'
+    df2["text_y"] = df2.y - df2.radius - 0.100 ## fudge factor
+    df2["text_width"] = df2.label.str.len() / 30 ## fudge factor
 
     source = ColumnDataSource(df2)
 
@@ -199,10 +199,7 @@ def queries_plot(df, plot_width=400, plot_height=400):
 
     if len(df2) == 1:
         x_range = Range1d(0.2, 1.8)
-        y_range = Range1d(0.1, 1.7)
-    elif len(df2) == 2:
-        x_range = Range1d(-0.3, 1.3)
-        y_range = Range1d(-0.9, 0.7)
+        y_range = Y_RANGE
     else:
         x_range = X_RANGE
         y_range = Y_RANGE
@@ -238,8 +235,8 @@ def tags_plot(df, plot_width=400, plot_height=400):
     graph_df = calculate_graph_coords(df2, 'tag')
     graph_df["radius"] = normalize(graph_df.url, MAX_CIRCLE_SIZE, MIN_CIRCLE_SIZE)
     graph_df["label"] = graph_df.index + ' (' + graph_df.url.astype(str) + ')'
-    graph_df["text_y"] = graph_df.y - graph_df.radius - 0.075 ## fudge factor
-    graph_df["text_width"] = graph_df.label.str.len() / 35 ## fudge factor
+    graph_df["text_y"] = graph_df.y - graph_df.radius - 0.100 ## fudge factor
+    graph_df["text_width"] = graph_df.label.str.len() / 30 ## fudge factor
 
     source = ColumnDataSource(graph_df)
 
@@ -256,10 +253,7 @@ def tags_plot(df, plot_width=400, plot_height=400):
 
     if len(df2) == 1:
         x_range = Range1d(0.2, 1.8)
-        y_range = Range1d(0.1, 1.7)
-    elif len(df2) == 2:
-        x_range = Range1d(-0.3, 1.3)
-        y_range = Range1d(-0.9, 0.7)
+        y_range = Y_RANGE
     else:
         x_range = X_RANGE
         y_range = Y_RANGE
