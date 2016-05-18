@@ -23,8 +23,8 @@ MAX_CIRCLE_SIZE = 0.1
 MIN_CIRCLE_SIZE = 0.01
 MAX_LINE_SIZE = 10
 MIN_LINE_SIZE = 1
-X_RANGE = Range1d(-1.25, 1.25)
-Y_RANGE = Range1d(-1.25, 1.25)
+X_RANGE = Range1d(-0.25, 1.25)
+Y_RANGE = Range1d(-0.25, 1.25)
 
 js_callback = CustomJS(code="""
     var data_table_ids = ['urls', 'tlds', 'tags', 'queries'];
@@ -197,9 +197,19 @@ def queries_plot(df, plot_width=400, plot_height=400):
 
     line_source = ColumnDataSource(lines)
 
+    if len(df2) == 1:
+        x_range = Range1d(0.2, 1.8)
+        y_range = Range1d(0.1, 1.7)
+    elif len(df2) == 2:
+        x_range = Range1d(-0.3, 1.3)
+        y_range = Range1d(-0.9, 0.7)
+    else:
+        x_range = X_RANGE
+        y_range = Y_RANGE
+
     plot = Plot(title="Queries Network",
                 plot_width=plot_width, plot_height=plot_height,
-                x_range=X_RANGE, y_range=Y_RANGE,
+                x_range=x_range, y_range=y_range,
                 **PLOT_FORMATS)
     plot.add_glyph(
         line_source,
@@ -244,9 +254,19 @@ def tags_plot(df, plot_width=400, plot_height=400):
 
     line_source = ColumnDataSource(lines)
 
+    if len(df2) == 1:
+        x_range = Range1d(0.2, 1.8)
+        y_range = Range1d(0.1, 1.7)
+    elif len(df2) == 2:
+        x_range = Range1d(-0.3, 1.3)
+        y_range = Range1d(-0.9, 0.7)
+    else:
+        x_range = X_RANGE
+        y_range = Y_RANGE
+
     plot = Plot(title="Tags Network",
                 plot_width=plot_width, plot_height=plot_height,
-                x_range=X_RANGE, y_range=Y_RANGE,
+                x_range=x_range, y_range=y_range,
                 **PLOT_FORMATS)
     plot.add_glyph(
         line_source,
