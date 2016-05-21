@@ -194,7 +194,14 @@ def get_plotting_data(index_name, es=None):
 
     res = es.search(index_name, size=100000, fields=["retrieved", "url", "tag", "query"])
 
-    return [item['fields'] for item in res['hits']['hits']]
+    fields = []
+    for item in res['hits']['hits']:
+        if item['fields'].get('tag') != None:
+            if item['fields']['tag'][0] == '':
+                item['fields'].pop('tag')
+        fields.append(item['fields'])    
+        
+    return fields
 
 def get_pages_datetimes(index_name, es=None):
     if es is None:
