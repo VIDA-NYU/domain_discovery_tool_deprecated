@@ -12,11 +12,16 @@
 
   <div class="container-fluid">
     <div class="col-md-4">
-      <p>
-        Click on table rows to filter the data in the visualizations and use
-        Super + Click (Cmd on OSX, Ctl on Linux, Windows) to deselect. Shift +
-        Click will select or deselect multiple rows at a time.
-      </p>
+      <div class="help-dropdown">
+        <h5>Hover Here for Explanation</h5>
+        <div class="help-dropdown-content">
+          <p>
+            Click on table rows to filter the data in the visualizations and use
+            Super + Click (Cmd on OSX, Ctl on Linux, Windows) to deselect. Shift +
+            Click will select or deselect multiple rows at a time.
+          </p>
+        </div>
+      </div>
       <div class="bokeh_table" id="queries">{{ widgets_div['queries'] | safe }}</div>
       <div class="bokeh_table" id="tags">{{ widgets_div['tags'] | safe }}</div>
       <div class="bokeh_table" id="urls">{{ widgets_div['urls'] | safe }}</div>
