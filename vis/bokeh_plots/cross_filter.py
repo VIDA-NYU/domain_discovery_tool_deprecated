@@ -8,7 +8,7 @@ from bokeh.io import VBox
 from bokeh.models.widgets import DataTable, TableColumn
 from bokeh.models import (ColumnDataSource, CustomJS, HoverTool, Range1d, Plot,
     LinearAxis, Rect, FactorRange, CategoricalAxis, DatetimeAxis, Line,
-    DataRange1d, MultiLine, Text, Circle, WheelZoomTool, ResetTool)
+    DataRange1d, MultiLine, Text, Circle, WheelZoomTool, ResetTool, PanTool)
 import networkx as nx
 import pandas as pd
 from urlparse import urlparse
@@ -180,7 +180,6 @@ def queries_plot(df, plot_width=400, plot_height=400):
     df2["radius"] = normalize(df2.url, MAX_CIRCLE_SIZE, MIN_CIRCLE_SIZE)
     df2["label"] = df2.index.astype(str) + ' (' + df2.url.astype(str) + ')'
     df2["text_y"] = df2.y - df2.radius - 0.100 ## fudge factor
-    df2["text_width"] = df2.label.str.len() / 30 ## fudge factor
 
     source = ColumnDataSource(df2)
 
@@ -219,15 +218,10 @@ def queries_plot(df, plot_width=400, plot_height=400):
     )
     plot.add_glyph(
         source,
-        Rect(x="x", y="text_y", width="text_width", height=0.1, fill_color="#ffffff",
-            line_color="#ffffff")
-    )
-    plot.add_glyph(
-        source,
         Text(x="x", y="text_y", text="label", text_baseline='middle',
-            text_align="center", text_alpha=0.6, **FONT_PROPS_SM)
+            text_align="center", text_alpha=0.9, **FONT_PROPS_SM)
     )
-    plot.add_tools(WheelZoomTool(), ResetTool())
+    plot.add_tools(WheelZoomTool(), ResetTool(), PanTool())
 
     return plot
 
@@ -238,7 +232,6 @@ def tags_plot(df, plot_width=400, plot_height=400):
     graph_df["radius"] = normalize(graph_df.url, MAX_CIRCLE_SIZE, MIN_CIRCLE_SIZE)
     graph_df["label"] = graph_df.index.astype(str) + ' (' + graph_df.url.astype(str) + ')'
     graph_df["text_y"] = graph_df.y - graph_df.radius - 0.100 ## fudge factor
-    graph_df["text_width"] = graph_df.label.str.len() / 30 ## fudge factor
 
     source = ColumnDataSource(graph_df)
 
@@ -277,15 +270,10 @@ def tags_plot(df, plot_width=400, plot_height=400):
     )
     plot.add_glyph(
         source,
-        Rect(x="x", y="text_y", width="text_width", height=0.1, fill_color="#ffffff",
-            line_color="#ffffff")
-    )
-    plot.add_glyph(
-        source,
         Text(x="x", y="text_y", text="label", text_baseline='middle',
-            text_align="center", text_alpha=0.6, **FONT_PROPS_SM)
+            text_align="center", text_alpha=0.9, **FONT_PROPS_SM)
     )
-    plot.add_tools(WheelZoomTool(), ResetTool())
+    plot.add_tools(WheelZoomTool(), ResetTool(), PanTool())
 
     return plot
 
