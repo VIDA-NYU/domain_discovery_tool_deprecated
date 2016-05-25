@@ -8,7 +8,7 @@ from bokeh.io import VBox
 from bokeh.models.widgets import DataTable, TableColumn
 from bokeh.models import (ColumnDataSource, CustomJS, HoverTool, Range1d, Plot,
     LinearAxis, Rect, FactorRange, CategoricalAxis, DatetimeAxis, Line,
-    DataRange1d, MultiLine, Text, Circle)
+    DataRange1d, MultiLine, Text, Circle, WheelZoomTool, ResetTool)
 import networkx as nx
 import pandas as pd
 from urlparse import urlparse
@@ -23,8 +23,6 @@ MAX_CIRCLE_SIZE = 0.1
 MIN_CIRCLE_SIZE = 0.01
 MAX_LINE_SIZE = 10
 MIN_LINE_SIZE = 1
-X_RANGE = Range1d(-1.25, 1.25)
-Y_RANGE = Range1d(-1.25, 1.25)
 
 js_callback = CustomJS(code="""
     var data_table_ids = ['urls', 'tlds', 'tags', 'queries'];
@@ -199,15 +197,18 @@ def queries_plot(df, plot_width=400, plot_height=400):
 
     if len(df2) == 1:
         x_range = Range1d(0.2, 1.8)
-        y_range = Y_RANGE
+        y_range = Range1d(-1.25, 1.25)
     else:
-        x_range = X_RANGE
-        y_range = Y_RANGE
+        x_range = Range1d(-1.25, 1.25)
+        y_range = Range1d(-1.25, 1.25)
+
+    NETWORK_FORMATS = PLOT_FORMATS.copy()
+    NETWORK_FORMATS['toolbar_location'] = 'right'
 
     plot = Plot(title="Queries Network",
                 plot_width=plot_width, plot_height=plot_height,
                 x_range=x_range, y_range=y_range,
-                **PLOT_FORMATS)
+                **NETWORK_FORMATS)
     plot.add_glyph(
         line_source,
         MultiLine(xs="xs", ys="ys", line_width="line_width", line_color=RED)
@@ -226,6 +227,7 @@ def queries_plot(df, plot_width=400, plot_height=400):
         Text(x="x", y="text_y", text="label", text_baseline='middle',
             text_align="center", text_alpha=0.6, **FONT_PROPS_SM)
     )
+    plot.add_tools(WheelZoomTool(), ResetTool())
 
     return plot
 
@@ -234,7 +236,7 @@ def tags_plot(df, plot_width=400, plot_height=400):
     df2 = duplicate_multitag_rows(df)
     graph_df = calculate_graph_coords(df2, 'tag')
     graph_df["radius"] = normalize(graph_df.url, MAX_CIRCLE_SIZE, MIN_CIRCLE_SIZE)
-    graph_df["label"] = graph_df.index + ' (' + graph_df.url.astype(str) + ')'
+    graph_df["label"] = graph_df.index.astype(str) + ' (' + graph_df.url.astype(str) + ')'
     graph_df["text_y"] = graph_df.y - graph_df.radius - 0.100 ## fudge factor
     graph_df["text_width"] = graph_df.label.str.len() / 30 ## fudge factor
 
@@ -253,15 +255,18 @@ def tags_plot(df, plot_width=400, plot_height=400):
 
     if len(df2) == 1:
         x_range = Range1d(0.2, 1.8)
-        y_range = Y_RANGE
+        y_range = Range1d(-1.25, 1.25)
     else:
-        x_range = X_RANGE
-        y_range = Y_RANGE
+        x_range = Range1d(-1.25, 1.25)
+        y_range = Range1d(-1.25, 1.25)
+
+    NETWORK_FORMATS = PLOT_FORMATS.copy()
+    NETWORK_FORMATS['toolbar_location'] = 'right'
 
     plot = Plot(title="Tags Network",
                 plot_width=plot_width, plot_height=plot_height,
                 x_range=x_range, y_range=y_range,
-                **PLOT_FORMATS)
+                **NETWORK_FORMATS)
     plot.add_glyph(
         line_source,
         MultiLine(xs="xs", ys="ys", line_width="line_width", line_color=Spectral4[1])
@@ -280,6 +285,7 @@ def tags_plot(df, plot_width=400, plot_height=400):
         Text(x="x", y="text_y", text="label", text_baseline='middle',
             text_align="center", text_alpha=0.6, **FONT_PROPS_SM)
     )
+    plot.add_tools(WheelZoomTool(), ResetTool())
 
     return plot
 

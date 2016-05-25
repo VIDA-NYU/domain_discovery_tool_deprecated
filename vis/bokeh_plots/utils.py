@@ -42,6 +42,7 @@ AXIS_FORMATS = dict(
 )
 PLOT_FORMATS = dict(
     toolbar_location=None,
+    logo=None,
     outline_line_color="#FFFFFF",
     title_text_font=FONT,
     title_text_align='center',
