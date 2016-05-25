@@ -8,7 +8,8 @@ from bokeh.io import VBox
 from bokeh.models.widgets import DataTable, TableColumn
 from bokeh.models import (ColumnDataSource, CustomJS, HoverTool, Range1d, Plot,
     LinearAxis, Rect, FactorRange, CategoricalAxis, DatetimeAxis, Line,
-    DataRange1d, MultiLine, Text, Circle, WheelZoomTool, ResetTool, PanTool)
+    DataRange1d, MultiLine, Text, Circle, WheelZoomTool, ResetTool, PanTool,
+    DatetimeTickFormatter, DatetimeTicker)
 import networkx as nx
 import pandas as pd
 from urlparse import urlparse
@@ -159,6 +160,9 @@ def pages_queried_timeseries(df, plot_width=600, plot_height=200, rule='1T'):
     ts = pd.concat([ts[:1], ts]) # prepend 0-value for Line chart compat
     ts.iloc[0]['url'] = 0
 
+    formatter = DatetimeTickFormatter(formats=DATETIME_FORMAT)
+    ticker = DatetimeTicker(desired_num_ticks=2)
+
     source = ColumnDataSource(ts)
 
     plot = Plot(plot_width=plot_width, plot_height=plot_height,
@@ -169,7 +173,10 @@ def pages_queried_timeseries(df, plot_width=600, plot_height=200, rule='1T'):
         source,
         Line(x='retrieved', y='url', **LINE_FORMATS)
     )
-    plot.add_layout(DatetimeAxis(axis_label="Date Retrieved", **AXIS_FORMATS), 'below')
+    plot.add_layout(
+        DatetimeAxis(axis_label="Date Retrieved", formatter=formatter,
+                     ticker=ticker, **AXIS_FORMATS),
+        'below')
     plot.add_layout(LinearAxis(axis_label="Total Pages", **AXIS_FORMATS), 'left')
 
     return plot
