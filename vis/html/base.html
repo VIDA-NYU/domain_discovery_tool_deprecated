@@ -15,18 +15,16 @@
         <div class="navbar-header">
           <img src="img/nyu_stacked_black.png" style="height:40px;margin-top:5px;padding-right:15px;" />
         </div>
-        <div class="collapse navbar-collapse" id="crawlerSelection">
-          <ul class="nav navbar-nav">
-            <li><a class="navbar-brand" href="#">Domain Discovery Tool</a></li>
-          </ul>
+        <a class="navbar-brand" href="#">Domain Discovery Tool</a>
+        <div class="navbar-collapse collapse">
           {% block navigation %}
           {% endblock navigation %}
         </div>
+      </nav>
+      <div>
+        {% block content %}
+        {% endblock content %}
       </div>
-    </nav>
-    <div>
-      {% block content %}
-      {% endblock content %}
     </div>
   </body>
 </html>

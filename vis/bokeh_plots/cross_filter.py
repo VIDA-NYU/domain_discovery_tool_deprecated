@@ -1,6 +1,7 @@
 from __future__ import division
 from collections import Counter, defaultdict
 from itertools import chain, combinations
+import os
 
 from bokeh.palettes import Spectral4
 from bokeh.embed import components
@@ -25,38 +26,8 @@ MIN_CIRCLE_SIZE = 0.01
 MAX_LINE_SIZE = 10
 MIN_LINE_SIZE = 1
 
-js_callback = CustomJS(code="""
-    var data_table_ids = ['urls', 'tlds', 'tags', 'queries'];
-
-    setTimeout(function() { //need timeout to wait for class change
-      var global_state = {};
-      for (i=0; i<data_table_ids.length; i++) {
-        global_state[data_table_ids[i]] = get_table_state(data_table_ids[i]);
-      }
-
-      global_state['datetimepicker_start'] = $('#datetimepicker_start').data('date') || ''
-      global_state['datetimepicker_end'] = $('#datetimepicker_end').data('date') || ''
-      $.ajax({
-        type: "POST",
-        url: '/update_cross_filter_plots' + window.location.search, //session info
-        data: JSON.stringify(global_state),
-        contentType: "application/json",
-        dataType: "json",
-        success: function(response) {
-          $("#plot_area").html(response);
-        }
-      });
-    }, 10);
-
-    var get_table_state = function(id) {
-      var current = $("#".concat(id)).find(".bk-slick-cell.l0.selected");
-      var active_cells = [];
-      for (j = 0; j < current.length; j++) {
-        active_cells.push(current[j].innerText);
-      }
-      return active_cells;
-    };
-""")
+JS_CODE = open(os.path.join(os.path.dirname(__file__), '..',
+                            'html/js/cross_filter.js')).read()
 
 def normalize(seq, max_val, min_val):
     s = seq / seq.max() * max_val
@@ -289,7 +260,7 @@ def most_common_url_table(df):
                                 .count()
                                 .sort_values('url',ascending=False)
                                 .reset_index(),
-                              callback=js_callback)
+                              callback=CustomJS(code=JS_CODE))
     columns = [TableColumn(field="hostname", title="Site Name"),
                TableColumn(field="url", title="Count")]
     t = DataTable(source=source, columns=columns,
@@ -301,7 +272,7 @@ def site_tld_table(df):
                                 .count()
                                 .sort_values('url', ascending=False)
                                 .reset_index(),
-                              callback=js_callback)
+                              callback=CustomJS(code=JS_CODE))
     columns = [TableColumn(field="tld", title="Ending"),
                TableColumn(field="url", title="Count")]
     t = DataTable(source=source, columns=columns,
@@ -315,7 +286,7 @@ def tags_table(df):
                                 .count()
                                 .sort_values('url', ascending=False)
                                 .reset_index(),
-                              callback=js_callback)
+                              callback=CustomJS(code=JS_CODE))
 
     columns = [TableColumn(field='tag', title="Tags"),
                TableColumn(field='url', title="Count"),
@@ -330,7 +301,7 @@ def queries_table(df):
                                 .count()
                                 .sort_values('url', ascending=False)
                                 .reset_index(),
-                              callback=js_callback)
+                              callback=CustomJS(code=JS_CODE))
 
     columns = [TableColumn(field="query", title="Query"),
                TableColumn(field="url", title="Pages")

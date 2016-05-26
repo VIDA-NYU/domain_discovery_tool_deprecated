@@ -1,13 +1,12 @@
 .help-dropdown {
-  padding-bottom:30px;
-  max-width: 180px;
+  padding-top:8px;
 }
 
 .help-dropdown-content {
   display: none;
   position: absolute;
   background-color: #f9f9f9;
-  min-width: 160px;
+  min-width: 360px;
   box-shadow: 0px 4px 8px 0px rgba(0,0,0,1);
   padding: 12px 16px;
   z-index: 1000;
@@ -22,8 +21,4 @@
 
 .bokeh_table {
   padding-bottom:10px;
-}
-
-#queries_plot {
-  padding-top:70px
 }

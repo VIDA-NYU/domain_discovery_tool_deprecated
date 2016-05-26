@@ -1,7 +1,23 @@
 {% extends 'base.html' %}
 
-{% block content %}
+{% block navigation %}
+  <ul class="nav navbar-nav navbar-right">
+    <li>
+      <div class="help-dropdown">
+        <h5>Help</h5>
+        <div class="help-dropdown-content dropdown-menu-right">
+          <p>
+            Click on table rows to filter the data in the visualizations and use
+            Super + Click (Cmd on OSX, Ctl on Linux, Windows) to deselect. Shift +
+            Click will select or deselect multiple rows at a time.
+          </p>
+        </div>
+      </div>
+    </li>
+  </ul>
+{% endblock navigation %}
 
+{% block content %}
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="http://cdn.pydata.org/bokeh/release/bokeh-0.10.0.min.css">
@@ -12,16 +28,6 @@
 
   <div class="container-fluid">
     <div class="col-md-4">
-      <div class="help-dropdown">
-        <h5>Hover Here for Help</h5>
-        <div class="help-dropdown-content">
-          <p>
-            Click on table rows to filter the data in the visualizations and use
-            Super + Click (Cmd on OSX, Ctl on Linux, Windows) to deselect. Shift +
-            Click will select or deselect multiple rows at a time.
-          </p>
-        </div>
-      </div>
       <div class="bokeh_table" id="queries">{{ widgets_div['queries'] | safe }}</div>
       <div class="bokeh_table" id="tags">{{ widgets_div['tags'] | safe }}</div>
       <div class="bokeh_table" id="urls">{{ widgets_div['urls'] | safe }}</div>
@@ -58,6 +64,8 @@
   <script type="text/javascript" src="js/libs/moment.js"></script>
   <script type="text/javascript" src="bootstrap-datetimepicker-4.15.35/js/bootstrap-datetimepicker.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+  <!--Custom JS files-->
+  <script type="text/javascript" src="js/libs/cross_filter.js"></script>
 
   <script type="text/javascript">
     $(document).ready(function () {
