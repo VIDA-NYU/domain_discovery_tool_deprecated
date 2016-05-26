@@ -2,14 +2,14 @@ from bokeh.plotting import figure
 from functools32 import wraps
 
 DATETIME_FORMAT = dict(
-    microseconds=["%m/%d/%y %X"],
-    milliseconds=["%m/%d/%y %X"],
-    seconds=["%m/%d/%y %X"],
-    minsec=["%m/%d/%y %X"],
-    minutes=["%m/%d/%y %X"],
-    hourmin=["%m/%d/%y %X"],
-    hours=["%m/%d/%y %X"],
-    days=["%m/%d/%y %X"],
+    microseconds=["%m/%d/%y %I:%M:%S %p"],
+    milliseconds=["%m/%d/%y %I:%M:%S %p"],
+    seconds=["%m/%d/%y %I:%M:%S %p"],
+    minsec=["%m/%d/%y %I:%M:%S %p"],
+    minutes=["%m/%d/%y %I:%M:%S %p"],
+    hourmin=["%m/%d/%y %I:%M:%S %p"],
+    hours=["%m/%d/%y %I:%M:%S %p"],
+    days=["%m/%d/%y %I:%M:%S %p"],
 )
 
 FONT = "Helvetica"

@@ -2,6 +2,8 @@ from __future__ import division
 from collections import Counter, defaultdict
 from itertools import chain, combinations
 import os
+import pytz
+from dateutil.tz import tzlocal
 
 from bokeh.palettes import Spectral4
 from bokeh.embed import components
@@ -26,7 +28,7 @@ MIN_CIRCLE_SIZE = 0.01
 MAX_LINE_SIZE = 10
 MIN_LINE_SIZE = 1
 
-JS_CODE = open(os.path.join(os.path.dirname(__file__), '..',
+JS_CODE = open(os.path.join(os.path.dirname(__file__),'..',
                             'html/js/cross_filter.js')).read()
 
 def normalize(seq, max_val, min_val):
@@ -37,7 +39,7 @@ def normalize(seq, max_val, min_val):
 def parse_es_response(response):
     df = pd.DataFrame(response, columns=['query', 'retrieved', 'url', 'tag'])
     df['query'] = df['query'].apply(lambda x: x[0])
-    df['retrieved'] = pd.DatetimeIndex(df.retrieved.apply(lambda x: x[0]))
+    df['retrieved'] = pd.DatetimeIndex(df.retrieved.apply(lambda x: x[0]), tz=pytz.timezone('UTC'))
     df['url'] = df.url.apply(lambda x: x[0])
     df['hostname'] = [urlparse(x).hostname.lstrip('www.') for x in df.url]
     df['tld'] = [x[x.rfind('.'):] for x in df.hostname]
@@ -128,6 +130,9 @@ def site_tld_bar(df, plot_width=325, plot_height=200):
 @empty_plot_on_empty_df
 def pages_queried_timeseries(df, plot_width=600, plot_height=200, rule='1T'):
     ts = df[['url']].resample(rule, how='count').cumsum()
+    ts.index = ts.index.tz_convert(tzlocal())
+    #Bokeh=0.10.0 misencodes timestamps, so we have to shift by UTC offset
+    ts.index = ts.index.shift(ts.index[0].utcoffset().total_seconds(), freq="S")
     ts = pd.concat([ts[:1], ts]) # prepend 0-value for Line chart compat
     ts.iloc[0]['url'] = 0
 
