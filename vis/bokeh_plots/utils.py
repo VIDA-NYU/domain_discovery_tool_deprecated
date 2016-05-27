@@ -10,6 +10,8 @@ DATETIME_FORMAT = dict(
     hourmin=["%m/%d/%y %I:%M:%S %p"],
     hours=["%m/%d/%y %I:%M:%S %p"],
     days=["%m/%d/%y %I:%M:%S %p"],
+    months=["%m/%d/%y %I:%M:%S %p"],
+    years=["%m/%d/%y %I:%M:%S %p"],
 )
 
 FONT = "Helvetica"
