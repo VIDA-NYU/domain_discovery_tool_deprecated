@@ -65,7 +65,7 @@
   <script type="text/javascript" src="bootstrap-datetimepicker-4.15.35/js/bootstrap-datetimepicker.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
   <!--Custom JS files-->
-  <script type="text/javascript" src="js/libs/cross_filter.js"></script>
+  <script type="text/javascript" src="js/cross_filter.js"></script>
 
   <script type="text/javascript">
     $(document).ready(function () {
@@ -74,9 +74,11 @@
           useCurrent: false //Important! See issue #1075
       });
       $("#datetimepicker_start").on("dp.change", function (e) {
+          crossFilterUpdate();
           $('#datetimepicker_end').data("DateTimePicker").minDate(e.date);
       });
       $("#datetimepicker_end").on("dp.change", function (e) {
+          crossFilterUpdate();
           $('#datetimepicker_start').data("DateTimePicker").maxDate(e.date);
       });
     });

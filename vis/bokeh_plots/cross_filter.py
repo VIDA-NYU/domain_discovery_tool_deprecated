@@ -28,8 +28,8 @@ MIN_CIRCLE_SIZE = 0.01
 MAX_LINE_SIZE = 10
 MIN_LINE_SIZE = 1
 
-JS_CODE = open(os.path.join(os.path.dirname(__file__),'..',
-                            'html/js/cross_filter.js')).read()
+# refers to method in js/cross_filter.js
+JS_CODE = "crossFilterUpdate()"
 
 def normalize(seq, max_val, min_val):
     s = seq / seq.max() * max_val
@@ -139,7 +139,7 @@ def pages_queried_timeseries(df, plot_width=600, plot_height=200, rule='1T'):
     ts.iloc[0]['url'] = 0
 
     formatter = DatetimeTickFormatter(formats=DATETIME_FORMAT)
-    ticker = DatetimeTicker(desired_num_ticks=2)
+    ticker = DatetimeTicker(desired_num_ticks=3)
 
     source = ColumnDataSource(ts)
 
