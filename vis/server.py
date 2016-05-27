@@ -17,7 +17,7 @@ from bokeh_plots.cross_filter import (parse_es_response,
   create_table_components, create_plot_components)
 from crawler_model_adapter import *
 
-env = Environment(loader=FileSystemLoader('vis/html'))
+env = Environment(loader=FileSystemLoader(os.path.join(os.path.dirname(__file__), 'html/')))
 cherrypy.engine.timeout_monitor.unsubscribe()
 
 class Page:
@@ -200,7 +200,7 @@ class Page:
   @cherrypy.expose
   def delCrawler(self, domains):
     self._crawler.delCrawler(json.loads(domains))
-  
+
   # Create model
   @cherrypy.expose
   def createModel(self, session):
