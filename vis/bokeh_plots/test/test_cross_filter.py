@@ -52,13 +52,13 @@ def test_parse_es_response(es_response):
     df = parse_es_response(es_response)
 
     assert df.to_dict('list') == data
-    assert df.index.dtype == np.dtype('datetime64[ns]')
+    assert df.index.tz.tzname("") == 'UTC'
 
 def test_calculate_query_correlation(es_response):
     df = parse_es_response(es_response)
     graph = calculate_query_correlation(df, 'query')
 
-    assert graph == {(u'apple', u'banana'): 1.0, (u'apple', u'carrot'): 0.0, (u'carrot', u'banana'): 0.0}
+    assert graph == {(u'apple', u'banana'): 1.0}
 
 def test_calculate_graph_coords(es_response):
     df = parse_es_response(es_response)

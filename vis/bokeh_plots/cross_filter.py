@@ -64,7 +64,9 @@ def calculate_query_correlation(df, groupby_column):
     for i in key_combos:
         k0 = df[df[groupby_column].isin([i[0]])]['hostname']
         k1 = df[df[groupby_column].isin([i[1]])]['hostname']
-        correlation[i] = len(set(k0).intersection(k1))
+        num_shared_pages = len(set(k0).intersection(k1))
+        if num_shared_pages > 0:
+            correlation[i] = num_shared_pages
 
     if len(correlation) == 0 or max(correlation.values()) == 0:
         return correlation
@@ -131,7 +133,7 @@ def site_tld_bar(df, plot_width=325, plot_height=200):
 def pages_queried_timeseries(df, plot_width=600, plot_height=200, rule='1T'):
     ts = df[['url']].resample(rule, how='count').cumsum()
     ts.index = ts.index.tz_convert(tzlocal())
-    #Bokeh=0.10.0 misencodes timestamps, so we have to shift by UTC offset
+    #Bokeh=0.10.0 misencodes timestamps, so we have to shift by
     ts.index = ts.index.shift(ts.index[0].utcoffset().total_seconds(), freq="S")
     ts = pd.concat([ts[:1], ts]) # prepend 0-value for Line chart compat
     ts.iloc[0]['url'] = 0
