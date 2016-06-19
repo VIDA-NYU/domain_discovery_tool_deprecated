@@ -62,8 +62,8 @@ def calculate_query_correlation(df, groupby_column):
     correlation = dict()
 
     for i in key_combos:
-        k0 = df[df[groupby_column].isin([i[0]])]['hostname']
-        k1 = df[df[groupby_column].isin([i[1]])]['hostname']
+        k0 = df[df[groupby_column].isin([i[0]])]['url']
+        k1 = df[df[groupby_column].isin([i[1]])]['url']
         num_shared_pages = len(set(k0).intersection(k1))
         if num_shared_pages > 0:
             correlation[i] = num_shared_pages
