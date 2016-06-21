@@ -1133,8 +1133,13 @@ class CrawlerModel:
   def delCrawler(self, domains):
 
     for index in domains.values():
+      # Delete Index
       delete_index(index, self._es)
+      # Delete terms tagged for the index
+      ddt_terms_keys = [doc["id"] for doc in term_search("index", [index], self._all, ["term"], "ddt_terms", "terms", self._es)]
+      delete_document(ddt_terms_keys, "ddt_terms", "terms", self._es)
 
+    # Delete indices from config index  
     delete_document(domains.keys(), "config", "domains", self._es)
     
   def updateColors(self, session, colors):
