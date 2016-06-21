@@ -344,10 +344,10 @@ CrawlerVis.prototype.createSelectForAvailableCrawlers = function(data) {
 CrawlerVis.prototype.reloadSelectForAvailableCrawlers = function(result) {
     var data = result["crawlers"];
     var type = result["type"]
-    
-  if (data.length > 0) {
     var vis = this;
     var selectBox = d3.select('#selectCrawler');
+    
+  if (data.length > 0) {
     var selectedCrawler = d3.select('input[name="crawlerRadio"]:checked').node()
 
     // Generate the index name from the entered crawler name
@@ -374,6 +374,8 @@ CrawlerVis.prototype.reloadSelectForAvailableCrawlers = function(result) {
     }
 
   } else {
+    vis.renderCrawlerOptions(selectBox, data, undefined);
+    $("#currentDomain").text("Select/Add Domains").append("<span class='caret'></span>");
     document.getElementById("status_panel").innerHTML = 'No domains found';
     $(document).ready(function() { $(".status_box").fadeIn(); });
     $(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
@@ -1458,6 +1460,7 @@ CrawlerVis.prototype.runAddCrawler = function(index_name) {
  * Runs query (useful for seed crawler vis).
  */
 CrawlerVis.prototype.runDelCrawler = function(domains) {
+    this.setCurrentCrawler(undefined);
     DataAccess.delCrawler(domains);
 };
 
