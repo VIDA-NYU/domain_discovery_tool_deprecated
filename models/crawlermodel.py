@@ -1379,7 +1379,7 @@ class CrawlerModel:
     """
     content_field = 'text'
     def not_empty(doc): return bool(doc[content_field])  # True if document not empty
-    raw_data = filter(not_empty, read_input(source="http://localhost:9200", index=domain))
+    raw_data = filter(not_empty, read_input(source=es_server, index=domain))
     id_doc_pairs = ((hash(__[content_field]), __[content_field]) for __ in raw_data)
     tokens = tokenize(id_doc_pairs, method=tokenizer)
     vectors = vectorize(tokens, method=vectorizer)
