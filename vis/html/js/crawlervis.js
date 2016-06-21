@@ -354,7 +354,7 @@ CrawlerVis.prototype.reloadSelectForAvailableCrawlers = function(result) {
     var index_name = d3.select('#crawler_index_name').node().value;
 
     // If just one crawler exists then select that
-    if (selectedCrawler){
+    if (data.indexOf(selectedCrawler) >= 0){
       vis.renderCrawlerOptions(selectBox, data, selectedCrawler.id);
       $("#currentDomain").text(selectedCrawler.placeholder).append("<span class='caret'></span>");
     } else {
