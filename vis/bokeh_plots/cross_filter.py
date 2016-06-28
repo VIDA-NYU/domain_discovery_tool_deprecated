@@ -38,12 +38,11 @@ def normalize(seq, max_val, min_val):
 
 def parse_es_response(response):
     df = pd.DataFrame(response, columns=['query', 'retrieved', 'url', 'tag'])
-    df['query'] = df['query'].apply(lambda x: x[0])
     df['retrieved'] = pd.DatetimeIndex(df.retrieved.apply(lambda x: x[0]), tz=pytz.timezone('UTC'))
     df['url'] = df.url.apply(lambda x: x[0])
     df['hostname'] = [urlparse(x).hostname.lstrip('www.') for x in df.url]
     df['tld'] = [x[x.rfind('.'):] for x in df.hostname]
-    df['tag'] = df.tag.apply(lambda x: "Untagged" if isinstance(x, float) else x[0])
+    df['tag'] = df.tag.apply(lambda x: ["Untagged"] if isinstance(x, float) else x)
 
     return df.set_index('retrieved').sort_index()
 
@@ -74,13 +73,13 @@ def calculate_query_correlation(df, groupby_column):
     max_corr = max(correlation.values())
     return {k: v/max_corr for k,v in correlation.items()}
 
-def duplicate_multitag_rows(df, sep=';'):
+def duplicate_multi_rows(df, column_name):
     """
-    Makes copy of column for each tag in multitag
+    Makes copy of row for each tag in multitag
     """
-    return pd.DataFrame([row.copy().set_value('tag', i)
+    return pd.DataFrame([row.copy().set_value(column_name, i)
                         for _, row in df.iterrows()
-                        for i in row.tag.split(';')])
+                        for i in row[column_name]])
 
 @empty_plot_on_empty_df
 def most_common_url_bar(df, plot_width=400, plot_height=250, top_n=None):
@@ -161,20 +160,21 @@ def pages_queried_timeseries(df, plot_width=600, plot_height=200, rule='1T'):
 
 @empty_plot_on_empty_df
 def queries_plot(df, plot_width=400, plot_height=400):
-    df2 = calculate_graph_coords(df, 'query')
-    df2["radius"] = normalize(df2.url, MAX_CIRCLE_SIZE, MIN_CIRCLE_SIZE)
-    df2["label"] = df2.index.astype(str) + ' (' + df2.url.astype(str) + ')'
-    df2["text_y"] = df2.y - df2.radius - 0.100 ## fudge factor
+    df2 = duplicate_multi_rows(df, 'query')
+    graph_df = calculate_graph_coords(df2, 'query')
+    graph_df["radius"] = normalize(graph_df.url, MAX_CIRCLE_SIZE, MIN_CIRCLE_SIZE)
+    graph_df["label"] = graph_df.index.astype(str) + ' (' + graph_df.url.astype(str) + ')'
+    graph_df["text_y"] = graph_df.y - graph_df.radius - 0.100 ## fudge factor
 
-    source = ColumnDataSource(df2)
+    source = ColumnDataSource(graph_df)
 
-    line_coords = calculate_query_correlation(df, 'query')
+    line_coords = calculate_query_correlation(df2, 'query')
 
     # Create connection lines.
     lines = defaultdict(list)
     for k, v in line_coords.items():
-        lines['xs'].append([df2.loc[k[0]]['x'], df2.loc[k[1]]['x']])
-        lines['ys'].append([df2.loc[k[0]]['y'], df2.loc[k[1]]['y']])
+        lines['xs'].append([graph_df.loc[k[0]]['x'], graph_df.loc[k[1]]['x']])
+        lines['ys'].append([graph_df.loc[k[0]]['y'], graph_df.loc[k[1]]['y']])
         lines['line_width'].append(v*MAX_LINE_SIZE)
 
     line_source = ColumnDataSource(lines)
@@ -212,7 +212,7 @@ def queries_plot(df, plot_width=400, plot_height=400):
 
 @empty_plot_on_empty_df
 def tags_plot(df, plot_width=400, plot_height=400):
-    df2 = duplicate_multitag_rows(df)
+    df2 = duplicate_multi_rows(df, 'tag')
     graph_df = calculate_graph_coords(df2, 'tag')
     graph_df["radius"] = normalize(graph_df.url, MAX_CIRCLE_SIZE, MIN_CIRCLE_SIZE)
     graph_df["label"] = graph_df.index.astype(str) + ' (' + graph_df.url.astype(str) + ')'
@@ -287,7 +287,7 @@ def site_tld_table(df):
     return VBox(t)
 
 def tags_table(df):
-    df2 = duplicate_multitag_rows(df)
+    df2 = duplicate_multi_rows(df, 'tag')
 
     source = ColumnDataSource(df2.groupby('tag')
                                 .count()
@@ -304,7 +304,9 @@ def tags_table(df):
     return VBox(t)
 
 def queries_table(df):
-    source = ColumnDataSource(df.groupby(by='query')
+    df2 = duplicate_multi_rows(df, 'query')
+
+    source = ColumnDataSource(df2.groupby(by='query')
                                 .count()
                                 .sort_values('url', ascending=False)
                                 .reset_index(),
