@@ -188,37 +188,20 @@ def get_documents_by_id(ids=[], fields=[], es_index = 'memex', es_doc_type = 'pa
             results.append(fields)
     return results
 
-def get_plotting_data(index_name, es=None):
+def get_plotting_data(pageCount=200, es_index = 'memex', es_doc_type = 'page', es = None):
     if es is None:
         es = default_es
 
-    res = es.search(index_name, size=100000, fields=["retrieved", "url", "tag", "query"])
+    res = es.search(index=es_index, doc_type = es_doc_type, size=pageCount, fields=["retrieved", "url", "tag", "query"])
 
     fields = []
     for item in res['hits']['hits']:
         if item['fields'].get('tag') != None:
-            if item['fields']['tag'][0] == '':
+            if "" in item['fields']['tag']:
                 item['fields'].pop('tag')
         fields.append(item['fields'])    
         
     return fields
-
-def get_pages_datetimes(index_name, es=None):
-    if es is None:
-        es = default_es
-
-    items = es.search(index_name, size=100000, request_timeout=600)["hits"]["hits"]
-    url_info = []
-
-    for item in items:
-        url = item["_source"]["url"]
-        try:
-            timestamp = item["_source"]["retrieved"]
-            url_info.append((url, timestamp))
-        except KeyError:
-            print "\nRetrieved not found for ",url, "\n"
-    return url_info
-
 
 if __name__ == "__main__":
     urls = []
