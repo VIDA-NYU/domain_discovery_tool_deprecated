@@ -1,20 +1,23 @@
+import bokeh.embed
+import bokeh.resources
 import cherrypy
 from ConfigParser import ConfigParser
 import json
 import os
-import urlparse
-from crawler_model_adapter import *
 from threading import Lock
-import bokeh.embed
-import bokeh.resources
+import urlparse
+
+from functools32 import lru_cache
+from jinja2 import Template, Environment, FileSystemLoader
 
 from bokeh_plots.clustering import selection_plot, empty_plot
 from bokeh_plots.domains_dashboard import (domains_dashboard, pages_timeseries,
-        endings_dashboard)
-from bokeh_plots.queries_dashboard import queries_dashboard
+  endings_dashboard)
+from bokeh_plots.cross_filter import (parse_es_response,
+  create_table_components, create_plot_components)
+from crawler_model_adapter import *
 
-from jinja2 import Template
-
+env = Environment(loader=FileSystemLoader(os.path.join(os.path.dirname(__file__), 'html/')))
 cherrypy.engine.timeout_monitor.unsubscribe()
 
 class Page:
@@ -126,7 +129,7 @@ class Page:
   @cherrypy.expose
   def release(self):
     return open(os.path.join(self._HTML_DIR, u"release.html"))
-  
+
 
   @cherrypy.expose
   def index(self):
@@ -156,7 +159,7 @@ class Page:
     res = self._crawler.getAvailableQueries(session)
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(res)
-  
+
   @cherrypy.expose
   def getAvailableTags(self, session, event):
     session = json.loads(session)
@@ -197,19 +200,19 @@ class Page:
   @cherrypy.expose
   def delCrawler(self, domains):
     self._crawler.delCrawler(json.loads(domains))
-  
+
   # Create model
   @cherrypy.expose
   def createModel(self, session):
     session = json.loads(session)
     return self._crawler.createModel(session)
-    
+
   # Returns number of pages downloaded between ts1 and ts2 for active crawler.
   # ts1 and ts2 are Unix epochs (seconds after 1970).
   # If opt_applyFilter is True, the summary returned corresponds to the applied pages filter defined
   # previously in @applyFilter. Otherwise the returned summary corresponds to the entire dataset
   # between ts1 and ts2.
-  # 
+  #
   # For crawler vis, returns dictionary in the format:
   # {
   #   'Positive': {'Explored': #ExploredPgs, 'Exploited': #ExploitedPgs, 'Boosted': #BoostedPgs},
@@ -279,18 +282,18 @@ class Page:
   def boostPages(self, pages):
     self._crawler.boostPages(pages)
 
-  # Crawl forward links   
+  # Crawl forward links
   @cherrypy.expose
   def getForwardLinks(self, urls, session):
     session = json.loads(session)
     self._crawler.getForwardLinks(urls, session);
 
-  # Crawl backward links   
+  # Crawl backward links
   @cherrypy.expose
   def getBackwardLinks(self, urls, session):
     session = json.loads(session)
     self._crawler.getBackwardLinks(urls, session);
-  
+
   # Fetches snippets for a given term.
   @cherrypy.expose
   def getTermSnippets(self, term, session):
@@ -375,55 +378,60 @@ class Page:
     cherrypy.response.headers["Content-Type"] = "application/json;"
     return json.dumps(empty_plot())
 
-  def getQueriesPages(self, session, queries):
-    session["pageRetrievalCriteria"] = "Queries"
-    queries_pages = {}
-    for query in queries.keys():
-        session["selected_queries"] = query
-        pages = self._crawler.getPagesQuery(session)
-        query_page_list = [page["url"][0] for page in pages]
-        queries_pages[query] = query_page_list
-    return queries_pages
+  @lru_cache(maxsize=5)
+  def make_pages_query(self, session):
+    session = json.loads(session)
+    pages = self._crawler.getPlottingData(session)
+    return parse_es_response(pages)
 
   @cherrypy.expose
   def statistics(self, session):
-    session = json.loads(session)
-    pages = self._crawler.getPages(session)
-    pages_dates = self._crawler.getPagesDates(session)
+    df = self.make_pages_query(session)
+    plots_script, plots_div = create_plot_components(df, top_n=10)
+    widgets_script, widgets_div = create_table_components(df)
 
-    # Grab all queries and remove the ones that have only 1 entry
-    queries = self._crawler.getAvailableQueries(session)
-    queries = {x: queries[x] for x in queries if queries[x] > 1}
+    template = env.get_template('cross_filter.html')
 
-    queries_data = self.getQueriesPages(session, queries)
-    if queries:
-        queries_script, queries_div = queries_dashboard(queries, queries_data)
-    else:
-        queries_script = None
-        queries_div = None
-
-    if pages["pages"]:
-        if pages_dates:
-            timeseries_panel = pages_timeseries(pages_dates)
-        else:
-            timeseries_panel = None
-        pages_script, pages_div = domains_dashboard(pages, timeseries_panel)
-        endings_script, endings_div = endings_dashboard(pages)
-    else:
-        endings_div = None
-        endings_script = None
-        pages_div = None
-        pages_script = None
-
-    with open(os.path.join(self._HTML_DIR, u"domains_dashboard.html")) as f:
-        template = Template(f.read())
-    return template.render(
-        pages_script=pages_script, pages_div=pages_div,
-        endings_script=endings_script, endings_div=endings_div,
-        queries_script=queries_script, queries_div=queries_div
+    return template.render(plots_script=plots_script,
+                           plots_div=plots_div,
+                           widgets_script=widgets_script,
+                           widgets_div=widgets_div,
     )
 
+  @cherrypy.expose
+  @cherrypy.tools.json_out()
+  @cherrypy.tools.json_in()
+  def update_cross_filter_plots(self, session):
+    df = self.make_pages_query(session)
 
+    state = cherrypy.request.json
+
+    # limit number of hostnames to 10
+    top_n = 10
+
+    ## applying the 'filter' of the cross_filter
+    if state['urls']:
+        df = df[df.hostname.isin(state['urls'])]
+        top_n = None
+    if state['tlds']:
+        df = df[df.tld.isin(state['tlds'])]
+    if state['tags']:
+        df = df[df.tag.apply(lambda x: any((True for t in state['tags'] if t in x.split(";"))))]
+        df['tag'] = df.tag.apply(lambda x: filter(lambda y: y in state['tags'], x.split(';'))).apply(lambda x: ';'.join(x))
+    if state['queries']:
+        df = df[df['query'].isin(state['queries'])]
+    if state['datetimepicker_start']:
+        df = df[state['datetimepicker_start']:]
+    if state['datetimepicker_end']:
+        df = df[:state['datetimepicker_end']]
+
+    plots_script, plots_div = create_plot_components(df, top_n=top_n)
+
+    template = env.get_template('cross_filter_plot_area.html')
+
+    return template.render(plots_script=plots_script,
+                           plots_div=plots_div,
+                           )
 
 if __name__ == "__main__":
   page = Page()
