@@ -44,6 +44,9 @@ def parse_es_response(response):
     df['tld'] = [x[x.rfind('.'):] for x in df.hostname]
     df['tag'] = df.tag.apply(lambda x: ["Untagged"] if isinstance(x, float) else x)
 
+    df = duplicate_multi_rows(df, 'query')
+    df = duplicate_multi_rows(df, 'tag')
+
     return df.set_index('retrieved').sort_index()
 
 def calculate_graph_coords(df, groupby_column):
@@ -160,15 +163,14 @@ def pages_queried_timeseries(df, plot_width=600, plot_height=200, rule='1T'):
 
 @empty_plot_on_empty_df
 def queries_plot(df, plot_width=400, plot_height=400):
-    df2 = duplicate_multi_rows(df, 'query')
-    graph_df = calculate_graph_coords(df2, 'query')
+    graph_df = calculate_graph_coords(df, 'query')
     graph_df["radius"] = normalize(graph_df.url, MAX_CIRCLE_SIZE, MIN_CIRCLE_SIZE)
     graph_df["label"] = graph_df.index.astype(str) + ' (' + graph_df.url.astype(str) + ')'
     graph_df["text_y"] = graph_df.y - graph_df.radius - 0.100 ## fudge factor
 
     source = ColumnDataSource(graph_df)
 
-    line_coords = calculate_query_correlation(df2, 'query')
+    line_coords = calculate_query_correlation(df, 'query')
 
     # Create connection lines.
     lines = defaultdict(list)
@@ -179,7 +181,7 @@ def queries_plot(df, plot_width=400, plot_height=400):
 
     line_source = ColumnDataSource(lines)
 
-    if len(df2) == 1:
+    if len(df) == 1:
         x_range = Range1d(0.2, 1.8)
         y_range = Range1d(-1.25, 1.25)
     else:
@@ -212,15 +214,14 @@ def queries_plot(df, plot_width=400, plot_height=400):
 
 @empty_plot_on_empty_df
 def tags_plot(df, plot_width=400, plot_height=400):
-    df2 = duplicate_multi_rows(df, 'tag')
-    graph_df = calculate_graph_coords(df2, 'tag')
+    graph_df = calculate_graph_coords(df, 'tag')
     graph_df["radius"] = normalize(graph_df.url, MAX_CIRCLE_SIZE, MIN_CIRCLE_SIZE)
     graph_df["label"] = graph_df.index.astype(str) + ' (' + graph_df.url.astype(str) + ')'
     graph_df["text_y"] = graph_df.y - graph_df.radius - 0.100 ## fudge factor
 
     source = ColumnDataSource(graph_df)
 
-    line_coords = calculate_query_correlation(df2, 'tag')
+    line_coords = calculate_query_correlation(df, 'tag')
 
     # Create connection lines.
     lines = defaultdict(list)
@@ -231,7 +232,7 @@ def tags_plot(df, plot_width=400, plot_height=400):
 
     line_source = ColumnDataSource(lines)
 
-    if len(df2) == 1:
+    if len(df) == 1:
         x_range = Range1d(0.2, 1.8)
         y_range = Range1d(-1.25, 1.25)
     else:
@@ -287,9 +288,7 @@ def site_tld_table(df):
     return VBox(t)
 
 def tags_table(df):
-    df2 = duplicate_multi_rows(df, 'tag')
-
-    source = ColumnDataSource(df2.groupby('tag')
+    source = ColumnDataSource(df.groupby('tag')
                                 .count()
                                 .sort_values('url', ascending=False)
                                 .reset_index(),
@@ -304,9 +303,7 @@ def tags_table(df):
     return VBox(t)
 
 def queries_table(df):
-    df2 = duplicate_multi_rows(df, 'query')
-
-    source = ColumnDataSource(df2.groupby(by='query')
+    source = ColumnDataSource(df.groupby(by='query')
                                 .count()
                                 .sort_values('url', ascending=False)
                                 .reset_index(),

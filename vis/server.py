@@ -416,8 +416,7 @@ class Page:
     if state['tlds']:
         df = df[df.tld.isin(state['tlds'])]
     if state['tags']:
-        df = df[df.tag.apply(lambda x: any((True for t in state['tags'] if t in x.split(";"))))]
-        df['tag'] = df.tag.apply(lambda x: filter(lambda y: y in state['tags'], x.split(';'))).apply(lambda x: ';'.join(x))
+        df = df[df.tag.isin(state['tags'])]
     if state['queries']:
         df = df[df['query'].isin(state['queries'])]
     if state['datetimepicker_start']:
