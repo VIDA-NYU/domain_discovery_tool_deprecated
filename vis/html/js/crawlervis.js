@@ -878,7 +878,7 @@ CrawlerVis.prototype.onTermToggle = function(term, shiftClick) {
     var tags = term['tags'];
 
     if (tags.indexOf("Custom") != -1)
-  return;
+	return;
 
     var isPositive = tags.indexOf('Positive') != -1;
     var isNegative = tags.indexOf('Negative') != -1;
@@ -1239,7 +1239,6 @@ CrawlerVis.prototype.initModelButton = function() {
 	if (prev_neg_checked_tags.indexOf('select_all') > -1)
 	    neg_check_all = true;
 
-
 	$('#posTagsCheckBox').empty();
 	$('#negTagsCheckBox').empty();
 	
@@ -1283,8 +1282,9 @@ CrawlerVis.prototype.initModelButton = function() {
 	for (count = 0; count < keysSorted.length; count++) {
 	    if(keysSorted[count] != 'Irrelevant'){
 		var pos_checked = false;
-		if (prev_pos_checked_tags.indexOf(keysSorted[count]) > -1 || keysSorted[count] == 'Relevant')
+		if (prev_pos_checked_tags.indexOf(keysSorted[count]) > -1 ) 
 		    pos_checked = true;
+
 		var newli_pos = document.createElement('li');
 		var pos_label = "pos_tag_" + count.toString();
 		if(pos_check_all || pos_checked)
@@ -1296,7 +1296,7 @@ CrawlerVis.prototype.initModelButton = function() {
 
 	    if(keysSorted[count] != 'Relevant'){
 		var neg_checked = false;
-		if (prev_neg_checked_tags.indexOf(keysSorted[count]) > -1  || keysSorted[count] == 'Irrelevant')
+		if (prev_neg_checked_tags.indexOf(keysSorted[count]) > -1 ) 
 		    neg_checked = true;
 		var newli_neg = document.createElement('li');
 		var neg_label = "neg_tag_" + count.toString();
