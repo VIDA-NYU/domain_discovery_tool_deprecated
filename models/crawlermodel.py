@@ -1,5 +1,6 @@
 import time
 import calendar
+import os
 from datetime import datetime
 from dateutil import tz
 from sets import Set
@@ -43,6 +44,9 @@ from ranking import tfidf, rank, extract_terms, word2vec, get_bigrams_trigrams
 from topik import read_input, tokenize, vectorize, run_model, visualize, TopikProject
 
 import urllib2
+
+MAX_TEXT_LENGTH = 3000
+MAX_TERM_FREQ = 2
 
 class CrawlerModel:
 
@@ -156,9 +160,20 @@ class CrawlerModel:
     data_positive = data_crawler + "/training_data/positive/"
 
     if (not isdir(data_positive)):
+      # Create dir if it does not exist
       makedirs(data_positive)
+    else:
+      # Remove all previous files
+      for filename in os.listdir(data_positive):
+        os.remove(data_positive+filename)
+
     if (not isdir(data_negative)):
+      # Create dir if it does not exist
       makedirs(data_negative)
+    else:
+      # Remove all previous files
+      for filename in os.listdir(data_negative):
+        os.remove(data_negative+filename)
 
     pos_tags = session['model']['positive']
     neg_tags = session['model']['negative']
@@ -167,7 +182,7 @@ class CrawlerModel:
     for tag in pos_tags.split(','):
       s_fields = {}
       query = {
-        "wildcard": {es_info['mapping']["tag"]:"*"+tag+"*"}
+        "wildcard": {es_info['mapping']["tag"]:tag}
       }
       s_fields["queries"] = [query]
       pos_docs = pos_docs + multifield_term_search(s_fields, self._all, ["url", es_info['mapping']['html']], 
@@ -178,7 +193,7 @@ class CrawlerModel:
     for tag in neg_tags.split(','):
       s_fields = {}
       query = {
-        "wildcard": {es_info['mapping']["tag"]:"*"+tag+"*"}
+        "wildcard": {es_info['mapping']["tag"]:tag}
       }
       s_fields["queries"] = [query]
       neg_docs = neg_docs + multifield_term_search(s_fields, self._all, ["url", es_info['mapping']['html']], 
@@ -195,7 +210,6 @@ class CrawlerModel:
       for url in pos_html:
         try:
           file_positive = data_positive + self.encode(url.encode('utf8'))
-          print file_positive
           s.write(url.encode('utf8') + '\n')
           with open(file_positive, 'w') as f:
             f.write(pos_html[url])
@@ -421,27 +435,25 @@ class CrawlerModel:
     s_fields["tag"]="Negative"
     neg_terms = [field['term'][0] for field in multifield_term_search(s_fields, self._capTerms, ['term'], self._termsIndex, 'terms', self._es)]
 
+    # Get selected pages displayed in the MDS window
     results = self.getPagesQuery(session)
 
     top_terms = []
     top_bigrams = []
     top_trigrams = []
-
     
     text = []
     urls = [hit["id"] for hit in results if (hit.get(es_info['mapping']["tag"]) is not None) and ("Relevant" in hit[es_info['mapping']["tag"]])]
     if(len(urls) > 0):
-      text = [hit[es_info['mapping']["text"]][0] for hit in results if (hit.get(es_info['mapping']["tag"]) is not None) and ("Relevant" in hit[es_info['mapping']["tag"]])]
+      text = [" ".join(hit[es_info['mapping']["text"]][0].split(" ")[0:MAX_TEXT_LENGTH]) for hit in results if (hit.get(es_info['mapping']["tag"]) is not None) and ("Relevant" in hit[es_info['mapping']["tag"]])]
     else:
       urls = [hit["id"] for hit in results]
       # If positive urls are not available then get the most recent documents
-      text = [hit[es_info['mapping']["text"]][0] for hit in results]
-
-    from nltk import corpus
-    ENGLISH_STOPWORDS = corpus.stopwords.words('english')
-
+      text = [" ".join(hit[es_info['mapping']["text"]][0].split(" ")[0:MAX_TEXT_LENGTH]) for hit in results]
+    
     if session["filter"] == "" or session["filter"] is None:
       if len(urls) > 0:
+
         [bigram_tfidf_data, trigram_tfidf_data,_,_,bigram_corpus, trigram_corpus,_,_,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(text, urls, opt_maxNumberOfTerms+len(neg_terms), self.w2v, self._es)
          
         tfidf_all = tfidf.tfidf(urls, pos_tags=self.pos_tags, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
@@ -480,14 +492,29 @@ class CrawlerModel:
         top_bigrams = [term for term in top_bigrams if term not in neg_terms]
         top_trigrams = [term for term in top_trigrams if term not in neg_terms]
 
+    # Remove bigrams and trigrams of just stopwords or numbers    
+    #**********************************************************
+    from nltk import corpus
+    ENGLISH_STOPWORDS = corpus.stopwords.words('english')
     count = 0
     bigrams = top_bigrams
     top_bigrams = []
     for phrase in bigrams:
       words = phrase.split(" ")
-      if words[0] not in ENGLISH_STOPWORDS and words[1] not in ENGLISH_STOPWORDS and count <= opt_maxNumberOfTerms:
+      if (((words[0] not in ENGLISH_STOPWORDS) and (not words[0].isdigit())) or ((words[1] not in ENGLISH_STOPWORDS) and (not words[1].isdigit()))) and count <= opt_maxNumberOfTerms:
         count = count + 1
         top_bigrams.append(phrase)
+
+
+    count = 0
+    trigrams = top_trigrams
+    top_trigrams = []
+    for phrase in trigrams:
+      words = phrase.split(" ")
+      if (((words[0] not in ENGLISH_STOPWORDS) and (not words[0].isdigit())) or ((words[1] not in ENGLISH_STOPWORDS) and (not words[1].isdigit()))) and count <= opt_maxNumberOfTerms:
+        count = count + 1
+        top_trigrams.append(phrase)
+    #**********************************************************
 
     s_fields = {
       "tag": "Custom",
@@ -502,18 +529,31 @@ class CrawlerModel:
     if not top_terms:  
       return []
 
-    pos_freq = {}
-    pos_data = {field['id']:field['text'][0] for field in term_search(es_info['mapping']['tag'], ['Relevant'], self._all, ['url', 'text'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)}
+
+    pos_data = {field['id']:" ".join(field['text'][0].split(" ")[0:MAX_TEXT_LENGTH]) for field in term_search(es_info['mapping']['tag'], ['Relevant'], self._all, ['url', 'text'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)}
     pos_urls = pos_data.keys();
     pos_text = pos_data.values();
+
+    total_pos_tf = None
+    total_pos = 0
+
+    total_bigram_pos_tf = None
+    total_bigram_pos = 0
+    
+    total_trigram_pos_tf = None
+    total_trigram_pos = 0
+
+    pos_corpus = []
+    pos_bigram_corpus = []
+    pos_trigram_corpus = []
+
     if len(pos_urls) > 1:
-      tfidf_pos = tfidf.tfidf(pos_urls, pos_tags=self.pos_tags, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
-      [_,corpus,ttfs_pos] = tfidf_pos.getTfArray()
-      
+      [ttfs_pos,pos_corpus,_] = getTermFrequency(pos_urls, pos_tags=self.pos_tags, term_freq=MAX_TERM_FREQ, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
+     
       total_pos_tf = np.sum(ttfs_pos, axis=0)
       total_pos = np.sum(total_pos_tf)
 
-      [_,_,bigram_tf_data,trigram_tf_data,bigram_corpus, trigram_corpus,_,_,_,_] = get_bigrams_trigrams.get_bigrams_trigrams(pos_text, pos_urls, opt_maxNumberOfTerms, self.w2v, self._es)
+      [_,_,bigram_tf_data,trigram_tf_data,pos_bigram_corpus, pos_trigram_corpus,_,_,_,_] = get_bigrams_trigrams.get_bigrams_trigrams(pos_text, pos_urls, opt_maxNumberOfTerms, self.w2v, self._es)
 
       total_bigram_pos_tf = np.sum(bigram_tf_data, axis=0)
       total_bigram_pos = np.sum(total_bigram_pos_tf)
@@ -521,49 +561,32 @@ class CrawlerModel:
       total_trigram_pos_tf = np.sum(trigram_tf_data, axis=0)
       total_trigram_pos = np.sum(total_trigram_pos_tf)
 
-      pos_freq={}
-      for key in top_terms:
-        try:
-          pos_freq[key] = (float(total_pos_tf[corpus.index(key)])/total_pos)
-        except ValueError:
-          if key not in custom_terms:
-            pos_freq[key] = 0
-        
-      for key in top_bigrams + custom_terms:
-        try:
-          pos_freq[key] = (float(total_bigram_pos_tf[bigram_corpus.index(key)])/total_bigram_pos)
-        except ValueError:
-          if key not in custom_terms:
-            pos_freq[key] = 0
-          
-      for key in top_trigrams + custom_terms:
-        try:
-          pos_freq[key] = (float(total_trigram_pos_tf[trigram_corpus.index(key)])/total_trigram_pos)
-        except ValueError:
-          if key not in custom_terms:
-            pos_freq[key] = 0
+    neg_data = {field['id']:" ".join(field['text'][0].split(" ")[0:MAX_TEXT_LENGTH]) for field in term_search(es_info['mapping']['tag'], ['Irrelevant'], self._all, ['url', 'text'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)}
 
-      for term in custom_terms:
-        if pos_freq.get(term) == None:
-          pos_freq[term] = 0
-    else:
-      pos_freq = { key: 0 for key in top_terms }
-      pos_freq = { key: 0 for key in top_bigrams }
-      pos_freq = { key: 0 for key in top_trigrams }      
-      pos_freq = { key: 0 for key in custom_terms }
-      
-    neg_data = {field['id']:field['text'][0] for field in term_search(es_info['mapping']['tag'], ['Irrelevant'], self._all, ['url', 'text'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)}
     neg_urls = neg_data.keys();
     neg_text = neg_data.values();
 
     neg_freq = {}
+    total_neg_tf = None
+    total_neg = 0
+
+    total_bigram_neg_tf = None
+    total_bigram_neg = 0
+    
+    total_trigram_neg_tf = None
+    total_trigram_neg = 0
+
+    neg_corpus = []
+    neg_bigram_corpus = []
+    neg_trigram_corpus = []
+
     if len(neg_urls) > 1:
-      tfidf_neg = tfidf.tfidf(neg_urls, pos_tags=self.pos_tags, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
-      [_,corpus,ttfs_neg] = tfidf_neg.getTfArray()
+      [ttfs_neg,neg_corpus,_] = getTermFrequency(neg_urls, pos_tags=self.pos_tags, term_freq=MAX_TERM_FREQ, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
+
       total_neg_tf = np.sum(ttfs_neg, axis=0)
       total_neg = np.sum(total_neg_tf)
 
-      [_,_,bigram_tf_data,trigram_tf_data,bigram_corpus, trigram_corpus,_,_,_,_] = get_bigrams_trigrams.get_bigrams_trigrams(neg_text, neg_urls, opt_maxNumberOfTerms, self.w2v, self._es)
+      [_,_,bigram_tf_data,trigram_tf_data,neg_bigram_corpus, neg_trigram_corpus,_,_,_,_] = get_bigrams_trigrams.get_bigrams_trigrams(neg_text, neg_urls, opt_maxNumberOfTerms, self.w2v, self._es)
 
       total_bigram_neg_tf = np.sum(bigram_tf_data, axis=0)
       total_bigram_neg = np.sum(total_bigram_neg_tf)
@@ -571,94 +594,86 @@ class CrawlerModel:
       total_trigram_neg_tf = np.sum(trigram_tf_data, axis=0)
       total_trigram_neg = np.sum(total_trigram_neg_tf)
 
-      neg_freq={}
-      for key in top_terms + custom_terms:
-        try:
-          neg_freq[key] = (float(total_neg_tf[corpus.index(key)])/total_neg)
-        except ValueError:
-          if key not in custom_terms:
-            neg_freq[key] = 0
+    entry = {}
+    for key in top_terms:
+      if key in pos_corpus:
+        if total_pos != 0:
+          entry[key] = {"pos_freq": (float(total_pos_tf[pos_corpus.index(key)])/total_pos)}
+        else:
+          entry[key] = {"pos_freq": 0}
+      else:
+        entry[key] = {"pos_freq": 0}
 
-      for key in top_bigrams + custom_terms:
-        try:
-          neg_freq[key] = (float(total_bigram_neg_tf[bigram_corpus.index(key)])/total_bigram_neg)
-        except ValueError:
-          if key not in custom_terms:
-            neg_freq[key] = 0
-          
-      for key in top_trigrams + custom_terms:
-        try:
-          neg_freq[key] = (float(total_trigram_neg_tf[trigram_corpus.index(key)])/total_trigram_neg)
-        except ValueError:
-          if key not in custom_terms:
-            neg_freq[key] = 0
+      if key in neg_corpus:
+        if total_neg != 0:
+          entry[key].update({"neg_freq": (float(total_neg_tf[neg_corpus.index(key)])/total_neg)})
+        else:
+          entry[key].update({"neg_freq": 0})
+      else:
+        entry[key].update({"neg_freq": 0})
 
-      for term in custom_terms:
-        if neg_freq.get(term) == None:
-          neg_freq[term] = 0
+      if key in pos_terms:
+        entry[key].update({"tag": ["Positive"]})
+      elif key in neg_terms:
+        entry[key].update({"tag": ["Negative"]})
+      elif key not in custom_terms:
+        entry[key].update({"tag": []})
     
-    else:
-      neg_freq = { key: 0 for key in top_terms }      
-      neg_freq = { key: 0 for key in top_bigrams }      
-      neg_freq = { key: 0 for key in top_trigrams }
-      neg_freq = { key: 0 for key in custom_terms }      
+      if key in custom_terms:
+        entry[key]["tag"].append("Custom")
+
+    for key in top_bigrams + [term for term in custom_terms if term in bigram_corpus]:
+      if key in pos_bigram_corpus:
+        if total_bigram_pos != 0:
+          entry[key] = {"pos_freq": (float(total_bigram_pos_tf[pos_bigram_corpus.index(key)])/total_bigram_pos)}
+        else:
+          entry[key] = {"pos_freq": 0}
+      else:
+        entry[key] = {"pos_freq": 0}
+      if key in neg_bigram_corpus:
+        if total_bigram_neg != 0:
+          entry[key].update({"neg_freq": (float(total_bigram_neg_tf[neg_bigram_corpus.index(key)])/total_bigram_neg)})
+        else:
+          entry[key].update({"neg_freq": 0})
+      else:
+        entry[key].update({"neg_freq": 0})
+
+      if key in pos_terms:
+        entry[key].update({"tag": ["Positive"]})
+      elif key in neg_terms:
+        entry[key].update({"tag": ["Negative"]})
+      elif key not in custom_terms:
+        entry[key].update({"tag": []})
       
-    terms = []
+      if key in custom_terms and key in bigram_corpus:
+        entry[key]["tag"].append("Custom")
 
-    s_fields = {
-      "term": "",
-      "index": es_info['activeCrawlerIndex'],
-      "doc_type": es_info['docType'],
-    }
-
-    results = []
-    for term in top_terms:
-      s_fields["term"] = term
-      res = multifield_term_search(s_fields, self._capTerms, ['tag', 'term'], self._termsIndex, 'terms', self._es)
-      results.extend(res)
-
-    tags = {result['term'][0]: result['tag'][0] for result in results}    
-
-    for term in top_terms:
-      try:
-        term_pos_freq = pos_freq[term]
-      except KeyError:
-        term_pos_freq = 0
-      try:
-        term_neg_freq = neg_freq[term]
-      except KeyError:
-        term_neg_freq = 0
-      entry = [term, term_pos_freq, term_neg_freq, []]
-
-      if tags and not tags.get(term) is None:
-        entry[3] = tags[term].split(';')
-      terms.append(entry)
+    for key in top_trigrams + [term for term in custom_terms if term in trigram_corpus]:
+      if key in pos_trigram_corpus:
+        if total_trigram_pos != 0:
+          entry[key] = {"pos_freq": (float(total_trigram_pos_tf[pos_trigram_corpus.index(key)])/total_trigram_pos)}
+        else:
+          entry[key] = {"pos_freq": 0}
+      else:
+        entry[key] = {"pos_freq": 0}
+      if key in neg_trigram_corpus:
+        if total_trigram_neg != 0:
+          entry[key].update({"neg_freq": (float(total_trigram_neg_tf[neg_trigram_corpus.index(key)])/total_trigram_neg)})
+        else:
+          entry[key].update({"neg_freq": 0})
+      else:
+        entry[key].update({"neg_freq": 0})
+      if key in pos_terms:
+        entry[key].update({"tag": ["Positive"]})
+      elif key in neg_terms:
+        entry[key].update({"tag": ["Negative"]})
+      elif key not in custom_terms:
+        entry[key].update({"tag": []})
       
-    for term in top_bigrams:
-      try:
-        term_pos_freq = pos_freq[term]
-      except KeyError:
-        term_pos_freq = 0
-      try:
-        term_neg_freq = neg_freq[term]
-      except KeyError:
-        term_neg_freq = 0
-
-      entry = [term, term_pos_freq, term_neg_freq, []]
-      terms.append(entry)
-
-    for term in top_trigrams:
-      try:
-        term_pos_freq = pos_freq[term]
-      except KeyError:
-        term_pos_freq = 0
-      try:
-        term_neg_freq = neg_freq[term]
-      except KeyError:
-        term_neg_freq = 0
-
-      entry = [term, term_pos_freq, term_neg_freq, []]
-      terms.append(entry)
+      if key in custom_terms and key in trigram_corpus:
+        entry[key]["tag"].append("Custom")
+        
+    terms = [[key, entry[key]["pos_freq"], entry[key]["neg_freq"], entry[key]["tag"]] for key in top_terms + top_bigrams + top_trigrams]
     
     return terms
 
@@ -862,13 +877,14 @@ class CrawlerModel:
       if not hit.get('id') is None:
         doc[4] = hit['id']
       if not hit.get(es_info['mapping']["text"]) is None:
-        doc[5] = hit[es_info['mapping']["text"]][0]
+        doc[5] = " ".join(hit[es_info['mapping']["text"]][0].split(" ")[0:MAX_TEXT_LENGTH])
         
       docs.append(doc)
 
     if len(docs) > 1:
       # Prepares results: computes projection.
       # Update x, y for pages after projection is done.
+
       projectionData = self.projectPages(docs, session['activeProjectionAlg'])
 
       last_download_epoch = last_downloaded_url_epoch
