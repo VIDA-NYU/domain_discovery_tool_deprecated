@@ -5,11 +5,13 @@ import math
 from sets import Set
 import time
 import numpy as np
+import operator
 
 from config import es as default_es
 from elastic.get_documents import get_documents_by_id
 
 ENGLISH_STOPWORDS = set(nltk.corpus.stopwords.words('english'))
+MAX_TERMS = 2000
 
 def pos_filter(pos_tags=['NN', 'NNS', 'NNP', 'NNPS', 'VBN', 'JJ'], docterms=[]):
     tagged = nltk.pos_tag(docterms)
@@ -20,7 +22,7 @@ def tfidf(tf, df, n_doc):
     idf = math.log(n_doc / float(df))
     return tf * idf
 
-def terms_from_es_json(doc, rm_stopwords=True, rm_numbers=True, termstatistics = False, mapping=None, es=None):
+def terms_from_es_json(doc, rm_stopwords=True, rm_numbers=True, termstatistics = False, term_freq = 0, mapping=None, es=None):
     terms = {}
     docterms = doc["term_vectors"][mapping['text']]["terms"]
     n_doc = doc["term_vectors"][mapping['text']]["field_statistics"]["doc_count"]
@@ -36,15 +38,27 @@ def terms_from_es_json(doc, rm_stopwords=True, rm_numbers=True, termstatistics =
         terms = {term: {'tfidf':tfidf(docterms[term]["term_freq"], docterms[term]["doc_freq"], n_doc),
                         'tf': docterms[term]["term_freq"],
                         'ttf': docterms[term]["ttf"],
-                    } for term in valid_words if docterms[term]["ttf"] > 1
+                    } for term in valid_words if docterms[term]["ttf"] > term_freq
         }
     else:
-        terms = { term: {'tf': docterms[term]} for term in valid_words }
+        terms = { term: {'tf': docterms[term]['term_freq']} for term in valid_words if docterms[term]["term_freq"] > term_freq}
+
+    # Restrict the number of terms for large documents
+    if len(terms.keys()) > MAX_TERMS:
+        sorted_terms = []
+        if termstatistics == True:
+            terms_tfidf = {term:terms[term]["tfidf"] for term in terms.keys()}
+            sorted_terms = sorted(terms_tfidf.items(), key=operator.itemgetter(1), reverse=True)
+        else:
+            terms_tf = {term:terms[term]["tf"] for term in terms.keys()}
+            sorted_terms = sorted(terms_tf.items(), key=operator.itemgetter(1), reverse=True)
+
+        terms = {item[0]: terms[item[0]] for item in sorted_terms[0:MAX_TERMS]}
 
     return terms
 
 
-def getTermFrequency(all_hits, rm_stopwords=True, rm_numbers=True, pos_tags=[], mapping=None, es_index='memex', es_doc_type='page', es=None):
+def getTermFrequency(all_hits, rm_stopwords=True, rm_numbers=True, pos_tags=[], term_freq=0, mapping=None, es_index='memex', es_doc_type='page', es=None):
     if es is None:
         es = default_es
 
@@ -65,14 +79,13 @@ def getTermFrequency(all_hits, rm_stopwords=True, rm_numbers=True, pos_tags=[], 
             if doc.get('term_vectors'):
                 if mapping['text'] in doc['term_vectors']:
                     docs.append(doc['_id'])
-                    res = terms_from_es_json(doc=doc, rm_stopwords=rm_stopwords, rm_numbers=rm_numbers,  mapping=mapping)
+                    res = terms_from_es_json(doc=doc, rm_stopwords=rm_stopwords, rm_numbers=rm_numbers,  term_freq=term_freq, mapping=mapping)
                     stats.append(res)
 
     tfs = []
     for stat in stats:
         tf={}
-        for k in stat.keys():
-            tf[k] =stat[k]['tf']['term_freq']
+        tf={k:stat[k]['tf'] for k in stat.keys()}
         tfs.append(tf)
 
     v_tf = DictVectorizer()
@@ -83,12 +96,13 @@ def getTermFrequency(all_hits, rm_stopwords=True, rm_numbers=True, pos_tags=[], 
         filtered_words = pos_filter(pos_tags, corpus)
         indices = [corpus.index(term) for term in corpus if term not in filtered_words]
         corpus =  np.delete(corpus, indices)
+        corpus = corpus.tolist()
         data =  np.delete(data, indices, 1)
 
-    return [data, corpus.tolist(), docs]
+    return [data, corpus, docs]
 
 
-def getTermStatistics(all_hits, rm_stopwords=True, rm_numbers=True, pos_tags=[], mapping=None, es_index='memex', es_doc_type='page', es=None):
+def getTermStatistics(all_hits, rm_stopwords=True, rm_numbers=True, pos_tags=[], term_freq=0, mapping=None, es_index='memex', es_doc_type='page', es=None):
     if es is None:
         es = default_es
 
@@ -109,25 +123,20 @@ def getTermStatistics(all_hits, rm_stopwords=True, rm_numbers=True, pos_tags=[],
             if doc.get('term_vectors'):
                 if mapping['text'] in doc['term_vectors']:
                     docs.append(doc['_id'])
-                    res = terms_from_es_json(doc=doc, rm_stopwords=rm_stopwords, rm_numbers=rm_numbers, termstatistics=True, mapping=mapping)
+                    res = terms_from_es_json(doc=doc, rm_stopwords=rm_stopwords, rm_numbers=rm_numbers, termstatistics=True, term_freq=term_freq, mapping=mapping)
                     stats.append(res)
                     for k in res.keys():
                         ttf[k] = res[k]['ttf']
 
-    tfidfs = []
-    for stat in stats:
-        tfidf={}
-        for k in stat.keys():
-            tfidf[k] =stat[k]['tfidf']
-        tfidfs.append(tfidf)
 
+    tfidfs = []
     tfs = []
     for stat in stats:
-        tf={}
-        for k in stat.keys():
-            tf[k] =stat[k]['tf']
+        tfidf={k: stat[k]['tfidf'] for k in stat.keys()}
+        tfidfs.append(tfidf)
+        tf={k:stat[k]['tf'] for k in stat.keys()}
         tfs.append(tf)
-    
+
     v_tfidf = DictVectorizer()
     v_tf = DictVectorizer()
 
@@ -148,6 +157,6 @@ def getTermStatistics(all_hits, rm_stopwords=True, rm_numbers=True, pos_tags=[],
 
     del tfidfs
     del tfs
-    
+
     return result
 
