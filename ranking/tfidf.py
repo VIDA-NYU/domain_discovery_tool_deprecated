@@ -2,7 +2,7 @@ import numpy as np
 from elastic.get_mtermvectors import getTermStatistics
 
 class tfidf:
-    def __init__(self, opt_docs = None, rm_stopwords=True, rm_numbers=True, pos_tags=[],  mapping=None, es_index = 'memex', es_doc_type = 'page', es = None):
+    def __init__(self, opt_docs = None, rm_stopwords=True, rm_numbers=True, pos_tags=[],  term_freq=1, mapping=None, es_index = 'memex', es_doc_type = 'page', es = None):
         self.documents = opt_docs
         self.corpus = None
         self.tfidfArray = None
@@ -15,6 +15,7 @@ class tfidf:
         self.es_index = es_index
         self.es_doc_type = es_doc_type
         self.es = es
+        self.term_freq = term_freq
         
         if opt_docs != None:
           self.process(opt_docs)
@@ -48,7 +49,7 @@ class tfidf:
         return [self.corpus[x] for x in indices]
 
     def process(self, documents):
-        [data_tfidf, data_tf, data_ttf, corpus, urls] = getTermStatistics(documents, self.rm_stopwords, self.rm_numbers, self.pos_tags, self.mapping, self.es_index, self.es_doc_type, self.es)
+        [data_tfidf, data_tf, data_ttf, corpus, urls] = getTermStatistics(documents, self.rm_stopwords, self.rm_numbers, self.pos_tags, self.term_freq, self.mapping, self.es_index, self.es_doc_type, self.es)
         self.tfidfArray = data_tfidf
         self.tfArray = data_tf
         self.ttf = data_ttf
