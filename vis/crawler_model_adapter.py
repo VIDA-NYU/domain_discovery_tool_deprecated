@@ -100,7 +100,7 @@ class CrawlerModelAdapter:
 
   def getPagesQuery(self, session):
     return self._crawlerModel.getPagesQuery(session)
-  
+
   # Boosts set of pages: crawler exploits outlinks for the given set of pages.
   def boostPages(self, pages):
     pages = CrawlerModelAdapter.extractListParam(pages)
@@ -133,16 +133,16 @@ class CrawlerModelAdapter:
   def downloadUrls(self, urls, session):
     self._crawlerModel.downloadUrls(urls, session)
 
-  # Crawl forward links   
+  # Crawl forward links
   def getForwardLinks(self, urls, session):
     urls = CrawlerModelAdapter.extractListParam(urls)
     self._crawlerModel.getForwardLinks(urls, session);
 
-  # Crawl backward links   
+  # Crawl backward links
   def getBackwardLinks(self, urls, session):
     urls = CrawlerModelAdapter.extractListParam(urls)
     self._crawlerModel.getBackwardLinks(urls, session);
-  
+
 #
 # Overwrites default functionality to serve for seed crawler model use.
 #
@@ -173,7 +173,7 @@ class SeedCrawlerModelAdapter(CrawlerModelAdapter):
 
   def updateColors(self, session, colors):
     return self._crawlerModel.updateColors(session, colors)
-    
+
   def getTagColors(self, domainId):
     return self._crawlerModel.getTagColors(domainId)
 
@@ -205,3 +205,6 @@ class SeedCrawlerModelAdapter(CrawlerModelAdapter):
 
   def getPagesDates(self, session):
     return self._crawlerModel.getPagesDates(session)
+
+  def getPlottingData(self, session):
+    return self._crawlerModel.getPlottingData(session)

@@ -6,7 +6,7 @@ build:
     number: 0
     has_prefix_files:
       - lib/ddt/vis/config.conf
-    
+
 source:
     git_url: https://github.com/ViDA-NYU/domain_discovery_tool
     git_tag: 2.3
@@ -28,7 +28,7 @@ requirements:
     - requests
     - ddt-word2vec
     - ache >=0.3.1
-
+    - functools32
 
 #about:
 #    license: Apache?

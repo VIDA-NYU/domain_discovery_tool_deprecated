@@ -1,0 +1,11 @@
+{% block content %}
+
+  <div>{{ widgets_script | safe }}</div>
+  <div>{{ plots_script | safe }}</div>
+  <div class="bokeh_plot" id="queries_plot">{{ plots_div['queries'] | safe }}</div>
+  <div class="bokeh_plot">{{ plots_div['tags'] | safe }}</div>
+  <div class="bokeh_plot">{{ plots_div['hostnames'] | safe }}</div>
+  <div class="bokeh_plot">{{ plots_div['tlds'] | safe }}</div>
+  <div class="bokeh_plot">{{ plots_div['ts'] | safe }}</div>
+
+{% endblock content %}
