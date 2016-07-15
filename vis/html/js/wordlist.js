@@ -34,6 +34,8 @@ Wordlist.prototype.addEntries = function(entries) {
     var duplicate = false;
     $(this.entries).each(function(index, value ){
 	if ($(entries).get(0)["word"] === value["word"]){
+	    if ($(entries).get(0)["tags"].indexOf("Custom") > -1)
+		value["tags"] = $(entries).get(0)["tags"];
 	    duplicate = true;
 	}
     });
