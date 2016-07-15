@@ -524,11 +524,22 @@ class CrawlerModel:
 
     custom_terms = [field['term'][0] for field in multifield_query_search(s_fields, 500, ['term'], self._termsIndex, 'terms', self._es)]
 
-    top_terms = custom_terms + top_terms
+    for term in custom_terms:
+      try:
+        top_terms = top_terms.remove(term)
+      except ValueError:
+        continue
+      try:
+        top_bigrams.remove(term)
+      except ValueError:
+        continue
+      try:
+        top_trigrams.remove(term)
+      except ValueError:
+        continue
 
     if not top_terms:  
       return []
-
 
     pos_data = {field['id']:" ".join(field['text'][0].split(" ")[0:MAX_TEXT_LENGTH]) for field in term_search(es_info['mapping']['tag'], ['Relevant'], self._all, ['url', 'text'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)}
     pos_urls = pos_data.keys();
@@ -595,7 +606,7 @@ class CrawlerModel:
       total_trigram_neg = np.sum(total_trigram_neg_tf)
 
     entry = {}
-    for key in top_terms:
+    for key in top_terms + [term for term in custom_terms if term in pos_corpus or term in neg_corpus]:
       if key in pos_corpus:
         if total_pos != 0:
           entry[key] = {"pos_freq": (float(total_pos_tf[pos_corpus.index(key)])/total_pos)}
@@ -616,13 +627,10 @@ class CrawlerModel:
         entry[key].update({"tag": ["Positive"]})
       elif key in neg_terms:
         entry[key].update({"tag": ["Negative"]})
-      elif key not in custom_terms:
+      else: 
         entry[key].update({"tag": []})
-    
-      if key in custom_terms:
-        entry[key]["tag"].append("Custom")
 
-    for key in top_bigrams + [term for term in custom_terms if term in bigram_corpus]:
+    for key in top_bigrams + [term for term in custom_terms if term in pos_bigram_corpus or term in neg_bigram_corpus]:
       if key in pos_bigram_corpus:
         if total_bigram_pos != 0:
           entry[key] = {"pos_freq": (float(total_bigram_pos_tf[pos_bigram_corpus.index(key)])/total_bigram_pos)}
@@ -642,13 +650,10 @@ class CrawlerModel:
         entry[key].update({"tag": ["Positive"]})
       elif key in neg_terms:
         entry[key].update({"tag": ["Negative"]})
-      elif key not in custom_terms:
+      else: 
         entry[key].update({"tag": []})
-      
-      if key in custom_terms and key in bigram_corpus:
-        entry[key]["tag"].append("Custom")
 
-    for key in top_trigrams + [term for term in custom_terms if term in trigram_corpus]:
+    for key in top_trigrams + [term for term in custom_terms if term in pos_trigram_corpus or term in neg_trigram_corpus]:
       if key in pos_trigram_corpus:
         if total_trigram_pos != 0:
           entry[key] = {"pos_freq": (float(total_trigram_pos_tf[pos_trigram_corpus.index(key)])/total_trigram_pos)}
@@ -663,17 +668,25 @@ class CrawlerModel:
           entry[key].update({"neg_freq": 0})
       else:
         entry[key].update({"neg_freq": 0})
+
       if key in pos_terms:
         entry[key].update({"tag": ["Positive"]})
       elif key in neg_terms:
         entry[key].update({"tag": ["Negative"]})
-      elif key not in custom_terms:
+      else: 
         entry[key].update({"tag": []})
-      
-      if key in custom_terms and key in trigram_corpus:
+
+    for key in custom_terms:
+      if entry.get(key) == None:
+        entry[key] = {"pos_freq":0, "neg_freq":0, "tag":["Custom"]}
+        if key in pos_terms:
+          entry[key]["tag"].append("Positive")
+        elif key in neg_terms:
+          entry[key]["tag"].append("Negative")
+      else:
         entry[key]["tag"].append("Custom")
         
-    terms = [[key, entry[key]["pos_freq"], entry[key]["neg_freq"], entry[key]["tag"]] for key in top_terms + top_bigrams + top_trigrams]
+    terms = [[key, entry[key]["pos_freq"], entry[key]["neg_freq"], entry[key]["tag"]] for key in custom_terms + top_terms + top_bigrams + top_trigrams]
     
     return terms
 
@@ -1055,6 +1068,8 @@ class CrawlerModel:
     # TODO(Yamuna): Apply tag to page and update in elastic search. Suggestion: concatenate tags
     # with semi colon, removing repetitions.
 
+    print "\n\n\n SET TERMS TAG CALLED \n\n\n"
+
     es_info = self.esInfo(session['domainId'])
 
     s_fields = {
@@ -1070,6 +1085,8 @@ class CrawlerModel:
       tags.extend(res)
 
     results = {result['id']: result['tag'][0] for result in tags}
+
+    print "\n\n\n", results, "\n\n\n"
 
     add_entries = []
     update_entries = {}
@@ -1117,6 +1134,9 @@ class CrawlerModel:
                 "doc_type": es_info['docType']
               }
               update_entries[term+'_'+es_info['activeCrawlerIndex']+'_'+es_info['docType']] = entry
+
+    print "\n\n\n", add_entries, "\n\n\n"
+    print "\n\n\n", update_entries, "\n\n\n"
 
     if add_entries:
       add_document(add_entries, self._termsIndex, 'terms', self._es)
