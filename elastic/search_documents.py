@@ -198,7 +198,7 @@ def get_context(terms, field = "text", es_index='memex', es_doc_type='page', es=
 
         return context
 
-def range(field, from_val, to_val, ret_fields=[], epoch=True, pagesCount = 200, es_index='memex', es_doc_type='page', es=None):
+def range_search(field, from_val, to_val, ret_fields=[], epoch=True, pagesCount = 200, es_index='memex', es_doc_type='page', es=None):
     if es is None:
         es = default_es_elastic
 
