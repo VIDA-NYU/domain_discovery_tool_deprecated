@@ -102,7 +102,7 @@ def getTermFrequency(all_hits, rm_stopwords=True, rm_numbers=True, pos_tags=[], 
     return [data, corpus, docs]
 
 
-def getTermStatistics(all_hits, rm_stopwords=True, rm_numbers=True, pos_tags=[], term_freq=0, mapping=None, es_index='memex', es_doc_type='page', es=None):
+def getTermStatistics(all_hits, rm_stopwords=True, rm_numbers=True, pos_tags=[], term_freq=0, num_terms=MAX_TERMS, mapping=None, es_index='memex', es_doc_type='page', es=None):
     if es is None:
         es = default_es
 
@@ -151,6 +151,14 @@ def getTermStatistics(all_hits, rm_stopwords=True, rm_numbers=True, pos_tags=[],
         corpus = corpus.tolist()
         data =  np.delete(data, indices, 1)
         tf_data =  np.delete(tf_data, indices, 1)
+
+        if len(corpus) > MAX_TERMS:
+            mean_tfidf = np.mean(data, axis=0)
+            indices = np.argsort(mean_tfidf)[::-1]
+            corpus = [corpus[i] for i in indices]
+            data = data[:, indices]
+            tf_data = tf_data[:, indices]
+            
         ttf = {key:value for key, value in ttf.iteritems() if key in corpus}
 
     result = [data, tf_data, ttf, corpus, docs]
