@@ -49,7 +49,7 @@ class tfidf:
         return [self.corpus[x] for x in indices]
 
     def process(self, documents):
-        [data_tfidf, data_tf, data_ttf, corpus, urls] = getTermStatistics(documents, self.rm_stopwords, self.rm_numbers, self.pos_tags, self.term_freq, self.mapping, self.es_index, self.es_doc_type, self.es)
+        [data_tfidf, data_tf, data_ttf, corpus, urls] = getTermStatistics(documents, self.rm_stopwords, self.rm_numbers, self.pos_tags, self.term_freq, mapping=self.mapping, es_index=self.es_index, es_doc_type=self.es_doc_type, es=self.es)
         self.tfidfArray = data_tfidf
         self.tfArray = data_tf
         self.ttf = data_ttf
