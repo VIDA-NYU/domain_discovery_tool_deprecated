@@ -27,7 +27,7 @@ from elasticsearch import Elasticsearch
 from seeds_generator.download import download, decode
 from seeds_generator.concat_nltk import get_bag_of_words
 from elastic.get_config import get_available_domains, get_mapping, get_tag_colors
-from elastic.search_documents import get_context, term_search, search, multifield_term_search, range, multifield_query_search, field_missing, field_exists
+from elastic.search_documents import get_context, term_search, search, range_search, multifield_term_search, multifield_query_search, field_missing, field_exists
 from elastic.add_documents import add_document, update_document, delete_document, refresh
 from elastic.get_mtermvectors import getTermStatistics, getTermFrequency
 from elastic.get_documents import (get_most_recent_documents, get_documents,
@@ -60,8 +60,8 @@ class CrawlerModel:
     self._termsIndex = "ddt_terms"
     self._pagesCapTerms = 100
     self._capTerms = 500
-    self.projectionsAlg = {'Group by Similarity': self.pca
-                           #'t-SNE': self.tsne
+    self.projectionsAlg = {'Group by Similarity': self.pca,
+                           'Group by Correlation': self.tsne
                            # 'K-Means': self.kmeans,
                          }
 
@@ -79,7 +79,7 @@ class CrawlerModel:
 
     self._mapping = {"url":"url", "timestamp":"retrieved", "text":"text", "html":"html", "tag":"tag", "query":"query"}
     self._domains = None
-    self.pos_tags = ['NN', 'NNS', 'NNP', 'NNPS', 'FW', 'JJ']
+    self._pos_tags = ['NN', 'NNS', 'NNP', 'NNPS', 'FW', 'JJ']
 
   # Returns a list of available crawlers in the format:
   # [
@@ -366,7 +366,7 @@ class CrawlerModel:
                                           self._es)
     else:
       results = \
-      range(es_info['mapping']["timestamp"], opt_ts1, opt_ts2, ['url',es_info['mapping']['tag']], True, session['pagesCap'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
+      range_search(es_info['mapping']["timestamp"], opt_ts1, opt_ts2, ['url',es_info['mapping']['tag']], True, session['pagesCap'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
 
     relevant = 0
     irrelevant = 0
@@ -456,9 +456,9 @@ class CrawlerModel:
     if session["filter"] == "" or session["filter"] is None:
       if len(urls) > 0:
 
-        [bigram_tfidf_data, trigram_tfidf_data,_,_,bigram_corpus, trigram_corpus,_,_,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(text, urls, opt_maxNumberOfTerms+len(neg_terms), self.w2v, self._es)
+        [bigram_tfidf_data, trigram_tfidf_data,_,_,bigram_corpus, trigram_corpus,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(text, urls, opt_maxNumberOfTerms+len(neg_terms), self.w2v, self._es)
 
-        tfidf_all = tfidf.tfidf(urls, pos_tags=self.pos_tags, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
+        tfidf_all = tfidf.tfidf(urls, pos_tags=self._pos_tags, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
         if pos_terms:
           extract_terms_all = extract_terms.extract_terms(tfidf_all)
           [ranked_terms, scores] = extract_terms_all.results(pos_terms)
@@ -490,7 +490,7 @@ class CrawlerModel:
     else:
       top_terms = [term for term in get_significant_terms(urls, opt_maxNumberOfTerms+len(neg_terms), mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es) if (term not in neg_terms)]
       if len(text) > 0:
-        [_,_,_,_,_,_,_,_,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(text, urls, opt_maxNumberOfTerms+len(neg_terms), self.w2v, self._es)
+        [_,_,_,_,_,_,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(text, urls, opt_maxNumberOfTerms+len(neg_terms), self.w2v, self._es)
         top_bigrams = [term for term in top_bigrams if term not in neg_terms]
         top_trigrams = [term for term in top_trigrams if term not in neg_terms]
 
@@ -561,17 +561,17 @@ class CrawlerModel:
     pos_trigram_corpus = []
 
     if len(pos_urls) > 1:
-      [ttfs_pos,pos_corpus,_] = getTermFrequency(pos_urls, pos_tags=self.pos_tags, term_freq=MAX_TERM_FREQ, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
+      [ttfs_pos,pos_corpus,_] = getTermFrequency(pos_urls, pos_tags=self._pos_tags, term_freq=MAX_TERM_FREQ, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
 
       total_pos_tf = np.sum(ttfs_pos, axis=0)
       total_pos = np.sum(total_pos_tf)
 
-      [_,_,bigram_tf_data,trigram_tf_data,pos_bigram_corpus, pos_trigram_corpus,_,_,_,_] = get_bigrams_trigrams.get_bigrams_trigrams(pos_text, pos_urls, opt_maxNumberOfTerms, self.w2v, self._es)
+      [_,_,bigram_tf_data,trigram_tf_data,pos_bigram_corpus, pos_trigram_corpus,_,_] = get_bigrams_trigrams.get_bigrams_trigrams(pos_text, pos_urls, opt_maxNumberOfTerms, self.w2v, self._es)
 
       total_bigram_pos_tf = np.sum(bigram_tf_data, axis=0)
       total_bigram_pos = np.sum(total_bigram_pos_tf)
 
-      total_trigram_pos_tf = np.sum(trigram_tf_data, axis=0)
+      total_trigram_pos_tf = trigram_tf_data.sum(axis=0)
       total_trigram_pos = np.sum(total_trigram_pos_tf)
 
     neg_data = {field['id']:" ".join(field['text'][0].split(" ")[0:MAX_TEXT_LENGTH]) for field in term_search(es_info['mapping']['tag'], ['Irrelevant'], self._all, ['url', 'text'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)}
@@ -594,17 +594,17 @@ class CrawlerModel:
     neg_trigram_corpus = []
 
     if len(neg_urls) > 1:
-      [ttfs_neg,neg_corpus,_] = getTermFrequency(neg_urls, pos_tags=self.pos_tags, term_freq=MAX_TERM_FREQ, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
+      [ttfs_neg,neg_corpus,_] = getTermFrequency(neg_urls, pos_tags=self._pos_tags, term_freq=MAX_TERM_FREQ, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
 
       total_neg_tf = np.sum(ttfs_neg, axis=0)
       total_neg = np.sum(total_neg_tf)
 
-      [_,_,bigram_tf_data,trigram_tf_data,neg_bigram_corpus, neg_trigram_corpus,_,_,_,_] = get_bigrams_trigrams.get_bigrams_trigrams(neg_text, neg_urls, opt_maxNumberOfTerms, self.w2v, self._es)
+      [_,_,bigram_tf_data,trigram_tf_data,neg_bigram_corpus, neg_trigram_corpus,_,_] = get_bigrams_trigrams.get_bigrams_trigrams(neg_text, neg_urls, opt_maxNumberOfTerms, self.w2v, self._es)
 
       total_bigram_neg_tf = np.sum(bigram_tf_data, axis=0)
       total_bigram_neg = np.sum(total_bigram_neg_tf)
 
-      total_trigram_neg_tf = np.sum(trigram_tf_data, axis=0)
+      total_trigram_neg_tf = trigram_tf_data.sum(axis=0)
       total_trigram_neg = np.sum(total_trigram_neg_tf)
 
     entry = {}
@@ -658,14 +658,14 @@ class CrawlerModel:
     for key in top_trigrams + [term for term in custom_terms if term in pos_trigram_corpus or term in neg_trigram_corpus]:
       if key in pos_trigram_corpus:
         if total_trigram_pos != 0:
-          entry[key] = {"pos_freq": (float(total_trigram_pos_tf[pos_trigram_corpus.index(key)])/total_trigram_pos)}
+          entry[key] = {"pos_freq": (float(total_trigram_pos_tf[0,pos_trigram_corpus.index(key)])/total_trigram_pos)}
         else:
           entry[key] = {"pos_freq": 0}
       else:
         entry[key] = {"pos_freq": 0}
       if key in neg_trigram_corpus:
         if total_trigram_neg != 0:
-          entry[key].update({"neg_freq": (float(total_trigram_neg_tf[neg_trigram_corpus.index(key)])/total_trigram_neg)})
+          entry[key].update({"neg_freq": (float(total_trigram_neg_tf[0,neg_trigram_corpus.index(key)])/total_trigram_neg)})
         else:
           entry[key].update({"neg_freq": 0})
       else:
@@ -709,7 +709,7 @@ class CrawlerModel:
                                        self._es)
     else:
       if(session['filter'] is None):
-        hits = range(es_info['mapping']["timestamp"], session['fromDate'], session['toDate'], ['url',"x", "y", es_info['mapping']['tag'], es_info['mapping']["timestamp"], es_info['mapping']["text"]], True, session['pagesCap'],
+        hits = range_search(es_info['mapping']["timestamp"], session['fromDate'], session['toDate'], ['url',"x", "y", es_info['mapping']['tag'], es_info['mapping']["timestamp"], es_info['mapping']["text"]], True, session['pagesCap'],
                      es_info['activeCrawlerIndex'],
                      es_info['docType'],
                      self._es)
@@ -900,7 +900,7 @@ class CrawlerModel:
       # Prepares results: computes projection.
       # Update x, y for pages after projection is done.
 
-      projectionData = self.projectPages(docs, session['activeProjectionAlg'])
+      projectionData = self.projectPages(docs, session['activeProjectionAlg'], es_info=es_info)
 
       last_download_epoch = last_downloaded_url_epoch
       try:
@@ -1070,8 +1070,6 @@ class CrawlerModel:
     # TODO(Yamuna): Apply tag to page and update in elastic search. Suggestion: concatenate tags
     # with semi colon, removing repetitions.
 
-    print "\n\n\n SET TERMS TAG CALLED \n\n\n"
-
     es_info = self.esInfo(session['domainId'])
 
     s_fields = {
@@ -1087,8 +1085,6 @@ class CrawlerModel:
       tags.extend(res)
 
     results = {result['id']: result['tag'][0] for result in tags}
-
-    print "\n\n\n", results, "\n\n\n"
 
     add_entries = []
     update_entries = {}
@@ -1136,9 +1132,6 @@ class CrawlerModel:
                 "doc_type": es_info['docType']
               }
               update_entries[term+'_'+es_info['activeCrawlerIndex']+'_'+es_info['docType']] = entry
-
-    print "\n\n\n", add_entries, "\n\n\n"
-    print "\n\n\n", update_entries, "\n\n\n"
 
     if add_entries:
       add_document(add_entries, self._termsIndex, 'terms', self._es)
@@ -1238,31 +1231,48 @@ class CrawlerModel:
     print errors
 
   # Download the pages of uploaded urls
-  def downloadUrls(self, urls, session):
+  def downloadUrls(self, urls_str, session):
     es_info = self.esInfo(session['domainId'])
 
     chdir(environ['DDT_HOME']+'/seeds_generator')
 
-    comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar Download_urls -u \"" + urls + "\"" \
+    # Download 100 urls at a time
+    step =  100
+    urls = urls_str.split(" ")
+    url_size = 0
+    if len(urls) >= step:
+      for url_size in range(0, len(urls), step):
+        comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar Download_urls -u \"" + " ".join(urls[url_size:url_size + step]) + "\"" \
+               " -i " + es_info['activeCrawlerIndex'] + \
+               " -d " + es_info['docType'] + \
+               " -s " + es_server
+        
+        p=Popen(comm, shell=True, stderr=PIPE)
+        output, errors = p.communicate()
+        print output
+        print errors
+
+    if len(urls[url_size:]) < step:
+      comm = "java -cp target/seeds_generator-1.0-SNAPSHOT-jar-with-dependencies.jar Download_urls -u \"" + " ".join(urls[url_size:]) + "\"" \
            " -i " + es_info['activeCrawlerIndex'] + \
            " -d " + es_info['docType'] + \
            " -s " + es_server
 
-    p=Popen(comm, shell=True, stderr=PIPE)
-    output, errors = p.communicate()
-    print output
-    print errors
+      p=Popen(comm, shell=True, stderr=PIPE)
+      output, errors = p.communicate()
+      print output
+      print errors
 
   def getPlottingData(self, session):
     es_info = self.esInfo(session['domainId'])
     return get_plotting_data(self._all, es_info["activeCrawlerIndex"], es_info['docType'], self._es)
 
   # Projects pages.
-  def projectPages(self, pages, projectionType='TSNE'):
-    return self.projectionsAlg[projectionType](pages)
+  def projectPages(self, pages, projectionType='TSNE', es_info=None):
+    return self.projectionsAlg[projectionType](pages, es_info)
 
   # Projects pages with PCA
-  def pca(self, pages):
+  def pca(self, pages, es_info=None):
 
     urls = [page[4] for page in pages]
     text = [page[5] for page in pages]
@@ -1285,7 +1295,7 @@ class CrawlerModel:
       i = 0
       for page in pages:
         if page[4] in urls:
-          pdata = [page[0], pcadata[1][i][0], pcadata[1][i][1], page[3]]
+          pdata = [page[0], pcadata[i][0], pcadata[i][1], page[3]]
           i = i + 1
           results.append(pdata)
     except IndexError:
@@ -1294,28 +1304,28 @@ class CrawlerModel:
     return results
 
   # Projects pages with TSNE
-  def tsne(self, pages):
+  def tsne(self, pages, es_info=None):
 
     urls = [page[4] for page in pages]
     text = [page[5] for page in pages]
-    #[data,_,_,_,urls] = self.term_tfidf(urls)
 
-    #Convert to binary
-    #data = data.astype(bool)
-    #data = data.astype(int)
+    #[data,_,_,_,urls] = getTermStatistics(urls, pos_tags=self._pos_tags, term_freq=MAX_TERM_FREQ, num_terms=50, mapping=self._mapping, es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
 
-    #[urls, data] = CrawlerModel.w2v.process(urls, es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
     [urls, data] = CrawlerModel.w2v.process_text(urls, text)
 
+    data = np.divide(data, np.sum(data, axis=0))
+    tags = [page[3][0] if page[3] else "" for page in pages if page[4] in urls]
+    labels = [tags.index(tag) for tag in tags]
+
     tsne_count = 2
-    tsnedata = CrawlerModel.runTSNESKLearn(data, tsne_count)
+    tsnedata = CrawlerModel.runTSNESKLearn(1-data, labels, tsne_count)
 
     try:
       results = []
       i = 0
       for page in pages:
         if page[4] in urls:
-          pdata = [page[0], tsnedata[1][i][0], tsnedata[1][i][1], page[3]]
+          pdata = [page[0], tsnedata[i][0], tsnedata[i][1], page[3]]
           i = i + 1
           results.append(pdata)
 
@@ -1363,12 +1373,20 @@ class CrawlerModel:
     pca = PCA(n_components=pc_count)
     #pca.fit(X)
     #return [pca.explained_variance_ratio_.tolist(), pca.fit_transform(X).tolist()]
-    return [None, pca.fit_transform(X).tolist()]
+    return pca.fit_transform(X)
 
   @staticmethod
-  def runTSNESKLearn(X, pc_count = None):
-    tsne = TSNE(n_components=pc_count, random_state=0)
-    return [None, tsne.fit_transform(X).tolist()]
+  def runTSNESKLearn(X,y=None,pc_count = None):
+    tsne = TSNE(n_components=pc_count, random_state=0, metric="correlation", learning_rate=200)
+    result = None
+    if y != None:
+      result = tsne.fit_transform(X,y)
+    else:
+      result = tsne.fit_transform(X)
+
+    from sklearn.externals import joblib
+    joblib.dump([result,y], '/media/data/yamuna/Memex/scripts/tsne/ddt_tsne_proj.pkl')
+    return result
 
   @staticmethod
   def runKMeansSKLearn(X, k = None):
