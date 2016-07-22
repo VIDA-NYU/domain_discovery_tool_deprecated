@@ -2,7 +2,9 @@ import sys
 
 import tfidf
 import BayesianSets
+
 import numpy as np
+import scipy.sparse as sps
 
 class extract_terms:
     def __init__(self, tfidf):
@@ -14,11 +16,14 @@ class extract_terms:
     def results(self,query_terms):
         
         [urls, corpus, d] = self.table.getTfidfArray()
+
+        if sps.issparse(d):
+            d = d.toarray()
         
         query_index = self.getIndex(corpus, query_terms)
-
+        
         #Normalise the data
-        col_sum_d = np.sum(d,axis=0)    
+        col_sum_d = np.sum(d, axis=0)    
         norm_d = np.divide(d, col_sum_d)
 
         data = np.transpose(norm_d)
