@@ -108,6 +108,7 @@ CrawlerVis.prototype.initSignalSlotsCrawler = function() {
   SigSlots.connect(__sig__.add_term, this, this.runAddTerm);
   SigSlots.connect(__sig__.add_neg_term, this, this.runAddNegTerm);
   SigSlots.connect(__sig__.load_new_pages_summary, this, this.loadNewPagesSummary);
+  SigSlots.connect(__sig__.update_online_classfier, this, this.updateOnlineClassifier);
 
   // TODO(Cesar): remove! not active for crawler.
   //SigSlots.connect(__sig__.term_toggle, this, this.onTermToggle);
@@ -151,6 +152,8 @@ CrawlerVis.prototype.initSignalSlotsSeedCrawler = function() {
   SigSlots.connect(__sig__.delete_term, this, this.runDeleteTerm);
   SigSlots.connect(__sig__.load_new_pages_summary, this, this.loadNewPagesSummary);
   SigSlots.connect(__sig__.set_pages_tags_completed, this, this.onPagesTagsSet);
+  SigSlots.connect(__sig__.update_online_classfier, this, this.updateOnlineClassifier);
+  SigSlots.connect(__sig__.update_online_classifier_completed, this, this.onUpdatedOnlineClassifier);
 };
 
 
@@ -914,6 +917,12 @@ CrawlerVis.prototype.onTermToggle = function(term, shiftClick) {
   }
 };
 
+// Update online classifier
+CrawlerVis.prototype.updateOnlineClassifier = function() {
+    var vis = this;
+    DataAccess.updateOnlineClassifier(vis.sessionInfo());
+};
+
 
 // Responds to loaded terms snippets.
 CrawlerVis.prototype.onLoadedTermsSnippets = function(data) {
@@ -948,6 +957,14 @@ CrawlerVis.prototype.onPagesTagsSet = function() {
     DataAccess.loadPagesSummaryUntilLastUpdate(true, vis.sessionInfo());
 }
     
+// Display new model accuracy
+CrawlerVis.prototype.onUpdatedOnlineClassifier = function(accuracy) {
+    var vis = this;
+    console.log(accuracy);
+}
+    
+
+
 // Responds to loaded pages signal.
 CrawlerVis.prototype.onLoadedPages = function(pagesData) {
     var pages = pagesData['pages'].map(function(page, i) {

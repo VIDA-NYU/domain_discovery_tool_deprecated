@@ -35,13 +35,20 @@ class OnlineClassifier:
         return clf
 
     def partialFit(self, X, Y):
-        self.clf.partial_fit(X,Y)
+        if clf is None:
+            self.fit(X, Y)
+        else:
+            self.clf.partial_fit(X,Y)
         return self.clf
     
     def calibrate(self, clf, X, Y):
         sigmoid = CalibratedClassifierCV(clf, cv=2, method='sigmoid')
         sigmoid.fit(X,Y)
         return sigmoid
+
+    def calibrateScore(self, sigmoid, X, Y):
+        sigmoid
+        
 
     def predictClass(self, X, Y, clf, sigmoid):
         for i in range(0,10):

@@ -43,6 +43,8 @@ from elastic.delete import delete
 
 from ranking import tfidf, rank, extract_terms, word2vec, get_bigrams_trigrams
 
+from online_classifier import OnlineClassifier
+
 from topik import read_input, tokenize, vectorize, run_model, visualize, TopikProject
 
 import urllib2
@@ -80,6 +82,8 @@ class CrawlerModel:
     self._mapping = {"url":"url", "timestamp":"retrieved", "text":"text", "html":"html", "tag":"tag", "query":"query"}
     self._domains = None
     self._pos_tags = ['NN', 'NNS', 'NNP', 'NNPS', 'FW', 'JJ']
+
+    self._onlineClassifier = OnlineClassifier()
 
   # Returns a list of available crawlers in the format:
   # [
@@ -1139,6 +1143,64 @@ class CrawlerModel:
     if update_entries:
       update_document(update_entries, self._termsIndex, 'terms', self._es)
 
+  # Update online classifer
+  def updateOnlineClassifier(self, session):
+    es_info = self.esInfo(session['domainId'])
+
+    # Fit classifier
+    # ****************************************************************************************
+    s_fields = {"updated_OC": 0,
+                "tag": "Relevant"}
+    pos_docs = multifield_term_search(s_fields, self._all, ["url", es_info['mapping']['text']], 
+                                      es_info['activeCrawlerIndex'], 
+                                      es_info['docType'],
+                                      self._es)
+
+    pos_text = [pos_doc["es_info['mapping']['text']"] for pos_doc in pos_docs]
+    pos_labels = [1 for i in range(0, len(pos_text))]
+    
+    s_fields["tag"] = ["Irrelevant"]
+    neg_docs = multifield_term_search(s_fields, self._all, ["url", es_info['mapping']['text']], 
+                                      es_info['activeCrawlerIndex'], 
+                                      es_info['docType'],
+                                      self._es)
+    neg_text = [neg_doc["es_info['mapping']['text']"] for neg_doc in neg_docs]
+    neg_labels = [1 for i in range(0, len(neg_text))]
+
+    clf = self._onlineClassifier.partialFit(pos_text+neg_text, pos_labels+neg_labels)
+
+    # ****************************************************************************************
+
+    # Fit calibratrated classifier
+
+    s_fields = {"updated_OC": 1,
+                "tag": "Relevant"}
+    pos_docs = multifield_term_search(s_fields, 500, ["url", es_info['mapping']['text']], 
+                                      es_info['activeCrawlerIndex'], 
+                                      es_info['docType'],
+                                      self._es)
+    
+    pos_text = [pos_doc["es_info['mapping']['text']"] for pos_doc in pos_docs]
+    pos_labels = [1 for i in range(0, len(pos_text))]
+    
+    s_fields["tag"] = ["Irrelevant"]
+    neg_docs = multifield_term_search(s_fields, 500, ["url", es_info['mapping']['text']], 
+                                      es_info['activeCrawlerIndex'], 
+                                      es_info['docType'],
+                                      self._es)
+    neg_text = [neg_doc["es_info['mapping']['text']"] for neg_doc in neg_docs]
+    neg_labels = [1 for i in range(0, len(neg_text))]
+
+    sigmoid = self._onlineClassifier.calibrate(pos_text[0:len(pos_text)/2]+neg_text[0:len(neg_text)/2], pos_labels[0:len(pos_text)/2]+neg_labels[0:len(neg_text)/2])
+
+    accuracy = self._onlineClassifier.calibrateScore(sigmoid, pos_text[len(pos_text)/2:]+neg_text[len(neg_text)/2:], pos_labels[len(pos_text)/2:]+neg_labels[len(neg_text)/2]:)
+
+    print "\n\n\n Accuracy = ", accuracy, "\n\n\n"
+    
+    return accuracy
+  
+    # ****************************************************************************************
+    
   # Delete terms from term window and from the ddt_terms index
   def deleteTerm(self,term, session):
     es_info = self.esInfo(session['domainId'])

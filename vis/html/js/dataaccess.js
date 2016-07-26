@@ -36,6 +36,10 @@ var DataAccess = (function() {
   var onSetPagesTagCompleted = function(){
       __sig__.emit(__sig__.set_pages_tags_completed);
   }
+
+  var onUpdatedOnlineClassifier = function(accuracy){
+      __sig__.emit(__sig__.update_online_classifier_completed, accuracy);
+  }
   // Processes loaded pages.
   var onPagesLoaded = function(loadedPages) {
       pages = loadedPages;
@@ -155,6 +159,13 @@ var DataAccess = (function() {
   var loadNewPagesSummary = function(isFilter) {
       __sig__.emit(__sig__.load_new_pages_summary, isFilter);
   };
+
+
+  //Signal update of online classifier
+  var updateOnlineClassifier = function() {
+      __sig__.emit(__sig__.update_online_classifier);
+  };
+    
 
   // Runs async post query.
   var runQuery = function(query, args, onCompletion, doneCb) {
@@ -360,7 +371,12 @@ var DataAccess = (function() {
       '/setTermsTag', {'terms': term, 'tag': tag, 'applyTagFlag': applyTagFlag, 'session': JSON.stringify(session)});
   };
 
-    
+  //Update online classifier
+  pub.updateOnlineClassifier = function(session) {
+      runQueryForCurrentCrawler(
+	  '/updateOnlineClassifier', {'session': JSON.stringify(session)}, onUpdatedOnlineClassifier);
+  }
+	
   pub.deleteTerm = function(term, session) {
       runQueryForCurrentCrawler('/deleteTerm', {'term': term, 'session': JSON.stringify(session)});
   }
@@ -393,6 +409,7 @@ var DataAccess = (function() {
   // Fetches new pages summaries every n seconds.
   window.setInterval(function() {loadNewPagesSummary(false);}, REFRESH_EVERY_N_MILLISECONDS);
   window.setInterval(function() {loadNewPagesSummary(true);}, REFRESH_EVERY_N_MILLISECONDS);
+  window.setInterval(function() {updateOnlineClassfier();}, REFRESH_EVERY_N_MILLISECONDS + 8000);
 
   return pub;
 }());

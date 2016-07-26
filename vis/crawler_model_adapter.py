@@ -125,6 +125,11 @@ class CrawlerModelAdapter:
     applyTagFlag =  CrawlerModelAdapter.extractBooleanParam(applyTagFlag)
     self._crawlerModel.setTermsTag(terms, tag, applyTagFlag, session)
 
+  # Update online classifier
+  def updateOnlineClassifier(self, session):
+    session = json.loads(session)
+    self._crawlerModel.updateOnlineClassifier(session)
+
   # Delete terms from term window and from the ddt_terms index
   def deleteTerm(self, term, session):
     self._crawlerModel.deleteTerm(term, session)
