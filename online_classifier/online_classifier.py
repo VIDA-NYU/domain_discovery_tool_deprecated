@@ -47,8 +47,7 @@ class OnlineClassifier:
         return sigmoid
 
     def calibrateScore(self, sigmoid, X, Y):
-        sigmoid
-        
+        return sigmoid(X,Y)
 
     def predictClass(self, X, Y, clf, sigmoid):
         for i in range(0,10):
