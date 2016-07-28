@@ -14,6 +14,7 @@ var DataAccess = (function() {
   var currentCrawler = undefined;
   var currentProjAlg = undefined;
   var loadingSummary = false;
+  var updatingClassifier = false;
   var updating = false;
   var loadingPages = false;
   var loadingTerms = false;
@@ -28,7 +29,7 @@ var DataAccess = (function() {
   // Processes loaded pages summaries.
   var onNewPagesSummaryLoaded = function(summary, isFilter) {
     loadingSummary = false;
-      lastSummary = moment().unix();
+    lastSummary = moment().unix();
     __sig__.emit(__sig__.new_pages_summary_fetched, summary, isFilter);
   };
 
@@ -37,7 +38,8 @@ var DataAccess = (function() {
       __sig__.emit(__sig__.set_pages_tags_completed);
   }
 
-  var onUpdatedOnlineClassifier = function(accuracy){
+    var onUpdatedOnlineClassifier = function(accuracy){
+      updatingClassifier = false;
       __sig__.emit(__sig__.update_online_classifier_completed, accuracy);
   }
   // Processes loaded pages.
@@ -373,8 +375,11 @@ var DataAccess = (function() {
 
   //Update online classifier
   pub.updateOnlineClassifier = function(session) {
-      runQueryForCurrentCrawler(
-	  '/updateOnlineClassifier', {'session': JSON.stringify(session)}, onUpdatedOnlineClassifier);
+      if (!updatingClassifier && currentCrawler !== undefined) {
+	  updatingClassifier = true;
+	  runQueryForCurrentCrawler(
+	      '/updateOnlineClassifier', {'session': JSON.stringify(session)}, onUpdatedOnlineClassifier);
+      }
   }
 	
   pub.deleteTerm = function(term, session) {
@@ -409,7 +414,7 @@ var DataAccess = (function() {
   // Fetches new pages summaries every n seconds.
   window.setInterval(function() {loadNewPagesSummary(false);}, REFRESH_EVERY_N_MILLISECONDS);
   window.setInterval(function() {loadNewPagesSummary(true);}, REFRESH_EVERY_N_MILLISECONDS);
-  window.setInterval(function() {updateOnlineClassfier();}, REFRESH_EVERY_N_MILLISECONDS + 8000);
+  window.setInterval(function() {updateOnlineClassifier();}, REFRESH_EVERY_N_MILLISECONDS + 18000);
 
   return pub;
 }());
