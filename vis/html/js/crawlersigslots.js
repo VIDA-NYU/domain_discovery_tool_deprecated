@@ -41,7 +41,9 @@ var SigSlots = (function() {
   __sig__.load_new_pages_summary = function(isFilter) {};
   __sig__.set_pages_tags_completed = function(){};
   __sig__.bokeh_insert_plot = function() {};
-
+  __sig__.update_online_classifier = function() {};
+  __sig__.update_online_classifier_completed = function(accuracy) {};
+    
   //__sig__.pages_labels_changed = function() {};
   //__sig__.term_selected = function(term) {};
   //__sig__.query_enter = function(query) {};
