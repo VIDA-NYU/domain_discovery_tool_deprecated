@@ -1068,7 +1068,7 @@ class CrawlerModel:
                 tags.remove(tag)
                 entry[es_info['mapping']['tag']] = tags
                 entries[record['id']] = entry
-                self._removeClassifierSample(session['domainId'], record['id'])
+                
 
     if entries:
       update_try = 0
@@ -1079,6 +1079,9 @@ class CrawlerModel:
         except:
           update_try = update_try + 1
 
+      if (session['domainId'] in self._onlineClassifiers) and (not applyTagFlag) and (tag in ["Relevant", "Irrelevant"]):
+        self._onlineClassifiers.pop(session['domainId'])
+        self.updateOnlineClassifier(session)
 
   # Adds tag to terms (if applyTagFlag is True) or removes tag from terms (if applyTagFlag is
   # False).
