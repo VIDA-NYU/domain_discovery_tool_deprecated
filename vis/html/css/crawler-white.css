@@ -117,13 +117,22 @@ p {
   display: inline-block;
   vertical-align: top;
 }
+*/
 
 #left_panel {
-  width: 285px;
+   min-height: 900px;
+  /*width: 285px;
   margin-top: 10px;
-  font-size: 25px;
+  font-size: 25px;*/
+}
+.fixed {
+    position: fixed;
+    max-width: 580px;
+    max-height: 750px;
+    min-height: 500px;
 }
 
+/*
 #left_panel > div {
   margin-bottom: 10px;
   background: #f9f9f9;
@@ -131,8 +140,9 @@ p {
 }
 
 #middle_panel {
+  position: fixed;
   width: 680px;
-  margin: 10px 8px 0px 8px;
+  margin: 110px 8px 0px 108px;
   background: #f9f9f9;
   font-size: 25px;
   padding: 10px;
@@ -443,7 +453,7 @@ svg text {
   width: 100%;
   padding: 10px;
   height: auto;
-  min-height: 400px;
+  min-height: 200px;
 }
 
 #pages_landscape {
