@@ -1245,6 +1245,8 @@ class CrawlerModel:
 
     if (clf != None) and (train_data != None):
 
+      trainedPosSamples = self._onlineClassifiers[session['domainId']]["trainedPosSamples"]
+      trainedNegSamples = self._onlineClassifiers[session['domainId']]["trainedNegSamples"]
       if len(trainedPosSamples)/2 > 2 and len(trainedNegSamples)/2 > 2:
         pos_trained_docs = get_documents_by_id(trainedPosSamples,
                                                ["url", es_info['mapping']['text']],
@@ -1266,23 +1268,18 @@ class CrawlerModel:
         [calibrate_neg_data,_] = self._onlineClassifiers[session['domainId']]["onlineClassifier"].vectorize(neg_trained_text)
         calibrate_pos_labels = pos_trained_labels
         calibrate_neg_labels = neg_trained_labels
-      elif (len(pos_labels)/2 > 2) and (len(neg_labels)/2 > 2):
-        calibrate_pos_data = train_data[0:len(pos_labels),:]
-        calibrate_neg_data = train_data[len(pos_labels):,:]
-        calibrate_pos_labels = pos_labels
-        calibrate_neg_labels = neg_labels
       else:
         print "\n\n\nNot sufficient data for calibration\n\n\n"
         return 0
 
-      calibrate_train_data = sp.sparse.vstack([calibrate_pos_data[0:len(calibrate_pos_labels)/2,:], calibrate_neg_data[0:len(calibrate_neg_labels)/2,:]]).toarray()
-      calibrate_train_labels = calibrate_pos_labels[0:len(calibrate_pos_labels)/2]+calibrate_neg_labels[0:len(calibrate_neg_labels)/2]
-
-      calibrate_test_data = sp.sparse.vstack([calibrate_pos_data[len(calibrate_pos_labels)/2:,:],calibrate_neg_data[len(calibrate_neg_labels)/2:,:]]).toarray()
-      calibrate_test_labels = calibrate_pos_labels[len(calibrate_pos_labels)/2:]+calibrate_neg_labels[len(calibrate_neg_labels)/2:]
+      calibrate_data = sp.sparse.vstack([calibrate_pos_data, calibrate_neg_data]).toarray()
+      calibrate_labels = calibrate_pos_labels+calibrate_neg_labels
       
-      sigmoid = self._onlineClassifiers[session['domainId']]["onlineClassifier"].calibrate(clf,calibrate_train_data, np.asarray(calibrate_train_labels))
-      accuracy = self._onlineClassifiers[session['domainId']]["onlineClassifier"].calibrateScore(sigmoid, calibrate_test_data, np.asarray(calibrate_test_labels))
+      train_indices = np.random.choice(len(calibrate_labels), len(calibrate_labels)/2)
+      test_indices = np.random.choice(len(calibrate_labels), len(calibrate_labels)/2)
+                                        
+      sigmoid = self._onlineClassifiers[session['domainId']]["onlineClassifier"].calibrate(clf,calibrate_data[train_indices], np.asarray(calibrate_labels)[train_indices])
+      accuracy = self._onlineClassifiers[session['domainId']]["onlineClassifier"].calibrateScore(sigmoid, calibrate_data[test_indices], np.asarray(calibrate_labels)[test_indices])
       
       print "\n\n\n Accuracy = ", accuracy, "\n\n\n"
       
