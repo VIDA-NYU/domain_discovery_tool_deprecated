@@ -324,7 +324,7 @@ class Page:
   @cherrypy.expose
   def updateOnlineClassifier(self, session):
     session = json.loads(session)
-    self._crawler.updateOnlineClassifier(session)
+    return self._crawler.updateOnlineClassifier(session)
 
     
   # Delete terms from term window and from the ddt_terms index
