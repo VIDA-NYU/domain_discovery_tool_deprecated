@@ -960,35 +960,45 @@ CrawlerVis.prototype.onPagesTagsSet = function() {
 // Display new model accuracy
 CrawlerVis.prototype.onUpdatedOnlineClassifier = function(accuracy) {
     var vis = this;
-    console.log(accuracy);
+    // Updates last update and accuracy.
+    if (accuracy != '0') {
+	var lastUpdate = Utils.parseDateTime(DataAccess.getLastUpdateTime());
+	d3.select('#last_update_info_box')
+	    .html('(Accuracy: ' + accuracy + ', last update: ' + lastUpdate + ')');
+    } else {
+	var lastUpdate = Utils.parseDateTime(DataAccess.getLastUpdateTime());
+	d3.select('#last_update_info_box')
+	    .html('(Accuracy: NA, last update: ' + lastUpdate + ')');
+    }
+
 }
     
 
 
 // Responds to loaded pages signal.
 CrawlerVis.prototype.onLoadedPages = function(pagesData) {
-    var pages = pagesData['pages'].map(function(page, i) {
-    return {
-      url: page[0],
-      x: page[1],
-      y: page[2],
-      tags: page[3],
-    };
-    });
+    
+    if (pagesData["pages"].length === 0){
+	BokehPlots.clear();
+	return {};
+    } else {
+	var pages = pagesData['pages'].map(function(page, i) {
+	    return {
+		url: page[0],
+		x: page[1],
+		y: page[2],
+		tags: page[3],
+	    };
+	});
 
-    this.pagesLandscape.setPagesData(pages);
-    
-    // Updates last update.
-    var lastUpdate = Utils.parseDateTime(DataAccess.getLastUpdateTime());
-    d3.select('#last_update_info_box')
-	.html('(last update: ' + lastUpdate + ')');
-    
-    var vis = this;
-    // Fetches statistics for until last update happened.
-    DataAccess.loadPagesSummaryUntilLastUpdate(false, vis.sessionInfo());
-    DataAccess.loadPagesSummaryUntilLastUpdate(true, vis.sessionInfo());
-    
-    return pages;
+	this.pagesLandscape.setPagesData(pages);
+	
+	var vis = this;
+	// Fetches statistics for until last update happened.
+	DataAccess.loadPagesSummaryUntilLastUpdate(false, vis.sessionInfo());
+	DataAccess.loadPagesSummaryUntilLastUpdate(true, vis.sessionInfo());
+	return pages;
+    }
 };
 
 // Responds to tag focus.
@@ -1624,10 +1634,13 @@ CrawlerVis.prototype.clearAll = function() {
     d3.select('#query_box').node().value = "";
     d3.select('#filter_box').node().value = "";
     $('#queryCheckBox').empty();
+    d3.select('#last_update_info_box')
+	.html('');
     this.pagesGallery.clear();
     this.tagsGallery.clear();
     this.termsSnippetsViewer.clear();
     BokehPlots.clear();
+    DataAccess.setLastAccuracy('0');
 };
 
 $(document).ready(function() {
