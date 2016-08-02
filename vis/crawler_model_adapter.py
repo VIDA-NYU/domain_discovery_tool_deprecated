@@ -127,7 +127,7 @@ class CrawlerModelAdapter:
 
   # Update online classifier
   def updateOnlineClassifier(self, session):
-    self._crawlerModel.updateOnlineClassifier(session)
+    return self._crawlerModel.updateOnlineClassifier(session)
 
   # Delete terms from term window and from the ddt_terms index
   def deleteTerm(self, term, session):
