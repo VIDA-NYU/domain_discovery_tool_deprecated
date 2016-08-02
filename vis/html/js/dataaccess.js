@@ -20,6 +20,7 @@ var DataAccess = (function() {
   var loadingTerms = false;
   var pages = undefined;
   var termsSummary = undefined;
+  var lastAccuracy = undefined;  
 
   // Processes loaded pages summaries.
   var onPagesSummaryUntilLastUpdateLoaded = function(summary, isFilter) {
@@ -39,7 +40,8 @@ var DataAccess = (function() {
   }
 
     var onUpdatedOnlineClassifier = function(accuracy){
-      updatingClassifier = false;
+	updatingClassifier = false;
+	lastAccuracy = accuracy;
       __sig__.emit(__sig__.update_online_classifier_completed, accuracy);
   }
   // Processes loaded pages.
@@ -79,6 +81,7 @@ var DataAccess = (function() {
 		document.getElementById("status_panel").innerHTML = 'No pages found';
 		$(document).ready(function() { $(".status_box").fadeIn(); });
 		$(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
+		__sig__.emit(__sig__.pages_loaded, pages["data"]);
 	    } else {
 		__sig__.emit(__sig__.pages_loaded, pages["data"]);
 		__sig__.emit(__sig__.bokeh_insert_plot, pages);
@@ -326,6 +329,9 @@ var DataAccess = (function() {
 	  loadingTerms = true;
 	  runQueryForCurrentCrawler(
               '/getTermsSummary', {'session': JSON.stringify(session)}, onTermsSummaryLoaded, onMaybeUpdateCompleteTerms);
+
+	  runQueryForCurrentCrawler(
+	      '/updateOnlineClassifier', {'session': JSON.stringify(session)}, onUpdatedOnlineClassifier);
       }
   };
 
@@ -356,6 +362,17 @@ var DataAccess = (function() {
   pub.getLastUpdateTime = function() {
     return lastUpdate;
   };
+
+  // Accesses last accuracy reported
+  pub.getLastAccuracy = function() {
+    return lastAccuracy;
+  };
+
+  // Accesses last accuracy reported
+  pub.setLastAccuracy = function(accuracy) {
+    lastAccuracy = accuracy;
+  };
+
   // Accesses last summary loading time in Unix epoch time.
   pub.getLastSummaryTime = function() {
     return lastSummary;
@@ -414,7 +431,7 @@ var DataAccess = (function() {
   // Fetches new pages summaries every n seconds.
   window.setInterval(function() {loadNewPagesSummary(false);}, REFRESH_EVERY_N_MILLISECONDS);
   window.setInterval(function() {loadNewPagesSummary(true);}, REFRESH_EVERY_N_MILLISECONDS);
-  window.setInterval(function() {updateOnlineClassifier();}, REFRESH_EVERY_N_MILLISECONDS + 18000);
+ //window.setInterval(function() {updateOnlineClassifier();}, REFRESH_EVERY_N_MILLISECONDS + 18000);
 
   return pub;
 }());
