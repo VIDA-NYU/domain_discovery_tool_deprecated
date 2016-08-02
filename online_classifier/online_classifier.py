@@ -53,19 +53,19 @@ class OnlineClassifier:
             self.clf.partial_fit(X,Y)
         return self.clf
     
-    def calibrate(self, clf, X, Y):
-        sigmoid = CalibratedClassifierCV(clf, cv=2, method='sigmoid')
-        sigmoid.fit(X,Y)
-        return sigmoid
+    def calibrate(self,  X, Y):
+        if self.clf != None:
+            sigmoid = CalibratedClassifierCV(self.clf, cv=2, method='sigmoid')
+            sigmoid.fit(X,Y)
+            return sigmoid
+        else:
+            return None
 
     def calibrateScore(self, sigmoid, X, Y):
         return sigmoid.score(X,Y)
 
-    def predictClass(self, X, Y, clf, sigmoid):
-        for i in range(0,10):
-            for val in (sigmoid.predict_proba(X[i])*100):
-                print Y[i], clf.predict(X[i]), "%.2f" % val[0], "%.2f" % val[1]
-
+    def predictClass(self, X, sigmoid):
+        return [self.clf.predict(X), sigmoid.predict(X), np.multiply(sigmoid.predict_proba(X),100)]
 
     def classify(self, train, train_labels, test, test_labels, partial=False):
         [X_train, X_test] = self.vectorize(train, test)
