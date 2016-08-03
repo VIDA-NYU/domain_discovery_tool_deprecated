@@ -303,7 +303,17 @@
       </div>
       <div class="panel-body">
 
-        <div class="row" style="margin-bottom:5px">
+        <div class="row" style="margin-bottom:3px">
+
+          <!--Search button (appling filters, queries, tags, etc)-->
+          <div style="float:right; margin-right:5px;">
+            <!--span id="last_update_info_box" class="noselect seedcrawler"></span-->
+            <span id="pages_landscape_buttons" class="control_buttons">
+              <span id="pages_landscape_update" class="btn btn-warning enabled pages_landscape_button noselect">
+                <span class="glyphicon glyphicon-refresh"></span>
+              </span>
+            </span>
+          </div>
 
           <div style="float:left;padding: 0 0 0 15px;">
             Projection: <select id="selectProjectionAlgorithm"></select>
@@ -321,27 +331,27 @@
 
   </div>
 
-  <div class="row" style="margin-bottom:-10px">
+  <div class="row" style="margin-bottom:-20px">
     <div style="float:left;padding: 0 0 0 15px;">
-      <span>Quantity:</span>
-      <span style="padding: 0 20px">
+      <span>Pages:</span>
+      <span style="padding: 0 34px">
         <select id="filter_cap_select"></select>
       </span>
     </div>
 
   </div>
 
-  <hr>
+  <!--hr-->
 
-  <div class="row" style="margin-top:-10px">
-    <div style="float:left;padding: 0 0 0 15px;">
-      <span>Selected data:</span>
+  <div id="page_retrieval_criteria_section" class="row" style="margin-top:-20px">
+    <div style="float:left;padding: 0 0 0 0px;">
+      <!--span>Selected data:</span-->
       <span style="padding: 0 15px">
         <select id="page_retrieval_criteria_select">
-          <option>Most Recent</option>
+          <!--option>Most Recent</option>
           <option>Queries</option>
           <option>Tags</option>
-          <option>More like</option>
+          <option>More like</option-->
         </select>
         <button type="button" class="btn btn-warning" data-type="last" id="select_queries" style="display:none;">
           Select Queries
@@ -351,34 +361,43 @@
         </button>
       </span>
     </div>
-
   </div>
 
-  <div class="row" style="margin-bottom:5px">
+  <hr>
+
+  <div class="row" style="margin-bottom:-15px;margin-top:-20px;">
     <div style="float:left;padding: 0 0 0 15px;">
-      <label for='label'>More Like</label> <input type="checkbox" name="morelike_checkbox" id="More_like" value="moreLike">
+     <input type="checkbox" name="morelike_checkbox" id="More_like" value="moreLike">  <label style="font-weight:bold">More Like</label>
     </div>
   </div>
 
-  <div class="row" style="margin-bottom:5px">
+  <hr>
+
+  <div class="row" id="container_checkboxes">
     <div>
-        <span>Queries:</span>
+        <span id="title_checkboxes">Queries:</span>
+        <button id="UpdateCheckboxesQuery" type="button" style="border: none;" class="btn btn-default btn-xs">
+      <span class="glyphicon glyphicon-refresh" style="color:#01A9DB"></span>
+    </button>
         <ul id="queryCheckBox"></ul>
     </div>
-
-    <div ALIGN=right >
+    <div ALIGN=right style="margin-right:5px">
       <small><u><a id="toggleButtonLessQueries" href="javascript:void(0);" style="display:none;">See Less</a></u></small>
       <small><u><a id="toggleButtonMoreQueries" href="javascript:void(0);" style="display:none;">See More</a></u></small>
     </div>
   </div>
 
-  <div class="row" style="margin-bottom:5px">
+  <hr>
+
+  <div class="row" id="container_checkboxes">
     <div>
-      <span>Tags:</span>
+      <span id="title_checkboxes">Tags:</span>
+      <button id="UpdateCheckboxesTag" type="button" style="border: none;" class="btn btn-default btn-xs">
+    <span class="glyphicon glyphicon-refresh" style="color:#01A9DB"></span>
+  </button>
       <ul id="tagsCheckBox"></ul>
     </div>
-
-    <div ALIGN=right >
+    <div ALIGN=right style="margin-right:5px">
       <small><u><a id="toggleButtonLessTags" href="javascript:void(0);" style="display:none;">See Less</a></u></small>
       <small><u><a id="toggleButtonMoreTags" href="javascript:void(0);" style="display:none;">See More</a></u></small>
     </div>
@@ -486,23 +505,23 @@
   <!-- Middle panel -->
   <div class="col-md-6" style="z-index:0;">
     <div > <!--sclass="fixed" -->
-      <div class="row" style="margin-right:px">
+      <div class="row" style="margin-right:2px">
 
         <!--div class="col-md-12"-->
-        <div class="row" style="margin-bottom:5px">
+        <!--div class="row" style="margin-bottom:5px"-->
 
           <!--div style="float:left;padding: 0 7px;">
           <select id="selectProjectionAlgorithm"></select>
         </div-->
 
-        <div style="float:right">
+        <!--div style="float:right">
           <span id="last_update_info_box" class="noselect seedcrawler"></span>
           <span id="pages_landscape_buttons" class="control_buttons">
             <span id="pages_landscape_update" class="btn btn-warning enabled pages_landscape_button noselect">
               <span class="glyphicon glyphicon-refresh"></span>
             </span>
           </span>
-        </div>
+        </div-->
 
         <!--div style="float:left;padding: 0 5px">
         <select id="filter_cap_select"></select>
@@ -524,12 +543,13 @@
   </div-->
 
 
-  </div>
+<!--/div-->
 
 
   <div class="row">
-    <div id ="containerSequence" margin-bottom:"0px" ></div>
-    <div id="pages_landscape" class="noselect"></div>
+    <div id ="containerSequence" style="margin-bottom:-20px; margin-top=-20px;"></div>
+    <div id ="list_buttons_div" style="margin-left:5px;"></div>
+    <div id="pages_landscape" class="noselect" style="margin-bottom:4px; margin-top=-10px;"></div>
   </div>
 
   <!--/div-->
