@@ -200,7 +200,12 @@ p {
 
 #queryCheckBox {
     list-style: none;
-    padding: 0;
+    padding: 0 0 0 15px;
+}
+
+#tagsCheckBox {
+    list-style: none;
+    padding: 0 0 0 15px;
 }
 
 #wordlist {
@@ -439,7 +444,7 @@ svg text {
 
 #pages_landscape_container > div {
   display: inline-block;
-  margin-top: 5px;
+  margin-top: 0px;
   height: 360px;
   max-width: 99%;
 }
@@ -457,7 +462,7 @@ svg text {
 }
 
 #pages_landscape {
-  margin: 5px 0px 10px 5px;
+  margin: 0px 0px 10px 5px;
   cursor: pointer;
 }
 
@@ -1454,6 +1459,18 @@ textarea[name=seeds_text] {
 #topicVis {
     padding-top:0px;
     padding-bottom:0px;
+}
+
+#title_checkboxes{
+    margin-left:15px;
+    font-weight:bold;
+    font-size:medium;
+    font-family:sans-serif;
+}
+
+#container_checkboxes{
+  margin-top:-15px;
+  margin-bottom:-15px;
 }
 
 /* .control-label { */
