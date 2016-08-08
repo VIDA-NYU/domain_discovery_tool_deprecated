@@ -698,11 +698,14 @@ class CrawlerModel:
     es_info = self.esInfo(session['domainId'])
 
     s_fields = {}
+    s_fields_aux = {}
     if not session['filter'] is None:
       s_fields[es_info['mapping']["text"]] =   session['filter'].replace('"','\"')
+      s_fields_aux[es_info['mapping']["text"]] =   session['filter'].replace('"','\"')
 
     if not session['fromDate'] is None:
       s_fields[es_info['mapping']["timestamp"]] = "[" + str(session['fromDate']) + " TO " + str(session['toDate']) + "]"
+      s_fields_aux[es_info['mapping']["timestamp"]] = "[" + str(session['fromDate']) + " TO " + str(session['toDate']) + "]"
 
     hits=[]
     n_criteries = session['newPageRetrievelCriteria'].split(',')
@@ -716,12 +719,35 @@ class CrawlerModel:
     for query in queries:
         for tag in tags:
             if tag != "":
-                s_fields[es_info['mapping']['tag']] = '"' + tag + '"'
-                s_fields[es_info['mapping']["query"]] = '"' + query + '"'
-                results= multifield_query_search(s_fields, session['pagesCap'], ["url", "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]],
-                                        es_info['activeCrawlerIndex'],
-                                        es_info['docType'],
-                                        self._es)
+                if tag == "Neutral":
+                    query_aux = "(" + "query" + ":" + query + ")"
+                    query_field_missing = {
+                        "filtered" : {
+                          "query": {
+                              "query_string": {
+                                  "query": query_aux
+                              }
+                          },
+                          "filter" : {
+                            "missing" : { "field" : "tag" }
+                          }
+                        }
+                    }
+
+                    s_fields_aux["queries"] = [query_field_missing]
+
+                    results = multifield_term_search(s_fields_aux, session['pagesCap'], ["url", "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]],
+                                            es_info['activeCrawlerIndex'],
+                                            es_info['docType'],
+                                            self._es)
+
+                else:
+                    s_fields[es_info['mapping']['tag']] = '"' + "" + '"'
+                    s_fields[es_info['mapping']["query"]] = '"' + query + '"'
+                    results= multifield_query_search(s_fields, session['pagesCap'], ["url", "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]],
+                                            es_info['activeCrawlerIndex'],
+                                            es_info['docType'],
+                                            self._es)
                 if session['selected_morelike']=="moreLike":
                     aux_result = self._getMoreLikePagesAll(session, results)
                     hits.extend(aux_result)
@@ -787,7 +813,6 @@ class CrawlerModel:
                                            es_info['docType'],
                                            self._es)
 
-          """ sonia hits.extend(results)"""
           if session['selected_morelike']=="moreLike":
               aux_result = self._getMoreLikePagesAll(session, results)
               hits.extend(aux_result)
@@ -801,14 +826,12 @@ class CrawlerModel:
                                            es_info['docType'],
                                            self._es)
 
-          """sonia hits.extend(results)"""
           if session['selected_morelike']=="moreLike":
               aux_result = self._getMoreLikePagesAll(session, results)
               hits.extend(aux_result)
           else:
               hits.extend(results)
           s_fields.pop("tag")
-
         else:
           #Added a wildcard query as tag is not analyzed field
           query = {
@@ -819,7 +842,6 @@ class CrawlerModel:
                                           es_info['activeCrawlerIndex'],
                                           es_info['docType'],
                                           self._es)
-          """sonia hits.extend(results)"""
           if session['selected_morelike']=="moreLike":
               aux_result = self._getMoreLikePagesAll(session, results)
               hits.extend(aux_result)
