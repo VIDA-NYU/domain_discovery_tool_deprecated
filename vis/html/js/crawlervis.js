@@ -483,6 +483,7 @@ SigSlots.connect(
 
         d3.select('#UpdateCheckboxesQuery').on('click', function() {
             DataAccess.loadAvailableQueries(vis.sessionInfo());
+            DataAccess.loadAvailableTags(vis.sessionInfo(), 'Tags');
             document.getElementById("toggleButtonMoreQueries").innerText = "See More";
             document.getElementById("toggleButtonLessQueries").innerText = "See Less";
         });
