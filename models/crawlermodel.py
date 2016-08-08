@@ -742,7 +742,7 @@ class CrawlerModel:
                                             self._es)
 
                 else:
-                    s_fields[es_info['mapping']['tag']] = '"' + "" + '"'
+                    s_fields[es_info['mapping']['tag']] = '"' + tag + '"'
                     s_fields[es_info['mapping']["query"]] = '"' + query + '"'
                     results= multifield_query_search(s_fields, session['pagesCap'], ["url", "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]],
                                             es_info['activeCrawlerIndex'],
