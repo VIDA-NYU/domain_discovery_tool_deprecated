@@ -71,7 +71,7 @@ public class Download_URL implements Runnable {
 		    String responseBody = EntityUtils.toString(entity);
 		    String content_type = response.getFirstHeader("Content-Type").getValue();
 		    Integer content_length = (response.getFirstHeader("Content-Length") != null) ? Integer.valueOf(response.getFirstHeader("Content-Length").getValue()) : responseBody.length();
-		    String date = response.getFirstHeader("Date").getValue();
+		    //String date = response.getFirstHeader("Date").getValue();
 		    String content_text = "";
 		    if(content_type.contains("text/html")){
 			Extract extract = new Extract();
