@@ -1,13 +1,13 @@
-<!DOCTYPE html>
-<meta charset="utf-8">
+  <!DOCTYPE html>
+  <meta charset="utf-8">
 
-<html>
+  <html>
   <head>
     <title>Domain Discovery Tool</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <link rel="stylesheet" href="bootflat-2.0.4/css/bootstrap.min.css">
     <link rel="stylesheet" href="bootflat-2.0.4/css/bootflat.min.css">
     <link rel="stylesheet" href="bootstrap-datetimepicker-4.15.35/css/bootstrap-datetimepicker.min.css">
@@ -18,14 +18,14 @@
     <link href="https://fezvrasta.github.io/bootstrap-material-design/dist/css/roboto.min.css" rel="stylesheet">
     <link href="https://fezvrasta.github.io/bootstrap-material-design/dist/css/material-fullpalette.min.css" rel="stylesheet">
     <link href="https://fezvrasta.github.io/bootstrap-material-design/dist/css/ripples.min.css" rel="stylesheet">
-    -->
+  -->
 
-    <link type="text/css" rel="stylesheet" href="css/d3.slider.css" media="all">
-    <link type="text/css" rel="stylesheet" href="css/jquery-ui.css" media="all">
-    <link type="text/css" rel="stylesheet" href="css/jquery.urlive.css" media="all">
-    <link type="text/css" rel="stylesheet" href="css/dropdowns-enhancement.min.css" media="all">
-    <link type="text/css" rel="stylesheet" href="css/bokeh-0.10.0.min.css" media="all">
-    <link type="text/css" rel="stylesheet" href="css/crawler-white.css" media="all">
+  <link type="text/css" rel="stylesheet" href="css/d3.slider.css" media="all">
+  <link type="text/css" rel="stylesheet" href="css/jquery-ui.css" media="all">
+  <link type="text/css" rel="stylesheet" href="css/jquery.urlive.css" media="all">
+  <link type="text/css" rel="stylesheet" href="css/dropdowns-enhancement.min.css" media="all">
+  <link type="text/css" rel="stylesheet" href="css/bokeh-0.10.0.min.css" media="all">
+  <link type="text/css" rel="stylesheet" href="css/crawler-white.css" media="all">
   </head>
 
   <body>
@@ -41,80 +41,80 @@
           <ul class="nav navbar-nav navbar-right">`
             <li class="dropdown">
               <a id="goto_statistics"
-                href=""
-                class="btn btn-warning disabled pages_landscape_button noselect"
-                target="_blank">
-                  Page Statistics
-              </a>
-            </li>
-            <li class="dropdown">
-              <a data-toggle="dropdown" role="button" class="dropdown-toggle">TopicVis <span class='caret'></span></a>
-              <ul class="dropdown-menu" id="topicVis">
-                <li class='crawler-radio'>
-                  <a target="_blank" class="plot_button" value="lda_vis" href="" id="ldavisPlot">LDAVis</a>
-                  <a target="_blank" class="plot_button" value="termite" href="" id="termitePlot">Termite</a>
-                </li>
-                <li>
-                  <button type="button"
-                      class="btn btn-warning btn-duo center link-button"
-                      data-type="last"
-                      id="topicVisSettings"
-                      data-toggle="modal"
-                      data-target="#topicVisSettingsModal">
-                    <span class="glyphicon glyphicon-cog"></span> Settings
-                  </button>
-                </li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a data-toggle="dropdown" role="button" class="dropdown-toggle">Model <span class='caret'></span></a>
-              <ul class="dropdown-menu" id="downloadModel">
-                <li>
-                  <button type="button" class="btn btn-warning" data-type="last" id="build_model">
-                    <span class="glyphicon glyphicon-download"></span> Build
-                  </button>
-                </li>
-		<li>
-                  <button type="button"
-			  class="btn btn-warning btn-duo center link-button"
-			  data-type="last"
-			  id="ModelSettings"
-			  data-toggle="modal"
-			  data-target="#modelSettingsModal">
-                    <span class="glyphicon glyphicon-cog"></span> Settings
-                  </button>
-                </li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a data-toggle="dropdown" role="button" class="dropdown-toggle" id="currentDomain"></a>
-              <ul class="dropdown-menu" id="selectCrawler">
-		<li id="delDomainButton">
-		  <button type="button" id="delDomain"
-			  class="btn btn-warning"
-			  data-toggle="modal"
-			  data-target="#delDomainModal">
-                    <span class="glyphicon glyphicon-minus-sign"></span>&nbsp;&nbsp;Del Domain
-                  </button>
-                </li>
-        
-                <li id="addDomainButton">
-                  <button type="button" id="addDomain"
-			  class="btn btn-warning"
-			  data-toggle="modal"
-			  data-target="#addDomainModal">
-                    <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Add Domain
-                  </button>
-                </li>
-	      </ul>
+              href=""
+              class="btn btn-warning disabled pages_landscape_button noselect"
+              target="_blank">
+              Page Statistics
+            </a>
+          </li>
+          <li class="dropdown">
+            <a data-toggle="dropdown" role="button" class="dropdown-toggle">TopicVis <span class='caret'></span></a>
+            <ul class="dropdown-menu" id="topicVis">
+              <li class='crawler-radio'>
+                <a target="_blank" class="plot_button" value="lda_vis" href="" id="ldavisPlot">LDAVis</a>
+                <a target="_blank" class="plot_button" value="termite" href="" id="termitePlot">Termite</a>
+              </li>
+              <li>
+                <button type="button"
+                class="btn btn-warning btn-duo center link-button"
+                data-type="last"
+                id="topicVisSettings"
+                data-toggle="modal"
+                data-target="#topicVisSettingsModal">
+                <span class="glyphicon glyphicon-cog"></span> Settings
+              </button>
             </li>
           </ul>
-        </div>
-      </div>
-    </nav>
-    <div class="container-fluid">
-      <!-- Left panel -->
-      <div class="col-md-3" id="left_panel">
+        </li>
+        <li class="dropdown">
+          <a data-toggle="dropdown" role="button" class="dropdown-toggle">Model <span class='caret'></span></a>
+          <ul class="dropdown-menu" id="downloadModel">
+            <li>
+              <button type="button" class="btn btn-warning" data-type="last" id="build_model">
+                <span class="glyphicon glyphicon-download"></span> Build
+              </button>
+            </li>
+            <li>
+              <button type="button"
+              class="btn btn-warning btn-duo center link-button"
+              data-type="last"
+              id="ModelSettings"
+              data-toggle="modal"
+              data-target="#modelSettingsModal">
+              <span class="glyphicon glyphicon-cog"></span> Settings
+            </button>
+          </li>
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a data-toggle="dropdown" role="button" class="dropdown-toggle" id="currentDomain"></a>
+        <ul class="dropdown-menu" id="selectCrawler">
+          <li id="delDomainButton">
+            <button type="button" id="delDomain"
+            class="btn btn-warning"
+            data-toggle="modal"
+            data-target="#delDomainModal">
+            <span class="glyphicon glyphicon-minus-sign"></span>&nbsp;&nbsp;Del Domain
+          </button>
+        </li>
+
+        <li id="addDomainButton">
+          <button type="button" id="addDomain"
+          class="btn btn-warning"
+          data-toggle="modal"
+          data-target="#addDomainModal">
+          <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Add Domain
+        </button>
+      </li>
+    </ul>
+  </li>
+  </ul>
+  </div>
+  </div>
+  </nav>
+  <div class="container-fluid">
+    <!-- Left panel -->
+    <div class="col-md-3">
 
       <div class="modal fade" id="addDomainModal" tabindex="-1" role="dialog" aria-labelledby="addDomainModalLabel">
         <div class="modal-dialog">
@@ -138,9 +138,9 @@
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
               <h4 class="modal-title" id="delDomainModalLabel" style="text-align:center;"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Delete Domain</h4>
             </div>
-	    <div class="modal-body">
-	      <ul id="delDomainCheckBox"></ul>
-	    </div>
+            <div class="modal-body">
+              <ul id="delDomainCheckBox"></ul>
+            </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-warning center-block" data-type="last" id="submit_del_crawler"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Delete</button>
             </div>
@@ -154,376 +154,501 @@
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
               <h4 class="modal-title"
-                  id="topicVisSettingsModalLabel"
-                  style="text-align:center;">
-                <span class="glyphicon glyphicon-cog"></span>
-                &nbsp;&nbsp;TopicVis Settings
-              </h4>
-            </div>
-            <div class="modal-body">
-              <form id="topicvis_settings_form">
-                <label for="topic_model" class="control-label">Number of Topics</label>
-                <input type="text" value="2" name="ntopics" id="ntopics" class="form-control">
-                <p id="error_ntopics" style="color:#990000;display:none;">
-                  ERROR: Please provide a number between 2 and 20<br>
-                </p>
-                <label for="topic_model" class="control-label">Topic Model</label>
-                <select name="model" id="topic_model" class="form-control">
-                  <option value="plsa">PLSA</option>
-                  <option value="lda">LDA</option>
-                </select>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-warning center-block" data-type="last" id="save_topicvis_settings">
-                Save
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal fade" id="listQueriesModal" tabindex="-1" role="dialog" aria-labelledby="listQueriesModalLabel">
-	<div class="modal-dialog">
-	  <div class="modal-content">
-	    <div class="modal-header">
-	      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	      <h4 class="modal-title" id="listQueriesModalLabel" style="text-align:center;"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Queries</h4>
-	    </div>
-	    <div class="modal-body">
-	      <ul id="queryCheckBox"></ul>
-	    </div>
-	    <div class="modal-footer">
-	      <button type="button" class="btn btn-warning center-block" data-type="last" id="submit_queries" data-dismiss="modal">Close</button>
-	    </div>
-	  </div>
-	</div>
-      </div>
-      <div class="modal fade" id="listTagsModal" tabindex="-1" role="dialog" aria-labelledby="listTagsModalLabel">
-	<div class="modal-dialog">
-	  <div class="modal-content">
-	    <div class="modal-header">
-	      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	      <h4 class="modal-title" id="listTagsModalLabel" style="text-align:center;"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Tags</h4>
-	    </div>
-	    <div class="modal-body">
-	      <ul id="tagsCheckBox"></ul>
-	    </div>
-	    <div class="modal-footer">
-	      <button type="button" class="btn btn-warning center-block" data-type="last" id="submit_Tags" data-dismiss="modal">Close</button>
-	    </div>
-	  </div>
-	</div>
-      </div>
-
-      <div class="modal fade" id="modelSettingsModal" tabindex="-1" role="dialog" aria-labelledby="modelSetttingsModalLabel">
-	<div class="modal-dialog">
-	  <div class="modal-content">
-	    <div class="modal-header">
-	      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	      <h4 class="modal-title" id="modelSettingstModalLabel" style="text-align:center;"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Tags</h4>
-	    </div>
-	    <div class="modal-body">
-	      <ul>
-		<li>Positive</li>
-		<ul id="posTagsCheckBox"></ul>
-	      </ul>
-	      <ul>
-		<li>Negative</li>
-		<ul id="negTagsCheckBox"></ul>
-	      </ul>
-	    </div>
-	  </div>
-	</div>
-      </div>
-
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">
-            <div class="panel-heading-left" >
-              <span class="glyphicon glyphicon-globe"></span>&nbsp;&nbsp;Web Search 
-            </div>
-            <div class="panel-heading-right">
-              <span class="collapsethis glyphicon glyphicon-minus"></span>
-            </div>
-            </h4>
-
-          </div>
-
-          <div class="panel-body">
-            
-            <div id="seed_crawler_info">
-              
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search on the Web..." id="query_box" list="query_box_previous_queries">
-		<div style="float:left;">
-                  <select name="search_engine" id="search_engine" class="form-control">
-                    <option value="GOOG">GOOG</option>
-                    <option value="BING">BING</option>
-                  </select>
-		</div>
-                <span class="input-group-btn">
-                  <button type="button" class="btn btn-warning" data-type="last" id="submit_query"><span class="glyphicon glyphicon-search"></span></button>
-                </span>
-              </div>
-              
-              <datalist id="query_box_previous_queries"></datalist>
-
-              <div id="statslist" class="statslist seedcrawler">
-                <svg>
-                  <defs>
-                    <pattern id="pattern-stripe" 
-                      width="4" height="4" 
-                      patternUnits="userSpaceOnUse"
-                      patternTransform="rotate(45)">
-                      <rect width="3" height="6" transform="translate(0,0)" fill="white"></rect>
-                    </pattern>
-                    <mask id="mask-stripe">
-                      <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-stripe)" />
-                    </mask>      
-                  </defs>
-                </svg> 
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="panel panel-default">
-          
-          <div class="panel-heading" id="seedsHeader">
-            <h4 class="panel-title">
-            <div class="panel-heading-left" >
-              <span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;Upload URLs </div>
-            <div class="panel-heading-right">
-              <span class="collapsethis glyphicon glyphicon-plus"></span>
-            </div>
+              id="topicVisSettingsModalLabel"
+              style="text-align:center;">
+              <span class="glyphicon glyphicon-cog"></span>
+              &nbsp;&nbsp;TopicVis Settings
             </h4>
           </div>
-          <div class="panel-body">
-            <form id="createSeeds">
-              <div class="input-group">
-                <p>Upload File</p>
-                <input type="file" name="seeds" id="seedsFile" style="width:100%;">
-                <hr>
-                <p>Copy URLs</p>
-                <textarea class="form-control" name="seeds_text" id="seeds_text" cols="1000" rows="10"></textarea>
-                <input type="submit" name="submit" value="Submit" class="btn btn-warning seeds_button" data-type="last" id="submit_query"></input>
-              </div>
+          <div class="modal-body">
+            <form id="topicvis_settings_form">
+              <label for="topic_model" class="control-label">Number of Topics</label>
+              <input type="text" value="2" name="ntopics" id="ntopics" class="form-control">
+              <p id="error_ntopics" style="color:#990000;display:none;">
+                ERROR: Please provide a number between 2 and 20<br>
+              </p>
+              <label for="topic_model" class="control-label">Topic Model</label>
+              <select name="model" id="topic_model" class="form-control">
+                <option value="plsa">PLSA</option>
+                <option value="lda">LDA</option>
+              </select>
             </form>
           </div>
-        </div>
-
-        <div class="panel panel-default">
-
-          <div class="panel-heading">
-            <h4 class="panel-title">
-            <div class="panel-heading-left" >
-              <span class="glyphicon glyphicon-filter"></span>&nbsp;&nbsp;Filter Results
-            </div>
-            <div class="panel-heading-right">
-              <span class="collapsethis glyphicon glyphicon-minus"></span>
-            </div>
-            </h4>
-
-          </div>
-    
-          <div class="panel-body">            
-            <div id="filter_panel">
-              
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="Filter pages..." id="filter_box" list="filter_box_previous_filters">
-                <span class="input-group-btn">
-                  <button type="button" class="btn btn-warning" data-type="last" id="submit_filter"><span class="glyphicon glyphicon-search"></button>
-                  </span>
-              </div>
-              <datalist id='filter_box_previous_filters'></datalist>
-      <form class="form-horizontal well" style="margin-top:20px;box-shadow: 0 0px 9px rgba(0,0,0,.2);padding: 10px 10px 1px 10px">
-      <div class="form-group">
-      <span class="col-sm-2 control-label">From:</span>
-      <div class="input-group date col-sm-8" id="from_datetimepicker" >
-                    <input type="text" class="form-control" id="fromdate"/>
-                    <span class="input-group-addon btn btn-warning" id="fromdate_addon">
-                      <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                  </div>
-    </div>
-    <div class="form-group">
-      <span class="col-sm-2 control-label">To:</span>
-      <div class="input-group date col-sm-8" id='to_datetimepicker'>
-                    <input type="text" class="form-control" id="todate"/>
-                    <span class="input-group-addon btn btn-warning" id="todate_addon">
-                      <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                  </div>
-    </div>		
-        </form>
-
-              <div id="filter_statslist" class="statslist">
-                <svg>
-                  <defs>
-                    <pattern id="pattern-stripe" 
-                      width="4" height="4" 
-                      patternUnits="userSpaceOnUse"
-                      patternTransform="rotate(45)">
-                      <rect width="3" height="6" transform="translate(0,0)" fill="white"></rect>
-                    </pattern>
-                    <mask id="mask-stripe">
-                      <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-stripe)" />
-                    </mask>      
-                  </defs>
-                </svg> 
-              </div>
-            </div>
-
+          <div class="modal-footer">
+            <button type="button" class="btn btn-warning center-block" data-type="last" id="save_topicvis_settings">
+              Save
+            </button>
           </div>
         </div>
-
       </div>
+    </div>
+
+    <!--div class="modal fade" id="listQueriesModal" tabindex="-1" role="dialog" aria-labelledby="listQueriesModalLabel">
+      <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="listQueriesModalLabel" style="text-align:center;"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Queries</h4>
+      </div>
+      <div class="modal-body">
+      <ul id="queryCheckBox"></ul>
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-warning center-block" data-type="last" id="submit_queries" data-dismiss="modal">Close</button>
+  </div>
+</div>
+</div>
+  </div-->
+  <!--div class="modal fade" id="listTagsModal" tabindex="-1" role="dialog" aria-labelledby="listTagsModalLabel">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="listTagsModalLabel" style="text-align:center;"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Tags</h4>
+        </div>
+        <div class="modal-body">
+          <ul id="tagsCheckBox"></ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning center-block" data-type="last" id="submit_Tags" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div-->
+
+  <div class="modal fade" id="modelSettingsModal" tabindex="-1" role="dialog" aria-labelledby="modelSetttingsModalLabel">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modelSettingstModalLabel" style="text-align:center;"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Tags</h4>
+        </div>
+        <div class="modal-body">
+          <ul>
+            <li>Positive</li>
+            <ul id="posTagsCheckBox"></ul>
+          </ul>
+          <ul>
+            <li>Negative</li>
+            <ul id="negTagsCheckBox"></ul>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <div class="panel-heading-left" >
+          <span class="glyphicon glyphicon-globe"></span>&nbsp;&nbsp;Web Search
+        </div>
+        <div class="panel-heading-right">
+          <span class="collapsethis glyphicon glyphicon-minus"></span>
+        </div>
+      </h4>
+
+    </div>
+
+    <div class="panel-body">
+
+      <div id="seed_crawler_info">
+
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Search on the Web..." id="query_box" list="query_box_previous_queries">
+          <div style="float:left;">
+            <select name="search_engine" id="search_engine" class="form-control">
+              <option value="GOOG">GOOG</option>
+              <option value="BING">BING</option>
+            </select>
+          </div>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-warning" data-type="last" id="submit_query"><span class="glyphicon glyphicon-search"></span></button>
+          </span>
+        </div>
+
+        <datalist id="query_box_previous_queries"></datalist>
+
+        <div id="statslist" class="statslist seedcrawler">
+          <svg>
+            <defs>
+              <pattern id="pattern-stripe"
+              width="4" height="4"
+              patternUnits="userSpaceOnUse"
+              patternTransform="rotate(45)">
+              <rect width="3" height="6" transform="translate(0,0)" fill="white"></rect>
+            </pattern>
+            <mask id="mask-stripe">
+              <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-stripe)" />
+            </mask>
+          </defs>
+        </svg>
+      </div>
+    </div>
+  </div>
+  </div>
 
 
-      <!-- Middle panel -->
-      <div class="col-md-6" id="middle_panel" style="z-index:0;">
 
-        <div class="row">
-          
-          <div class="col-md-12">
-            <div class="row" style="margin-bottom:5px">
-              
-              <div style="float:left;padding: 0 7px;">
-                <select id="selectProjectionAlgorithm"></select>
-              </div>
-              
-              <div style="float:right">
-                <span id="last_update_info_box" class="noselect seedcrawler"></span>
-                <span id="pages_landscape_buttons" class="control_buttons">
-                  <span id="pages_landscape_update" class="btn btn-warning enabled pages_landscape_button noselect">
-                    <span class="glyphicon glyphicon-refresh"></span>
-                  </span>
+
+  <div class="panel panel-default">
+    <div class="panel-heading" id="seedsHeaderData">
+      <h4 class="panel-title">
+        <div class="panel-heading-left" >
+          <span class="glyphicon glyphicon-tasks"></span>&nbsp;&nbsp;Filter Data </div>
+          <div class="panel-heading-right">
+            <span class="collapsethis glyphicon glyphicon-plus"></span>
+          </div>
+        </h4>
+      </div>
+      <div class="panel-body">
+
+        <div class="row" style="margin-bottom:3px">
+
+
+          <!--Search button (appling filters, queries, tags, etc)-->
+          <div style="float:right; margin-right:5px;">
+            <span id="last_update_info_box" class="noselect seedcrawler"></span>
+            <span id="pages_landscape_buttons" class="control_buttons">
+              <span id="pages_landscape_update" class="btn btn-warning enabled pages_landscape_button noselect">
+                <span class="glyphicon glyphicon-refresh"></span>
+              </span>
+            </span>
+          </div>
+
+          <div style="float:left;padding: 0 0 0 15px;">
+            Projection: <select id="selectProjectionAlgorithm"></select>
+          </div>
+
+          <!--div style="float:right">
+          <span id="last_update_info_box" class="noselect seedcrawler"></span>
+          <span id="pages_landscape_buttons" class="control_buttons">
+          <span id="pages_landscape_update" class="btn btn-warning enabled pages_landscape_button noselect">
+          <span class="glyphicon glyphicon-refresh"></span>
+        </span>
+      </span>
+    </div-->
+
+
+  </div>
+
+  <div class="row" style="margin-bottom:-20px">
+    <div style="float:left;padding: 0 0 0 15px;">
+      <span>Pages:</span>
+      <span style="padding: 0 34px">
+        <select id="filter_cap_select"></select>
+      </span>
+    </div>
+
+  </div>
+
+  <!--hr-->
+
+  <div id="page_retrieval_criteria_section" class="row" style="margin-top:-20px">
+    <div style="float:left;padding: 0 0 0 0px;">
+      <!--span>Selected data:</span-->
+      <span style="padding: 0 15px">
+        <select id="page_retrieval_criteria_select">
+          <!--option>Most Recent</option>
+          <option>Queries</option>
+          <option>Tags</option>
+          <option>More like</option-->
+        </select>
+        <button type="button" class="btn btn-warning" data-type="last" id="select_queries" style="display:none;">
+          Select Queries
+        </button>
+        <button type="button" class="btn btn-warning" data-type="last" id="select_tags" style="display:none;">
+          Select Tags
+        </button>
+      </span>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row" style="margin-bottom:-15px;margin-top:-20px;">
+    <div style="float:left;padding: 0 0 0 15px;">
+     <input type="checkbox" name="morelike_checkbox" id="More_like" value="moreLike">  <label style="font-weight:bold">More Like</label>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row" id="container_checkboxes">
+    <div>
+        <span id="title_checkboxes">Queries:</span>
+        <button id="UpdateCheckboxesQuery" type="button" style="border: none;" class="btn btn-default btn-xs">
+      <span class="glyphicon glyphicon-refresh" style="color:#01A9DB"></span>
+    </button>
+        <ul id="queryCheckBox"></ul>
+    </div>
+    <div ALIGN=right style="margin-right:5px">
+      <small><u><a id="toggleButtonLessQueries" href="javascript:void(0);" style="display:none;">See Less</a></u></small>
+      <small><u><a id="toggleButtonMoreQueries" href="javascript:void(0);" style="display:none;">See More</a></u></small>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row" id="container_checkboxes">
+    <div>
+      <span id="title_checkboxes">Tags:</span>
+      <button id="UpdateCheckboxesTag" type="button" style="border: none;" class="btn btn-default btn-xs">
+    <span class="glyphicon glyphicon-refresh" style="color:#01A9DB"></span>
+  </button>
+      <ul id="tagsCheckBox"></ul>
+    </div>
+    <div ALIGN=right style="margin-right:5px">
+      <small><u><a id="toggleButtonLessTags" href="javascript:void(0);" style="display:none;">See Less</a></u></small>
+      <small><u><a id="toggleButtonMoreTags" href="javascript:void(0);" style="display:none;">See More</a></u></small>
+    </div>
+  </div>
+
+
+  </div>
+  </div>
+
+
+  <div class="panel panel-default">
+
+    <div class="panel-heading" id="seedsHeaderFilter">
+      <h4 class="panel-title">
+        <div class="panel-heading-left" >
+          <span class="glyphicon glyphicon-filter"></span>&nbsp;&nbsp;Filter Results
+        </div>
+        <div class="panel-heading-right">
+          <span class="collapsethis glyphicon glyphicon-plus"></span>
+        </div>
+      </h4>
+
+    </div>
+
+    <div class="panel-body">
+      <div id="filter_panel">
+
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Filter pages..." id="filter_box" list="filter_box_previous_filters">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-warning" data-type="last" id="submit_filter"><span class="glyphicon glyphicon-search"></button>
+            </span>
+          </div>
+          <datalist id='filter_box_previous_filters'></datalist>
+          <form class="form-horizontal well" style="margin-top:20px;box-shadow: 0 0px 9px rgba(0,0,0,.2);padding: 10px 10px 1px 10px">
+            <div class="form-group">
+              <span class="col-sm-2 control-label">From:</span>
+              <div class="input-group date col-sm-8" id="from_datetimepicker" >
+                <input type="text" class="form-control" id="fromdate"/>
+                <span class="input-group-addon btn btn-warning" id="fromdate_addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
                 </span>
               </div>
-	      
-              <div style="float:left;padding: 0 5px">
-		<select id="filter_cap_select"></select>
+            </div>
+            <div class="form-group">
+              <span class="col-sm-2 control-label">To:</span>
+              <div class="input-group date col-sm-8" id='to_datetimepicker'>
+                <input type="text" class="form-control" id="todate"/>
+                <span class="input-group-addon btn btn-warning" id="todate_addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+                </span>
               </div>
-	      
-	      <div style="float:left;padding: 0 10px">
-		<select id="page_retrieval_criteria_select">
-		  <option>Most Recent</option>
-		  <option>Queries</option>
-		  <option>Tags</option>
-		  <option>More like</option>
-		</select>
-		<button type="button" class="btn btn-warning" data-type="last" id="select_queries" style="display:none;">
-		  Select Queries
-                </button>
-		<button type="button" class="btn btn-warning" data-type="last" id="select_tags" style="display:none;">
-		  Select Tags
-                </button>
-	      </div>
-	      
-	      
             </div>
-	    
+          </form>
 
-            <div class="row">
-                <div id="pages_landscape" class="noselect"></div>
-            </div>
-            
-          </div>
-
+          <div id="filter_statslist" class="statslist">
+            <svg>
+              <defs>
+                <pattern id="pattern-stripe"
+                width="4" height="4"
+                patternUnits="userSpaceOnUse"
+                patternTransform="rotate(45)">
+                <rect width="3" height="6" transform="translate(0,0)" fill="white"></rect>
+              </pattern>
+              <mask id="mask-stripe">
+                <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-stripe)" />
+              </mask>
+            </defs>
+          </svg>
         </div>
-
-
-        <div class="row">
-          
-          <!-- <h5>Tags:</h5> -->
-          <div id="tags_items"></div>
-          <div id="pages_panel">
-            <div id="pages_items"></div>
-          </div>
-        </div>
-
       </div>
 
-      <!-- Right panel -->
-      <div class="col-md-3" id="right_panel">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title"><span class="glyphicon glyphicon-align-center"></span>&nbsp;&nbsp;Terms </h4>
+    </div>
+  </div>
 
+
+  <div class="panel panel-default">
+    <div class="panel-heading" id="seedsHeader">
+      <h4 class="panel-title">
+        <div class="panel-heading-left" >
+          <span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;Upload URLs </div>
+          <div class="panel-heading-right">
+            <span class="collapsethis glyphicon glyphicon-plus"></span>
           </div>
-          <div class="panel-body">
-            <div id="wordlist" class="seedcrawler noselect"></div>
-      <br><br>
-            <div class="input-group">
-              <span class="input-group-btn">
-                <button type="button" class="btn btn-warning" data-type="last" id="add_term_button">
-      <span class="glyphicon glyphicon-plus-sign"></span> Relevant
-    </button>
-              </span>
-              <input type="text" class="form-control" placeholder="Custom Term... " id="add_term_box">
-              <span class="input-group-btn">
-                <button type="button" class="btn btn-warning" data-type="last" id="add_term_neg_button" >
-      <span class="glyphicon glyphicon-minus-sign"></span> Irrelevant
-    </button>
-              </span>
-            </div>
-            <div id="terms_snippets_viewer" class="terms_interface seedcrawler"></div>
+        </h4>
+      </div>
+      <div class="panel-body">
+        <form id="createSeeds">
+          <div class="input-group">
+            <p>Upload File</p>
+            <input type="file" name="seeds" id="seedsFile" style="width:100%;">
+            <hr>
+            <p>Copy URLs</p>
+            <textarea class="form-control" name="seeds_text" id="seeds_text" cols="1000" rows="10"></textarea>
+            <input type="submit" name="submit" value="Submit" class="btn btn-warning seeds_button" data-type="last" id="submit_query"></input>
           </div>
+        </form>
+      </div>
+    </div>
+
+
+  </div>
+
+
+  <!-- Middle panel -->
+  <div class="col-md-6" style="z-index:0;">
+    <div > <!--sclass="fixed" -->
+      <div class="row" style="margin-right:2px">
+
+        <!--div class="col-md-12"-->
+        <!--div class="row" style="margin-bottom:5px"-->
+
+          <!--div style="float:left;padding: 0 7px;">
+          <select id="selectProjectionAlgorithm"></select>
+        </div-->
+
+        <!--div style="float:right">
+          <span id="last_update_info_box" class="noselect seedcrawler"></span>
+          <span id="pages_landscape_buttons" class="control_buttons">
+            <span id="pages_landscape_update" class="btn btn-warning enabled pages_landscape_button noselect">
+              <span class="glyphicon glyphicon-refresh"></span>
+            </span>
+          </span>
+        </div-->
+
+        <!--div style="float:left;padding: 0 5px">
+        <select id="filter_cap_select"></select>
+      </div>
+
+      <div style="float:left;padding: 0 10px">
+      <select id="page_retrieval_criteria_select">
+      <option>Most Recent</option>
+      <option>Queries</option>
+      <option>Tags</option>
+      <option>More like</option>
+    </select>
+    <button type="button" class="btn btn-warning" data-type="last" id="select_queries" style="display:none;">
+    Select Queries
+  </button>
+  <button type="button" class="btn btn-warning" data-type="last" id="select_tags" style="display:none;">
+  Select Tags
+  </button>
+  </div-->
+
+
+<!--/div-->
+
+
+  <div class="row">
+    <div id ="containerSequence" style="margin-bottom:-20px; margin-top=-20px;"></div>
+    <div id ="list_buttons_div" style="margin-left:5px;"></div>
+    <div id="pages_landscape" class="noselect" style="margin-bottom:4px; margin-top=-10px;"></div>
+  </div>
+
+  <!--/div-->
+  </div>
+
+
+
+  <div class="row">
+
+    <!-- <h5>Tags:</h5> -->
+    <div id="tags_items"></div>
+    <div id="pages_panel">
+      <div id="pages_items"></div>
+    </div>
+  </div>
+
+  </div>
+  </div>
+
+  <!-- Right panel -->
+  <div class="col-md-3">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title"><span class="glyphicon glyphicon-align-center"></span>&nbsp;&nbsp;Terms </h4>
+
+      </div>
+      <div class="panel-body">
+        <div id="wordlist" class="seedcrawler noselect"></div>
+        <br><br>
+        <div class="input-group">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-warning" data-type="last" id="add_term_button">
+              <span class="glyphicon glyphicon-plus-sign"></span> Relevant
+            </button>
+          </span>
+          <input type="text" class="form-control" placeholder="Custom Term... " id="add_term_box">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-warning" data-type="last" id="add_term_neg_button" >
+              <span class="glyphicon glyphicon-minus-sign"></span> Irrelevant
+            </button>
+          </span>
         </div>
-        
-      </div> 
-     
+        <div id="terms_snippets_viewer" class="terms_interface seedcrawler"></div>
+      </div>
     </div>
 
-    <div class="container-fluid footer">
-      <a href="./release" target="_blank">Domain Discovery Tool v2.8.5</a>
+  </div>
+
+  </div>
+
+  <div class="container-fluid footer">
+    <a href="./release" target="_blank">Domain Discovery Tool v2.8.5</a>
+  </div>
+
+  <div id="mask"></div>
+  <div id="urlBgMask"></div>
+
+  <div class="status_box" style="display: none;">
+    <div class="panel-body">
+      <div id="status_panel"></div>
     </div>
+  </div>
 
-    <div id="mask"></div>
-    <div id="urlBgMask"></div>
-
-    <div class="status_box" style="display: none;">
-       <div class="panel-body">
-          <div id="status_panel"></div>
-       </div>
-    </div>
-
-    <script type="text/javascript" src="js/libs/d3.v3.5.5.min.js"></script>
-    <script type="text/javascript" src="js/libs/d3.layout.cloud.js"></script>
-    <script type="text/javascript" src="js/libs/jquery-1.10.0.min.js"></script>
-    <script type="text/javascript" src="js/libs/jquery-ui.js"></script>
-    <script type="text/javascript" src="js/libs/jquery.urlive.js"></script>
-    <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/libs/dropdowns-enhancement.js"></script>
-    <script type="text/javascript" src="js/libs/d3.slider.js"></script>
-    <script type="text/javascript" src="js/libs/d3.lasso.js"></script>
-    <script type="text/javascript" src="js/libs/moment.js"></script>
-    <script type="text/javascript" src="js/libs/queue.min.js"></script>
-    <script type="text/javascript" src="js/libs/bokeh-0.10.0.min.js"></script>
-    <script type="text/javascript" src="bootstrap-datetimepicker-4.15.35/js/bootstrap-datetimepicker.min.js"></script>
-    <!--script type="text/javascript" src="js/pagescontrols.js"></script-->
-    <script type="text/javascript" src="js/pagesgallery.js"></script>
-    <script type="text/javascript" src="js/pageslandscape.js"></script>
-    <script type="text/javascript" src="js/tagsgallery.js"></script>
-    <script type="text/javascript" src="js/crawlervis.js"></script>
-    <script type="text/javascript" src="js/dataaccess.js"></script>
-    <script type="text/javascript" src="js/sigslot_core.js"></script>
-    <script type="text/javascript" src="js/crawlersigslots.js"></script>
-    <script type="text/javascript" src="js/seedcrawlerstatslist.js"></script>
-    <script type="text/javascript" src="js/snippetsviewer.js"></script>
-    <!--script type="text/javascript" src="js/termsgallery.js"></script-->
-    <script type="text/javascript" src="js/utils.js"></script>
-    <script type="text/javascript" src="js/wordlist.js"></script>
-    <script type="text/javascript" src="js/bokeh_controller.js"></script>
-    <script type="text/javascript" src="js/topicvis.js"></script>
-    <script>
-      // Initializes main app class after page is loaded.
-      window.onload = function() {
-        CrawlerVis.buildForSeedCrawler();
-      };
-    </script>
-</script>
+  <script type="text/javascript" src="js/libs/d3.v3.5.5.min.js"></script>
+  <script type="text/javascript" src="js/libs/d3.layout.cloud.js"></script>
+  <script type="text/javascript" src="js/libs/jquery-1.10.0.min.js"></script>
+  <script type="text/javascript" src="js/libs/jquery-ui.js"></script>
+  <script type="text/javascript" src="js/libs/jquery.urlive.js"></script>
+  <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
+  <script type="text/javascript" src="js/libs/dropdowns-enhancement.js"></script>
+  <script type="text/javascript" src="js/libs/d3.slider.js"></script>
+  <script type="text/javascript" src="js/libs/d3.lasso.js"></script>
+  <script type="text/javascript" src="js/libs/moment.js"></script>
+  <script type="text/javascript" src="js/libs/queue.min.js"></script>
+  <script type="text/javascript" src="js/libs/bokeh-0.10.0.min.js"></script>
+  <script type="text/javascript" src="bootstrap-datetimepicker-4.15.35/js/bootstrap-datetimepicker.min.js"></script>
+  <!--script type="text/javascript" src="js/pagescontrols.js"></script-->
+  <script type="text/javascript" src="js/pagesgallery.js"></script>
+  <script type="text/javascript" src="js/pageslandscape.js"></script>
+  <script type="text/javascript" src="js/tagsgallery.js"></script>
+  <script type="text/javascript" src="js/crawlervis.js"></script>
+  <script type="text/javascript" src="js/dataaccess.js"></script>
+  <script type="text/javascript" src="js/sigslot_core.js"></script>
+  <script type="text/javascript" src="js/crawlersigslots.js"></script>
+  <script type="text/javascript" src="js/seedcrawlerstatslist.js"></script>
+  <script type="text/javascript" src="js/snippetsviewer.js"></script>
+  <!--script type="text/javascript" src="js/termsgallery.js"></script-->
+  <script type="text/javascript" src="js/utils.js"></script>
+  <script type="text/javascript" src="js/wordlist.js"></script>
+  <script type="text/javascript" src="js/bokeh_controller.js"></script>
+  <script type="text/javascript" src="js/topicvis.js"></script>
+  <script>
+  // Initializes main app class after page is loaded.
+  window.onload = function() {
+    CrawlerVis.buildForSeedCrawler();
+  };
+  </script>
+  </script>
 
   </body>
-</html>
+  </html>
