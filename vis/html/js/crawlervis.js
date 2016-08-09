@@ -964,11 +964,11 @@ CrawlerVis.prototype.onUpdatedOnlineClassifier = function(accuracy) {
     if (accuracy != '0') {
 	var lastUpdate = Utils.parseDateTime(DataAccess.getLastUpdateTime());
 	d3.select('#last_update_info_box')
-	    .html('(Accuracy: ' + accuracy + ', last update: ' + lastUpdate + ')');
+	    .html('(Model Accuracy: ' + accuracy + '%<br>Last Update: ' + lastUpdate + ')');
     } else {
 	var lastUpdate = Utils.parseDateTime(DataAccess.getLastUpdateTime());
 	d3.select('#last_update_info_box')
-	    .html('(Accuracy: NA, last update: ' + lastUpdate + ')');
+	    .html('(Model Accuracy: NA, <br>Last Update: ' + lastUpdate + ')');
     }
 
 }
