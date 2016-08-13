@@ -9,6 +9,7 @@ from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 from sklearn.cluster import KMeans
 
+import scipy as sp
 import numpy as np
 from random import random, randint
 
@@ -27,7 +28,7 @@ from elasticsearch import Elasticsearch
 from seeds_generator.download import download, decode
 from seeds_generator.concat_nltk import get_bag_of_words
 from elastic.get_config import get_available_domains, get_mapping, get_tag_colors
-from elastic.search_documents import get_context, term_search, search, range_search, multifield_term_search, multifield_query_search, field_missing, field_exists
+from elastic.search_documents import get_context, term_search, search, range_search, multifield_term_search, multifield_query_search, field_missing, field_exists, exec_query
 from elastic.add_documents import add_document, update_document, delete_document, refresh
 from elastic.get_mtermvectors import getTermStatistics, getTermFrequency
 from elastic.get_documents import (get_most_recent_documents, get_documents,
@@ -42,6 +43,8 @@ from elastic.config import es, es_doc_type, es_server
 from elastic.delete import delete
 
 from ranking import tfidf, rank, extract_terms, word2vec, get_bigrams_trigrams
+
+from online_classifier.online_classifier import OnlineClassifier
 
 from topik import read_input, tokenize, vectorize, run_model, visualize, TopikProject
 
@@ -79,8 +82,12 @@ class CrawlerModel:
 
     self._mapping = {"url":"url", "timestamp":"retrieved", "text":"text", "html":"html", "tag":"tag", "query":"query"}
     self._domains = None
+    self._onlineClassifiers = {}
     self._pos_tags = ['NN', 'NNS', 'NNP', 'NNPS', 'FW', 'JJ']
 
+
+    self.results_file = open("results.txt", "w")
+    
   # Returns a list of available crawlers in the format:
   # [
   #   {'id': crawlerId, 'name': crawlerName, 'creation': epochInSecondsOfFirstDownloadedURL},
@@ -451,10 +458,10 @@ class CrawlerModel:
     else:
       urls = [hit["id"] for hit in results]
       # If positive urls are not available then get the most recent documents
-      text = [" ".join(hit[es_info['mapping']["text"]][0].split(" ")[0:MAX_TEXT_LENGTH]) for hit in results]
+      text = [" ".join(hit[es_info['mapping']["text"]][0].split(" ")[0:MAX_TEXT_LENGTH]) for hit in results if hit[es_info['mapping']["text"]][0] != ""]
     
     if session["filter"] == "" or session["filter"] is None:
-      if len(urls) > 0:
+      if len(urls) > 0 and text:
         [bigram_tfidf_data, trigram_tfidf_data,_,_,bigram_corpus, trigram_corpus,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(text, urls, opt_maxNumberOfTerms+len(neg_terms), self.w2v, self._es)
 
         tfidf_all = tfidf.tfidf(urls, pos_tags=self._pos_tags, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
@@ -911,6 +918,27 @@ class CrawlerModel:
       else: aux_result=tag_hits
       return aux_result
 
+  def _getUnsureLabelPages(self, session):
+    es_info = self.esInfo(session['domainId'])
+    
+    unsure_label_hits = term_search("unsure_tag", "1", session['pagesCap'], ['url', "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], es_info['activeCrawlerIndex'], es_info['docType'], self._es)
+
+    return unsure_label_hits
+
+  def _getPosLabelPages(self, session):
+    es_info = self.esInfo(session['domainId'])
+    
+    pos_label_hits = term_search("label_pos", "1", session['pagesCap'], ['url', "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], es_info['activeCrawlerIndex'], es_info['docType'], self._es)
+    
+    return pos_label_hits
+
+  def _getNegLabelPages(self, session):
+    es_info = self.esInfo(session['domainId'])
+    
+    neg_label_hits = term_search("label_neg", "1", session['pagesCap'], ['url', "x", "y", es_info['mapping']["tag"], es_info['mapping']["timestamp"], es_info['mapping']["text"]], es_info['activeCrawlerIndex'], es_info['docType'], self._es)
+    
+    return neg_label_hits
+    
   def getPagesQuery(self, session):
     es_info = self.esInfo(session['domainId'])
 
@@ -933,6 +961,12 @@ class CrawlerModel:
       hits = self._getPagesForQueries(session)
     elif (session['pageRetrievalCriteria'] == 'Tags'):
       hits = self._getPagesForTags(session)
+    elif (session['pageRetrievalCriteria'] == 'Unsure tag'):
+      hits = self._getUnsureLabelPages(session)
+    elif (session['pageRetrievalCriteria'] == 'Maybe relevant'):
+      hits = self._getPosLabelPages(session)
+    elif (session['pageRetrievalCriteria'] == 'Maybe irrelevant'):
+      hits = self._getNegLabelPages(session)
 
     return hits
 
@@ -959,6 +993,11 @@ class CrawlerModel:
 
     hits = self.getPagesQuery(session)
 
+    return self.generatePagesProjection(hits, session)
+
+  def generatePagesProjection(self, hits, session):
+    es_info = self.esInfo(session['domainId'])
+    
     last_downloaded_url_epoch = None
     docs = []
 
@@ -982,7 +1021,8 @@ class CrawlerModel:
       if not hit.get(es_info['mapping']["text"]) is None:
         doc[5] = " ".join(hit[es_info['mapping']["text"]][0].split(" ")[0:MAX_TEXT_LENGTH])
 
-      docs.append(doc)
+      if doc[5] != "":
+        docs.append(doc)
 
     if len(docs) > 1:
       # Prepares results: computes projection.
@@ -1013,6 +1053,7 @@ class CrawlerModel:
     else:
       return {'pages': []}
 
+    
   # Boosts set of pages: crawler exploits outlinks for the given set of pages in active crawler.
   def boostPages(self, pages):
     # TODO(Yamuna): Issue boostPages on running crawler defined by active crawlerId.
@@ -1090,6 +1131,16 @@ class CrawlerModel:
     print output
     print errors
 
+  def _removeClassifierSample(self, domainId, sampleId):
+    if self._onlineClassifiers.get(domainId) != None:
+      try:
+        self._onlineClassifiers[domainId]["trainedPosSamples"].remove(sampleId)
+      except ValueError:
+        pass
+      try:
+        self._onlineClassifiers[domainId]["trainedNegSamples"].remove(sampleId)
+      except ValueError:
+        pass
 
   # Adds tag tow pages (if applyTagFlag is True) or removes tag from pages (if applyTagFlag is
   # False).
@@ -1112,6 +1163,9 @@ class CrawlerModel:
             if record.get(es_info['mapping']['tag']) is None:
               # there are no previous tags
               entry[es_info['mapping']['tag']] = [tag]
+              entry["unsure_tag"] = 0
+              entry["label_pos"] = 0
+              entry["label_neg"] = 0
             else:
               tags = record[es_info['mapping']['tag']]
               if len(tags) != 0:
@@ -1120,10 +1174,18 @@ class CrawlerModel:
                   # append new tag
                   tags.append(tag)
                   entry[es_info['mapping']['tag']] = tags
+                  entry["unsure_tag"] = 0
+                  entry["label_pos"] = 0
+                  entry["label_neg"] = 0
+
+                  self._removeClassifierSample(session['domainId'], record['id'])
               else:
                 # add new tag
                 entry[es_info['mapping']['tag']] = [tag]
-
+                entry["unsure_tag"] = 0
+                entry["label_pos"] = 0
+                entry["label_neg"] = 0
+              
             if entry:
                   entries[record['id']] =  entry
 
@@ -1141,6 +1203,7 @@ class CrawlerModel:
                 tags.remove(tag)
                 entry[es_info['mapping']['tag']] = tags
                 entries[record['id']] = entry
+                
 
     if entries:
       update_try = 0
@@ -1151,6 +1214,9 @@ class CrawlerModel:
         except:
           update_try = update_try + 1
 
+      if (session['domainId'] in self._onlineClassifiers) and (not applyTagFlag) and (tag in ["Relevant", "Irrelevant"]):
+        self._onlineClassifiers.pop(session['domainId'])
+        self.updateOnlineClassifier(session)
 
   # Adds tag to terms (if applyTagFlag is True) or removes tag from terms (if applyTagFlag is
   # False).
@@ -1227,6 +1293,215 @@ class CrawlerModel:
     if update_entries:
       update_document(update_entries, self._termsIndex, 'terms', self._es)
 
+  # Update online classifer
+  def updateOnlineClassifier(self, session):
+    es_info = self.esInfo(session['domainId'])
+
+    onlineClassifier = None
+    trainedPosSamples = []
+    trainedNegSamples = []
+    onlineClassifierInfo = self._onlineClassifiers.get(session['domainId'])
+    if onlineClassifierInfo == None:
+      onlineClassifier = OnlineClassifier()
+      self._onlineClassifiers[session['domainId']] = {"onlineClassifier":onlineClassifier}
+      self._onlineClassifiers[session['domainId']]["trainedPosSamples"] = []
+      self._onlineClassifiers[session['domainId']]["trainedNegSamples"] = []
+    else:
+      onlineClassifier = self._onlineClassifiers[session['domainId']]["onlineClassifier"]
+      trainedPosSamples = self._onlineClassifiers[session['domainId']]["trainedPosSamples"]
+      trainedNegSamples = self._onlineClassifiers[session['domainId']]["trainedNegSamples"]
+
+    # Fit classifier
+    # ****************************************************************************************
+    query = {
+      "query": {
+        "bool" : {
+          "must" : {
+            "term" : { "tag" : "Relevant" }
+          } 
+        }
+      },
+      "filter": {
+        "not": {
+          "filter": {
+            "ids" : {
+              "values" : trainedPosSamples
+            }
+          }
+        } 
+      }
+    }
+
+    pos_docs = exec_query(query, ["url", es_info['mapping']['text']], self._all, 
+                          es_info['activeCrawlerIndex'], 
+                          es_info['docType'],
+                          self._es)
+    
+    pos_text = [pos_doc[es_info['mapping']['text']][0] for pos_doc in pos_docs]
+    pos_ids = [pos_doc["id"] for pos_doc in pos_docs]
+    pos_labels = [1 for i in range(0, len(pos_text))]
+    
+    query = {
+      "query": {
+        "bool" : {
+          "must" : {
+            "term" : { "tag" : "Irrelevant" }
+          } 
+        }
+      },
+      "filter": {
+        "not": {
+          "filter": {
+            "ids" : {
+              "values" : trainedNegSamples
+            }
+          }
+        } 
+      }
+    }
+    neg_docs = exec_query(query, ["url", es_info['mapping']['text']], self._all,  
+                          es_info['activeCrawlerIndex'], 
+                          es_info['docType'],
+                          self._es)
+    neg_text = [neg_doc[es_info['mapping']['text']][0] for neg_doc in neg_docs]
+    neg_ids = [neg_doc["id"] for neg_doc in neg_docs]
+    neg_labels = [0 for i in range(0, len(neg_text))]
+
+    print "\n\n\nNew relevant samples ", len(pos_text),"\n", "New irrelevant samples ",len(neg_text), "\n\n\n"
+
+    clf = None
+    train_data = None
+    if pos_text or neg_text:
+      self._onlineClassifiers[session['domainId']]["trainedPosSamples"] = self._onlineClassifiers[session['domainId']]["trainedPosSamples"] + pos_ids
+      self._onlineClassifiers[session['domainId']]["trainedNegSamples"] = self._onlineClassifiers[session['domainId']]["trainedNegSamples"] + neg_ids
+      [train_data,_] = self._onlineClassifiers[session['domainId']]["onlineClassifier"].vectorize(pos_text+neg_text)
+      self._onlineClassifiers[session['domainId']]["onlineClassifier"].partialFit(train_data, pos_labels+neg_labels)
+
+    # ****************************************************************************************
+
+    # Fit calibratrated classifier
+
+
+    if train_data != None:
+
+      trainedPosSamples = self._onlineClassifiers[session['domainId']]["trainedPosSamples"]
+      trainedNegSamples = self._onlineClassifiers[session['domainId']]["trainedNegSamples"]
+      if 2*len(trainedPosSamples)/3 and  2*len(trainedNegSamples)/3 > 2:
+        pos_trained_docs = get_documents_by_id(trainedPosSamples,
+                                               ["url", es_info['mapping']['text']],
+                                               es_info['activeCrawlerIndex'], 
+                                               es_info['docType'],
+                                               self._es)
+        pos_trained_text = [pos_trained_doc[es_info['mapping']['text']][0] for pos_trained_doc in pos_trained_docs]
+        pos_trained_labels = [1 for i in range(0, len(pos_trained_text))]
+        
+        neg_trained_docs = get_documents_by_id(trainedNegSamples,
+                                               ["url", es_info['mapping']['text']],
+                                               es_info['activeCrawlerIndex'], 
+                                               es_info['docType'],
+                                               self._es)
+
+        neg_trained_text = [neg_trained_doc[es_info['mapping']['text']][0] for neg_trained_doc in neg_trained_docs]
+        neg_trained_labels = [0 for i in range(0, len(neg_trained_text))]
+        [calibrate_pos_data,_] = self._onlineClassifiers[session['domainId']]["onlineClassifier"].vectorize(pos_trained_text)
+        [calibrate_neg_data,_] = self._onlineClassifiers[session['domainId']]["onlineClassifier"].vectorize(neg_trained_text)
+        calibrate_pos_labels = pos_trained_labels
+        calibrate_neg_labels = neg_trained_labels
+
+        calibrate_data = sp.sparse.vstack([calibrate_pos_data, calibrate_neg_data]).toarray()
+        calibrate_labels = calibrate_pos_labels+calibrate_neg_labels
+        
+        train_indices = np.random.choice(len(calibrate_labels), 2*len(calibrate_labels)/3)
+        test_indices = np.random.choice(len(calibrate_labels), len(calibrate_labels)/3)
+        
+        sigmoid = self._onlineClassifiers[session['domainId']]["onlineClassifier"].calibrate(calibrate_data[train_indices], np.asarray(calibrate_labels)[train_indices])
+        self._onlineClassifiers[session['domainId']]["sigmoid"] = sigmoid
+        accuracy = round(self._onlineClassifiers[session['domainId']]["onlineClassifier"].calibrateScore(sigmoid, calibrate_data[test_indices], np.asarray(calibrate_labels)[test_indices]), 4) * 100
+        self._onlineClassifiers[session['domainId']]["accuracy"] = str(accuracy)
+
+        print "\n\n\n Accuracy = ", accuracy, "%\n\n\n"
+
+      else:
+        print "\n\n\nNot enough data for calibration\n\n\n"
+
+      # ****************************************************************************************
+
+    # Label unlabelled data
+
+    unsure = 0
+    label_pos = 0
+    label_neg = 0
+    unlabeled_urls = []
+
+    sigmoid = self._onlineClassifiers[session['domainId']].get("sigmoid")
+    if sigmoid != None:
+      unlabelled_docs = field_missing(es_info["mapping"]["tag"], ["url", "text"], self._all,
+                                      es_info['activeCrawlerIndex'], 
+                                      es_info['docType'],
+                                      self._es)
+      
+      unlabeled_urls = [unlabelled_doc[es_info['mapping']['url']][0] for unlabelled_doc in unlabelled_docs]
+      unlabeled_ids = [unlabelled_doc["id"] for unlabelled_doc in unlabelled_docs]
+      unlabeled_text = [unlabelled_doc[es_info['mapping']['text']][0] for unlabelled_doc in unlabelled_docs]
+      
+      [unlabeled_data,_] =  self._onlineClassifiers[session['domainId']]["onlineClassifier"].vectorize(unlabeled_text)
+      [classp, calibp, cm] = self._onlineClassifiers[session['domainId']]["onlineClassifier"].predictClass(unlabeled_data,sigmoid)
+      
+      pos_calib_indices = np.nonzero(calibp)
+      neg_calib_indices = np.where(calibp == 0)
+      
+      pos_cm = [cm[pos_calib_indices][i][1] for i in range(0,np.shape(cm[pos_calib_indices])[0])]
+      neg_cm = [cm[neg_calib_indices][i][0] for i in range(0,np.shape(cm[neg_calib_indices])[0])]
+      
+      pos_sorted_cm = pos_calib_indices[0][np.asarray(np.argsort(pos_cm)[::-1])]
+      neg_sorted_cm = neg_calib_indices[0][np.asarray(np.argsort(neg_cm)[::-1])]
+      
+      entries = {}
+      for i in pos_sorted_cm:
+        entry = {}
+        if cm[i][1] < 60:
+          entry["unsure_tag"] = 1
+          entries[unlabeled_ids[i]] = entry
+          unsure = unsure + 1
+        else:
+          entry["label_pos"] = 1
+          entries[unlabeled_ids[i]] = entry
+          label_pos = label_pos + 1
+
+      for i in neg_sorted_cm:
+        entry = {}
+        if cm[i][0] < 60:
+          entry["unsure_tag"] = 1
+          entries[unlabeled_ids[i]] = entry
+          unsure = unsure + 1
+        else:
+          entry["label_neg"] = 1
+          entries[unlabeled_ids[i]] = entry
+          label_neg = label_neg + 1
+            
+      if entries:
+        update_try = 0
+        while (update_try < 10):
+          try:
+            update_document(entries, es_info['activeCrawlerIndex'], es_info['docType'], self._es)
+            break
+          except:
+            update_try = update_try + 1
+            
+      pos_indices = np.nonzero(classp)
+      neg_indices = np.where(classp == 0)
+
+    accuracy = '0'
+    if self._onlineClassifiers.get(session['domainId']) != None:
+      accuracy = self._onlineClassifiers[session['domainId']].get("accuracy")
+      if accuracy == None:
+        accuracy = '0'
+
+    self.results_file.write(str(len(pos_text)) +","+ str(len(neg_text)) +","+ accuracy +","+ str(unsure) +","+ str(label_pos) +","+ str(label_neg) +","+ str(len(unlabeled_urls))+"\n")
+    
+    return accuracy
+      
+    
   # Delete terms from term window and from the ddt_terms index
   def deleteTerm(self,term, session):
     es_info = self.esInfo(session['domainId'])
@@ -1396,7 +1671,7 @@ class CrawlerModel:
 
     urls = [page[4] for page in pages]
     text = [page[5] for page in pages]
-
+    
     #[data,_,_,_,urls] = getTermStatistics(urls, pos_tags=self._pos_tags, term_freq=MAX_TERM_FREQ, num_terms=50, mapping=self._mapping, es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
 
     [urls, data] = CrawlerModel.w2v.process_text(urls, text)

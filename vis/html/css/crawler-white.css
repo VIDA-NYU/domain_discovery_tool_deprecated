@@ -516,6 +516,7 @@ svg text {
   margin-right: 10px;
 }
 */
+
 .button-img {
   /*height: 100%;*/
   display: inline-block;
@@ -635,7 +636,7 @@ div.tooltip {
 }
 
 #pages_panel {
-    height: 300px;
+    height: 500px;
     width: 100%;
     border:'gray';
     overflow-y: auto;
@@ -798,8 +799,8 @@ div#urlBgMask {
 }
 
 #query_box {
-    width: 175px;
-  margin-bottom: 10px;
+    width: 182px;
+    margin-bottom: 10px;
 }
 #submit_query {
     margin-bottom: 10px;
@@ -811,6 +812,8 @@ div#urlBgMask {
     background-color: #f0ad4e;
     border-color: #eea236;
     color: "white";
+    font-size:13px;
+    font-weight: bold;
 }
 /*
 #query_panel ,

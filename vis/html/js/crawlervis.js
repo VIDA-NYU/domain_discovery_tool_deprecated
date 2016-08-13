@@ -86,32 +86,34 @@ CrawlerVis.buildForSeedCrawler = function() {
 CrawlerVis.prototype.initSignalSlotsCrawler = function() {
   SigSlots.connect(
     __sig__.available_crawlers_list_loaded, this, this.createSelectForAvailableCrawlers);
-    SigSlots.connect(
-      __sig__.available_crawlers_list_reloaded, this, this.reloadSelectForAvailableCrawlers);
-      SigSlots.connect(__sig__.new_pages_summary_fetched, this, this.onLoadedNewPagesSummaryCrawler);
-      SigSlots.connect(
-        __sig__.previous_pages_summary_fetched, this, this.onLoadedPreviousPagesSummaryCrawler);
-        SigSlots.connect(__sig__.terms_summary_fetched, this, this.onLoadedTermsSummary);
-        SigSlots.connect(__sig__.term_focus, this, this.onTermFocus);
-        SigSlots.connect(__sig__.terms_snippets_loaded, this, this.onLoadedTermsSnippets);
-        SigSlots.connect(__sig__.pages_loaded, this, this.onLoadedPages);
-        SigSlots.connect(__sig__.queries_loaded, this, this.onLoadedQueries);
-        SigSlots.connect(__sig__.tags_loaded, this, this.onLoadedTags);
-        SigSlots.connect(__sig__.tag_focus, this, this.onTagFocus);
-        SigSlots.connect(__sig__.tag_clicked, this, this.onTagClicked);
-        SigSlots.connect(__sig__.tag_action_clicked, this, this.onTagActionClicked);
-        SigSlots.connect(
-          __sig__.tag_individual_page_action_clicked, this, this.onTagIndividualPageActionClicked);
 
-          SigSlots.connect(__sig__.brushed_pages_changed, this, this.onBrushedPagesChanged);
-          SigSlots.connect(__sig__.filter_enter, this, this.runFilter);
-          SigSlots.connect(__sig__.add_term, this, this.runAddTerm);
-          SigSlots.connect(__sig__.add_neg_term, this, this.runAddNegTerm);
-          SigSlots.connect(__sig__.load_new_pages_summary, this, this.loadNewPagesSummary);
+  SigSlots.connect(
+    __sig__.available_crawlers_list_reloaded, this, this.reloadSelectForAvailableCrawlers);
+  SigSlots.connect(__sig__.new_pages_summary_fetched, this, this.onLoadedNewPagesSummaryCrawler);
+  SigSlots.connect(
+    __sig__.previous_pages_summary_fetched, this, this.onLoadedPreviousPagesSummaryCrawler);
+  SigSlots.connect(__sig__.terms_summary_fetched, this, this.onLoadedTermsSummary);
+  SigSlots.connect(__sig__.term_focus, this, this.onTermFocus);
+  SigSlots.connect(__sig__.terms_snippets_loaded, this, this.onLoadedTermsSnippets);
+  SigSlots.connect(__sig__.pages_loaded, this, this.onLoadedPages);
+  SigSlots.connect(__sig__.queries_loaded, this, this.onLoadedQueries);
+  SigSlots.connect(__sig__.tags_loaded, this, this.onLoadedTags);
+  SigSlots.connect(__sig__.tag_focus, this, this.onTagFocus);
+  SigSlots.connect(__sig__.tag_clicked, this, this.onTagClicked);
+  SigSlots.connect(__sig__.tag_action_clicked, this, this.onTagActionClicked);
+  SigSlots.connect(
+    __sig__.tag_individual_page_action_clicked, this, this.onTagIndividualPageActionClicked);
 
-          // TODO(Cesar): remove! not active for crawler.
-          //SigSlots.connect(__sig__.term_toggle, this, this.onTermToggle);
-        };
+  SigSlots.connect(__sig__.brushed_pages_changed, this, this.onBrushedPagesChanged);
+  SigSlots.connect(__sig__.filter_enter, this, this.runFilter);
+  SigSlots.connect(__sig__.add_term, this, this.runAddTerm);
+  SigSlots.connect(__sig__.add_neg_term, this, this.runAddNegTerm);
+  SigSlots.connect(__sig__.load_new_pages_summary, this, this.loadNewPagesSummary);
+  SigSlots.connect(__sig__.update_online_classifier, this, this.updateOnlineClassifier);
+
+  // TODO(Cesar): remove! not active for crawler.
+  //SigSlots.connect(__sig__.term_toggle, this, this.onTermToggle);
+};
 
 
 // Initializes signal and slots for seed crawler use.
@@ -126,33 +128,34 @@ SigSlots.connect(
   SigSlots.connect(__sig__.new_pages_summary_fetched, this, this.onLoadedNewPagesSummarySeedCrawler);
   SigSlots.connect(
     __sig__.previous_pages_summary_fetched, this, this.onLoadedPreviousPagesSummarySeedCrawler);
-    SigSlots.connect(__sig__.terms_summary_fetched, this, this.onLoadedTermsSummary);
-    SigSlots.connect(__sig__.term_focus, this, this.onTermFocus);
-    SigSlots.connect(__sig__.term_toggle, this, this.onTermToggle);
+  SigSlots.connect(__sig__.terms_summary_fetched, this, this.onLoadedTermsSummary);
+  SigSlots.connect(__sig__.term_focus, this, this.onTermFocus);
+  SigSlots.connect(__sig__.term_toggle, this, this.onTermToggle);
 
-    SigSlots.connect(__sig__.terms_snippets_loaded, this, this.onLoadedTermsSnippets);
-    SigSlots.connect(__sig__.pages_loaded, this, this.onLoadedPages);
-    SigSlots.connect(__sig__.queries_loaded, this, this.onLoadedQueries);
-    SigSlots.connect(__sig__.tags_loaded, this, this.onLoadedTags);
-    SigSlots.connect(__sig__.tags_colors_loaded, this, this.onLoadedTagColors);
-    SigSlots.connect(__sig__.tag_focus, this, this.onTagFocus);
-    SigSlots.connect(__sig__.tag_clicked, this, this.onTagClicked);
-    SigSlots.connect(__sig__.tag_action_clicked, this, this.onTagActionClicked);
-    SigSlots.connect(
-      __sig__.tag_individual_page_action_clicked, this, this.onTagIndividualPageActionClicked);
+  SigSlots.connect(__sig__.terms_snippets_loaded, this, this.onLoadedTermsSnippets);
+  SigSlots.connect(__sig__.pages_loaded, this, this.onLoadedPages);
+  SigSlots.connect(__sig__.queries_loaded, this, this.onLoadedQueries);
+  SigSlots.connect(__sig__.tags_loaded, this, this.onLoadedTags);
+  SigSlots.connect(__sig__.tags_colors_loaded, this, this.onLoadedTagColors);
+  SigSlots.connect(__sig__.tag_focus, this, this.onTagFocus);
+  SigSlots.connect(__sig__.tag_clicked, this, this.onTagClicked);
+  SigSlots.connect(__sig__.tag_action_clicked, this, this.onTagActionClicked);
+  SigSlots.connect(
+    __sig__.tag_individual_page_action_clicked, this, this.onTagIndividualPageActionClicked);
 
-      SigSlots.connect(__sig__.brushed_pages_changed, this, this.onBrushedPagesChanged);
-      SigSlots.connect(__sig__.add_crawler, this, this.runAddCrawler);
-      SigSlots.connect(__sig__.del_crawler, this, this.runDelCrawler);
-      SigSlots.connect(__sig__.query_enter, this, this.runQuery);
-      SigSlots.connect(__sig__.filter_enter, this, this.runFilter);
-      SigSlots.connect(__sig__.add_term, this, this.runAddTerm);
-      SigSlots.connect(__sig__.add_neg_term, this, this.runAddNegTerm);
-      SigSlots.connect(__sig__.delete_term, this, this.runDeleteTerm);
-      SigSlots.connect(__sig__.load_new_pages_summary, this, this.loadNewPagesSummary);
-      SigSlots.connect(__sig__.set_pages_tags_completed, this, this.onPagesTagsSet);
-    };
-
+  SigSlots.connect(__sig__.brushed_pages_changed, this, this.onBrushedPagesChanged);
+  SigSlots.connect(__sig__.add_crawler, this, this.runAddCrawler);
+  SigSlots.connect(__sig__.del_crawler, this, this.runDelCrawler);
+  SigSlots.connect(__sig__.query_enter, this, this.runQuery);
+  SigSlots.connect(__sig__.filter_enter, this, this.runFilter);
+  SigSlots.connect(__sig__.add_term, this, this.runAddTerm);
+  SigSlots.connect(__sig__.add_neg_term, this, this.runAddNegTerm);
+  SigSlots.connect(__sig__.delete_term, this, this.runDeleteTerm);
+  SigSlots.connect(__sig__.load_new_pages_summary, this, this.loadNewPagesSummary);
+  SigSlots.connect(__sig__.set_pages_tags_completed, this, this.onPagesTagsSet);
+  SigSlots.connect(__sig__.update_online_classifier, this, this.updateOnlineClassifier);
+  SigSlots.connect(__sig__.update_online_classifier_completed, this, this.onUpdatedOnlineClassifier);
+};
 
     // Initial components setup for seed crawler use.
     CrawlerVis.prototype.initUICrawler = function() {
@@ -1072,6 +1075,12 @@ CrawlerVis.prototype.updatePagesStatsCrawler = function(stats, statslist) {
       this.termsSnippetsViewer.addItems(termSnippets);
     };
 
+// Update online classifier
+CrawlerVis.prototype.updateOnlineClassifier = function() {
+    var vis = this;
+    DataAccess.updateOnlineClassifier(vis.sessionInfo());
+};
+
 
     // Triggers page summary update after the pages are tagged
     CrawlerVis.prototype.onPagesTagsSet = function() {
@@ -1081,38 +1090,51 @@ CrawlerVis.prototype.updatePagesStatsCrawler = function(stats, statslist) {
       DataAccess.loadPagesSummaryUntilLastUpdate(true, vis.sessionInfo());
     }
 
-    // Responds to loaded pages signal.
-    CrawlerVis.prototype.onLoadedPages = function(pagesData) {
-      var pages = pagesData['pages'].map(function(page, i) {
-        return {
-          url: page[0],
-          x: page[1],
-          y: page[2],
-          tags: page[3],
-        };
-      });
-
-      this.pagesLandscape.setPagesData(pages);
-
-      // Updates last update.
-      var lastUpdate = Utils.parseDateTime(DataAccess.getLastUpdateTime());
-      d3.select('#last_update_info_box')
-      .html('(last update: ' + lastUpdate + ')');
-
-      var vis = this;
-      // Fetches statistics for until last update happened.
-      DataAccess.loadPagesSummaryUntilLastUpdate(false, vis.sessionInfo());
-      DataAccess.loadPagesSummaryUntilLastUpdate(true, vis.sessionInfo());
-
-      return pages;
-    };
-
     // Responds to tag focus.
     CrawlerVis.prototype.onTagFocus = function(tag, onFocus) {
       // TODO(cesar): focus+context on pages landscape when tag is highlighted.
       console.log('tag highlighted: ', tag, onFocus ? 'gained focus' : 'lost focus');
     };
+    
+   // Display new model accuracy
+   CrawlerVis.prototype.onUpdatedOnlineClassifier = function(accuracy) {
+       var vis = this;
+       // Updates last update and accuracy.
+       if (accuracy != '0') {
+	   var lastUpdate = Utils.parseDateTime(DataAccess.getLastUpdateTime());
+	   d3.select('#last_update_info_box')
+	       .html('(Domain Model Accuracy: ' + accuracy + '%<br>Last Update: ' + lastUpdate + ')');
+       } else {
+	   var lastUpdate = Utils.parseDateTime(DataAccess.getLastUpdateTime());
+	   d3.select('#last_update_info_box')
+	       .html('(Domain Model Accuracy: NA, <br>Last Update: ' + lastUpdate + ')');
+       }
+   }
 
+   // Responds to loaded pages signal.
+   CrawlerVis.prototype.onLoadedPages = function(pagesData) {
+       if (pagesData["pages"].length === 0){
+	   BokehPlots.clear();
+	   return {};
+       } else {
+	   var pages = pagesData['pages'].map(function(page, i) {
+	       return {
+		   url: page[0],
+		   x: page[1],
+		   y: page[2],
+		   tags: page[3],
+	       };
+	   });
+	   
+	   this.pagesLandscape.setPagesData(pages);
+	   
+	   var vis = this;
+	   // Fetches statistics for until last update happened.
+	   DataAccess.loadPagesSummaryUntilLastUpdate(false, vis.sessionInfo());
+	   DataAccess.loadPagesSummaryUntilLastUpdate(true, vis.sessionInfo());
+	   return pages;
+       }
+   };
 
     // Responds to clicked tag.
     CrawlerVis.prototype.onTagClicked = function(tag) {
@@ -1756,24 +1778,26 @@ else session['model']['nagative'] = 'Irrelevant';
 return session;
 };
 
-
 CrawlerVis.prototype.clearAll = function() {
-  d3.select('#query_box').node().value = "";
-  d3.select('#filter_box').node().value = "";
-  $('#queryCheckBox').empty();
-  this.pagesGallery.clear();
-  this.tagsGallery.clear();
-  this.termsSnippetsViewer.clear();
-  BokehPlots.clear();
+    d3.select('#query_box').node().value = "";
+    d3.select('#filter_box').node().value = "";
+    $('#queryCheckBox').empty();
+    d3.select('#last_update_info_box')
+	.html('');
+    this.pagesGallery.clear();
+    this.tagsGallery.clear();
+    this.termsSnippetsViewer.clear();
+    BokehPlots.clear();
+    DataAccess.setLastAccuracy('0');
 };
-
 
 $(document).ready(function() {
   // Set the seeds panel as hidden by default.
 
 
   $("#seedsHeaderData").next().slideToggle(0);
-  $("#seedsHeaderFilter").next().slideToggle(0);
+    $("#seedsHeaderFilter").next().slideToggle(0);
+    $("#seedsHeaderFilter").hide();
   $("#seedsHeader").next().slideToggle(0);
   $(".panel-heading").click(function () {
 

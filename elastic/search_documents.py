@@ -282,6 +282,24 @@ def field_exists(field, fields, pagesCount, es_index='memex', es_doc_type='page'
 
     return results
 
+def exec_query(query, fields, pagesCount, es_index='memex', es_doc_type='page', es=None):
+    if es is None:
+        es = default_es
+
+    query = query
+    query["fields"] = fields
+
+    res = es.search(body=query, index=es_index, doc_type=es_doc_type, size=pagesCount)
+    hits = res['hits']['hits']
+    
+    results = []
+    for hit in hits:
+        fields = hit['fields']
+        fields['id'] = hit['_id']
+        results.append(fields)
+
+    return results
+
 if __name__ == "__main__":
     print sys.argv[1:]
     if 'string' in sys.argv[1]:

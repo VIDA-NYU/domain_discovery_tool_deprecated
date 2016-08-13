@@ -320,6 +320,13 @@ class Page:
     session = json.loads(session)
     self._crawler.setTermsTag(terms, tag, applyTagFlag, session)
 
+  # Update online classifier
+  @cherrypy.expose
+  def updateOnlineClassifier(self, session):
+    session = json.loads(session)
+    return self._crawler.updateOnlineClassifier(session)
+
+    
   # Delete terms from term window and from the ddt_terms index
   @cherrypy.expose
   def deleteTerm(self, term, session):

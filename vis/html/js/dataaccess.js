@@ -21,11 +21,13 @@ var DataAccess = (function() {
   var currentCrawler = undefined;
   var currentProjAlg = undefined;
   var loadingSummary = false;
+  var updatingClassifier = false;
   var updating = false;
   var loadingPages = false;
   var loadingTerms = false;
   var pages = undefined;
   var termsSummary = undefined;
+  var lastAccuracy = undefined;  
 
   // Processes loaded pages summaries.
   var onPagesSummaryUntilLastUpdateLoaded = function(summary, isFilter) {
@@ -35,13 +37,19 @@ var DataAccess = (function() {
   // Processes loaded pages summaries.
   var onNewPagesSummaryLoaded = function(summary, isFilter) {
     loadingSummary = false;
-      lastSummary = moment().unix();
+    lastSummary = moment().unix();
     __sig__.emit(__sig__.new_pages_summary_fetched, summary, isFilter);
   };
 
   // Triggers page summary update after the pages are tagged
   var onSetPagesTagCompleted = function(){
       __sig__.emit(__sig__.set_pages_tags_completed);
+  }
+
+    var onUpdatedOnlineClassifier = function(accuracy){
+	updatingClassifier = false;
+	lastAccuracy = accuracy;
+      __sig__.emit(__sig__.update_online_classifier_completed, accuracy);
   }
   // Processes loaded pages.
   var onPagesLoaded = function(loadedPages) {
@@ -80,6 +88,7 @@ var DataAccess = (function() {
 		document.getElementById("status_panel").innerHTML = 'No pages found';
 		$(document).ready(function() { $(".status_box").fadeIn(); });
 		$(document).ready(setTimeout(function() {$('.status_box').fadeOut('fast');}, 5000));
+		__sig__.emit(__sig__.pages_loaded, pages["data"]);
 	    } else {
 		__sig__.emit(__sig__.pages_loaded, pages["data"]);
 		__sig__.emit(__sig__.bokeh_insert_plot, pages);
@@ -162,6 +171,13 @@ var DataAccess = (function() {
   var loadNewPagesSummary = function(isFilter) {
       __sig__.emit(__sig__.load_new_pages_summary, isFilter);
   };
+
+
+  //Signal update of online classifier
+  var updateOnlineClassifier = function() {
+      __sig__.emit(__sig__.update_online_classifier);
+  };
+    
 
   // Runs async post query.
   var runQuery = function(query, args, onCompletion, doneCb) {
@@ -328,6 +344,8 @@ var DataAccess = (function() {
 	  runQueryForCurrentCrawler(
               '/getTermsSummary', {'session': JSON.stringify(session)}, onTermsSummaryLoaded, onMaybeUpdateCompleteTerms);
 
+	  runQueryForCurrentCrawler(
+	      '/updateOnlineClassifier', {'session': JSON.stringify(session)}, onUpdatedOnlineClassifier);
       }
   };
 
@@ -358,6 +376,17 @@ var DataAccess = (function() {
   pub.getLastUpdateTime = function() {
     return lastUpdate;
   };
+
+  // Accesses last accuracy reported
+  pub.getLastAccuracy = function() {
+    return lastAccuracy;
+  };
+
+  // Accesses last accuracy reported
+  pub.setLastAccuracy = function(accuracy) {
+    lastAccuracy = accuracy;
+  };
+
   // Accesses last summary loading time in Unix epoch time.
   pub.getLastSummaryTime = function() {
     return lastSummary;
@@ -375,6 +404,14 @@ var DataAccess = (function() {
       '/setTermsTag', {'terms': term, 'tag': tag, 'applyTagFlag': applyTagFlag, 'session': JSON.stringify(session)});
   };
 
+  //Update online classifier
+  pub.updateOnlineClassifier = function(session) {
+      if (!updatingClassifier && currentCrawler !== undefined) {
+	  updatingClassifier = true;
+	  runQueryForCurrentCrawler(
+	      '/updateOnlineClassifier', {'session': JSON.stringify(session)}, onUpdatedOnlineClassifier);
+      }
+  }
 
   pub.deleteTerm = function(term, session) {
       runQueryForCurrentCrawler('/deleteTerm', {'term': term, 'session': JSON.stringify(session)});
@@ -408,6 +445,7 @@ var DataAccess = (function() {
   // Fetches new pages summaries every n seconds.
   window.setInterval(function() {loadNewPagesSummary(false);}, REFRESH_EVERY_N_MILLISECONDS);
   window.setInterval(function() {loadNewPagesSummary(true);}, REFRESH_EVERY_N_MILLISECONDS);
+ //window.setInterval(function() {updateOnlineClassifier();}, REFRESH_EVERY_N_MILLISECONDS + 18000);
 
   return pub;
 }());
