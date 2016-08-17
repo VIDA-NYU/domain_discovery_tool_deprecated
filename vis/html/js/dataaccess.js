@@ -162,6 +162,11 @@ var DataAccess = (function() {
     __sig__.emit(__sig__.tags_loaded, tagsData);
   };
 
+  // Processes loaded tags
+  var onAvailableModelTagsLoaded = function(tagsData) {
+    __sig__.emit(__sig__.model_tags_loaded, tagsData);
+  };
+
   // Processes loaded tag color mapping
   var onAvailableTagColorsLoaded = function(tagColors){
       __sig__.emit(__sig__.tags_colors_loaded, tagColors);
@@ -271,6 +276,12 @@ var DataAccess = (function() {
     pub.loadAvailableTags = function(session, event) {
       //alert("alert query para tags: " + JSON.stringify(session) + ", tagload: " + onAvailableTagsLoaded);
 	runQuery('/getAvailableTags', {'session': JSON.stringify(session), 'event': event}, onAvailableTagsLoaded);
+  };
+
+  // Gets available tags from backend.
+  pub.loadAvailableModelTags = function(session) {
+      //alert("alert query para tags: " + JSON.stringify(session) + ", tagload: " + onAvailableTagsLoaded);
+      runQuery('/getAvailableModelTags', {'session': JSON.stringify(session)}, onAvailableModelTagsLoaded);
   };
 
   // Returns public interface.
@@ -463,7 +474,7 @@ function buildHierarchy(value) {
       var childNode = {"name": selectedFilter, "type": typeName, "length": lengthFilter};
       path.unshift(childNode);
     }
-    if((typeof value.selected_queries=="undefined")&& (typeof value.selected_tags=="undefined")&& (typeof value.selected_tags=="undefined")) { //if(value.pageRetrievalCriteria=="Most Recent" && value.selected_queries=="" && value.selected_tags==""){
+    if((typeof value.selected_queries=="undefined") && (typeof value.selected_tags=="undefined")&& (typeof value.selected_model_tags=="undefined")) { //if(value.pageRetrievalCriteria=="Most Recent" && value.selected_queries=="" && value.selected_tags==""){
       var selectedFilter = value.pageRetrievalCriteria;
       var childNode = {"name": "Most Recent", "type": "Most Recent", "length": lengthFilter};
       path.unshift(childNode);
@@ -478,6 +489,12 @@ function buildHierarchy(value) {
       var childNode = {"name": selectedTags, "type": "Tags", "length": (value.pageRetrievalCriteria).length +selectedTags.length + lengthFilter};
       path.unshift(childNode);
     }
+    if (value.selected_model_tags!="" && !(typeof value.selected_model_tags=="undefined")) { // if (value.pageRetrievalCriteria=="Model Tags") {
+	var selectedTags = value.selected_model_tags;
+	var childNode = {"name": selectedTags, "type": "Model Tags", "length": (value.pageRetrievalCriteria).length +selectedTags.length + lengthFilter};
+	path.unshift(childNode);
+    }
+
     if (value.selected_queries!="" && !(typeof value.selected_queries=="undefined")) { //if (value.pageRetrievalCriteria=="Queries") {
       var selectedQueries = value.selected_queries;
       var childNode = {"name": selectedQueries, "type": "Queries", "length": (value.pageRetrievalCriteria).length + selectedQueries.length + lengthFilter}; //var childNode = {"name": selectedQueries, "type": value.pageRetrievalCriteria, "length": (value.pageRetrievalCriteria).length + selectedQueries.length + lengthFilter};
@@ -539,6 +556,10 @@ function removeButton(infoButton) {
     if(info[0].indexOf("Tags") > -1){
       checkboxes = document.getElementsByName('tags_checkbox');
     }
+     if(info[0].indexOf("Model generated Tags") > -1){
+	 checkboxes = document.getElementsByName('model_tags_checkbox');
+    }
+
     for (var checkbox in checkboxes){
       if(checkboxes[checkbox].value == info[1]){
       checkboxes[checkbox].checked = this.checked;}
