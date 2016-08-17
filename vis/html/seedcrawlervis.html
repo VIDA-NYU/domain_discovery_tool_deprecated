@@ -255,7 +255,7 @@
       <div id="seed_crawler_info">
 
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Search on the Web..." id="query_box" list="query_box_previous_queries">
+          <input type="text" class="form-control" placeholder="Search the Web..." id="query_box" list="query_box_previous_queries">
           <div style="float:left;">
             <select name="search_engine" id="search_engine" class="form-control">
               <option value="GOOG">GOOG</option>
@@ -396,8 +396,8 @@
     <div>
       <span id="title_checkboxes">Tags:</span>
       <button id="UpdateCheckboxesTag" type="button" style="border: none;" class="btn btn-default btn-xs">
-    <span class="glyphicon glyphicon-refresh" style="color:#01A9DB"></span>
-  </button>
+	<span class="glyphicon glyphicon-refresh" style="color:#01A9DB"></span>
+      </button>
       <ul id="tagsCheckBox"></ul>
     </div>
     <div ALIGN=right style="margin-right:5px">
@@ -406,6 +406,22 @@
     </div>
   </div>
 
+  <hr>
+  
+  <div class="row" id="container_checkboxes">
+    <div>
+      <span id="title_checkboxes">Model Generated Tags:</span>
+      <button id="UpdateCheckboxesModelTag" type="button" style="border: none;" class="btn btn-default btn-xs">
+	<span class="glyphicon glyphicon-refresh" style="color:#01A9DB"></span>
+      </button>
+      <ul id="modelTagsCheckBox"></ul>
+    </div>
+    <div ALIGN=right style="margin-right:5px">
+      <small><u><a id="toggleButtonLessModelTags" href="javascript:void(0);" style="display:none;">See Less</a></u></small>
+      <small><u><a id="toggleButtonMoreModelTags" href="javascript:void(0);" style="display:none;">See More</a></u></small>
+    </div>
+  </div>
+  
 
   </div>
   </div>
