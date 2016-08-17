@@ -172,6 +172,13 @@ class Page:
     return json.dumps(result)
 
   @cherrypy.expose
+  def getAvailableModelTags(self, session):
+    session = json.loads(session)
+    result = self._crawler.getAvailableModelTags(session)
+    cherrypy.response.headers["Content-Type"] = "application/json;"
+    return json.dumps(result)
+
+  @cherrypy.expose
   def getTagColors(self, domainId):
     res = self._crawler.getTagColors(domainId)
     cherrypy.response.headers["Content-Type"] = "application/json;"
