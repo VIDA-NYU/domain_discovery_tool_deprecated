@@ -32,6 +32,7 @@ var CrawlerVis = function() {
   var currentCrawler = undefined;
   var queries = undefined;
   var tags = undefined;
+  var modelTags = undefined;  
   this.CUSTOM_COLORS = ["Coral","GoldenRod","Gold","PaleGreen","MediumTurquoise","SteelBlue","SlateBlue","Purple", "RebeccaPurple"]
   this.color_index = 0;
   this.tag_colors = {};
@@ -98,6 +99,7 @@ CrawlerVis.prototype.initSignalSlotsCrawler = function() {
   SigSlots.connect(__sig__.pages_loaded, this, this.onLoadedPages);
   SigSlots.connect(__sig__.queries_loaded, this, this.onLoadedQueries);
   SigSlots.connect(__sig__.tags_loaded, this, this.onLoadedTags);
+  SigSlots.connect(__sig__.model_tags_loaded, this, this.onLoadedModelTags);
   SigSlots.connect(__sig__.tag_focus, this, this.onTagFocus);
   SigSlots.connect(__sig__.tag_clicked, this, this.onTagClicked);
   SigSlots.connect(__sig__.tag_action_clicked, this, this.onTagActionClicked);
@@ -136,6 +138,7 @@ SigSlots.connect(
   SigSlots.connect(__sig__.pages_loaded, this, this.onLoadedPages);
   SigSlots.connect(__sig__.queries_loaded, this, this.onLoadedQueries);
   SigSlots.connect(__sig__.tags_loaded, this, this.onLoadedTags);
+  SigSlots.connect(__sig__.model_tags_loaded, this, this.onLoadedModelTags);
   SigSlots.connect(__sig__.tags_colors_loaded, this, this.onLoadedTagColors);
   SigSlots.connect(__sig__.tag_focus, this, this.onTagFocus);
   SigSlots.connect(__sig__.tag_clicked, this, this.onTagClicked);
@@ -254,7 +257,7 @@ SigSlots.connect(
         return d.id;
       }
 
-      CrawlerVis.prototype.setCurrentCrawler = function(crawlerId){
+     CrawlerVis.prototype.setCurrentCrawler = function(crawlerId){
         this.currentCrawler = crawlerId;
         this.setActiveCrawler(crawlerId);
         this.clearAll();
@@ -328,10 +331,9 @@ SigSlots.connect(
         });
 
         if (data.length > 0){
-          vis.renderCrawlerOptions(selectBox, data);
-
-          // Manually triggers change of value.
+	  // Manually triggers change of value.
           var crawlerId = vis.getElementValueId(data[0]);
+          vis.renderCrawlerOptions(selectBox, data, crawlerId);
           vis.setCurrentCrawler(crawlerId);
           d3.select('input[value="'+data[0]["id"]+'"]').attr("checked", "checked");
           $("#currentDomain").text(data[0].name).append("<span class='caret'></span>");
@@ -401,8 +403,10 @@ SigSlots.connect(
         DataAccess.setActiveCrawler(crawlerId);
         DataAccess.loadTagColors(crawlerId);
         //updating queries and tags when the domain is changed.
-        DataAccess.loadAvailableQueries(this.sessionInfo());
-        DataAccess.loadAvailableTags(this.sessionInfo(), 'Tags');
+	var session = this.sessionInfo();
+        DataAccess.loadAvailableQueries(session);
+        DataAccess.loadAvailableTags(session, 'Tags');
+	DataAccess.loadAvailableModelTags(session);
       //  $("#seedsHeaderData").next().slideToggle(0);
       };
 
@@ -486,7 +490,6 @@ SigSlots.connect(
 
         d3.select('#UpdateCheckboxesQuery').on('click', function() {
             DataAccess.loadAvailableQueries(vis.sessionInfo());
-            DataAccess.loadAvailableTags(vis.sessionInfo(), 'Tags');
             document.getElementById("toggleButtonMoreQueries").innerText = "See More";
             document.getElementById("toggleButtonLessQueries").innerText = "See Less";
         });
@@ -496,12 +499,18 @@ SigSlots.connect(
             document.getElementById("toggleButtonMoreTags").innerText = "See More";
             document.getElementById("toggleButtonLessTags").innerText = "See Less";
         });
+	  
+	  d3.select('#UpdateCheckboxesModelTag').on('click', function() {
+            DataAccess.loadAvailableModelTags(vis.sessionInfo());
+            document.getElementById("toggleButtonMoreTags").innerText = "See More";
+            document.getElementById("toggleButtonLessTags").innerText = "See Less";
+        });
 
-//showing more checkboxes (for queries, tags and 'more like')
+	  //showing more checkboxes (for queries, tags and 'more like')
         d3.select('#toggleButtonMoreQueries').on('click', function() {
             if(nroQueries<nroMaxQueries && (nroQueries+5)<=nroMaxQueries  && nroMaxQueries>5){
               nroQueries = nroQueries + 5;
-              //alert("nroQueries" + nroQueries);
+              alert("nroQueries" + nroQueries);
               DataAccess.loadAvailableQueries(vis.sessionInfo());
               document.getElementById("toggleButtonMoreQueries").innerText = "See More";
               document.getElementById("toggleButtonLessQueries").innerText = "See Less";
@@ -515,7 +524,7 @@ SigSlots.connect(
             }
 
         });
-//showing more checkboxes (for queries, tags and 'more like')
+	  //showing more checkboxes (for queries, tags and 'more like')
         d3.select('#toggleButtonMoreTags').on('click', function() {
             if(nroTags<nroMaxTags && (nroTags+5)<=nroMaxTags  && nroMaxTags>5){
               nroTags = nroTags + 5;
@@ -529,7 +538,7 @@ SigSlots.connect(
               document.getElementById("toggleButtonMoreTags").innerText = "";
             }
         });
-//Showing less checkboxes (for queries, tags and 'more like')
+	  //Showing less checkboxes (for queries, tags and 'more like')
         d3.select('#toggleButtonLessQueries').on('click', function() {
             if(nroQueries>5){
               nroQueries = nroQueries -5;
@@ -542,7 +551,7 @@ SigSlots.connect(
             }
         });
 
-//Showing less checkboxes (for queries, tags and 'more like')
+	  //Showing less checkboxes (for queries, tags and 'more like')
         d3.select('#toggleButtonLessTags').on('click', function() {
             if(nroTags>5){
               nroTags = nroTags -5;
@@ -569,6 +578,11 @@ CrawlerVis.prototype.onLoadedTags = function(result) {
   vis.enableTagSelection(result['tags'], result['event']);
 };
 
+CrawlerVis.prototype.onLoadedModelTags = function(modelTags) {
+  var vis = this;
+  vis.enableModelTagSelection(modelTags);
+};
+
 CrawlerVis.prototype.onLoadedTagColors = function(colors_data) {
   if(colors_data != undefined) {
     this.tag_colors = colors_data["colors"];
@@ -584,18 +598,12 @@ CrawlerVis.prototype.enableTagSelection = function(tags, event){
   var vis = this;
   vis.tags = tags;
 
-  //$('#queryCheckBox').hide();//hide before querycheckbox
-
   if(event == 'Tags'){
     var pageRetrievalCriteria = d3.select('#page_retrieval_criteria_select').node().value;
     if(pageRetrievalCriteria === "More like"){
       delete vis.tags['Neutral']
 
     }
-    // Show the tags list modal
-    //$('#listTagsModal').modal("show");
-
-    //$('#listTagsModal').on('shown.bs.modal', function(){
     var prev_checked_tags = vis.getCheckedValues("tags_checkbox");
     var check_all = false;
     if (prev_checked_tags.indexOf('select_all') > -1)
@@ -653,6 +661,65 @@ CrawlerVis.prototype.enableTagSelection = function(tags, event){
     //$('#modelSettingModal').modal("show");
   }
   $('#tagsCheckBox').show();
+};
+
+CrawlerVis.prototype.enableModelTagSelection = function(tags){
+    var vis = this;
+    vis.modelTags = tags;
+    
+    var pageRetrievalCriteria = d3.select('#page_retrieval_criteria_select').node().value;
+
+    var prev_checked_tags = vis.getCheckedValues("model_tags_checkbox");
+    var check_all = false;
+    if (prev_checked_tags.indexOf('select_all') > -1)
+    check_all = true;
+
+    $('#modelTagsCheckBox').empty();
+
+    var newli_select_all = document.createElement('li');
+    if(check_all)
+    newli_select_all.innerHTML = "<input type='checkbox' name='model_tags_checkbox' id='select_all_tags' value='select_all' checked='true'><label for='select_all'>Select All</label>";
+    else
+    newli_select_all.innerHTML = "<input type='checkbox' name='model_tags_checkbox' id='select_all_tags' value='select_all'><label for='select_all'>Select All</label>";
+
+    document.getElementById('modelTagsCheckBox').appendChild(newli_select_all);
+
+    d3.select('#select_all_tags').on('click', function(){
+      checkboxes = document.getElementsByName('model_tags_checkbox');
+      for (var checkbox in checkboxes){
+        checkboxes[checkbox].checked = this.checked;
+      }
+    });
+
+    // Sort the queries by number of documents
+    keysSorted = Object.keys(tags).sort(function(a,b){
+      return tags[b] - tags[a]
+    });
+
+    var count;
+    nroMaxTags = keysSorted.length;
+
+    if(prev_checked_tags.length>nroTags && prev_checked_tags.length>0)
+      nroTags=prev_checked_tags.length;
+    if(keysSorted.length<nroTags)
+      nroTags=keysSorted.length;
+
+    for (count = 0; count < nroTags; count++) {//keysSorted.length
+      var checked = false;
+      if (prev_checked_tags.indexOf(keysSorted[count]) > -1)
+      checked = true;
+      var newli = document.createElement('li');
+      var label = "tag_" + count.toString();
+      if(check_all || checked){
+        newli.innerHTML = "<input type='checkbox' name='model_tags_checkbox' checked='true' 'id='" + label +"' value='"+keysSorted[count]+"'><label for='"+label+"'>"+keysSorted[count]+" ("+tags[keysSorted[count]]+")"+"</label>";
+      }
+      else{
+        newli.innerHTML = "<input type='checkbox' name='model_tags_checkbox' 'id='" + label +"' value='"+keysSorted[count]+"'><label for='"+label+"'>"+keysSorted[count]+" ("+tags[keysSorted[count]]+")"+"</label>";
+      }
+      document.getElementById('modelTagsCheckBox').appendChild(newli);
+    }
+
+  $('#modelTagsCheckBox').show();
 };
 
 CrawlerVis.prototype.enableQuerySelection = function(queries){
@@ -1109,6 +1176,9 @@ CrawlerVis.prototype.updateOnlineClassifier = function() {
 	   d3.select('#last_update_info_box')
 	       .html('(Domain Model Accuracy: NA, <br>Last Update: ' + lastUpdate + ')');
        }
+       DataAccess.loadAvailableModelTags(vis.sessionInfo());
+       document.getElementById("toggleButtonMoreTags").innerText = "See More";
+       document.getElementById("toggleButtonLessTags").innerText = "See Less";
    }
 
    // Responds to loaded pages signal.
@@ -1346,7 +1416,8 @@ CrawlerVis.prototype.updateOnlineClassifier = function() {
     CrawlerVis.prototype.initFilterButton = function() {
       var vis = this;
       var submit_filter = function() {
-        var value = d3.select('#filter_box').node().value;
+          var value = d3.select('#filter_box').node().value;
+	  console.log(value);
         __sig__.emit(__sig__.filter_enter, value);
       };
 
@@ -1380,7 +1451,7 @@ CrawlerVis.prototype.updateOnlineClassifier = function() {
       });
 
       d3.select('#ModelSettings').on('click', function() {
-        DataAccess.loadAvailableTags(vis.sessionInfo(), 'Model');
+        //DataAccess.loadAvailableTags(vis.sessionInfo(), 'Model');
       });
 
       $('#modelSettingsModal').on('shown.bs.modal', function(){
@@ -1732,9 +1803,10 @@ CrawlerVis.prototype.updateOnlineClassifier = function() {
       session['fromDate'] = fromdate_utc;
       session['toDate'] = todate_utc;
 
-      var filterTerms = d3.select('#filter_box').node().value;
+	var filterTerms = d3.select('#filter_box').node().value;
+	console.log(filterTerms);
       if (filterTerms === '')
-      filterTerms = null;
+	  filterTerms = null;
       session['filter'] = filterTerms;
 
       var pageRetrievalCriteria = d3.select('#page_retrieval_criteria_select').node().value;
@@ -1742,7 +1814,7 @@ CrawlerVis.prototype.updateOnlineClassifier = function() {
       //design new interface (including queries, tags, most like checkboxs)
 
       session['selected_morelike']=vis.getCheckedValues('morelike_checkbox').toString();
-      if (vis.getCheckedValues('queries_checkbox').toString()== "" && vis.getCheckedValues('tags_checkbox').toString() == ""){
+      if (vis.getCheckedValues('queries_checkbox').toString()== "" && vis.getCheckedValues('tags_checkbox').toString() == "" && vis.getCheckedValues('model_tags_checkbox').toString() == ""){
         $('#selectPageRetrievalCriteria').val("Most Recent");
         session['pageRetrievalCriteria'] = "Most Recent";
       }
@@ -1764,16 +1836,24 @@ CrawlerVis.prototype.updateOnlineClassifier = function() {
             session['pageRetrievalCriteria'] = "Tags";
             session['selected_tags'] = vis.getCheckedValues('tags_checkbox').toString();
           }
+	    if (vis.getCheckedValues('model_tags_checkbox').toString()!= ""){//if (pageRetrievalCriteria == 'Tags' || pageRetrievalCriteria == 'More like'){
+            //if (pageRetrievalCriteria == 'More like') session['pageRetrievalCriteria'] = "More like";
+            //else
+            session['pageRetrievalCriteria'] = "Model Tags";
+		session['selected_model_tags'] = vis.getCheckedValues('model_tags_checkbox').toString();
+		console.log(session['selected_model_tags']);
+          }
+
         }
       }
 
-session['model'] = {}
-if(vis.getCheckedValues('posTagsCheckBox').toString() != undefined && vis.getCheckedValues('posTagsCheckBox').toString() != "")
-session['model']['positive'] = vis.getCheckedValues('posTagsCheckBox').toString();
-else session['model']['positive'] = 'Relevant';
-if(vis.getCheckedValues('negTagsCheckBox'.toString()) != undefined && vis.getCheckedValues('negTagsCheckBox').toString() != "")
-session['model']['negative'] = vis.getCheckedValues('negTagsCheckBox').toString();
-else session['model']['nagative'] = 'Irrelevant';
+      session['model'] = {}
+      if(vis.getCheckedValues('posTagsCheckBox').toString() != undefined && vis.getCheckedValues('posTagsCheckBox').toString() != "")
+	  session['model']['positive'] = vis.getCheckedValues('posTagsCheckBox').toString();
+      else session['model']['positive'] = 'Relevant';
+      if(vis.getCheckedValues('negTagsCheckBox'.toString()) != undefined && vis.getCheckedValues('negTagsCheckBox').toString() != "")
+	  session['model']['negative'] = vis.getCheckedValues('negTagsCheckBox').toString();
+      else session['model']['nagative'] = 'Irrelevant';
 
 return session;
 };
@@ -1797,7 +1877,7 @@ $(document).ready(function() {
 
   $("#seedsHeaderData").next().slideToggle(0);
     $("#seedsHeaderFilter").next().slideToggle(0);
-    $("#seedsHeaderFilter").hide();
+    //$("#seedsHeaderFilter").hide();
   $("#seedsHeader").next().slideToggle(0);
   $(".panel-heading").click(function () {
 
@@ -1816,12 +1896,12 @@ $(document).ready(function() {
         $('#queryCheckBox').show();
         document.getElementById("toggleButtonMoreQueries").innerText = "See More"; $('#toggleButtonMoreQueries').show();
         document.getElementById("toggleButtonLessQueries").innerText = "See Less"; $('#toggleButtonLessQueries').show();
-        DataAccess.loadAvailableQueries(vis.sessionInfo());
+        //DataAccess.loadAvailableQueries(vis.sessionInfo());
         //Load Tags
         $('#tagsCheckBox').show();
         document.getElementById("toggleButtonMoreTags").innerText = "See More"; $('#toggleButtonMoreTags').show();
         document.getElementById("toggleButtonLessTags").innerText = "See Less"; $('#toggleButtonLessTags').show();
-        DataAccess.loadAvailableTags(vis.sessionInfo(), 'Tags');
+        //DataAccess.loadAvailableTags(vis.sessionInfo(), 'Tags');
 
         $header.find("span.collapsethis").removeClass("glyphicon-plus");
         $header.find("span.collapsethis").addClass("glyphicon-minus");
