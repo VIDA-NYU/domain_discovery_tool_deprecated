@@ -175,6 +175,9 @@ class SeedCrawlerModelAdapter(CrawlerModelAdapter):
   def getAvailableTags(self, session):
     return self._crawlerModel.getAvailableTags(session)
 
+  def getAvailableModelTags(self, session):
+    return self._crawlerModel.getAvailableModelTags(session)
+  
   def updateColors(self, session, colors):
     return self._crawlerModel.updateColors(session, colors)
 
