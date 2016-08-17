@@ -32,7 +32,7 @@ var CrawlerVis = function() {
   var currentCrawler = undefined;
   var queries = undefined;
   var tags = undefined;
-  var modelTags = undefined;  
+  var modelTags = undefined;
   this.CUSTOM_COLORS = ["Coral","GoldenRod","Gold","PaleGreen","MediumTurquoise","SteelBlue","SlateBlue","Purple", "RebeccaPurple"]
   this.color_index = 0;
   this.tag_colors = {};
@@ -112,7 +112,7 @@ CrawlerVis.prototype.initSignalSlotsCrawler = function() {
   SigSlots.connect(__sig__.add_neg_term, this, this.runAddNegTerm);
   SigSlots.connect(__sig__.load_new_pages_summary, this, this.loadNewPagesSummary);
   SigSlots.connect(__sig__.update_online_classifier, this, this.updateOnlineClassifier);
-
+  SigSlots.connect(__sig__.build_hierarchy_filters, this, this.buildHierarchyFilters);
   // TODO(Cesar): remove! not active for crawler.
   //SigSlots.connect(__sig__.term_toggle, this, this.onTermToggle);
 };
@@ -158,6 +158,7 @@ SigSlots.connect(
   SigSlots.connect(__sig__.set_pages_tags_completed, this, this.onPagesTagsSet);
   SigSlots.connect(__sig__.update_online_classifier, this, this.updateOnlineClassifier);
   SigSlots.connect(__sig__.update_online_classifier_completed, this, this.onUpdatedOnlineClassifier);
+  SigSlots.connect(__sig__.build_hierarchy_filters, this, this.buildHierarchyFilters);
 };
 
     // Initial components setup for seed crawler use.
@@ -252,6 +253,8 @@ SigSlots.connect(
         this.createSelectForFilterPageCap();
         this.initAddTermButton();
       };
+
+
 
       CrawlerVis.prototype.getElementValueId = function(d){
         return d.id;
@@ -499,7 +502,7 @@ SigSlots.connect(
             document.getElementById("toggleButtonMoreTags").innerText = "See More";
             document.getElementById("toggleButtonLessTags").innerText = "See Less";
         });
-	  
+
 	  d3.select('#UpdateCheckboxesModelTag').on('click', function() {
             DataAccess.loadAvailableModelTags(vis.sessionInfo());
             document.getElementById("toggleButtonMoreTags").innerText = "See More";
@@ -666,7 +669,7 @@ CrawlerVis.prototype.enableTagSelection = function(tags, event){
 CrawlerVis.prototype.enableModelTagSelection = function(tags){
     var vis = this;
     vis.modelTags = tags;
-    
+
     var pageRetrievalCriteria = d3.select('#page_retrieval_criteria_select').node().value;
 
     var prev_checked_tags = vis.getCheckedValues("model_tags_checkbox");
@@ -1162,7 +1165,7 @@ CrawlerVis.prototype.updateOnlineClassifier = function() {
       // TODO(cesar): focus+context on pages landscape when tag is highlighted.
       console.log('tag highlighted: ', tag, onFocus ? 'gained focus' : 'lost focus');
     };
-    
+
    // Display new model accuracy
    CrawlerVis.prototype.onUpdatedOnlineClassifier = function(accuracy) {
        var vis = this;
@@ -1195,9 +1198,9 @@ CrawlerVis.prototype.updateOnlineClassifier = function() {
 		   tags: page[3],
 	       };
 	   });
-	   
+
 	   this.pagesLandscape.setPagesData(pages);
-	   
+
 	   var vis = this;
 	   // Fetches statistics for until last update happened.
 	   DataAccess.loadPagesSummaryUntilLastUpdate(false, vis.sessionInfo());
@@ -1867,6 +1870,102 @@ CrawlerVis.prototype.clearAll = function() {
     BokehPlots.clear();
     DataAccess.setLastAccuracy('0');
 };
+
+//List of applied filters: Remove the selected button and descheck the associated checkbox.
+removeButton =  function(infoButton) {
+  var info = infoButton.split(",");
+  if(info[0].indexOf("Filter") > -1){
+    var filterInfo = d3.select('#filter_box').node().value;
+    d3.select('#filter_box').node().value = "";
+  }else{
+    if(info[0].indexOf("MoreLike") > -1){
+      checkboxes = document.getElementsByName('morelike_checkbox');
+    }
+    if(info[0].indexOf("Queries") > -1){
+      checkboxes = document.getElementsByName('queries_checkbox');
+    }
+    if(info[0].indexOf("Tags") > -1){
+      checkboxes = document.getElementsByName('tags_checkbox');
+    }
+     if(info[0].indexOf("Model generated Tags") > -1){
+   checkboxes = document.getElementsByName('model_tags_checkbox');
+    }
+    for (var checkbox in checkboxes){
+      if(checkboxes[checkbox].value == info[1]){
+      checkboxes[checkbox].checked = this.checked;}
+    }
+  }
+  var nameButton="#" + info[0];
+  $(nameButton).remove();
+}
+
+  // Create/update the container which shows current sequence of applied filters (these appear as buttons).
+CrawlerVis.prototype.GetCheckedStateNew = function( newobj) {
+    var list_buttons="<div class='row' style='margin-left:1px; margin-right:5px;'>";
+    newobj.forEach(function(d) {
+      var filters = (d.name).split(",");
+      if(filters[0]==""){
+        return "";
+      }
+      else{
+        var typeFilter = d.type;
+        var buttons= "<div style='float: left; background-color:#ccadc7; padding: 2px 2px 2px 2px;margin-bottom:2px;margin-right:2px;'>" + typeFilter + ": ";
+        var nameButton = typeFilter+"_";
+        for(var i=0; i<filters.length ; i++){
+          if(filters[i] !="select_all")
+          buttons = buttons + " <button id='"+nameButton+i +"' class='btn btn-default btn-xs' onclick='removeButton(\"" + nameButton+i+","+filters[i] + "\")'>"+ filters[i]+"</button>";
+        }
+        buttons = buttons + "</div>"
+        list_buttons= list_buttons + buttons;
+        return ""; //buttons;
+      }
+    });
+    list_buttons =list_buttons + "</div>";
+    document.getElementById("list_buttons_div").innerHTML = list_buttons;
+}
+
+  //Take a query 'JSON.stringify(session)' for create an array with json objects.
+  //Which contains the filters's sequence even queries and tags.
+ CrawlerVis.prototype.buildHierarchyFilters = function(value) {
+    var path = [];
+    path.length = 0;
+    //var root = {"name": "root", "children": []};
+    var lengthFilter =0;
+    if(value.filter!=null){
+      var selectedFilter = value.filter; var typeName = "Filter";
+      lengthFilter =typeName.length + selectedFilter.length;
+      var childNode = {"name": selectedFilter, "type": typeName, "length": lengthFilter};
+      path.unshift(childNode);
+    }
+    if((typeof value.selected_queries=="undefined") && (typeof value.selected_tags=="undefined")&& (typeof value.selected_model_tags=="undefined")) { //if(value.pageRetrievalCriteria=="Most Recent" && value.selected_queries=="" && value.selected_tags==""){
+      var selectedFilter = value.pageRetrievalCriteria;
+      var childNode = {"name": "Most Recent", "type": "Most Recent", "length": lengthFilter};
+      path.unshift(childNode);
+    }
+    if(value.selected_morelike!=""){ //if(value.selected_morelike!="More like"){
+      var selectedMoreLike = value.selected_morelike;
+      var childNode = {"name": selectedMoreLike, "type": "MoreLike", "length": (value.pageRetrievalCriteria).length +selectedMoreLike.length+lengthFilter};
+      path.unshift(childNode);
+    }
+    if (value.selected_tags!="" && !(typeof value.selected_tags=="undefined")) { // if (value.pageRetrievalCriteria=="Tags") {
+      var selectedTags = value.selected_tags;
+      var childNode = {"name": selectedTags, "type": "Tags", "length": (value.pageRetrievalCriteria).length +selectedTags.length + lengthFilter};
+      path.unshift(childNode);
+    }
+    if (value.selected_model_tags!="" && !(typeof value.selected_model_tags=="undefined")) { // if (value.pageRetrievalCriteria=="Model Tags") {
+      var selectedTags = value.selected_model_tags;
+      var childNode = {"name": selectedTags, "type": "Model Tags", "length": (value.pageRetrievalCriteria).length +selectedTags.length + lengthFilter};
+      path.unshift(childNode);
+    }
+    if (value.selected_queries!="" && !(typeof value.selected_queries=="undefined")) { //if (value.pageRetrievalCriteria=="Queries") {
+      var selectedQueries = value.selected_queries;
+      var childNode = {"name": selectedQueries, "type": "Queries", "length": (value.pageRetrievalCriteria).length + selectedQueries.length + lengthFilter}; //var childNode = {"name": selectedQueries, "type": value.pageRetrievalCriteria, "length": (value.pageRetrievalCriteria).length + selectedQueries.length + lengthFilter};
+      path.unshift(childNode);
+    }
+    var newobj = path;
+    this.GetCheckedStateNew(newobj);
+}
+
 
 $(document).ready(function() {
   // Set the seeds panel as hidden by default.

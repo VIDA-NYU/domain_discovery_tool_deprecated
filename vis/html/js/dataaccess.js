@@ -4,12 +4,6 @@
  * May 2015.
  * @author Cesar Palomo <cesarpalomo@gmail.com> <cmp576@nyu.edu>
  */
- var trailx = d3.select("#containerSequence").append("svg")
-     .attr("id", "trail")
-     .attr({
-     width: 0,
-     height: 0
- });
 
 var DataAccess = (function() {
   var pub = {};
@@ -27,7 +21,7 @@ var DataAccess = (function() {
   var loadingTerms = false;
   var pages = undefined;
   var termsSummary = undefined;
-  var lastAccuracy = undefined;  
+  var lastAccuracy = undefined;
 
   // Processes loaded pages summaries.
   var onPagesSummaryUntilLastUpdateLoaded = function(summary, isFilter) {
@@ -152,6 +146,13 @@ var DataAccess = (function() {
     __sig__.emit(__sig__.terms_snippets_loaded, snippetsData);
   };
 
+
+  //Signal load of new pages after certain interval
+  var buildHierarchyFilters = function(filters) {
+      __sig__.emit(__sig__.build_hierarchy_filters, filters);
+  };
+
+
   // Processes loaded queries
   var onAvailableQueriesLoaded = function(queriesData) {
     __sig__.emit(__sig__.queries_loaded, queriesData);
@@ -178,11 +179,12 @@ var DataAccess = (function() {
   };
 
 
+
   //Signal update of online classifier
   var updateOnlineClassifier = function() {
       __sig__.emit(__sig__.update_online_classifier);
   };
-    
+
 
   // Runs async post query.
   var runQuery = function(query, args, onCompletion, doneCb) {
@@ -345,10 +347,8 @@ var DataAccess = (function() {
 	  runQueryForCurrentCrawler(
               '/getPages', {'session': JSON.stringify(session)}, onPagesLoaded, onMaybeUpdateCompletePages);
               //alert("consultaQueries: " + JSON.stringify(session) + ", onpagesload: "+  onPagesLoaded +", onMaybeUpdateCompletePages: "+ onMaybeUpdateCompletePages);
-              //create top bar wich shows the applied filters.
-              var obj = JSON.parse(JSON.stringify(session));
-              var newobj = buildHierarchy(obj);
-              GetCheckedStateNew(newobj);
+    //create top bar wich shows the applied filters.
+    buildHierarchyFilters( JSON.parse(JSON.stringify(session)) );
 
 	  // Fetches terms summaries.
 	  loadingTerms = true;
@@ -460,111 +460,3 @@ var DataAccess = (function() {
 
   return pub;
 }());
-
-//Take a query 'JSON.stringify(session)' for create an array with json objects.
-//Which contains the filters's sequence even queries and tags.
-function buildHierarchy(value) {
-    var path = [];
-    path.length = 0;
-    //var root = {"name": "root", "children": []};
-    var lengthFilter =0;
-    if(value.filter!=null){
-      var selectedFilter = value.filter; var typeName = "Filter";
-      lengthFilter =typeName.length + selectedFilter.length;
-      var childNode = {"name": selectedFilter, "type": typeName, "length": lengthFilter};
-      path.unshift(childNode);
-    }
-    if((typeof value.selected_queries=="undefined") && (typeof value.selected_tags=="undefined")&& (typeof value.selected_model_tags=="undefined")) { //if(value.pageRetrievalCriteria=="Most Recent" && value.selected_queries=="" && value.selected_tags==""){
-      var selectedFilter = value.pageRetrievalCriteria;
-      var childNode = {"name": "Most Recent", "type": "Most Recent", "length": lengthFilter};
-      path.unshift(childNode);
-    }
-    if(value.selected_morelike!=""){ //if(value.selected_morelike!="More like"){
-      var selectedMoreLike = value.selected_morelike;
-      var childNode = {"name": selectedMoreLike, "type": "MoreLike", "length": (value.pageRetrievalCriteria).length +selectedMoreLike.length+lengthFilter};
-      path.unshift(childNode);
-    }
-    if (value.selected_tags!="" && !(typeof value.selected_tags=="undefined")) { // if (value.pageRetrievalCriteria=="Tags") {
-      var selectedTags = value.selected_tags;
-      var childNode = {"name": selectedTags, "type": "Tags", "length": (value.pageRetrievalCriteria).length +selectedTags.length + lengthFilter};
-      path.unshift(childNode);
-    }
-    if (value.selected_model_tags!="" && !(typeof value.selected_model_tags=="undefined")) { // if (value.pageRetrievalCriteria=="Model Tags") {
-	var selectedTags = value.selected_model_tags;
-	var childNode = {"name": selectedTags, "type": "Model Tags", "length": (value.pageRetrievalCriteria).length +selectedTags.length + lengthFilter};
-	path.unshift(childNode);
-    }
-
-    if (value.selected_queries!="" && !(typeof value.selected_queries=="undefined")) { //if (value.pageRetrievalCriteria=="Queries") {
-      var selectedQueries = value.selected_queries;
-      var childNode = {"name": selectedQueries, "type": "Queries", "length": (value.pageRetrievalCriteria).length + selectedQueries.length + lengthFilter}; //var childNode = {"name": selectedQueries, "type": value.pageRetrievalCriteria, "length": (value.pageRetrievalCriteria).length + selectedQueries.length + lengthFilter};
-      path.unshift(childNode);
-    }
-    return path;
-  }
-
-var nroNames =0;
-// Create/update the container which shows current sequence of applied filters (these appear as buttons).
-  function GetCheckedStateNew( newobj) {
-      var list_buttons="<div class='row' style='margin-left:1px; margin-right:5px;'>";
-
-      var g = d3.select("#trail")
-      .selectAll("g")
-      .data(newobj, function(d) { return d.name;});
-        // Add breadcrumb and label for entering nodes.
-        var entering = g.enter().append("svg:g");
-        g.append("foreignObject")
-        .attr("x", function(d) { return 0; })
-        .attr("y", 0)
-        .append("xhtml")
-        .html(function(d) {
-            var filters = (d.name).split(",");
-            if(filters[0]==""){
-              return "";
-            }
-            else{
-              var typeFilter = d.type;
-              var buttons= "<div style='float: left; background-color:#ccadc7; padding: 2px 2px 2px 2px;margin-bottom:2px;margin-right:2px;'>" + typeFilter + ": ";
-              var nameButton = typeFilter+"_";
-              for(var i=0; i<filters.length ; i++){
-                if(filters[i] !="select_all")
-                buttons = buttons + " <button id='"+nameButton+i +"' class='btn btn-default btn-xs' onclick='removeButton(\"" + nameButton+i+","+filters[i] + "\")'>"+ filters[i]+"</button>";
-              }
-              buttons = buttons + "</div>"
-              list_buttons= list_buttons + buttons;
-              return ""; //buttons;
-            }
-        } );
-        list_buttons =list_buttons + "</div>";
-          g.exit().remove();
-            document.getElementById("list_buttons_div").innerHTML = list_buttons;
-}
-
-//Remove the selected button and descheck the associated checkbox.
-function removeButton(infoButton) {
-  var info = infoButton.split(",");
-  if(info[0].indexOf("Filter") > -1){
-    var filterInfo = d3.select('#filter_box').node().value;
-    d3.select('#filter_box').node().value = "";
-  }else{
-    if(info[0].indexOf("MoreLike") > -1){
-      checkboxes = document.getElementsByName('morelike_checkbox');
-    }
-    if(info[0].indexOf("Queries") > -1){
-      checkboxes = document.getElementsByName('queries_checkbox');
-    }
-    if(info[0].indexOf("Tags") > -1){
-      checkboxes = document.getElementsByName('tags_checkbox');
-    }
-     if(info[0].indexOf("Model generated Tags") > -1){
-	 checkboxes = document.getElementsByName('model_tags_checkbox');
-    }
-
-    for (var checkbox in checkboxes){
-      if(checkboxes[checkbox].value == info[1]){
-      checkboxes[checkbox].checked = this.checked;}
-    }
- }
-  var nameButton="#" + info[0];
-  $(nameButton).remove();
-}
