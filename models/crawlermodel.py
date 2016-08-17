@@ -145,6 +145,20 @@ class CrawlerModel:
         unique_tags["Neutral"] = unique_tags["Neutral"] + 1
     return unique_tags
 
+  def getAvailableModelTags(self, session):
+    es_info = self.esInfo(session['domainId'])
+    
+    unsure_tags = self._getUnsureLabelPages(session)
+    unique_tags = {"Unsure": len(unsure_tags)}
+
+    relevant_tags = self._getPosLabelPages(session)
+    unique_tags["Maybe relevant"] = len(relevant_tags)
+
+    irrelevant_tags = self._getNegLabelPages(session)
+    unique_tags["Maybe irrelevant"] = len(irrelevant_tags)
+
+    return unique_tags
+
   def encode(self, url):
     return urllib2.quote(url).replace("/", "%2F")
 
@@ -788,6 +802,7 @@ class CrawlerModel:
                     hits.extend(aux_result)
                 else:
                     hits.extend(results)
+                    
 
     return hits
 
@@ -961,13 +976,14 @@ class CrawlerModel:
       hits = self._getPagesForQueries(session)
     elif (session['pageRetrievalCriteria'] == 'Tags'):
       hits = self._getPagesForTags(session)
-    elif (session['pageRetrievalCriteria'] == 'Unsure tag'):
-      hits = self._getUnsureLabelPages(session)
-    elif (session['pageRetrievalCriteria'] == 'Maybe relevant'):
-      hits = self._getPosLabelPages(session)
-    elif (session['pageRetrievalCriteria'] == 'Maybe irrelevant'):
-      hits = self._getNegLabelPages(session)
-
+    elif (session['pageRetrievalCriteria'] == 'Model Tags'):
+      if session['selected_model_tags'] == 'Unsure':
+        hits = self._getUnsureLabelPages(session)
+      elif (session['selected_model_tags'] == 'Maybe relevant'):
+        hits = self._getPosLabelPages(session)
+      elif (session['selected_model_tags'] == 'Maybe irrelevant'):
+        hits = self._getNegLabelPages(session)
+        
     return hits
 
   # Returns most recent downloaded pages.
@@ -1415,12 +1431,14 @@ class CrawlerModel:
         test_indices = np.random.choice(len(calibrate_labels), len(calibrate_labels)/3)
         
         sigmoid = self._onlineClassifiers[session['domainId']]["onlineClassifier"].calibrate(calibrate_data[train_indices], np.asarray(calibrate_labels)[train_indices])
-        self._onlineClassifiers[session['domainId']]["sigmoid"] = sigmoid
-        accuracy = round(self._onlineClassifiers[session['domainId']]["onlineClassifier"].calibrateScore(sigmoid, calibrate_data[test_indices], np.asarray(calibrate_labels)[test_indices]), 4) * 100
-        self._onlineClassifiers[session['domainId']]["accuracy"] = str(accuracy)
+        if not sigmoid is None:
+          self._onlineClassifiers[session['domainId']]["sigmoid"] = sigmoid
+          accuracy = round(self._onlineClassifiers[session['domainId']]["onlineClassifier"].calibrateScore(sigmoid, calibrate_data[test_indices], np.asarray(calibrate_labels)[test_indices]), 4) * 100
+          self._onlineClassifiers[session['domainId']]["accuracy"] = str(accuracy)
 
-        print "\n\n\n Accuracy = ", accuracy, "%\n\n\n"
-
+          print "\n\n\n Accuracy = ", accuracy, "%\n\n\n"
+        else:
+          print "\n\n\nNot enough data for calibration\n\n\n"
       else:
         print "\n\n\nNot enough data for calibration\n\n\n"
 
@@ -1461,21 +1479,32 @@ class CrawlerModel:
         entry = {}
         if cm[i][1] < 60:
           entry["unsure_tag"] = 1
+          entry["label_pos"] = 0
+          entry["label_neg"] = 0
           entries[unlabeled_ids[i]] = entry
           unsure = unsure + 1
         else:
           entry["label_pos"] = 1
+          entry["unsure_tag"] = 0
+          entry["label_neg"] = 0
           entries[unlabeled_ids[i]] = entry
+
           label_pos = label_pos + 1
 
       for i in neg_sorted_cm:
         entry = {}
         if cm[i][0] < 60:
           entry["unsure_tag"] = 1
+          entry["label_pos"] = 0
+          entry["label_neg"] = 0
           entries[unlabeled_ids[i]] = entry
+
           unsure = unsure + 1
         else:
           entry["label_neg"] = 1
+          entry["unsure_tag"] = 0
+          entry["label_pos"] = 0
+          
           entries[unlabeled_ids[i]] = entry
           label_neg = label_neg + 1
             
@@ -1747,8 +1776,6 @@ class CrawlerModel:
     else:
       result = tsne.fit_transform(X)
 
-    from sklearn.externals import joblib
-    joblib.dump([result,y], '/media/data/yamuna/Memex/scripts/tsne/ddt_tsne_proj.pkl')
     return result
 
   @staticmethod
@@ -1796,6 +1823,7 @@ class CrawlerModel:
     model: a topik topic model
         A topik model, encoding things like term frequencies, etc.
     """
+    domain = domain.replace(" ","_")
     content_field = 'text'
     def not_empty(doc): return bool(doc[content_field])  # True if document not empty
     raw_data = filter(not_empty, read_input(source=es_server, index=domain))
