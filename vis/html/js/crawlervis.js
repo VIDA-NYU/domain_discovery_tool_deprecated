@@ -1417,7 +1417,6 @@ CrawlerVis.prototype.updateOnlineClassifier = function() {
       var vis = this;
       var submit_filter = function() {
           var value = d3.select('#filter_box').node().value;
-	  console.log(value);
         __sig__.emit(__sig__.filter_enter, value);
       };
 
@@ -1804,7 +1803,6 @@ CrawlerVis.prototype.updateOnlineClassifier = function() {
       session['toDate'] = todate_utc;
 
 	var filterTerms = d3.select('#filter_box').node().value;
-	console.log(filterTerms);
       if (filterTerms === '')
 	  filterTerms = null;
       session['filter'] = filterTerms;
@@ -1841,7 +1839,6 @@ CrawlerVis.prototype.updateOnlineClassifier = function() {
             //else
             session['pageRetrievalCriteria'] = "Model Tags";
 		session['selected_model_tags'] = vis.getCheckedValues('model_tags_checkbox').toString();
-		console.log(session['selected_model_tags']);
           }
 
         }
