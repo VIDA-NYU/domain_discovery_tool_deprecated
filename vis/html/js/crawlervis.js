@@ -684,13 +684,13 @@ CrawlerVis.prototype.enableModelTagSelection = function(tags){
 
     var newli_select_all = document.createElement('li');
     if(check_all)
-    newli_select_all.innerHTML = "<input type='checkbox' name='model_tags_checkbox' id='select_all_tags' value='select_all' checked='true'><label for='select_all'>Select All</label>";
+    newli_select_all.innerHTML = "<input type='checkbox' name='model_tags_checkbox' id='select_all_Modeltags' value='select_all' checked='true'><label for='select_all'>Select All</label>";
     else
-    newli_select_all.innerHTML = "<input type='checkbox' name='model_tags_checkbox' id='select_all_tags' value='select_all'><label for='select_all'>Select All</label>";
+    newli_select_all.innerHTML = "<input type='checkbox' name='model_tags_checkbox' id='select_all_Modeltags' value='select_all'><label for='select_all'>Select All</label>";
 
     document.getElementById('modelTagsCheckBox').appendChild(newli_select_all);
 
-    d3.select('#select_all_tags').on('click', function(){
+    d3.select('#select_all_Modeltags').on('click', function(){
       checkboxes = document.getElementsByName('model_tags_checkbox');
       for (var checkbox in checkboxes){
         checkboxes[checkbox].checked = this.checked;
@@ -1875,6 +1875,7 @@ CrawlerVis.prototype.clearAll = function() {
 
 //List of applied filters: Remove the selected button and descheck the associated checkbox.
 removeButton =  function(infoButton) {
+  var vis =visgeneral;
   var info = infoButton.split(",");
   if(info[0].indexOf("Filter") > -1){
     var filterInfo = d3.select('#filter_box').node().value;
@@ -1889,7 +1890,7 @@ removeButton =  function(infoButton) {
     if(info[0].indexOf("Tags") > -1){
       checkboxes = document.getElementsByName('tags_checkbox');
     }
-     if(info[0].indexOf("Model generated Tags") > -1){
+     if(info[0].indexOf("ModelTags") > -1){
    checkboxes = document.getElementsByName('model_tags_checkbox');
     }
     for (var checkbox in checkboxes){
@@ -1899,6 +1900,9 @@ removeButton =  function(infoButton) {
   }
   var nameButton="#" + info[0];
   $(nameButton).remove();
+  // Updates pages and terms from filter buttons.
+  DataAccess.update(vis.sessionInfo());
+  vis.pagesGallery.clear();
 }
 
   // Create/update the container which shows current sequence of applied filters (these appear as buttons).
@@ -1956,7 +1960,7 @@ CrawlerVis.prototype.GetCheckedStateNew = function( newobj) {
     }
     if (value.selected_model_tags!="" && !(typeof value.selected_model_tags=="undefined")) { // if (value.pageRetrievalCriteria=="Model Tags") {
       var selectedTags = value.selected_model_tags;
-      var childNode = {"name": selectedTags, "type": "Model Tags", "length": (value.pageRetrievalCriteria).length +selectedTags.length + lengthFilter};
+      var childNode = {"name": selectedTags, "type": "ModelTags", "length": (value.pageRetrievalCriteria).length +selectedTags.length + lengthFilter};
       path.unshift(childNode);
     }
     if (value.selected_queries!="" && !(typeof value.selected_queries=="undefined")) { //if (value.pageRetrievalCriteria=="Queries") {
