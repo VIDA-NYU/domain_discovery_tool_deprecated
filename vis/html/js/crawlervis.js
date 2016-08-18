@@ -513,17 +513,15 @@ SigSlots.connect(
         d3.select('#toggleButtonMoreQueries').on('click', function() {
             if(nroQueries<nroMaxQueries && (nroQueries+5)<=nroMaxQueries  && nroMaxQueries>5){
               nroQueries = nroQueries + 5;
-              alert("nroQueries" + nroQueries);
               DataAccess.loadAvailableQueries(vis.sessionInfo());
               document.getElementById("toggleButtonMoreQueries").innerText = "See More";
               document.getElementById("toggleButtonLessQueries").innerText = "See Less";
             }
             else{
-              //alert("nroQueries" + nroQueries);
-              //alert("nroMaxQueries" + nroMaxQueries);
               nroQueries = nroMaxQueries;
               DataAccess.loadAvailableQueries(vis.sessionInfo());
               document.getElementById("toggleButtonMoreQueries").innerText = "";
+              if(nroQueries>5)document.getElementById("toggleButtonLessQueries").innerText = "See Less";
             }
 
         });
@@ -539,14 +537,17 @@ SigSlots.connect(
               nroTags = nroMaxTags;
               DataAccess.loadAvailableTags(vis.sessionInfo(), 'Tags');
               document.getElementById("toggleButtonMoreTags").innerText = "";
+              if(nroTags>5)document.getElementById("toggleButtonLessTags").innerText = "See Less";
             }
         });
 	  //Showing less checkboxes (for queries, tags and 'more like')
         d3.select('#toggleButtonLessQueries').on('click', function() {
-            if(nroQueries>5){
-              nroQueries = nroQueries -5;
+            var lessQueries = nroQueries-5;
+            if(nroQueries>5 && lessQueries>=0){
+              nroQueries = nroQueries -lessQueries;
               DataAccess.loadAvailableQueries(vis.sessionInfo());
               document.getElementById("toggleButtonMoreQueries").innerText = "See More";
+              if(nroQueries==5)document.getElementById("toggleButtonLessQueries").innerText = "";
             }
             else{
               DataAccess.loadAvailableQueries(vis.sessionInfo());
@@ -556,10 +557,12 @@ SigSlots.connect(
 
 	  //Showing less checkboxes (for queries, tags and 'more like')
         d3.select('#toggleButtonLessTags').on('click', function() {
-            if(nroTags>5){
-              nroTags = nroTags -5;
+            var lessTags = nroTags-5;
+            if(nroTags>5 && lessTags>=0){
+              nroTags = nroTags -lessTags;
               DataAccess.loadAvailableTags(vis.sessionInfo(), 'Tags');
               document.getElementById("toggleButtonMoreTags").innerText = "See More";
+              if(nroTags==5)document.getElementById("toggleButtonLessTags").innerText = "";
             }
             else{
               DataAccess.loadAvailableTags(vis.sessionInfo(), 'Tags');
@@ -732,7 +735,6 @@ CrawlerVis.prototype.enableQuerySelection = function(queries){
   //$('#tagsCheckBox').hide(); // hide before tagsCheckBox
 
   var prev_checked_queries = vis.getCheckedValues("queries_checkbox");
-  //alert(prev_checked_queries);
   var check_all = false;
   if (prev_checked_queries.indexOf('select_all') > -1)
   check_all = true;
