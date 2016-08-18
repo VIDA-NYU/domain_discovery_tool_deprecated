@@ -1915,7 +1915,7 @@ CrawlerVis.prototype.GetCheckedStateNew = function( newobj) {
         var nameButton = typeFilter+"_";
         for(var i=0; i<filters.length ; i++){
           if(filters[i] !="select_all")
-          buttons = buttons + " <button id='"+nameButton+i +"' class='btn btn-default btn-xs' onclick='removeButton(\"" + nameButton+i+","+filters[i] + "\")'>"+ filters[i]+"</button>";
+          buttons = buttons + " <button id='"+nameButton+i +"' class='btn btn-default btn-xs'  onclick='removeButton(\"" + nameButton+i+","+filters[i] + "\")'> <span class='pull-right' style='margin-top:1px;margin-left:2px;margin-right:-3px;'> <span class='glyphicon glyphicon-remove'></span></span>"+ filters[i]+"</button>";
         }
         buttons = buttons + "</div>"
         list_buttons= list_buttons + buttons;
