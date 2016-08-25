@@ -420,6 +420,7 @@ SigSlots.connect(
         var selectBox = d3.select('#selectProjectionAlgorithm').on('change', function() {
           var algId = d3.select(this).node().value;
           vis.setActiveProjectionAlg(algId);
+          CrawlerVis.prototype.updateVisualization(vis);
         });
         var getElementValue = function(d) {
           return d.name;
@@ -494,19 +495,19 @@ SigSlots.connect(
         d3.select('#UpdateCheckboxesQuery').on('click', function() {
             DataAccess.loadAvailableQueries(vis.sessionInfo());
             document.getElementById("toggleButtonMoreQueries").innerText = "See More";
-            document.getElementById("toggleButtonLessQueries").innerText = "See Less";
+            document.getElementById("toggleButtonLessQueries").innerText = "";
         });
 
         d3.select('#UpdateCheckboxesTag').on('click', function() {
             DataAccess.loadAvailableTags(vis.sessionInfo(), 'Tags');
             document.getElementById("toggleButtonMoreTags").innerText = "See More";
-            document.getElementById("toggleButtonLessTags").innerText = "See Less";
+            document.getElementById("toggleButtonLessTags").innerText = "";
         });
 
-	  d3.select('#UpdateCheckboxesModelTag').on('click', function() {
+	      d3.select('#UpdateCheckboxesModelTag').on('click', function() {
             DataAccess.loadAvailableModelTags(vis.sessionInfo());
-            document.getElementById("toggleButtonMoreTags").innerText = "See More";
-            document.getElementById("toggleButtonLessTags").innerText = "See Less";
+            //document.getElementById("toggleButtonMoreTags").innerText = "See More";
+            //document.getElementById("toggleButtonLessTags").innerText = "See Less";
         });
 
 	  //showing more checkboxes (for queries, tags and 'more like')
@@ -548,6 +549,7 @@ SigSlots.connect(
               DataAccess.loadAvailableQueries(vis.sessionInfo());
               document.getElementById("toggleButtonMoreQueries").innerText = "See More";
               if(nroQueries==5)document.getElementById("toggleButtonLessQueries").innerText = "";
+              else document.getElementById("toggleButtonLessQueries").innerText = "See Less";
             }
             else{
               DataAccess.loadAvailableQueries(vis.sessionInfo());
@@ -563,6 +565,7 @@ SigSlots.connect(
               DataAccess.loadAvailableTags(vis.sessionInfo(), 'Tags');
               document.getElementById("toggleButtonMoreTags").innerText = "See More";
               if(nroTags==5)document.getElementById("toggleButtonLessTags").innerText = "";
+              else document.getElementById("toggleButtonLessTags").innerText = "See Less";
             }
             else{
               DataAccess.loadAvailableTags(vis.sessionInfo(), 'Tags');
@@ -598,6 +601,13 @@ CrawlerVis.prototype.onLoadedTagColors = function(colors_data) {
     this.tag_colors={};
     this.color_index = 0;
   }
+};
+
+// Updates pages and terms from filter buttons or filter criteria(Filter Data).
+CrawlerVis.prototype.updateVisualization = function(session){
+  var vis = session;
+  DataAccess.update(vis.sessionInfo());
+  vis.pagesGallery.clear();
 };
 
 CrawlerVis.prototype.enableTagSelection = function(tags, event){
@@ -667,6 +677,15 @@ CrawlerVis.prototype.enableTagSelection = function(tags, event){
     //$('#modelSettingModal').modal("show");
   }
   $('#tagsCheckBox').show();
+
+  $("input[name='tags_checkbox']").click(function() {
+    CrawlerVis.prototype.updateVisualization(vis);
+  });
+  $("input[name='morelike_checkbox']").click(function() {
+    CrawlerVis.prototype.updateVisualization(vis);
+  });
+
+
 };
 
 CrawlerVis.prototype.enableModelTagSelection = function(tags){
@@ -703,14 +722,14 @@ CrawlerVis.prototype.enableModelTagSelection = function(tags){
     });
 
     var count;
-    nroMaxTags = keysSorted.length;
+    var nroMaxModelTags = keysSorted.length;
 
-    if(prev_checked_tags.length>nroTags && prev_checked_tags.length>0)
+    /*if(prev_checked_tags.length>nroTags && prev_checked_tags.length>0)
       nroTags=prev_checked_tags.length;
     if(keysSorted.length<nroTags)
-      nroTags=keysSorted.length;
+      nroTags=keysSorted.length;*/
 
-    for (count = 0; count < nroTags; count++) {//keysSorted.length
+    for (count = 0; count < nroMaxModelTags; count++) {//keysSorted.length
       var checked = false;
       if (prev_checked_tags.indexOf(keysSorted[count]) > -1)
       checked = true;
@@ -726,6 +745,10 @@ CrawlerVis.prototype.enableModelTagSelection = function(tags){
     }
 
   $('#modelTagsCheckBox').show();
+
+  $("input[name='model_tags_checkbox']").click(function() {
+    CrawlerVis.prototype.updateVisualization(vis);
+  });
 };
 
 CrawlerVis.prototype.enableQuerySelection = function(queries){
@@ -804,6 +827,11 @@ CrawlerVis.prototype.enableQuerySelection = function(queries){
     document.getElementById('queryCheckBox').appendChild(newli);
   }
     $('#queryCheckBox').show();
+
+    $("input[name='queries_checkbox']").click(function() {
+      CrawlerVis.prototype.updateVisualization(vis);
+    });
+
 };
 
 
@@ -1578,7 +1606,11 @@ CrawlerVis.prototype.updateOnlineClassifier = function() {
     // Creates select to limit number of pages to load.
     CrawlerVis.prototype.createSelectForFilterPageCap = function() {
       var vis = this;
-      var selectBox = d3.select('#filter_cap_select');
+      //var selectBox = d3.select('#filter_cap_select');
+      var selectBox = d3.select('#filter_cap_select').on('change', function() {
+        CrawlerVis.prototype.updateVisualization(vis);
+      });
+
       var getElementValue = function(d) {
         return d;
       };
@@ -1593,6 +1625,9 @@ CrawlerVis.prototype.updateOnlineClassifier = function() {
       });
 
       $('#filter_cap_select').val(100);
+      cap = d3.select('#filter_cap_select').node().value;
+
+
     };
 
     /**
@@ -1900,9 +1935,8 @@ removeButton =  function(infoButton) {
   }
   var nameButton="#" + info[0];
   $(nameButton).remove();
-  // Updates pages and terms from filter buttons.
-  DataAccess.update(vis.sessionInfo());
-  vis.pagesGallery.clear();
+  CrawlerVis.prototype.updateVisualization(vis);
+
 }
 
   // Create/update the container which shows current sequence of applied filters (these appear as buttons).
@@ -1996,13 +2030,25 @@ $(document).ready(function() {
         $('#select_tags').hide();
         $('#select_queries').hide();
         $('#queryCheckBox').show();
-        document.getElementById("toggleButtonMoreQueries").innerText = "See More"; $('#toggleButtonMoreQueries').show();
-        document.getElementById("toggleButtonLessQueries").innerText = "See Less"; $('#toggleButtonLessQueries').show();
+        var MoreQueries = ""; var LessQueries = "";
+        var MoreTags = ""; var LessTags = "";
+
+        if(nroMaxQueries>5){
+          MoreQueries = "See More";
+          LessQueries = "";
+        }
+        document.getElementById("toggleButtonMoreQueries").innerText = MoreQueries; $('#toggleButtonMoreQueries').show();
+        document.getElementById("toggleButtonLessQueries").innerText = LessQueries;$('#toggleButtonLessQueries').show();
+
         //DataAccess.loadAvailableQueries(vis.sessionInfo());
         //Load Tags
+        if(nroMaxTags>5){
+          MoreTags = "See More";
+          LessTags = "";
+        }
         $('#tagsCheckBox').show();
-        document.getElementById("toggleButtonMoreTags").innerText = "See More"; $('#toggleButtonMoreTags').show();
-        document.getElementById("toggleButtonLessTags").innerText = "See Less"; $('#toggleButtonLessTags').show();
+        document.getElementById("toggleButtonMoreTags").innerText = MoreTags; $('#toggleButtonMoreTags').show();
+        document.getElementById("toggleButtonLessTags").innerText = LessTags; $('#toggleButtonLessTags').show();
         //DataAccess.loadAvailableTags(vis.sessionInfo(), 'Tags');
 
         $header.find("span.collapsethis").removeClass("glyphicon-plus");
