@@ -1,5 +1,5 @@
 import java.io.*;
-import de.l3s.boilerpipe.extractors.ArticleExtractor;
+import de.l3s.boilerpipe.extractors.KeepEverythingExtractor;
 import java.net.URL;
 import java.util.*;
 import java.util.HashMap;
@@ -12,7 +12,7 @@ public class Extract {
     {
 	try{
 	    if(!content.contains("@empty@")){
-		content = ArticleExtractor.INSTANCE.getText(content);
+		content = KeepEverythingExtractor.INSTANCE.getText(content);
 	    }
 	    content = content.trim().replaceAll(" +", " ");
 	    content = content.replaceAll("[\n\"\t]", " ");
