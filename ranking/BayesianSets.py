@@ -20,15 +20,15 @@ class BayesianSets:
 
         a = multiply(m, c)
         b = multiply(subtract(1,m),c)
-        
+
         at = add(a,sum(D, axis=0))
         bt = subtract(add(b,N),sum(D, axis=0))
-
+        
         C = sum(subtract(add(subtract(log(add(a,b)),log(add(add(a,b),N))), log(bt)), log (b)))
 
-        q = add(subtract(subtract(log(at),log(a)),log(bt)), log(b))
+        q = transpose(add(subtract(subtract(log(at),log(a)),log(bt)), log(b)))
         
-        score_X = add(C, dot(X,q))
+        score_X = transpose(add(C, dot(X,q)))
         
-        return score_X
+        return asarray(score_X)
         
