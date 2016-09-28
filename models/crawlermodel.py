@@ -563,7 +563,7 @@ class CrawlerModel:
     if not top_terms:
       return []
 
-    pos_data = {field['id']:" ".join(field['text'][0].split(" ")[0:MAX_TEXT_LENGTH]) for field in term_search(es_info['mapping']['tag'], ['Relevant'], self._all, ['url', 'text'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)}
+    pos_data = {field['id']:" ".join(field[es_info['mapping']['text']][0].split(" ")[0:MAX_TEXT_LENGTH]) for field in term_search(es_info['mapping']['tag'], ['Relevant'], self._all, ['url', es_info['mapping']['text']], es_info['activeCrawlerIndex'], es_info['docType'], self._es)}
     pos_urls = pos_data.keys();
     pos_text = pos_data.values();
 
@@ -594,7 +594,7 @@ class CrawlerModel:
       total_trigram_pos_tf = trigram_tf_data.sum(axis=0)
       total_trigram_pos = np.sum(total_trigram_pos_tf)
 
-    neg_data = {field['id']:" ".join(field['text'][0].split(" ")[0:MAX_TEXT_LENGTH]) for field in term_search(es_info['mapping']['tag'], ['Irrelevant'], self._all, ['url', 'text'], es_info['activeCrawlerIndex'], es_info['docType'], self._es)}
+    neg_data = {field['id']:" ".join(field[es_info['mapping']['text']][0].split(" ")[0:MAX_TEXT_LENGTH]) for field in term_search(es_info['mapping']['tag'], ['Irrelevant'], self._all, ['url', es_info['mapping']['text']], es_info['activeCrawlerIndex'], es_info['docType'], self._es)}
     neg_urls = neg_data.keys();
     neg_text = neg_data.values();
 
@@ -1402,7 +1402,7 @@ class CrawlerModel:
 
       trainedPosSamples = self._onlineClassifiers[session['domainId']]["trainedPosSamples"]
       trainedNegSamples = self._onlineClassifiers[session['domainId']]["trainedNegSamples"]
-      if 2*len(trainedPosSamples)/3 and  2*len(trainedNegSamples)/3 > 2:
+      if 2*len(trainedPosSamples)/3  > 2 and  2*len(trainedNegSamples)/3 > 2:
         pos_trained_docs = get_documents_by_id(trainedPosSamples,
                                                ["url", es_info['mapping']['text']],
                                                es_info['activeCrawlerIndex'], 
@@ -1430,7 +1430,7 @@ class CrawlerModel:
         train_indices = np.random.choice(len(calibrate_labels), 2*len(calibrate_labels)/3)
         test_indices = np.random.choice(len(calibrate_labels), len(calibrate_labels)/3)
         
-        sigmoid = self._onlineClassifiers[session['domainId']]["onlineClassifier"].calibrate(calibrate_data[train_indices], np.asarray(calibrate_labels)[train_indices])
+        sigmoid = onlineClassifier.calibrate(calibrate_data[train_indices], np.asarray(calibrate_labels)[train_indices])
         if not sigmoid is None:
           self._onlineClassifiers[session['domainId']]["sigmoid"] = sigmoid
           accuracy = round(self._onlineClassifiers[session['domainId']]["onlineClassifier"].calibrateScore(sigmoid, calibrate_data[test_indices], np.asarray(calibrate_labels)[test_indices]), 4) * 100
@@ -1453,7 +1453,7 @@ class CrawlerModel:
 
     sigmoid = self._onlineClassifiers[session['domainId']].get("sigmoid")
     if sigmoid != None:
-      unlabelled_docs = field_missing(es_info["mapping"]["tag"], ["url", "text"], self._all,
+      unlabelled_docs = field_missing(es_info["mapping"]["tag"], ["url", es_info["mapping"]["text"]], self._all,
                                       es_info['activeCrawlerIndex'], 
                                       es_info['docType'],
                                       self._es)
