@@ -32,7 +32,7 @@ var CrawlerVis = function() {
   var currentCrawler = undefined;
   var queries = undefined;
   var tags = undefined;
-  var modelTags = undefined;  
+  var modelTags = undefined;
   this.CUSTOM_COLORS = ["Coral","GoldenRod","Gold","PaleGreen","MediumTurquoise","SteelBlue","SlateBlue","Purple", "RebeccaPurple"]
   this.color_index = 0;
   this.tag_colors = {};
@@ -112,7 +112,7 @@ CrawlerVis.prototype.initSignalSlotsCrawler = function() {
   SigSlots.connect(__sig__.add_neg_term, this, this.runAddNegTerm);
   SigSlots.connect(__sig__.load_new_pages_summary, this, this.loadNewPagesSummary);
   SigSlots.connect(__sig__.update_online_classifier, this, this.updateOnlineClassifier);
-
+  SigSlots.connect(__sig__.build_hierarchy_filters, this, this.buildHierarchyFilters);
   // TODO(Cesar): remove! not active for crawler.
   //SigSlots.connect(__sig__.term_toggle, this, this.onTermToggle);
 };
@@ -158,6 +158,9 @@ SigSlots.connect(
   SigSlots.connect(__sig__.set_pages_tags_completed, this, this.onPagesTagsSet);
   SigSlots.connect(__sig__.update_online_classifier, this, this.updateOnlineClassifier);
   SigSlots.connect(__sig__.update_online_classifier_completed, this, this.onUpdatedOnlineClassifier);
+  SigSlots.connect(__sig__.build_hierarchy_filters, this, this.buildHierarchyFilters);
+  SigSlots.connect(__sig__.new_tag_loaded, this, this.updateNewTagLoaded);
+
 };
 
     // Initial components setup for seed crawler use.
@@ -253,6 +256,8 @@ SigSlots.connect(
         this.initAddTermButton();
       };
 
+
+
       CrawlerVis.prototype.getElementValueId = function(d){
         return d.id;
       }
@@ -265,7 +270,6 @@ SigSlots.connect(
 
       CrawlerVis.prototype.renderCrawlerOptions = function(element, data, selectedCrawler){
         var vis = this;
-
         // Remove existing crawler options before rendering new ones.
         element.selectAll('li').filter(function(d, i){
           return (this.id != "addDomainButton" && this.id != "delDomainButton");
@@ -289,12 +293,14 @@ SigSlots.connect(
           .after("<label for='"+this.id+"'>"+this.placeholder+"</label>");
         });
         if (selectedCrawler){
-          d3.select('input[value="'+selectedCrawler+'"]').attr("checked", "checked");
+          d3.select('input[value="'+selectedCrawler+'"]');
         }
 
         d3.selectAll('input[name="crawlerRadio"]').on('change', function(){
           var crawlerId = d3.select('input[name="crawlerRadio"]:checked').node().value;
           vis.setCurrentCrawler(crawlerId);
+          CrawlerVis.prototype.updateVisualization(vis);
+          nroQueries = initialCheckBox;   nroTags = initialCheckBox; changeDomainQuery = true; changeDomainTag =true;
         });
 
         // Add the Add Domain button after the last element in the crawler selection.
@@ -337,6 +343,8 @@ SigSlots.connect(
           vis.setCurrentCrawler(crawlerId);
           d3.select('input[value="'+data[0]["id"]+'"]').attr("checked", "checked");
           $("#currentDomain").text(data[0].name).append("<span class='caret'></span>");
+          //d3.select('input[value="'+data[0]["id"]+'"]');
+          //$("#currentDomain").text("Select a domain...").append("<span class='caret'></span>");
         } else {
           $("#currentDomain").text("Select/Add Domains").append("<span class='caret'></span>");
           document.getElementById("status_panel").innerHTML = 'No domains found'
@@ -351,7 +359,6 @@ SigSlots.connect(
         var type = result["type"]
         var vis = this;
         var selectBox = d3.select('#selectCrawler');
-
         if (data.length > 0) {
           var selectedCrawler = d3.select('input[name="crawlerRadio"]:checked').node()
 
@@ -406,7 +413,7 @@ SigSlots.connect(
 	var session = this.sessionInfo();
         DataAccess.loadAvailableQueries(session);
         DataAccess.loadAvailableTags(session, 'Tags');
-	DataAccess.loadAvailableModelTags(session);
+	       DataAccess.loadAvailableModelTags(session);
       //  $("#seedsHeaderData").next().slideToggle(0);
       };
 
@@ -417,6 +424,7 @@ SigSlots.connect(
         var selectBox = d3.select('#selectProjectionAlgorithm').on('change', function() {
           var algId = d3.select(this).node().value;
           vis.setActiveProjectionAlg(algId);
+          CrawlerVis.prototype.updateVisualization(vis);
         });
         var getElementValue = function(d) {
           return d.name;
@@ -447,9 +455,66 @@ SigSlots.connect(
       var status = "less";
       var nroMaxQueries;
       var nroMaxTags;
-      var nroQueries = 5;
-      var nroTags = 5;
+      var flag_newQuery = false; changeDomain = false; flag_newTag = false;
+      var value_newQuery = "";
+      var initialCheckBox = 5; nroQueries = initialCheckBox; nroTags = initialCheckBox;
       var visgeneral;
+
+      //Adding new queries.
+      CrawlerVis.prototype.updateFilterData = function(value) {
+        var session = CrawlerVis.prototype.sessionInfo();
+        flag_newQuery= true;
+        value_newQuery = value;
+        DataAccess.update(session);
+        this.pagesGallery.clear();
+        //DataAccess.loadAvailableQueries(session);
+        //DataAccess.loadAvailableTags(session, 'Tags');
+        //CrawlerVis.prototype.updateNewQueryButtonMoreQueries(session);
+      };
+
+      //Updating 'morequeries' button after a new query is added
+      CrawlerVis.prototype.updateNewQueryButtonMoreQueries = function(session) {
+        document.getElementById("toggleButtonLessQueries").innerText = "";
+        if(nroQueries<=initialCheckBox && nroMaxQueries<=initialCheckBox) {
+          document.getElementById("toggleButtonMoreQueries").innerText = "";
+        }
+        else{
+          //if(nroQueries>10) {document.getElementById("toggleButtonLessQueries").innerText = "See Less";}
+          document.getElementById("toggleButtonMoreQueries").innerText = "See More";
+        }
+      };
+
+      //Updating 'moretags' button after a new tag is added
+      CrawlerVis.prototype.updateChangeDomainButtonMoreTags = function(session) {
+        document.getElementById("toggleButtonLessTags").innerText = "";
+        if(nroTags<=initialCheckBox && nroMaxTags<=initialCheckBox) {
+          document.getElementById("toggleButtonMoreTags").innerText = "";
+        }
+        else{
+          //if(nroQueries>10) {document.getElementById("toggleButtonLessQueries").innerText = "See Less";}
+          document.getElementById("toggleButtonMoreTags").innerText = "See More";
+        }
+      };
+
+      //updating state of 'morequeries' button after user clicks on it.
+      CrawlerVis.prototype.updateButtonMoreQueries = function(session) {
+        var currentMoreQueries= nroQueries + initialCheckBox;
+        if(currentMoreQueries<nroMaxQueries && (nroQueries+initialCheckBox)<=nroMaxQueries  && nroMaxQueries>initialCheckBox){
+          nroQueries = currentMoreQueries; //nroQueries + initialCheckBox;
+          DataAccess.loadAvailableQueries(session);//DataAccess.loadAvailableQueries(vis.sessionInfo());
+          document.getElementById("toggleButtonMoreQueries").innerText = "See More";
+          document.getElementById("toggleButtonLessQueries").innerText = "See Less";
+        }
+        else{
+          nroQueries = nroMaxQueries;
+          DataAccess.loadAvailableQueries(session);
+          document.getElementById("toggleButtonMoreQueries").innerText = "";
+          if(nroQueries>initialCheckBox) document.getElementById("toggleButtonLessQueries").innerText = "See Less";
+        }
+
+      };
+
+
       // Creates select with available pages selection criteria.
       CrawlerVis.prototype.createSelectForAvailablePageRetrievalCriteria = function() {
         var vis = this;
@@ -489,45 +554,43 @@ SigSlots.connect(
         $('#selectPageRetrievalCriteria').val("Most Recent");
 
         d3.select('#UpdateCheckboxesQuery').on('click', function() {
-            DataAccess.loadAvailableQueries(vis.sessionInfo());
-            document.getElementById("toggleButtonMoreQueries").innerText = "See More";
-            document.getElementById("toggleButtonLessQueries").innerText = "See Less";
+          DataAccess.loadAvailableQueries(vis.sessionInfo());
+          DataAccess.loadAvailableTags(vis.sessionInfo(), 'Tags');
+          CrawlerVis.prototype.updateNewQueryButtonMoreQueries(vis.sessionInfo());
         });
 
         d3.select('#UpdateCheckboxesTag').on('click', function() {
             DataAccess.loadAvailableTags(vis.sessionInfo(), 'Tags');
-            document.getElementById("toggleButtonMoreTags").innerText = "See More";
-            document.getElementById("toggleButtonLessTags").innerText = "See Less";
         });
-	  
-	  d3.select('#UpdateCheckboxesModelTag').on('click', function() {
+
+	      d3.select('#UpdateCheckboxesModelTag').on('click', function() {
             DataAccess.loadAvailableModelTags(vis.sessionInfo());
-            document.getElementById("toggleButtonMoreTags").innerText = "See More";
-            document.getElementById("toggleButtonLessTags").innerText = "See Less";
+            //document.getElementById("toggleButtonMoreTags").innerText = "See More";
+            //document.getElementById("toggleButtonLessTags").innerText = "See Less";
         });
 
 	  //showing more checkboxes (for queries, tags and 'more like')
         d3.select('#toggleButtonMoreQueries').on('click', function() {
-            if(nroQueries<nroMaxQueries && (nroQueries+5)<=nroMaxQueries  && nroMaxQueries>5){
+            DataAccess.loadAvailableQueries(vis.sessionInfo());
+            CrawlerVis.prototype.updateButtonMoreQueries(vis.sessionInfo());
+            /*if(nroQueries<nroMaxQueries && (nroQueries+5)<=nroMaxQueries  && nroMaxQueries>5){
               nroQueries = nroQueries + 5;
-              alert("nroQueries" + nroQueries);
               DataAccess.loadAvailableQueries(vis.sessionInfo());
               document.getElementById("toggleButtonMoreQueries").innerText = "See More";
               document.getElementById("toggleButtonLessQueries").innerText = "See Less";
             }
             else{
-              //alert("nroQueries" + nroQueries);
-              //alert("nroMaxQueries" + nroMaxQueries);
               nroQueries = nroMaxQueries;
               DataAccess.loadAvailableQueries(vis.sessionInfo());
               document.getElementById("toggleButtonMoreQueries").innerText = "";
-            }
+              if(nroQueries>5)document.getElementById("toggleButtonLessQueries").innerText = "See Less";
+            }*/
 
         });
 	  //showing more checkboxes (for queries, tags and 'more like')
         d3.select('#toggleButtonMoreTags').on('click', function() {
-            if(nroTags<nroMaxTags && (nroTags+5)<=nroMaxTags  && nroMaxTags>5){
-              nroTags = nroTags + 5;
+            if(nroTags<nroMaxTags && (nroTags+initialCheckBox)<=nroMaxTags  && nroMaxTags>initialCheckBox){
+              nroTags = nroTags + initialCheckBox;
               DataAccess.loadAvailableTags(vis.sessionInfo(), 'Tags');
               document.getElementById("toggleButtonMoreTags").innerText = "See More";
               document.getElementById("toggleButtonLessTags").innerText = "See Less";
@@ -536,14 +599,22 @@ SigSlots.connect(
               nroTags = nroMaxTags;
               DataAccess.loadAvailableTags(vis.sessionInfo(), 'Tags');
               document.getElementById("toggleButtonMoreTags").innerText = "";
+              if(nroTags>initialCheckBox)document.getElementById("toggleButtonLessTags").innerText = "See Less";
             }
         });
 	  //Showing less checkboxes (for queries, tags and 'more like')
         d3.select('#toggleButtonLessQueries').on('click', function() {
-            if(nroQueries>5){
-              nroQueries = nroQueries -5;
-              DataAccess.loadAvailableQueries(vis.sessionInfo());
+            var lessQueries = nroQueries-initialCheckBox;
+            if(nroQueries>initialCheckBox && lessQueries>=0){
+              nroQueries = lessQueries; //nroQueries -lessQueries;
               document.getElementById("toggleButtonMoreQueries").innerText = "See More";
+              if(nroQueries<=initialCheckBox){
+                nroQueries=initialCheckBox;
+                DataAccess.loadAvailableQueries(vis.sessionInfo());
+                document.getElementById("toggleButtonLessQueries").innerText = "";}
+              else {
+                DataAccess.loadAvailableQueries(vis.sessionInfo());
+                document.getElementById("toggleButtonLessQueries").innerText = "See Less";}
             }
             else{
               DataAccess.loadAvailableQueries(vis.sessionInfo());
@@ -553,10 +624,13 @@ SigSlots.connect(
 
 	  //Showing less checkboxes (for queries, tags and 'more like')
         d3.select('#toggleButtonLessTags').on('click', function() {
-            if(nroTags>5){
-              nroTags = nroTags -5;
+            var lessTags = nroTags-initialCheckBox;
+            if(nroTags>initialCheckBox && lessTags>=0){
+              nroTags = nroTags -lessTags;
               DataAccess.loadAvailableTags(vis.sessionInfo(), 'Tags');
               document.getElementById("toggleButtonMoreTags").innerText = "See More";
+              if(nroTags==initialCheckBox)document.getElementById("toggleButtonLessTags").innerText = "";
+              else document.getElementById("toggleButtonLessTags").innerText = "See Less";
             }
             else{
               DataAccess.loadAvailableTags(vis.sessionInfo(), 'Tags');
@@ -592,6 +666,20 @@ CrawlerVis.prototype.onLoadedTagColors = function(colors_data) {
     this.tag_colors={};
     this.color_index = 0;
   }
+};
+// Updates tags checkbox list with new tag.
+CrawlerVis.prototype.updateNewTagLoaded = function(flag_newTags){
+  flag_newTag = flag_newTags;
+  var session = this.sessionInfo();
+  //DataAccess.loadAvailableTags(session, 'Tags');
+};
+
+
+// Updates pages and terms from filter buttons or filter criteria(Filter Data).
+CrawlerVis.prototype.updateVisualization = function(session){
+  var vis = session;
+  DataAccess.update(vis.sessionInfo());
+  vis.pagesGallery.clear();
 };
 
 CrawlerVis.prototype.enableTagSelection = function(tags, event){
@@ -634,12 +722,16 @@ CrawlerVis.prototype.enableTagSelection = function(tags, event){
 
     var count;
     nroMaxTags = keysSorted.length;
-
-    if(prev_checked_tags.length>nroTags && prev_checked_tags.length>0)
-      nroTags=prev_checked_tags.length;
-    if(keysSorted.length<nroTags)
-      nroTags=keysSorted.length;
-
+    //alert("flag_newTag: " + flag_newTag + "nroMaxTags: "+ nroMaxTags);
+    if(flag_newTag && nroMaxTags<=initialCheckBox){
+        //alert("nroTags: " + nroTags);
+        nroTags=keysSorted.length;}
+    else{
+      if(prev_checked_tags.length>nroTags && prev_checked_tags.length>0)
+        nroTags=prev_checked_tags.length;
+      if(keysSorted.length<nroTags)
+        nroTags=keysSorted.length;
+    }
     for (count = 0; count < nroTags; count++) {//keysSorted.length
       var checked = false;
       if (prev_checked_tags.indexOf(keysSorted[count]) > -1)
@@ -661,12 +753,26 @@ CrawlerVis.prototype.enableTagSelection = function(tags, event){
     //$('#modelSettingModal').modal("show");
   }
   $('#tagsCheckBox').show();
+
+  $("input[name='tags_checkbox']").click(function() {
+    CrawlerVis.prototype.updateVisualization(vis);
+  });
+  $("input[name='morelike_checkbox']").click(function() {
+    CrawlerVis.prototype.updateVisualization(vis);
+  });
+
+  if(changeDomainTag || flag_newTag){
+    CrawlerVis.prototype.updateChangeDomainButtonMoreTags(vis.sessionInfo());
+  }changeDomainTag =false; flag_newTag=false;
+
+
+
 };
 
 CrawlerVis.prototype.enableModelTagSelection = function(tags){
     var vis = this;
     vis.modelTags = tags;
-    
+
     var pageRetrievalCriteria = d3.select('#page_retrieval_criteria_select').node().value;
 
     var prev_checked_tags = vis.getCheckedValues("model_tags_checkbox");
@@ -678,13 +784,13 @@ CrawlerVis.prototype.enableModelTagSelection = function(tags){
 
     var newli_select_all = document.createElement('li');
     if(check_all)
-    newli_select_all.innerHTML = "<input type='checkbox' name='model_tags_checkbox' id='select_all_tags' value='select_all' checked='true'><label for='select_all'>Select All</label>";
+    newli_select_all.innerHTML = "<input type='checkbox' name='model_tags_checkbox' id='select_all_Modeltags' value='select_all' checked='true'><label for='select_all'>Select All</label>";
     else
-    newli_select_all.innerHTML = "<input type='checkbox' name='model_tags_checkbox' id='select_all_tags' value='select_all'><label for='select_all'>Select All</label>";
+    newli_select_all.innerHTML = "<input type='checkbox' name='model_tags_checkbox' id='select_all_Modeltags' value='select_all'><label for='select_all'>Select All</label>";
 
     document.getElementById('modelTagsCheckBox').appendChild(newli_select_all);
 
-    d3.select('#select_all_tags').on('click', function(){
+    d3.select('#select_all_Modeltags').on('click', function(){
       checkboxes = document.getElementsByName('model_tags_checkbox');
       for (var checkbox in checkboxes){
         checkboxes[checkbox].checked = this.checked;
@@ -697,14 +803,14 @@ CrawlerVis.prototype.enableModelTagSelection = function(tags){
     });
 
     var count;
-    nroMaxTags = keysSorted.length;
+    var nroMaxModelTags = keysSorted.length;
 
-    if(prev_checked_tags.length>nroTags && prev_checked_tags.length>0)
+    /*if(prev_checked_tags.length>nroTags && prev_checked_tags.length>0)
       nroTags=prev_checked_tags.length;
     if(keysSorted.length<nroTags)
-      nroTags=keysSorted.length;
+      nroTags=keysSorted.length;*/
 
-    for (count = 0; count < nroTags; count++) {//keysSorted.length
+    for (count = 0; count < nroMaxModelTags; count++) {//keysSorted.length
       var checked = false;
       if (prev_checked_tags.indexOf(keysSorted[count]) > -1)
       checked = true;
@@ -720,6 +826,10 @@ CrawlerVis.prototype.enableModelTagSelection = function(tags){
     }
 
   $('#modelTagsCheckBox').show();
+
+  $("input[name='model_tags_checkbox']").click(function() {
+    CrawlerVis.prototype.updateVisualization(vis);
+  });
 };
 
 CrawlerVis.prototype.enableQuerySelection = function(queries){
@@ -729,7 +839,6 @@ CrawlerVis.prototype.enableQuerySelection = function(queries){
   //$('#tagsCheckBox').hide(); // hide before tagsCheckBox
 
   var prev_checked_queries = vis.getCheckedValues("queries_checkbox");
-  //alert(prev_checked_queries);
   var check_all = false;
   if (prev_checked_queries.indexOf('select_all') > -1)
   check_all = true;
@@ -761,14 +870,14 @@ CrawlerVis.prototype.enableQuerySelection = function(queries){
       alert('Shie hizo check en el checkbox.');
   });*/
 
-    keysSorted = keysSortedAux;
+    keysSorted = Object.keys(queries); //keysSortedAux
     var swap = true;
     var j = 0;
     while (swap) {
         swap = false;
         j++;
         for (var i = 0; i < keysSorted.length - j; i++) {
-            if (!(prev_checked_queries.indexOf(keysSorted[i]) > -1) && (prev_checked_queries.indexOf(keysSorted[i+1]) > -1)) {
+            if ( ( !(prev_checked_queries.indexOf(keysSorted[i]) > -1) && (prev_checked_queries.indexOf(keysSorted[i+1]) > -1) )  || ( !(prev_checked_queries.indexOf(keysSorted[i]) > -1) && (flag_newQuery && (keysSorted[i+1]==value_newQuery)) ) ) {
                 var tmp = keysSorted[i];
                 keysSorted[i] = keysSorted[i + 1];
                 keysSorted[i + 1] = tmp;
@@ -781,11 +890,17 @@ CrawlerVis.prototype.enableQuerySelection = function(queries){
   var newliAux = [];
   nroMaxQueries=keysSorted.length;
   //
-  if(prev_checked_queries.length>nroQueries && prev_checked_queries.length>0)
-    nroQueries=prev_checked_queries.length;
-  if(keysSorted.length<nroQueries )
-    nroQueries=keysSorted.length;
-  for (count = 0, i=-1; count < nroQueries; count++) { // keysSorted.length
+
+  if(flag_newQuery && nroMaxQueries<=initialCheckBox){
+      nroQueries=keysSorted.length;}
+  else{
+    if(prev_checked_queries.length>nroQueries && prev_checked_queries.length>0)
+      nroQueries=prev_checked_queries.length;
+    if(keysSorted.length<nroQueries)
+      nroQueries=keysSorted.length;
+  }
+
+  for (count = 0; count < nroQueries; count++) { // keysSorted.length
     var checked = false;
     if (prev_checked_queries.indexOf(keysSorted[count]) > -1)
     checked = true;
@@ -794,11 +909,27 @@ CrawlerVis.prototype.enableQuerySelection = function(queries){
     if(check_all || checked){
       newli.innerHTML = "<input type='checkbox' name='queries_checkbox' checked='true' 'id='" + label +"' value='"+keysSorted[count]+"'><label for='"+label+"'>"+keysSorted[count]+" ("+queries[keysSorted[count]]+")"+"</label>";
     }else{
-      newli.innerHTML ="<input type='checkbox' name='queries_checkbox' 'id='" + label +"' value='"+keysSorted[count]+"'><label for='"+label+"'>"+keysSorted[count]+" ("+queries[keysSorted[count]]+")"+"</label>";
+      if(flag_newQuery && keysSorted[count]==value_newQuery) newli.innerHTML = "<input type='checkbox' name='queries_checkbox' checked='true' 'id='" + label +"' value='"+keysSorted[count]+"'><label for='"+label+"'>"+keysSorted[count]+" ("+queries[keysSorted[count]]+")"+"</label>";
+      else newli.innerHTML ="<input type='checkbox' name='queries_checkbox' 'id='" + label +"' value='"+keysSorted[count]+"'><label for='"+label+"'>"+keysSorted[count]+" ("+queries[keysSorted[count]]+")"+"</label>";
     }
     document.getElementById('queryCheckBox').appendChild(newli);
   }
+    if(flag_newQuery){
+      CrawlerVis.prototype.updateVisualization(vis);
+    }
+    flag_newQuery=false;
+    value_newQuery="";
+
     $('#queryCheckBox').show();
+
+    $("input[name='queries_checkbox']").click(function() {
+      CrawlerVis.prototype.updateVisualization(vis);
+    });
+    if(changeDomainQuery || flag_newQuery){
+      CrawlerVis.prototype.updateNewQueryButtonMoreQueries(vis.sessionInfo());
+    }changeDomainQuery=false;
+
+
 };
 
 
@@ -919,6 +1050,11 @@ CrawlerVis.prototype.updatePagesStatsCrawler = function(stats, statslist) {
     }
     // Updates UI element that reports pages statistics.
     this.updatePagesStatsSeedCrawler(stats, statslist);
+
+    var session = CrawlerVis.prototype.sessionInfo();
+    DataAccess.loadAvailableQueries(session);
+    DataAccess.loadAvailableTags(session, 'Tags');
+    CrawlerVis.prototype.updateNewQueryButtonMoreQueries(session);
   };
 
 
@@ -1162,7 +1298,7 @@ CrawlerVis.prototype.updateOnlineClassifier = function() {
       // TODO(cesar): focus+context on pages landscape when tag is highlighted.
       console.log('tag highlighted: ', tag, onFocus ? 'gained focus' : 'lost focus');
     };
-    
+
    // Display new model accuracy
    CrawlerVis.prototype.onUpdatedOnlineClassifier = function(accuracy) {
        var vis = this;
@@ -1177,8 +1313,8 @@ CrawlerVis.prototype.updateOnlineClassifier = function() {
 	       .html('(Domain Model Accuracy: NA, <br>Last Update: ' + lastUpdate + ')');
        }
        DataAccess.loadAvailableModelTags(vis.sessionInfo());
-       document.getElementById("toggleButtonMoreTags").innerText = "See More";
-       document.getElementById("toggleButtonLessTags").innerText = "See Less";
+       //document.getElementById("toggleButtonMoreTags").innerText = "See More";
+       //document.getElementById("toggleButtonLessTags").innerText = "See Less";
    }
 
    // Responds to loaded pages signal.
@@ -1195,9 +1331,9 @@ CrawlerVis.prototype.updateOnlineClassifier = function() {
 		   tags: page[3],
 	       };
 	   });
-	   
+
 	   this.pagesLandscape.setPagesData(pages);
-	   
+
 	   var vis = this;
 	   // Fetches statistics for until last update happened.
 	   DataAccess.loadPagesSummaryUntilLastUpdate(false, vis.sessionInfo());
@@ -1360,6 +1496,7 @@ CrawlerVis.prototype.updateOnlineClassifier = function() {
       var search_enter = function() {
         var value = d3.select('#query_box').node().value;
         __sig__.emit(__sig__.query_enter, value);
+        setTimeout(function(){ CrawlerVis.prototype.updateFilterData(value);}, 5000);
       };
 
       $( "#query_box" ).on( "keydown", function(event) {
@@ -1573,7 +1710,11 @@ CrawlerVis.prototype.updateOnlineClassifier = function() {
     // Creates select to limit number of pages to load.
     CrawlerVis.prototype.createSelectForFilterPageCap = function() {
       var vis = this;
-      var selectBox = d3.select('#filter_cap_select');
+      //var selectBox = d3.select('#filter_cap_select');
+      var selectBox = d3.select('#filter_cap_select').on('change', function() {
+        CrawlerVis.prototype.updateVisualization(vis);
+      });
+
       var getElementValue = function(d) {
         return d;
       };
@@ -1588,6 +1729,9 @@ CrawlerVis.prototype.updateOnlineClassifier = function() {
       });
 
       $('#filter_cap_select').val(100);
+      cap = d3.select('#filter_cap_select').node().value;
+
+
     };
 
     /**
@@ -1667,6 +1811,9 @@ CrawlerVis.prototype.updateOnlineClassifier = function() {
       // Appends terms to history of queries.
       this.queriesList =
       this.appendToHistory('#query_box_previous_queries', this.queriesList, terms);
+
+          //  DataAccess.loadAvailableTags(session, 'Tags');
+      //DataAccess.loadAvailableQueries(this.sessionInfo()); //reload the queries
     };
 
     /**
@@ -1812,6 +1959,7 @@ CrawlerVis.prototype.updateOnlineClassifier = function() {
       //design new interface (including queries, tags, most like checkboxs)
 
       session['selected_morelike']=vis.getCheckedValues('morelike_checkbox').toString();
+
       if (vis.getCheckedValues('queries_checkbox').toString()== "" && vis.getCheckedValues('tags_checkbox').toString() == "" && vis.getCheckedValues('model_tags_checkbox').toString() == ""){
         $('#selectPageRetrievalCriteria').val("Most Recent");
         session['pageRetrievalCriteria'] = "Most Recent";
@@ -1868,12 +2016,113 @@ CrawlerVis.prototype.clearAll = function() {
     DataAccess.setLastAccuracy('0');
 };
 
+//List of applied filters: Remove the selected button and descheck the associated checkbox.
+removeButton =  function(infoButton) {
+  var vis =visgeneral;
+  var info = infoButton.split(",");
+  if(info[0].indexOf("Filter") > -1){
+    var filterInfo = d3.select('#filter_box').node().value;
+    d3.select('#filter_box').node().value = "";
+  }else{
+    if(info[0].indexOf("MoreLike") > -1){
+      checkboxes = document.getElementsByName('morelike_checkbox');
+    }
+    if(info[0].indexOf("Queries") > -1){
+      checkboxes = document.getElementsByName('queries_checkbox');
+    }
+    if(info[0].indexOf("Tags") > -1){
+      checkboxes = document.getElementsByName('tags_checkbox');
+    }
+     if(info[0].indexOf("ModelTags") > -1){
+   checkboxes = document.getElementsByName('model_tags_checkbox');
+    }
+    for (var checkbox in checkboxes){
+      if(checkboxes[checkbox].value == info[1]){
+      checkboxes[checkbox].checked = this.checked;}
+    }
+  }
+  var nameButton="#" + info[0];
+  $(nameButton).remove();
+  CrawlerVis.prototype.updateVisualization(vis);
+
+}
+
+  // Create/update the container which shows current sequence of applied filters (these appear as buttons).
+CrawlerVis.prototype.GetCheckedStateNew = function( newobj) {
+    var list_buttons="<div class='row' style='margin-left:1px; margin-right:5px;'>";
+    newobj.forEach(function(d) {
+      var filters = (d.name).split(",");
+      if(filters[0]==""){
+        return "";
+      }
+      else{
+        var typeFilter = d.type;
+        var buttons= "<div style='float: left; background-color:#ccadc7; padding: 2px 2px 2px 2px;margin-bottom:2px;margin-right:2px;'>" + typeFilter + ": ";
+        var nameButton = typeFilter+"_";
+        for(var i=0; i<filters.length ; i++){
+          if(filters[i] !="select_all")
+          buttons = buttons + " <button id='"+nameButton+i +"' class='btn btn-default btn-xs'  onclick='removeButton(\"" + nameButton+i+","+filters[i] + "\")'> <span class='pull-right' style='margin-top:1px;margin-left:2px;margin-right:-3px;'> <span class='glyphicon glyphicon-remove'></span></span>"+ filters[i]+"</button>";
+        }
+        buttons = buttons + "</div>"
+        list_buttons= list_buttons + buttons;
+        return ""; //buttons;
+      }
+    });
+    list_buttons =list_buttons + "</div>";
+    document.getElementById("list_buttons_div").innerHTML = list_buttons;
+}
+
+  //Take a query 'JSON.stringify(session)' for create an array with json objects.
+  //Which contains the filters's sequence even queries and tags.
+ CrawlerVis.prototype.buildHierarchyFilters = function(value) {
+    var path = [];
+    path.length = 0;
+    //var root = {"name": "root", "children": []};
+    var lengthFilter =0;
+    if(value.filter!=null){
+      var selectedFilter = value.filter; var typeName = "Filter";
+      lengthFilter =typeName.length + selectedFilter.length;
+      var childNode = {"name": selectedFilter, "type": typeName, "length": lengthFilter};
+      path.unshift(childNode);
+    }
+    if((typeof value.selected_queries=="undefined") && (typeof value.selected_tags=="undefined")&& (typeof value.selected_model_tags=="undefined")) { //if(value.pageRetrievalCriteria=="Most Recent" && value.selected_queries=="" && value.selected_tags==""){
+      var selectedFilter = value.pageRetrievalCriteria;
+      var childNode = {"name": "Most Recent", "type": "Most Recent", "length": lengthFilter};
+      path.unshift(childNode);
+    }
+    if(value.selected_morelike!=""){ //if(value.selected_morelike!="More like"){
+      var selectedMoreLike = value.selected_morelike;
+      var childNode = {"name": selectedMoreLike, "type": "MoreLike", "length": (value.pageRetrievalCriteria).length +selectedMoreLike.length+lengthFilter};
+      path.unshift(childNode);
+    }
+    if (value.selected_tags!="" && !(typeof value.selected_tags=="undefined")) { // if (value.pageRetrievalCriteria=="Tags") {
+      var selectedTags = value.selected_tags;
+      var childNode = {"name": selectedTags, "type": "Tags", "length": (value.pageRetrievalCriteria).length +selectedTags.length + lengthFilter};
+      path.unshift(childNode);
+    }
+    if (value.selected_model_tags!="" && !(typeof value.selected_model_tags=="undefined")) { // if (value.pageRetrievalCriteria=="Model Tags") {
+      var selectedTags = value.selected_model_tags;
+      var childNode = {"name": selectedTags, "type": "ModelTags", "length": (value.pageRetrievalCriteria).length +selectedTags.length + lengthFilter};
+      path.unshift(childNode);
+    }
+    if (value.selected_queries!="" && !(typeof value.selected_queries=="undefined")) { //if (value.pageRetrievalCriteria=="Queries") {
+      var selectedQueries = value.selected_queries;
+      var childNode = {"name": selectedQueries, "type": "Queries", "length": (value.pageRetrievalCriteria).length + selectedQueries.length + lengthFilter}; //var childNode = {"name": selectedQueries, "type": value.pageRetrievalCriteria, "length": (value.pageRetrievalCriteria).length + selectedQueries.length + lengthFilter};
+      path.unshift(childNode);
+    }
+    var newobj = path;
+    this.GetCheckedStateNew(newobj);
+}
+
+
 $(document).ready(function() {
   // Set the seeds panel as hidden by default.
 
 
+  $("#seedsHeaderWebSearch").next().slideToggle(0);
+
   $("#seedsHeaderData").next().slideToggle(0);
-    $("#seedsHeaderFilter").next().slideToggle(0);
+  $("#seedsHeaderFilter").next().slideToggle(0);
     //$("#seedsHeaderFilter").hide();
   $("#seedsHeader").next().slideToggle(0);
   $(".panel-heading").click(function () {
@@ -1891,13 +2140,25 @@ $(document).ready(function() {
         $('#select_tags').hide();
         $('#select_queries').hide();
         $('#queryCheckBox').show();
-        document.getElementById("toggleButtonMoreQueries").innerText = "See More"; $('#toggleButtonMoreQueries').show();
-        document.getElementById("toggleButtonLessQueries").innerText = "See Less"; $('#toggleButtonLessQueries').show();
+        var MoreQueries = ""; var LessQueries = "";
+        var MoreTags = ""; var LessTags = "";
+        //alert("nroMaxQueries_inicio: " +nroMaxQueries);
+        if(nroMaxQueries>initialCheckBox){
+          MoreQueries = "See More";
+          LessQueries = "";
+        }
+        document.getElementById("toggleButtonMoreQueries").innerText = MoreQueries; $('#toggleButtonMoreQueries').show();
+        document.getElementById("toggleButtonLessQueries").innerText = LessQueries;$('#toggleButtonLessQueries').show();
+
         //DataAccess.loadAvailableQueries(vis.sessionInfo());
         //Load Tags
+        if(nroMaxTags>initialCheckBox){
+          MoreTags = "See More";
+          LessTags = "";
+        }
         $('#tagsCheckBox').show();
-        document.getElementById("toggleButtonMoreTags").innerText = "See More"; $('#toggleButtonMoreTags').show();
-        document.getElementById("toggleButtonLessTags").innerText = "See Less"; $('#toggleButtonLessTags').show();
+        document.getElementById("toggleButtonMoreTags").innerText = MoreTags; $('#toggleButtonMoreTags').show();
+        document.getElementById("toggleButtonLessTags").innerText = LessTags; $('#toggleButtonLessTags').show();
         //DataAccess.loadAvailableTags(vis.sessionInfo(), 'Tags');
 
         $header.find("span.collapsethis").removeClass("glyphicon-plus");
