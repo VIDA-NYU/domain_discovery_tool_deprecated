@@ -168,6 +168,11 @@ var DataAccess = (function() {
     __sig__.emit(__sig__.model_tags_loaded, tagsData);
   };
 
+  // Update tags checkbox list with new tag.
+  var newTagLoaded = function(flag_newTag) {
+        __sig__.emit(__sig__.new_tag_loaded, flag_newTag);
+  };
+
   // Processes loaded tag color mapping
   var onAvailableTagColorsLoaded = function(tagColors){
       __sig__.emit(__sig__.tags_colors_loaded, tagColors);
@@ -236,6 +241,7 @@ var DataAccess = (function() {
         function(summary) {
           onPagesSummaryUntilLastUpdateLoaded(summary, isFilter);
         });
+
     //}
   };
   // Returns public interface.
@@ -404,7 +410,10 @@ var DataAccess = (function() {
   };
   // Adds tag to multiple pages.
   pub.setPagesTag = function(pages, tag, applyTagFlag, session) {
+
     if (pages.length > 0) {
+      var flag_newTag=true;
+      newTagLoaded(flag_newTag);
       runQueryForCurrentCrawler(
           '/setPagesTag', {'pages': pages.join('|'), 'tag': tag, 'applyTagFlag': applyTagFlag, 'session': JSON.stringify(session)}, onSetPagesTagCompleted);
     }

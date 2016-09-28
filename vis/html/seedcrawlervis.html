@@ -237,56 +237,107 @@
     </div>
   </div>
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <div class="panel-heading-left" >
-          <span class="glyphicon glyphicon-globe"></span>&nbsp;&nbsp;Web Search
-        </div>
-        <div class="panel-heading-right">
-          <span class="collapsethis glyphicon glyphicon-minus"></span>
-        </div>
-      </h4>
+  <!--span>Web Search</span>
+  <div  id="crawlerSelection">
+  <ul >
+    <li class="dropdown">
+      <a data-toggle="dropdown" role="button" class="dropdown-toggle" id="currentDomain"></a>
+      <ul class="dropdown-menu" id="selectCrawler">
+        <li id="delDomainButton">
+          <button type="button" id="delDomain"
+          class="btn btn-warning"
+          data-toggle="modal"
+          data-target="#delDomainModal">
+          <span class="glyphicon glyphicon-minus-sign"></span>&nbsp;&nbsp;Del Domain
+        </button>
+      </li>
 
+      <li id="addDomainButton">
+        <button type="button" id="addDomain"
+        class="btn btn-warning"
+        data-toggle="modal"
+        data-target="#addDomainModal">
+        <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Add Domain
+      </button>
+    </li>
+  </ul>
+</li>
+  </ul>
+</div-->
+
+<!--actual state of domain (show the number of relevant, irrelevant and neutral pages of a especific domain)-->
+<!--div class="panel panel-default">
+  <div id="seed_crawler_info">
+    <datalist id="query_box_previous_queries"></datalist>
+    <div id="statslist" class="statslist seedcrawler">
+    <svg>
+      <defs>
+        <pattern id="pattern-stripe"
+        width="4" height="4"
+        patternUnits="userSpaceOnUse"
+        patternTransform="rotate(45)">
+        <rect width="3" height="6" transform="translate(0,0)" fill="white"></rect>
+      </pattern>
+      <mask id="mask-stripe">
+        <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-stripe)" />
+      </mask>
+      </defs>
+    </svg>
     </div>
+</div>
+</div-->
 
-    <div class="panel-body">
-
-      <div id="seed_crawler_info">
-
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="Search the Web..." id="query_box" list="query_box_previous_queries">
-          <div style="float:left;">
-            <select name="search_engine" id="search_engine" class="form-control">
-              <option value="GOOG">GOOG</option>
-              <option value="BING">BING</option>
-            </select>
-          </div>
-          <span class="input-group-btn">
-            <button type="button" class="btn btn-warning" data-type="last" id="submit_query"><span class="glyphicon glyphicon-search"></span></button>
-          </span>
-        </div>
-
-        <datalist id="query_box_previous_queries"></datalist>
-
-        <div id="statslist" class="statslist seedcrawler">
-          <svg>
-            <defs>
-              <pattern id="pattern-stripe"
-              width="4" height="4"
-              patternUnits="userSpaceOnUse"
-              patternTransform="rotate(45)">
-              <rect width="3" height="6" transform="translate(0,0)" fill="white"></rect>
-            </pattern>
-            <mask id="mask-stripe">
-              <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-stripe)" />
-            </mask>
-          </defs>
-        </svg>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">
+      <div class="panel-heading-left" >
+        <span class="glyphicon glyphicon-globe"></span>&nbsp;&nbsp;Web Search
       </div>
+      <div class="panel-heading-right">
+        <span class="collapsethis glyphicon glyphicon-minus"></span>
+      </div>
+    </h4>
+
+  </div>
+
+  <div class="panel-body">
+
+    <div id="seed_crawler_info">
+
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search the Web..." id="query_box" list="query_box_previous_queries">
+        <div style="float:left;">
+          <select name="search_engine" id="search_engine" class="form-control">
+            <option value="GOOG">GOOG</option>
+            <option value="BING">BING</option>
+          </select>
+        </div>
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-warning" data-type="last" id="submit_query"><span class="glyphicon glyphicon-search"></span></button>
+        </span>
+      </div>
+
+      <datalist id="query_box_previous_queries"></datalist>
+
+      <div id="statslist" class="statslist seedcrawler">
+        <svg>
+          <defs>
+            <pattern id="pattern-stripe"
+            width="4" height="4"
+            patternUnits="userSpaceOnUse"
+            patternTransform="rotate(45)">
+            <rect width="3" height="6" transform="translate(0,0)" fill="white"></rect>
+          </pattern>
+          <mask id="mask-stripe">
+            <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-stripe)" />
+          </mask>
+        </defs>
+      </svg>
     </div>
   </div>
-  </div>
+</div>
+</div>
+
 
 
 
@@ -543,21 +594,21 @@
 <!--/div-->
 
 
-  <div class="row">
-    <div class="col-md-11">
-      <div id ="list_buttons_div" style="margin-left:-10px;margin-right:-50px;"></div>
-    </div>
-    <div class="col-md-1">
-      <div style="float:right; margin-right:-20px;margin-top:0px;margin-bottom:0px;">
-              <span id="pages_landscape_buttons" class="control_buttons">
-                <span id="pages_landscape_update" class="btn btn-warning enabled pages_landscape_button noselect">
-                  <span class="glyphicon glyphicon-refresh"></span>
-                </span>
-              </span>
-            </div>
-    </div>
-    <div id="pages_landscape" class="noselect" style="margin-bottom:4px; margin-top=-10px;"></div>
+<div class="row">
+  <div class="col-md-11">
+    <div id ="list_buttons_div" style="margin-left:-10px;margin-right:-50px;"></div>
   </div>
+  <div class="col-md-1">
+    <div style="float:right; margin-right:-20px;margin-top:0px;margin-bottom:0px;">
+            <span id="pages_landscape_buttons" class="control_buttons">
+              <span id="pages_landscape_update" class="btn btn-warning enabled pages_landscape_button noselect">
+                <span class="glyphicon glyphicon-refresh"></span>
+              </span>
+            </span>
+          </div>
+  </div>
+  <div id="pages_landscape" class="noselect" style="margin-bottom:4px; margin-top=-10px;"></div>
+</div>
 
   <!--/div-->
   </div>
