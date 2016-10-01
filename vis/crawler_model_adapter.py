@@ -215,3 +215,7 @@ class SeedCrawlerModelAdapter(CrawlerModelAdapter):
 
   def getPlottingData(self, session):
     return self._crawlerModel.getPlottingData(session)
+
+  def make_topic_model(self, session, tokenizer, vectorizer, model, ntopics):
+    return self._crawlerModel.make_topic_model(session, tokenizer, vectorizer, model, ntopics)
+  
