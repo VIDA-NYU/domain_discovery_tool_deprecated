@@ -49,13 +49,8 @@ class Page:
     # TODO Use SeedCrawlerModelAdapter self._crawler = SeedCrawlerModelAdapter()
     self._crawler = SeedCrawlerModelAdapter()
 
-    # Adding make_topic_model here as self._crawler gets initialized here. This is
-    # hackish, but it's the simplest change right now. We should move both terms to the
-    # __init__ method.
-    self.make_topic_model = self._crawler._crawlerModel.make_topic_model
-
   @cherrypy.expose
-  def topicvis(self, domain, visualizer='lda_vis', tokenizer='simple', vectorizer='bag_of_words', model='lda', ntopics=3):
+  def topicvis(self, session=None, visualizer='lda_vis', tokenizer='simple', vectorizer='bag_of_words', model='lda', ntopics=3):
     """Returns topic model visualization in HTML
 
     Parameters
@@ -84,22 +79,22 @@ class Page:
     The visualization will be stored in disk in a HTML file in the directory from where DDT was initialized
     """
     ntopics = int(ntopics) # ntopics comes as a string from a URL query string
-    mymodel = self.make_topic_model(
-            domain=domain,
+    session=json.loads(session)
+    mymodel = self._crawler.make_topic_model(
+            session=session,
             tokenizer=tokenizer,
             vectorizer=vectorizer,
             model=model,
-            ntopics=ntopics
-    )
-    summary_string = '_'.join([domain, model, str(ntopics) + "topics", visualizer])
+            ntopics=ntopics)
+    summary_string = '_'.join([mymodel['domain'], model, str(ntopics) + "topics", visualizer])
     filename = summary_string + '.html'
 
     # output visualization to filename
     if visualizer == 'lda_vis':
       with self.lock:  # pyLDAvis uses topik/pandas/numexpr code that is not thread-safe
-          visualize(mymodel, mode='save_html', vis_name=visualizer, filename=filename)
+          visualize(mymodel['model'], mode='save_html', vis_name=visualizer, filename=filename)
     elif visualizer == 'termite':
-      termite_plot = visualize(mymodel, vis_name=visualizer)
+      termite_plot = visualize(mymodel['model'], vis_name=visualizer)
       termite_html = bokeh.embed.file_html(termite_plot, resources=bokeh.resources.INLINE, title=summary_string)
       with open(filename, 'w') as f:
         f.write(termite_html)
