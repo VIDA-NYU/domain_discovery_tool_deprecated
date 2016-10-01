@@ -17,7 +17,7 @@
     model: "plsa",
     ntopics: 2,
     visualizer: "",
-    domain: "",
+    session: "",
   };
 
 
@@ -57,8 +57,7 @@
    */
   $("#ldavisPlot, #termitePlot").on("click", function(){
     exports.visSettings.visualizer = $(this).attr("value");
-    exports.visSettings.domain = $('input[name="crawlerRadio"]:checked')
-	  .attr("placeholder").toLowerCase().replace(" ","_")
+    exports.visSettings.session = JSON.stringify(exports.vis.sessionInfo());
     var url = "/topicvis?" + $.param(exports.visSettings);
     $(this).attr("href", url);
   });
