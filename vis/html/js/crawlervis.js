@@ -78,7 +78,8 @@ CrawlerVis.buildForSeedCrawler = function() {
     'Irrelevant': {'Until Last Update': 0, 'New': 0, 'Total': 0},
     'Neutral': {'Until Last Update': 0, 'New': 0, 'Total': 0},
   };
-  BokehPlots.vis = vis;
+    BokehPlots.vis = vis;
+    TopicVis.vis = vis;
   return vis;
 };
 
@@ -413,8 +414,8 @@ SigSlots.connect(
 	var session = this.sessionInfo();
         DataAccess.loadAvailableQueries(session);
         DataAccess.loadAvailableTags(session, 'Tags');
-	       DataAccess.loadAvailableModelTags(session);
-      //  $("#seedsHeaderData").next().slideToggle(0);
+	  DataAccess.loadAvailableModelTags(session);
+	  //  $("#seedsHeaderData").next().slideToggle(0);
       };
 
 
