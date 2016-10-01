@@ -1,5 +1,6 @@
 #!/usr/bin/python
 from os import environ
+import sys
 from config import es as default_es
 
 def get_documents(terms, term_field, fields=["text"], es_index='memex', es_doc_type='page', es=None):
@@ -137,7 +138,7 @@ def get_most_recent_documents(opt_maxNumberOfPages = 200, mapping=None, fields =
 
     return results
 
-def get_all_ids(pageCount = 100000, es_index = 'memex', es_doc_type = 'page', es = None):
+def get_all_ids(pageCount = 100000, fields=[], es_index = 'memex', es_doc_type = 'page', es = None):
     if es is None:
         es = default_es
 
@@ -145,11 +146,11 @@ def get_all_ids(pageCount = 100000, es_index = 'memex', es_doc_type = 'page', es
         "query": {
             "match_all": {}
         },
-        "fields": ['url']
+        "fields": fields
     }
 
     try:
-        res = es.search(body=query, index = es_index, doc_type = es_doc_type, size = pageCount)
+        res = es.search(body=query, index = es_index, doc_type = es_doc_type, size = pageCount, request_timeout=600)
         hits = res['hits']['hits']
 
         results = []
@@ -159,8 +160,9 @@ def get_all_ids(pageCount = 100000, es_index = 'memex', es_doc_type = 'page', es
             results.append(fields)
 
         return results
-    except IndexMissingException:
-        print 'Index Missing ', es_index
+    except:
+        print("Unexpected error:", sys.exc_info()[0])
+        print es_index
         return []
 
 def get_documents_by_id(ids=[], fields=[], es_index = 'memex', es_doc_type = 'page', es = None):
