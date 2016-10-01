@@ -1798,7 +1798,7 @@ class CrawlerModel:
     delta = dt - epoch
     return delta.total_seconds()
 
-  def make_topic_model(self, domain, tokenizer, vectorizer, model, ntopics):
+  def make_topic_model(self, session, tokenizer, vectorizer, model, ntopics):
     """Build topic model from the corpus of the supplied DDT domain.
 
     The topic model is represented as a topik.TopikProject object, and is
@@ -1823,12 +1823,20 @@ class CrawlerModel:
     model: a topik topic model
         A topik model, encoding things like term frequencies, etc.
     """
-    domain = domain.replace(" ","_")
-    content_field = 'text'
-    def not_empty(doc): return bool(doc[content_field])  # True if document not empty
-    raw_data = filter(not_empty, read_input(source=es_server, index=domain))
-    id_doc_pairs = ((hash(__[content_field]), __[content_field]) for __ in raw_data)
-    tokens = tokenize(id_doc_pairs, method=tokenizer)
+    es_info = self.esInfo(session['domainId'])
+    content_field = self._mapping['text']
+
+    def not_empty(doc): return bool(doc[content_field][0])  # True if document not empty
+
+    raw_data = filter(not_empty, get_all_ids(fields=['text'], es_index=es_info['activeCrawlerIndex'], es = self._es))
+
+    id_doc_pairs = ((hash(__[content_field][0]), __[content_field][0]) for __ in raw_data)
+
+    def not_empty_tokens(toks): return bool(toks[1])  # True if document not empty
+
+    tokens = filter(not_empty_tokens, tokenize(id_doc_pairs, method=tokenizer))
+
     vectors = vectorize(tokens, method=vectorizer)
     model = run_model(vectors, model_name=model, ntopics=ntopics)
-    return model
+
+    return {"model": model, "domain": es_info['activeCrawlerIndex']}
