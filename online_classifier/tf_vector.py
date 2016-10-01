@@ -25,7 +25,7 @@ class tf_vectorizer:
 
     def preprocess(self, text):
         # Remove unwanted chars and new lines
-        text = text.lower().replace(","," ").replace("__"," ")
+        text = text.lower().replace(","," ").replace("__"," ").replace("[","").replace("]","").replace("\text","").replace("(","").replace(")","")
         text = text.replace("\n"," ")
 
         if self.convert_to_ascii:
@@ -33,13 +33,13 @@ class tf_vectorizer:
             ascii_text = []
             for x in text.split(" "):
                 try:
-                    ascii_text.append(str(x))
+                    ascii_text.append(x.encode('ascii', 'ignore'))
                 except:
                     continue
 
             text = " ".join(ascii_text)
 
-        preprocessed_text = " ".join([word.strip() for word in text.split(" ") if (word != "") and (self.isnumeric(word.strip()) == False)])
+        preprocessed_text = " ".join([word.strip() for word in text.split(" ") if (word != "") and (self.isnumeric(word.strip()) == False) and ("http" not in word.strip()) and ("html" not in word.strip()) and (len(word.strip()) > 1)])
         
         return preprocessed_text
 
