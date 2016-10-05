@@ -201,8 +201,8 @@ def get_plotting_data(pageCount=200, es_index = 'memex', es_doc_type = 'page', e
         if item['fields'].get('tag') != None:
             if "" in item['fields']['tag']:
                 item['fields'].pop('tag')
-        fields.append(item['fields'])    
-        
+        fields.append(item['fields'])
+
     return fields
 
 if __name__ == "__main__":

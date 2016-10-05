@@ -397,13 +397,13 @@ svg text {
 .statslist svg rect.Neutral,
 .statslist svg rect.New {
     stroke: lightgray;
-    fill-opacity: 0.2;
+    fill-opacity: 0.4;
 }
-
-.statslist svg rect.Neutral.New {
+/*Sonia*/
+/*.statslist svg rect.Neutral.New {
     stroke: lightgray;
     mask: url(#mask-stripe);
-}
+}*/
 
 .statslist svg g.row {
     height: 40px;
@@ -416,11 +416,13 @@ svg text {
 .statslist g.bar.Positive rect,
 .statslist g.bar.Relevant rect {
   fill: rgb(19, 72, 186);
+  border-color: rgb(19, 72, 186);
 }
 
 .statslist g.bar.Negative rect,
 .statslist g.bar.Irrelevant rect {
   fill: rgb(244, 68, 110);
+  border-color: rgb(244, 68, 110);
 }
 
 .statslist .numericalData {
