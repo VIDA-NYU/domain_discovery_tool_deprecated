@@ -14,19 +14,11 @@ from pprint import pprint
 
 MAX_PHRASES = 1000
 
-def remove_stopword_phrases(phrases):
-        selected_phrases = []
-        for phrase in phrases:
-                words = phrase.split('_');
-                if not words[0] in ENGLISH_STOPWORDS:
-                        selected_phrases.append(phrase)
-        return selected_phrases
-
 def get_bigrams_trigrams(text=[], urls=[], termCount=20, w2v=None, es=None):
 
-        bigram_vectorizer = CountVectorizer(ngram_range=(2,2))
+        bigram_vectorizer = CountVectorizer(ngram_range=(2,2), stop_words=ENGLISH_STOPWORDS)
         bigram_analyze = bigram_vectorizer.build_analyzer()
-        trigram_vectorizer = CountVectorizer(ngram_range=(3,3))
+        trigram_vectorizer = CountVectorizer(ngram_range=(3,3), stop_words=ENGLISH_STOPWORDS)
         trigram_analyze = trigram_vectorizer.build_analyzer()
         
         bi_results= map(lambda t: bigram_analyze(t), text)
