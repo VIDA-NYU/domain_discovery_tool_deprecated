@@ -1,41 +1,25 @@
 from sklearn import linear_model
 from sklearn.calibration import CalibratedClassifierCV
-from sklearn.feature_extraction.text import TfidfTransformer
-from sklearn.feature_extraction.text import CountVectorizer
+
+from tfidf_vector import tfidf_vectorizer
 
 import numpy as np
 
 class OnlineClassifier:
 
-    def __init__(self):
+    def __init__(self, max_features=10000):
         self.clf = None
-        self.count_vect = None
-        self.tfidf_transformer = None
+        self.tfidf_vector = tfidf_vectorizer(convert_to_ascii=True, max_features = max_features)
         
     def vectorize(self, train, test=[]):
-        if self.count_vect is None:
-            self.count_vect = CountVectorizer()
-            X_train_counts = self.count_vect.fit_transform(train)
-        else:
-            X_train_counts = self.count_vect.transform(train)
+        [X_train, _] = self.tfidf_vector.tfidf(train)
+        
+        X_test = None
         if test:
-            X_test_counts = self.count_vect.transform(test)
-        else:
-            X_test_counts = None
-
-        if self.tfidf_transformer is None:
-            self.tfidf_transformer = TfidfTransformer()
-            X_train = self.tfidf_transformer.fit_transform(X_train_counts)
-        else:
-            X_train = self.tfidf_transformer.fit_transform(X_train_counts)
-        if X_test_counts != None:
-            X_test = self.tfidf_transformer.transform(X_test_counts)
-        else:
-            X_test = None
-
+            [X_test, _] = self.tfidf_vector.tfidf(test)
+            
         return [X_train, X_test]
 
-    
     def fit(self, X, Y):
         clf = linear_model.SGDClassifier(n_iter=1)
         try:
