@@ -3,7 +3,7 @@ from nltk import corpus
 
 class tf_vectorizer:
     
-    def __init__(self, convert_to_ascii=False, max_features=1000):
+    def __init__(self, convert_to_ascii=False, max_features=10000):
         self.convert_to_ascii = convert_to_ascii
         self.count_vect = None
         self.max_features = max_features
@@ -25,23 +25,41 @@ class tf_vectorizer:
 
     def preprocess(self, text):
         # Remove unwanted chars and new lines
-        text = text.lower().replace(","," ").replace("__"," ").replace("[","").replace("]","").replace("\text","").replace("(","").replace(")","")
+        text = text.lower().replace(","," ").replace("__"," ").replace("(", " ").replace(")", " ").replace("[", " ").replace("]", " ").replace(".", " ").replace("/", " ").replace("\\", " ").replace("_", " ").replace("#", " ").replace("-", " ").replace("+", " ").replace("%", " ").replace(";", " ").replace(":", " ").replace("'", " ").replace("\""," ").replace("^", " ")
+
         text = text.replace("\n"," ")
 
-        if self.convert_to_ascii:
+        if convert_to_ascii:
             # Convert to ascii
             ascii_text = []
             for x in text.split(" "):
                 try:
-                    ascii_text.append(x.encode('ascii', 'ignore'))
+                    ascii_text.append(str(x))
                 except:
                     continue
-
-            text = " ".join(ascii_text)
-
-        preprocessed_text = " ".join([word.strip() for word in text.split(" ") if (word != "") and (self.isnumeric(word.strip()) == False) and ("http" not in word.strip()) and ("html" not in word.strip()) and (len(word.strip()) > 1)])
+            
+        text = " ".join(ascii_text)
         
+        preprocessed_text = " ".join([word.strip() for word in text.split(" ") if len(word.strip()) > 2 and (word.strip() != "") and (isnumeric(word.strip()) == False) and notHtmlTag(word.strip()) and notMonth(word.strip())])
+
         return preprocessed_text
+
+    def notHtmlTag(word):
+        html_tags = ["http", "html", "img", "images", "image", "index"]
+        
+        for tag in html_tags:
+            if (tag in word) or (word in ["url", "com", "www", "www3", "admin", "backup", "content"]):
+                return False
+
+        return True
+
+    def notMonth(word):
+        month_tags = ["jan", "january", "feb", "february","mar", "march","apr", "april","may", "jun", "june", "jul", "july", "aug", "august","sep", "sept", "september","oct","october","nov","november","dec", "december","montag", "dienstag", "mittwoch", "donnerstag", "freitag", "samstag", "sontag"]
+
+        if word in month_tags:
+            return False
+
+        return True
 
     def isnumeric(self, s):
         # Check if string is a numeric
