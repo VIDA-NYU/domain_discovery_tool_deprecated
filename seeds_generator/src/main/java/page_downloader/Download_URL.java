@@ -63,20 +63,25 @@ public class Download_URL implements Runnable {
 	HttpResponse response = null;
 	try{
 	    response = httpclient.execute(request);
+
 	    int status = response.getStatusLine().getStatusCode();
 	    if (status >= 200 && status < 300) {
 		HttpEntity entity = response.getEntity();
 		if(entity != null){
 
 		    String responseBody = EntityUtils.toString(entity);
+
 		    String content_type = response.getFirstHeader("Content-Type").getValue();
 		    Integer content_length = (response.getFirstHeader("Content-Length") != null) ? Integer.valueOf(response.getFirstHeader("Content-Length").getValue()) : responseBody.length();
 		    //String date = response.getFirstHeader("Date").getValue();
-		    String content_text = "";
+		    Map extracted_content = null;
 		    if(content_type.contains("text/html")){
 			Extract extract = new Extract();
-			content_text = extract.process(responseBody);
+			extracted_content = extract.process(responseBody);
 		    }
+		    
+		    String content_text = (String)extracted_content.get("content");
+		    String title = (String)extracted_content.get("title");
 
 		    SimpleDateFormat date_format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 		    date_format.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -104,6 +109,7 @@ public class Download_URL implements Runnable {
 				     .startObject()
 				     .field("html", responseBody)
 				     .field("text", content_text)
+				     .field("title", title)
 				     .field("length", content_length)
 				     .field("query", query_list)
 				     .field("retrieved", timestamp)
@@ -115,6 +121,7 @@ public class Download_URL implements Runnable {
 				     .startObject()
 				     .field("html", responseBody)
 				     .field("text", content_text)
+				     .field("title", title)
 				     .field("length", content_length)
 				     .field("retrieved", timestamp)
 				     .endObject());
@@ -129,6 +136,7 @@ public class Download_URL implements Runnable {
 				       .field("url", request.getURI())
 				       .field("html", responseBody)
 				       .field("text", content_text)
+				       .field("title", title)
 				       .field("length", content_length)
 				       .field("query", new String[]{this.query})
 				       .field("retrieved", timestamp)
