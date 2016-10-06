@@ -269,7 +269,7 @@ SigSlots.connect(
         this.clearAll();
       }
 
-      CrawlerVis.prototype.renderCrawlerOptions = function(element, data, selectedCrawler){
+     CrawlerVis.prototype.renderCrawlerOptions = function(element, data, selectedCrawler){
         var vis = this;
         // Remove existing crawler options before rendering new ones.
         element.selectAll('li').filter(function(d, i){
@@ -287,15 +287,16 @@ SigSlots.connect(
           return d.name
         })
 
-        // Wrap each input and give it a label.
-        d3.selectAll("input[name='crawlerRadio']").each(function(){
-          $("input[id='"+this.id+"']")
-          .wrap("<li class='crawler-radio'></li>")
-          .after("<label for='"+this.id+"'>"+this.placeholder+"</label>");
-        });
-        if (selectedCrawler){
-          d3.select('input[value="'+selectedCrawler+'"]');
-        }
+	 // Wrap each input and give it a label.
+	 d3.selectAll("input[name='crawlerRadio']").each(function(){
+	    $("input[id='"+this.id+"']")
+		.wrap("<li class='crawler-radio'></li>")
+		.after("<label for='"+this.id+"'>"+this.placeholder+"</label>");
+         });
+	 
+	 if (selectedCrawler != undefined){
+             d3.select('input[value="'+selectedCrawler+'"]');
+         }
 
         d3.selectAll('input[name="crawlerRadio"]').on('change', function(){
           var crawlerId = d3.select('input[name="crawlerRadio"]:checked').node().value;
@@ -342,10 +343,11 @@ SigSlots.connect(
           var crawlerId = vis.getElementValueId(data[0]);
           vis.renderCrawlerOptions(selectBox, data, crawlerId);
           vis.setCurrentCrawler(crawlerId);
+	  //Check the first crawler in the dropdown  
           d3.select('input[value="'+data[0]["id"]+'"]').attr("checked", "checked");
           $("#currentDomain").text(data[0].name).append("<span class='caret'></span>");
-          //d3.select('input[value="'+data[0]["id"]+'"]');
-          //$("#currentDomain").text("Select a domain...").append("<span class='caret'></span>");
+
+	  CrawlerVis.prototype.updateVisualization(vis);
         } else {
           $("#currentDomain").text("Select/Add Domains").append("<span class='caret'></span>");
           document.getElementById("status_panel").innerHTML = 'No domains found'
@@ -404,18 +406,12 @@ SigSlots.connect(
 
 
       // Sets active crawler.
-      CrawlerVis.prototype.setActiveCrawler = function(crawlerId) {
+     CrawlerVis.prototype.setActiveCrawler = function(crawlerId) {
         $("#wordlist").html("");
         this.initWordlist();
         // Changes active crawler and forces update.
         DataAccess.setActiveCrawler(crawlerId);
         DataAccess.loadTagColors(crawlerId);
-        //updating queries and tags when the domain is changed.
-	var session = this.sessionInfo();
-        DataAccess.loadAvailableQueries(session);
-        DataAccess.loadAvailableTags(session, 'Tags');
-	  DataAccess.loadAvailableModelTags(session);
-	  //  $("#seedsHeaderData").next().slideToggle(0);
       };
 
 
@@ -677,10 +673,10 @@ CrawlerVis.prototype.updateNewTagLoaded = function(flag_newTags){
 
 
 // Updates pages and terms from filter buttons or filter criteria(Filter Data).
-CrawlerVis.prototype.updateVisualization = function(session){
-  var vis = session;
-  DataAccess.update(vis.sessionInfo());
-  vis.pagesGallery.clear();
+CrawlerVis.prototype.updateVisualization = function(vis){
+    vis.pagesGallery.clear();
+    var session = vis.sessionInfo();
+    DataAccess.update(session);
 };
 
 CrawlerVis.prototype.enableTagSelection = function(tags, event){
@@ -1931,7 +1927,7 @@ CrawlerVis.prototype.updateOnlineClassifier = function() {
       var algId = d3.select('#selectProjectionAlgorithm').node().value;
       session['activeProjectionAlg'] = algId;
 
-      var domainId = d3.select('input[name="crawlerRadio"]:checked').node() ? d3.select('input[name="crawlerRadio"]:checked').node().value : undefined;
+	var domainId = d3.select('input[name="crawlerRadio"]:checked').node() ? d3.select('input[name="crawlerRadio"]:checked').node().value : undefined;
       session['domainId'] = domainId;
 
       var cap = d3.select('#filter_cap_select').node().value;
