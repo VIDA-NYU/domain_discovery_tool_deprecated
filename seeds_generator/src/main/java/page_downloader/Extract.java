@@ -1,5 +1,9 @@
 import java.io.*;
 import de.l3s.boilerpipe.extractors.KeepEverythingExtractor;
+import de.l3s.boilerpipe.sax.BoilerpipeSAXInput;
+import de.l3s.boilerpipe.sax.HTMLDocument;
+import de.l3s.boilerpipe.document.TextDocument;
+import de.l3s.boilerpipe.document.TextBlock;
 import java.net.URL;
 import java.util.*;
 import java.util.HashMap;
@@ -8,17 +12,34 @@ import java.net.URLDecoder;
 import java.io.PrintWriter;
 
 public class Extract {
-    public String process(String content)
+    public Map process(String html)
     {
 	try{
-	    if(!content.contains("@empty@")){
-		content = KeepEverythingExtractor.INSTANCE.getText(content);
+	    HashMap map = new HashMap();
+	    String content = "";
+	    if(!html.contains("@empty@")){
+		content = KeepEverythingExtractor.INSTANCE.getText(html);
 	    }
 	    content = content.trim().replaceAll(" +", " ");
 	    content = content.replaceAll("[\n\"\t]", " ");
 	    content = content.replaceAll(",","");
 	    content = content.toLowerCase();
-	    return content;
+
+	    map.put("content", content);
+	    
+	    HTMLDocument htmlDoc = new HTMLDocument(html);
+	    TextDocument doc = new BoilerpipeSAXInput(htmlDoc.toInputSource()).getTextDocument();
+	    String title = doc.getTitle();
+	    map.put("title", title);
+
+	    List textblocks = doc.getTextBlocks();
+	    for(int i = 0;i < textblocks.size();++i){
+		TextBlock textblock = (TextBlock)textblocks.get(i);
+		System.out.println("\n\n\nTEXT\n\n\n");
+		System.out.println(String.valueOf(textblock.getTextDensity()) + " " + textblock.getText());
+	    }
+
+	    return map;
 	}
 	catch(Exception e){
 	    System.err.println("process Exception" + e.getMessage());
