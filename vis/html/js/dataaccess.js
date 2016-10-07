@@ -235,10 +235,12 @@ var DataAccess = (function() {
   };
   // Loads pages summary until last pages update.
     pub.loadPagesSummaryUntilLastUpdate = function(isFilter, session) {
+      //isFilter = true;
     //if (currentCrawler !== undefined) {
       runQueryForCurrentCrawler(
           '/getPagesSummary', {'opt_ts2': lastUpdate, 'opt_applyFilter': isFilter, 'session': JSON.stringify(session)},
         function(summary) {
+          //isFilter = false;
           onPagesSummaryUntilLastUpdateLoaded(summary, isFilter);
         });
 
@@ -357,10 +359,11 @@ var DataAccess = (function() {
     buildHierarchyFilters( JSON.parse(JSON.stringify(session)) );
 
 	  // Fetches terms summaries.
-	  loadingTerms = true;
+
+    loadingTerms = true;
 	  runQueryForCurrentCrawler(
               '/getTermsSummary', {'session': JSON.stringify(session)}, onTermsSummaryLoaded, onMaybeUpdateCompleteTerms);
-
+    
 	  runQueryForCurrentCrawler(
 	      '/updateOnlineClassifier', {'session': JSON.stringify(session)}, onUpdatedOnlineClassifier);
       }
