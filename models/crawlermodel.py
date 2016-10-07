@@ -476,7 +476,7 @@ class CrawlerModel:
     
     if session["filter"] == "" or session["filter"] is None:
       if len(urls) > 0 and text:
-        [bigram_tfidf_data, trigram_tfidf_data,_,_,bigram_corpus, trigram_corpus,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(text, urls, opt_maxNumberOfTerms+len(neg_terms), self.w2v, self._es)
+        [bigram_tfidf_data, trigram_tfidf_data,_,_,bigram_corpus, trigram_corpus,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(text, opt_maxNumberOfTerms+len(neg_terms), self._es)
 
         tfidf_all = tfidf.tfidf(urls, pos_tags=self._pos_tags, mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es)
         if pos_terms:
@@ -510,7 +510,7 @@ class CrawlerModel:
     else:
       top_terms = [term for term in get_significant_terms(urls, opt_maxNumberOfTerms+len(neg_terms), mapping=es_info['mapping'], es_index=es_info['activeCrawlerIndex'], es_doc_type=es_info['docType'], es=self._es) if (term not in neg_terms)]
       if len(text) > 0:
-        [_,_,_,_,_,_,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(text, urls, opt_maxNumberOfTerms+len(neg_terms), self.w2v, self._es)
+        [_,_,_,_,_,_,top_bigrams, top_trigrams] = get_bigrams_trigrams.get_bigrams_trigrams(text, opt_maxNumberOfTerms+len(neg_terms), self._es)
         top_bigrams = [term for term in top_bigrams if term not in neg_terms]
         top_trigrams = [term for term in top_trigrams if term not in neg_terms]
 
@@ -586,10 +586,11 @@ class CrawlerModel:
       total_pos_tf = np.sum(ttfs_pos, axis=0)
       total_pos = np.sum(total_pos_tf)
 
-      [_,_,bigram_tf_data,trigram_tf_data,pos_bigram_corpus, pos_trigram_corpus,_,_] = get_bigrams_trigrams.get_bigrams_trigrams(pos_text, pos_urls, opt_maxNumberOfTerms, self.w2v, self._es)
+      [_,_,bigram_tf_data,trigram_tf_data,pos_bigram_corpus, pos_trigram_corpus,_,_] = get_bigrams_trigrams.get_bigrams_trigrams(pos_text, opt_maxNumberOfTerms, self._es)
 
-      total_bigram_pos_tf = np.sum(bigram_tf_data, axis=0)
-      total_bigram_pos = np.sum(total_bigram_pos_tf)
+            
+      total_bigram_pos_tf = np.transpose(np.sum(bigram_tf_data, axis=0))
+      total_bigram_pos = np.transpose(np.sum(total_bigram_pos_tf))
 
       total_trigram_pos_tf = trigram_tf_data.sum(axis=0)
       total_trigram_pos = np.sum(total_trigram_pos_tf)
@@ -618,12 +619,12 @@ class CrawlerModel:
       total_neg_tf = np.sum(ttfs_neg, axis=0)
       total_neg = np.sum(total_neg_tf)
 
-      [_,_,bigram_tf_data,trigram_tf_data,neg_bigram_corpus, neg_trigram_corpus,_,_] = get_bigrams_trigrams.get_bigrams_trigrams(neg_text, neg_urls, opt_maxNumberOfTerms, self.w2v, self._es)
+      [_,_,bigram_tf_data,trigram_tf_data,neg_bigram_corpus, neg_trigram_corpus,_,_] = get_bigrams_trigrams.get_bigrams_trigrams(neg_text, opt_maxNumberOfTerms, self._es)
 
-      total_bigram_neg_tf = np.sum(bigram_tf_data, axis=0)
+      total_bigram_neg_tf = np.transpose(np.sum(bigram_tf_data, axis=0))
       total_bigram_neg = np.sum(total_bigram_neg_tf)
 
-      total_trigram_neg_tf = trigram_tf_data.sum(axis=0)
+      total_trigram_neg_tf = np.transpose(trigram_tf_data.sum(axis=0))
       total_trigram_neg = np.sum(total_trigram_neg_tf)
 
     entry = {}
@@ -1457,75 +1458,78 @@ class CrawlerModel:
                                       es_info['activeCrawlerIndex'], 
                                       es_info['docType'],
                                       self._es)
-      
-      unlabeled_urls = [unlabelled_doc[es_info['mapping']['url']][0] for unlabelled_doc in unlabelled_docs]
-      unlabeled_ids = [unlabelled_doc["id"] for unlabelled_doc in unlabelled_docs]
+
       unlabeled_text = [unlabelled_doc[es_info['mapping']['text']][0] for unlabelled_doc in unlabelled_docs]
-      
-      [unlabeled_data,_] =  self._onlineClassifiers[session['domainId']]["onlineClassifier"].vectorize(unlabeled_text)
-      [classp, calibp, cm] = self._onlineClassifiers[session['domainId']]["onlineClassifier"].predictClass(unlabeled_data,sigmoid)
-      
-      pos_calib_indices = np.nonzero(calibp)
-      neg_calib_indices = np.where(calibp == 0)
-      
-      pos_cm = [cm[pos_calib_indices][i][1] for i in range(0,np.shape(cm[pos_calib_indices])[0])]
-      neg_cm = [cm[neg_calib_indices][i][0] for i in range(0,np.shape(cm[neg_calib_indices])[0])]
-      
-      pos_sorted_cm = pos_calib_indices[0][np.asarray(np.argsort(pos_cm)[::-1])]
-      neg_sorted_cm = neg_calib_indices[0][np.asarray(np.argsort(neg_cm)[::-1])]
-      
-      entries = {}
-      for i in pos_sorted_cm:
-        entry = {}
-        if cm[i][1] < 60:
-          entry["unsure_tag"] = 1
-          entry["label_pos"] = 0
-          entry["label_neg"] = 0
-          entries[unlabeled_ids[i]] = entry
-          unsure = unsure + 1
-        else:
-          entry["label_pos"] = 1
-          entry["unsure_tag"] = 0
-          entry["label_neg"] = 0
-          entries[unlabeled_ids[i]] = entry
 
-          label_pos = label_pos + 1
+      # Check if unlabeled data available
+      if len(unlabeled_text) > 0:
+        unlabeled_urls = [unlabelled_doc[es_info['mapping']['url']][0] for unlabelled_doc in unlabelled_docs]
+        unlabeled_ids = [unlabelled_doc["id"] for unlabelled_doc in unlabelled_docs]
 
-      for i in neg_sorted_cm:
-        entry = {}
-        if cm[i][0] < 60:
-          entry["unsure_tag"] = 1
-          entry["label_pos"] = 0
-          entry["label_neg"] = 0
-          entries[unlabeled_ids[i]] = entry
+        [unlabeled_data,_] =  self._onlineClassifiers[session['domainId']]["onlineClassifier"].vectorize(unlabeled_text)
+        [classp, calibp, cm] = self._onlineClassifiers[session['domainId']]["onlineClassifier"].predictClass(unlabeled_data,sigmoid)
+      
+        pos_calib_indices = np.nonzero(calibp)
+        neg_calib_indices = np.where(calibp == 0)
+      
+        pos_cm = [cm[pos_calib_indices][i][1] for i in range(0,np.shape(cm[pos_calib_indices])[0])]
+        neg_cm = [cm[neg_calib_indices][i][0] for i in range(0,np.shape(cm[neg_calib_indices])[0])]
+      
+        pos_sorted_cm = pos_calib_indices[0][np.asarray(np.argsort(pos_cm)[::-1])]
+        neg_sorted_cm = neg_calib_indices[0][np.asarray(np.argsort(neg_cm)[::-1])]
+      
+        entries = {}
+        for i in pos_sorted_cm:
+          entry = {}
+          if cm[i][1] < 60:
+            entry["unsure_tag"] = 1
+            entry["label_pos"] = 0
+            entry["label_neg"] = 0
+            entries[unlabeled_ids[i]] = entry
+            unsure = unsure + 1
+          else:
+            entry["label_pos"] = 1
+            entry["unsure_tag"] = 0
+            entry["label_neg"] = 0
+            entries[unlabeled_ids[i]] = entry
 
-          unsure = unsure + 1
-        else:
-          entry["label_neg"] = 1
-          entry["unsure_tag"] = 0
-          entry["label_pos"] = 0
-          
-          entries[unlabeled_ids[i]] = entry
-          label_neg = label_neg + 1
+            label_pos = label_pos + 1
             
-      if entries:
-        update_try = 0
-        while (update_try < 10):
-          try:
-            update_document(entries, es_info['activeCrawlerIndex'], es_info['docType'], self._es)
-            break
-          except:
-            update_try = update_try + 1
+        for i in neg_sorted_cm:
+          entry = {}
+          if cm[i][0] < 60:
+            entry["unsure_tag"] = 1
+            entry["label_pos"] = 0
+            entry["label_neg"] = 0
+            entries[unlabeled_ids[i]] = entry
             
-      pos_indices = np.nonzero(classp)
-      neg_indices = np.where(classp == 0)
+            unsure = unsure + 1
+          else:
+            entry["label_neg"] = 1
+            entry["unsure_tag"] = 0
+            entry["label_pos"] = 0
+            
+            entries[unlabeled_ids[i]] = entry
+            label_neg = label_neg + 1
+            
+        if entries:
+          update_try = 0
+          while (update_try < 10):
+            try:
+              update_document(entries, es_info['activeCrawlerIndex'], es_info['docType'], self._es)
+              break
+            except:
+              update_try = update_try + 1
+            
+        pos_indices = np.nonzero(classp)
+        neg_indices = np.where(classp == 0)
 
     accuracy = '0'
     if self._onlineClassifiers.get(session['domainId']) != None:
       accuracy = self._onlineClassifiers[session['domainId']].get("accuracy")
       if accuracy == None:
         accuracy = '0'
-
+        
     self.results_file.write(str(len(pos_text)) +","+ str(len(neg_text)) +","+ accuracy +","+ str(unsure) +","+ str(label_pos) +","+ str(label_neg) +","+ str(len(unlabeled_urls))+"\n")
     
     return accuracy
