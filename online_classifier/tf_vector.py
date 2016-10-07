@@ -3,17 +3,18 @@ from nltk import corpus
 
 class tf_vectorizer:
     
-    def __init__(self, convert_to_ascii=False, max_features=10000):
+    def __init__(self, convert_to_ascii=False, max_features=10000, ngram_range=(1,1)):
         self.convert_to_ascii = convert_to_ascii
         self.count_vect = None
         self.max_features = max_features
+        self.ngram_range = ngram_range
         self.ENGLISH_STOPWORDS = corpus.stopwords.words('english')
         
     def vectorize(self, data):
         X_counts = None
-    
+
         if self.count_vect is None:
-            self.count_vect = CountVectorizer(stop_words=self.ENGLISH_STOPWORDS, preprocessor=self.preprocess, strip_accents='ascii', max_features=self.max_features)
+            self.count_vect = CountVectorizer(stop_words=self.ENGLISH_STOPWORDS, preprocessor=self.preprocess, strip_accents='ascii', ngram_range=self.ngram_range, max_features=self.max_features)
             X_counts = self.count_vect.fit_transform(data)
         else:
             X_counts = self.count_vect.transform(data)
@@ -29,22 +30,22 @@ class tf_vectorizer:
 
         text = text.replace("\n"," ")
 
-        if convert_to_ascii:
+        if self.convert_to_ascii:
             # Convert to ascii
             ascii_text = []
             for x in text.split(" "):
                 try:
-                    ascii_text.append(str(x))
+                    ascii_text.append(x.encode('ascii', 'ignore'))
                 except:
                     continue
             
-        text = " ".join(ascii_text)
+            text = " ".join(ascii_text)
         
-        preprocessed_text = " ".join([word.strip() for word in text.split(" ") if len(word.strip()) > 2 and (word.strip() != "") and (isnumeric(word.strip()) == False) and notHtmlTag(word.strip()) and notMonth(word.strip())])
+        preprocessed_text = " ".join([word.strip() for word in text.split(" ") if len(word.strip()) > 2 and (word.strip() != "") and (self.isnumeric(word.strip()) == False) and self.notHtmlTag(word.strip()) and self.notMonth(word.strip())])
 
         return preprocessed_text
 
-    def notHtmlTag(word):
+    def notHtmlTag(self, word):
         html_tags = ["http", "html", "img", "images", "image", "index"]
         
         for tag in html_tags:
@@ -53,7 +54,7 @@ class tf_vectorizer:
 
         return True
 
-    def notMonth(word):
+    def notMonth(self, word):
         month_tags = ["jan", "january", "feb", "february","mar", "march","apr", "april","may", "jun", "june", "jul", "july", "aug", "august","sep", "sept", "september","oct","october","nov","november","dec", "december","montag", "dienstag", "mittwoch", "donnerstag", "freitag", "samstag", "sontag"]
 
         if word in month_tags:
