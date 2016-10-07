@@ -455,6 +455,7 @@ SigSlots.connect(
       var flag_newQuery = false; changeDomain = false; flag_newTag = false;
       var value_newQuery = "";
       var initialCheckBox = 5; nroQueries = initialCheckBox; nroTags = initialCheckBox;
+      var changeDomainQuery =false;
       var visgeneral;
 
       //Adding new queries.

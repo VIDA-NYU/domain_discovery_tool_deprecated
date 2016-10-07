@@ -354,6 +354,18 @@
     </div>
 
     <div class="panel-body">
+      <div class="row" style="margin-top:1px; margin-bottom:-10px; margin-left:-1px; margin-right:-1px;">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Filter pages..." id="filter_box" list="filter_box_previous_filters">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-warning" data-type="last" id="submit_filter"><span class="glyphicon glyphicon-search"></button>
+            </span>
+          </div>
+          <datalist id='filter_box_previous_filters'></datalist>
+      </div>
+
+        <hr>
+
       <div class="row" style="margin-bottom:3px">
         <!--Search button (appling filters, queries, tags, etc)-->
         <div style="float:left; margin-left:15px;margin-top:-10px;margin-bottom:-16px;">
@@ -368,6 +380,7 @@
         </span>
         </div-->
       </div>
+
       <hr>
 
       <div class="row" style="margin-top:-16px; margin-bottom:-16px;">
@@ -455,13 +468,6 @@
       </div>
 
       <hr>
-      <div class="input-group">
-        <input type="text" class="form-control" placeholder="Filter pages..." id="filter_box" list="filter_box_previous_filters">
-        <span class="input-group-btn">
-          <button type="button" class="btn btn-warning" data-type="last" id="submit_filter"><span class="glyphicon glyphicon-search"></button>
-          </span>
-        </div>
-        <datalist id='filter_box_previous_filters'></datalist>
         <form class="form-horizontal well" style="margin-top:20px;box-shadow: 0 0px 9px rgba(0,0,0,.2);padding: 10px 10px 1px 10px">
           <div class="form-group">
             <span class="col-sm-2 control-label">From:</span>
