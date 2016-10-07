@@ -12,11 +12,11 @@ class OnlineClassifier:
         self.tfidf_vector = tfidf_vectorizer(convert_to_ascii=True, max_features = max_features)
         
     def vectorize(self, train, test=[]):
-        [X_train, _] = self.tfidf_vector.tfidf(train)
+        [X_train, _, _] = self.tfidf_vector.tfidf(train)
         
         X_test = None
         if test:
-            [X_test, _] = self.tfidf_vector.tfidf(test)
+            [X_test, _, _] = self.tfidf_vector.tfidf(test)
             
         return [X_train, X_test]
 
