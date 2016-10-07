@@ -13,15 +13,21 @@
  * @param containerId ID for parent element.
  */
 var Statslist = function(containerId) {
-    this.containerId = containerId;  
+    this.containerId = containerId;
     this.entries = [];
     this.setMaxBarTotal(100);
+    this.setOtherTagsTotal(0);
     this.update();
 };
 
 
 Statslist.prototype.setMaxBarTotal = function(maxBarTotal) {
     this.maxBarTotal = maxBarTotal;
+    this.update();
+};
+
+Statslist.prototype.setOtherTagsTotal = function(otherTagsTotal) {
+    this.otherTagsTotal = otherTagsTotal;
     this.update();
 };
 
@@ -51,24 +57,24 @@ Statslist.prototype.update = function() {
     var rowHeight = 30;
     var barHeight = 20;
     var svgMargin = {'top': 5, 'left': 5, 'right': 5};
-    
+
     var containerWidth = $('#' + statslist.containerId).width();
     var width = containerWidth - svgMargin.left - svgMargin.right;
     var maxBarWidth = width - maxWordTextWidth;
 
     var numberFormat = d3.format('0,000');
     var transitionDuration = 500;
-    
+
     var svg = d3.select('#' + this.containerId).select('svg');
     svg = svg.selectAll('g.rowsContainer').data(['g.rowsContainer']);
     svg.enter().append('g')
         .classed('rowsContainer', true)
         .attr('transform', 'translate(' + svgMargin.left + ', ' + svgMargin.top + ')');
-    
+
     // Total number of pages.
     statslist.nPagesTotal =
-      this.entries.reduce(function(prev, d) { return prev + d['Total']; }, 0);
-    
+      this.entries.reduce(function(prev, d) { return prev + d['Total']; }, 0) + statslist.otherTagsTotal;
+
     var titleRow = svg.selectAll('g.titleRow').data(['titleRow']);
     titleRow
         .enter().append('g')
@@ -78,9 +84,9 @@ Statslist.prototype.update = function() {
         .enter().append('text')
         .classed('caption', true)
         .attr('y', 0.5 * rowHeight);
-    titleText.text('Total pages: ' + numberFormat(statslist.nPagesTotal));    
-    
-    
+    titleText.text('Total pages: ' + numberFormat(statslist.nPagesTotal));
+
+
     // Rows for entries.
     var rows = svg.selectAll('g.row').data(statslist.entries, function(d, i) {
         return i + '-' + d['name'];
@@ -90,7 +96,7 @@ Statslist.prototype.update = function() {
         .classed('row', true)
         .attr('transform', function(d, i) {
             return 'translate(0, '
-            + ((i + 1) * rowHeight) + ')'; 
+            + ((i + 1) * rowHeight) + ')';
         });
 
     // Container for stats names.
@@ -109,7 +115,6 @@ Statslist.prototype.update = function() {
     var barScale = d3.scale.linear()
         .range([0, maxBarWidth])
         .domain([0, statslist.maxBarTotal]);
-
     // Containers for bars.
     var barsContainers = rows.selectAll('g.bar').data(function(d) { return [d]; });
     barsContainers.enter().append('g')
@@ -118,7 +123,7 @@ Statslist.prototype.update = function() {
         .classed('Irrelevant', function(d) { return d['label'] == 'Irrelevant'; })
         .classed('Neutral', function(d) { return d['label'] == 'Neutral'; })
         .attr('transform', 'translate(' + (svgMargin.left + maxWordTextWidth) + ', 0)');
-    
+
     // TODO(cesar): Make this flexible.
     barsContainers.each(function(d, i) {
         // Rectangle for number of pages until last update.
@@ -137,7 +142,7 @@ Statslist.prototype.update = function() {
           .transition(transitionDuration)
           .attr('x', xPrevious)
           .attr('width', wPrevious);
-        
+
         // Rectangle for number of new pages.
         var cl2 = 'New';
         var rectNewPages =
@@ -147,12 +152,12 @@ Statslist.prototype.update = function() {
             .classed(cl2, true)
             .attr('y', 0.5 * (rowHeight - barHeight))
             .attr('height', barHeight);
-        var wNew = barScale(d['New']);
+        var wNew = barScale(d['TotalTags'] - d['Until Last Update']);
         var xNew = wPrevious;
         rectNewPages
           .transition(transitionDuration)
           .attr('x', xNew)
-          .attr('width', wNew);
+          .attr('width', function(){return wNew;});
     });
 
     // Interaction rectangle.
@@ -168,23 +173,25 @@ Statslist.prototype.update = function() {
             Utils.showTooltip();
         })
         .on('mousemove', function(d, i) {
-            var t = numberFormat(d['Total']) + ' ' + d['label']
-              + ' pages out of ' + numberFormat(statslist.nPagesTotal) + ' total';
+            var t = numberFormat(d['Until Last Update']) + ' ' + d['label']
+              + ' pages out of ' + d['TotalTags'] + ' total';
             Utils.updateTooltip(t);
         })
         .on('mouseout', function(d, i) {
             Utils.hideTooltip();
         });
 
+
+
     // Bar and number for new pages.
     var entriesCompTopMargin = 6 * svgMargin.top + (statslist.entries.length + 1) * rowHeight;
-    
+
     svg = svg.selectAll('g.compRows').data(['g.compRows']);
     svg.enter().append('g')
         .classed('compRows', true);
     svg
         .attr('transform', 'translate(0,' + entriesCompTopMargin + ')');
-    
+
     var neutralNew = 0;
     statslist.entries.forEach(function(entry) {
       if (entry['label'] == 'Neutral') {
@@ -196,9 +203,9 @@ Statslist.prototype.update = function() {
         .classed('compRow', true)
         .attr('transform', function(d, i) {
             return 'translate(0, '
-            + (i * 2 * rowHeight) + ')'; 
+            + (i * 2 * rowHeight) + ')';
         });
-    
+
     var groups = ['Neutral'];
     // Information about number of new pages.
     compRows.each(function(d, i) {
@@ -216,7 +223,7 @@ Statslist.prototype.update = function() {
             .classed('title', true)
             .attr('y', titleY)
             .text(titleText);
-        
+
         for (var index in groups) {
             var group = groups[index];
             var gRect = d3.select(this).selectAll('g.bar.' + group).data(['g.bar']);
@@ -234,7 +241,7 @@ Statslist.prototype.update = function() {
             rect
                 .transition(transitionDuration)
                 .attr('width', w);
-            
+
             // Count.
             var pagesCount = gRect.selectAll('text.numericalData').data(['text']);
             pagesCount
@@ -245,7 +252,7 @@ Statslist.prototype.update = function() {
                 .attr('y', rowH + titleY);
             pagesCount
                 .text(d['v']);
-        }        
+        }
     });
 
 };

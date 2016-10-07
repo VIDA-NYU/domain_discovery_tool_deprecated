@@ -354,6 +354,19 @@
     </div>
 
     <div class="panel-body">
+
+      <div class="row" style="margin-top:1px; margin-bottom:-10px; margin-left:-1px; margin-right:-1px;">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Filter pages..." id="filter_box" list="filter_box_previous_filters">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-warning" data-type="last" id="submit_filter"><span class="glyphicon glyphicon-search"></button>
+          </span>
+        </div>
+        <datalist id='filter_box_previous_filters'></datalist>
+      </div>
+
+      <hr>
+
       <div class="row" style="margin-bottom:3px">
         <!--Search button (appling filters, queries, tags, etc)-->
         <div style="float:left; margin-left:15px;margin-top:-10px;margin-bottom:-16px;">
@@ -368,6 +381,7 @@
         </span>
         </div-->
       </div>
+
       <hr>
 
       <div class="row" style="margin-top:-16px; margin-bottom:-16px;">
@@ -453,74 +467,47 @@
           <small><u><a id="toggleButtonMoreModelTags" href="javascript:void(0);" style="display:none;">See More</a></u></small>
         </div>
       </div>
-    </div>
-  </div>
 
-  <div class="panel panel-default">
-
-    <div class="panel-heading" id="seedsHeaderFilter">
-      <h4 class="panel-title">
-        <div class="panel-heading-left" >
-          <span class="glyphicon glyphicon-filter"></span>&nbsp;&nbsp;Filter Results
-        </div>
-        <div class="panel-heading-right">
-          <span class="collapsethis glyphicon glyphicon-plus"></span>
-        </div>
-      </h4>
-
-    </div>
-
-    <div class="panel-body">
-      <div id="filter_panel">
-
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="Filter pages..." id="filter_box" list="filter_box_previous_filters">
-          <span class="input-group-btn">
-            <button type="button" class="btn btn-warning" data-type="last" id="submit_filter"><span class="glyphicon glyphicon-search"></button>
-            </span>
+      <hr>
+        <form class="form-horizontal well" style="margin-top:20px;box-shadow: 0 0px 9px rgba(0,0,0,.2);padding: 10px 10px 1px 10px">
+          <div class="form-group">
+            <span class="col-sm-2 control-label">From:</span>
+            <div class="input-group date col-sm-8" id="from_datetimepicker" >
+              <input type="text" class="form-control" id="fromdate"/>
+              <span class="input-group-addon btn btn-warning" id="fromdate_addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+            </div>
           </div>
-          <datalist id='filter_box_previous_filters'></datalist>
-          <form class="form-horizontal well" style="margin-top:20px;box-shadow: 0 0px 9px rgba(0,0,0,.2);padding: 10px 10px 1px 10px">
-            <div class="form-group">
-              <span class="col-sm-2 control-label">From:</span>
-              <div class="input-group date col-sm-8" id="from_datetimepicker" >
-                <input type="text" class="form-control" id="fromdate"/>
-                <span class="input-group-addon btn btn-warning" id="fromdate_addon">
-                  <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-              </div>
+          <div class="form-group">
+            <span class="col-sm-2 control-label">To:</span>
+            <div class="input-group date col-sm-8" id='to_datetimepicker'>
+              <input type="text" class="form-control" id="todate"/>
+              <span class="input-group-addon btn btn-warning" id="todate_addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+              </span>
             </div>
-            <div class="form-group">
-              <span class="col-sm-2 control-label">To:</span>
-              <div class="input-group date col-sm-8" id='to_datetimepicker'>
-                <input type="text" class="form-control" id="todate"/>
-                <span class="input-group-addon btn btn-warning" id="todate_addon">
-                  <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-              </div>
-            </div>
-          </form>
+          </div>
+        </form>
 
-          <div id="filter_statslist" class="statslist">
-            <svg>
-              <defs>
-                <pattern id="pattern-stripe"
-                width="4" height="4"
-                patternUnits="userSpaceOnUse"
-                patternTransform="rotate(45)">
-                <rect width="3" height="6" transform="translate(0,0)" fill="white"></rect>
-              </pattern>
-              <mask id="mask-stripe">
-                <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-stripe)" />
-              </mask>
-            </defs>
-          </svg>
-        </div>
-      </div>
+        <!--div id="filter_statslist" class="statslist">
+          <svg>
+            <defs>
+              <pattern id="pattern-stripe"
+              width="4" height="4"
+              patternUnits="userSpaceOnUse"
+              patternTransform="rotate(45)">
+              <rect width="3" height="6" transform="translate(0,0)" fill="white"></rect>
+            </pattern>
+            <mask id="mask-stripe">
+              <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-stripe)" />
+            </mask>
+          </defs>
+        </svg>
+      </div-->
 
     </div>
   </div>
-
 
   <div class="panel panel-default">
     <div class="panel-heading" id="seedsHeader">
