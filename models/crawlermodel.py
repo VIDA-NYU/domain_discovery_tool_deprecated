@@ -436,7 +436,6 @@ class CrawlerModel:
                 if 'Relevant' in tags:
                     relevant = relevant + 1
                 else:
-                    print otherTags
                     otherTags = otherTags + 1
             else:
                 neutral = neutral + 1
@@ -631,7 +630,7 @@ class CrawlerModel:
 
       [_,_,bigram_tf_data,trigram_tf_data,pos_bigram_corpus, pos_trigram_corpus,_,_] = get_bigrams_trigrams.get_bigrams_trigrams(pos_text, opt_maxNumberOfTerms, self._es)
 
-            
+
       total_bigram_pos_tf = np.transpose(np.sum(bigram_tf_data, axis=0))
       total_bigram_pos = np.transpose(np.sum(total_bigram_pos_tf))
 
@@ -1511,16 +1510,16 @@ class CrawlerModel:
 
         [unlabeled_data,_] =  self._onlineClassifiers[session['domainId']]["onlineClassifier"].vectorize(unlabeled_text)
         [classp, calibp, cm] = self._onlineClassifiers[session['domainId']]["onlineClassifier"].predictClass(unlabeled_data,sigmoid)
-      
+
         pos_calib_indices = np.nonzero(calibp)
         neg_calib_indices = np.where(calibp == 0)
-      
+
         pos_cm = [cm[pos_calib_indices][i][1] for i in range(0,np.shape(cm[pos_calib_indices])[0])]
         neg_cm = [cm[neg_calib_indices][i][0] for i in range(0,np.shape(cm[neg_calib_indices])[0])]
-      
+
         pos_sorted_cm = pos_calib_indices[0][np.asarray(np.argsort(pos_cm)[::-1])]
         neg_sorted_cm = neg_calib_indices[0][np.asarray(np.argsort(neg_cm)[::-1])]
-      
+
         entries = {}
         for i in pos_sorted_cm:
           entry = {}
@@ -1537,7 +1536,7 @@ class CrawlerModel:
             entries[unlabeled_ids[i]] = entry
 
             label_pos = label_pos + 1
-            
+
         for i in neg_sorted_cm:
           entry = {}
           if cm[i][0] < 60:
@@ -1545,16 +1544,16 @@ class CrawlerModel:
             entry["label_pos"] = 0
             entry["label_neg"] = 0
             entries[unlabeled_ids[i]] = entry
-            
+
             unsure = unsure + 1
           else:
             entry["label_neg"] = 1
             entry["unsure_tag"] = 0
             entry["label_pos"] = 0
-            
+
             entries[unlabeled_ids[i]] = entry
             label_neg = label_neg + 1
-            
+
         if entries:
           update_try = 0
           while (update_try < 10):
@@ -1563,7 +1562,7 @@ class CrawlerModel:
               break
             except:
               update_try = update_try + 1
-            
+
         pos_indices = np.nonzero(classp)
         neg_indices = np.where(classp == 0)
 
@@ -1572,7 +1571,7 @@ class CrawlerModel:
       accuracy = self._onlineClassifiers[session['domainId']].get("accuracy")
       if accuracy == None:
         accuracy = '0'
-        
+
     self.results_file.write(str(len(pos_text)) +","+ str(len(neg_text)) +","+ accuracy +","+ str(unsure) +","+ str(label_pos) +","+ str(label_neg) +","+ str(len(unlabeled_urls))+"\n")
 
     return accuracy

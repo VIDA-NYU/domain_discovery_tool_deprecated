@@ -293,7 +293,7 @@ SigSlots.connect(
 		.wrap("<li class='crawler-radio'></li>")
 		.after("<label for='"+this.id+"'>"+this.placeholder+"</label>");
          });
-	 
+
 	 if (selectedCrawler != undefined){
              d3.select('input[value="'+selectedCrawler+'"]');
          }
@@ -343,7 +343,7 @@ SigSlots.connect(
           var crawlerId = vis.getElementValueId(data[0]);
           vis.renderCrawlerOptions(selectBox, data, crawlerId);
           vis.setCurrentCrawler(crawlerId);
-	  //Check the first crawler in the dropdown  
+	  //Check the first crawler in the dropdown
           d3.select('input[value="'+data[0]["id"]+'"]').attr("checked", "checked");
           $("#currentDomain").text(data[0].name).append("<span class='caret'></span>");
 
@@ -456,6 +456,7 @@ SigSlots.connect(
       var value_newQuery = "";
       var initialCheckBox = 5; nroQueries = initialCheckBox; nroTags = initialCheckBox;
       var changeDomainQuery =false;
+      var changeDomainTag = false;
       var visgeneral;
 
       //Adding new queries.
