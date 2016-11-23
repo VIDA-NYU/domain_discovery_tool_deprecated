@@ -728,7 +728,7 @@ class CrawlerModel:
         entry[key] = {"pos_freq": 0}
       if key in neg_trigram_corpus:
         if total_trigram_neg != 0:
-          entry[key].update({"neg_freq": (float(total_trigram_neg_tf[0,neg_trigram_corpus.index(key)])/total_trigram_neg)})
+          entry[key].update({"neg_freq": (float(total_trigram_neg_tf[neg_trigram_corpus.index(key)])/total_trigram_neg)})
         else:
           entry[key].update({"neg_freq": 0})
       else:
@@ -1146,8 +1146,8 @@ class CrawlerModel:
 
     es_info = self.esInfo(session['domainId'])
 
-    results = field_exists("crawled_forward", [es_info['mapping']['url']], self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)
-    already_crawled = [result[es_info["mapping"]["url"]][0] for result in results]
+    results = field_exists("crawled_forward", [es_info['mapping']['url'], "crawled_forward"], self._all, es_info['activeCrawlerIndex'], es_info['docType'], self._es)
+    already_crawled = [result[es_info["mapping"]["url"]][0] for result in results if result["crawled_forward"][0] == 1]
     not_crawled = list(Set(urls).difference(already_crawled))
     results = get_documents(not_crawled, es_info["mapping"]['url'], [es_info["mapping"]['url']], es_info['activeCrawlerIndex'], es_info['docType'], self._es)
     not_crawled_urls = [results[url][0][es_info["mapping"]["url"]][0] for url in not_crawled]
