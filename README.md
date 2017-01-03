@@ -48,9 +48,9 @@ First, make sure you have Docker installed and running. Then, you can create an 
 
     docker build -t domain_discovery_tool .
 
-or download the latest published docker build (you do not need to clone the DDT repository in this case)
+or download the latest published docker build (you do not need to clone the DDT repository in this case):
 
-   docker pull vidanyu/ddt:latest
+    docker pull vidanyu/ddt:latest
 
 Run the app using the Docker image that you just built. This starts the elasticsearch and the DDT server:
 
