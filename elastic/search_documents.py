@@ -249,7 +249,10 @@ def field_missing(field, fields, pagesCount, es_index='memex', es_doc_type='page
     
     results = []
     for hit in hits:
-        fields = hit['fields']
+        if hit.get('fields') != None:
+            fields = hit['fields']
+        else:
+            fields = {}
         fields['id'] = hit['_id']
         results.append(fields)
 

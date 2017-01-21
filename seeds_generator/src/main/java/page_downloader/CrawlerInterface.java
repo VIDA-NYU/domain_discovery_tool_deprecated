@@ -53,7 +53,7 @@ public class CrawlerInterface implements Runnable{
 	this.client = client;
 	this.crawlType = crawl_type;
 	this.top = top;
-	this.download = new Download("Crawl: " + this.es_index, this.es_index, this.es_doc_type, this.es_host);
+	this.download = new Download("Crawl_" + this.es_index, this.es_index, this.es_doc_type, this.es_host);
     }
 
     public ArrayList<String> crawl_backward(ArrayList<String> urls){
@@ -165,7 +165,7 @@ public class CrawlerInterface implements Runnable{
 		} catch(Exception e) {
 		    e.printStackTrace();
 		}
-		this.download.setQuery("Crawl: " + domain);
+		this.download.setQuery("Crawl_" + domain);
 		this.download.addTask(url);
 		
 		//Crawl page forward
@@ -216,7 +216,7 @@ public class CrawlerInterface implements Runnable{
         } catch(Exception e) {
             e.printStackTrace();
         }
-	
+
         ArrayList<String> res = new ArrayList<String>(links);
 	for(String f_url: res){
 	    String domain = this.es_index;
@@ -226,7 +226,7 @@ public class CrawlerInterface implements Runnable{
 		e.printStackTrace();
 	    }
 
-	    this.download.setQuery("Crawl: " + domain);
+	    this.download.setQuery("Crawl_" + domain);
 	    this.download.addTask(f_url);
 	}
 

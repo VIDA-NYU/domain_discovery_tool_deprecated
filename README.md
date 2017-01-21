@@ -48,9 +48,13 @@ First, make sure you have Docker installed and running. Then, you can create an 
 
     docker build -t domain_discovery_tool .
 
-Run the app using the Docker image that you just built. This starts the elasticsearch and the DDT server:
+or download the latest published docker build (you do not need to clone the DDT repository in this case):
 
-    docker run -i -p 8084:8084 -p 9200:9200 -t domain_discovery_tool /ddt/run_demo.sh
+    docker pull vidanyu/ddt:latest
+
+Run the app using the Docker image that you just built (or pulled). This starts the elasticsearch and the DDT server:
+
+    docker run -i -p 8084:8084 -p 9200:9200 -t <domain_discovery_tool or vidanyu/ddt:latest> /ddt/run_demo.sh
 
 To see the app running, go to:
 
@@ -58,7 +62,7 @@ To see the app running, go to:
 
 Alternativaly, you can also specify an external ElasticSearch server address using an enviroment variable:
 
-    docker run -p 8084:8084 -e "ELASTICSEARCH_SERVER=http://127.0.0.1:9200" -i -t domain_discovery_tool
+    docker run -p 8084:8084 -e "ELASTICSEARCH_SERVER=http://127.0.0.1:9200" -i -t <domain_discovery_tool or vidanyu/ddt:latest>
 
 ## Further Documentation
 
