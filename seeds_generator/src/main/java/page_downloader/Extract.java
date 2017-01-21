@@ -32,13 +32,6 @@ public class Extract {
 	    String title = doc.getTitle();
 	    map.put("title", title);
 
-	    List textblocks = doc.getTextBlocks();
-	    for(int i = 0;i < textblocks.size();++i){
-		TextBlock textblock = (TextBlock)textblocks.get(i);
-		System.out.println("\n\n\nTEXT\n\n\n");
-		System.out.println(String.valueOf(textblock.getTextDensity()) + " " + textblock.getText());
-	    }
-
 	    return map;
 	}
 	catch(Exception e){
