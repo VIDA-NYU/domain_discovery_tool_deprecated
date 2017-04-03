@@ -39,77 +39,70 @@ public class GoogleSearch {
 
 	
     public ArrayList<String> search(String query, String top, String es_index, String es_doc_type, String es_server){
-	System.out.println("Query: " + query);
+	    System.out.println("Query: " + query);
+        int nTop = Integer.valueOf(top);
 
-	if (this.prop == null){
-	    System.out.println("Error: config file is not loaded yet");
-	    return null;
-	}
-
-	Download download = new Download(query, es_index, es_doc_type, es_server);
-	
-	ArrayList<String> results = new ArrayList<String>();
-	query = query.replaceAll(" ", "%20");
-	URL query_url;
-	try {
-	    int chunk = 10;
-	    int num = 10;
-	    int start = 1;
-	    if (Integer.valueOf(top) < 10){
-		num = Integer.valueOf(top);
-		chunk = Integer.valueOf(top);
-	    } 
-	    while(chunk > 0){
-	    	query_url = new URL("https://www.googleapis.com/customsearch/v1?start=" + String.valueOf(start) + "&num=" + String.valueOf(num) + "&key=" + accountKey + "&cx=" + cseID + "&q=" + query);  
-	    	System.out.println(query_url);
-
-	    	HttpURLConnection conn = (HttpURLConnection)query_url.openConnection();
-	    	conn.setRequestMethod("GET");
-
-	    	BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
-	    	String output = "";
-	    	String line;
-	    	while ((line = br.readLine()) != null) {
-			output = output + line;
-	    	} 
-
-	    	conn.disconnect();
-
-		JSONObject obj=new JSONObject(output);
-
-		JSONObject queries = (JSONObject)obj.get("queries");
-		JSONArray request = (JSONArray)queries.get("request");
-		Integer totalUrls = (Integer)((JSONObject)request.get(0)).get("count");
-		
-		JSONArray urls = (JSONArray)obj.getJSONArray("items");
-		for(int i=0; i < totalUrls;++i){
-		    JSONObject url = (JSONObject)urls.get(i);
-		    String link = (String)url.get("link");
-		    results.add(link);
-		    download.addTask(link);
-		}
-		
-		chunk = Integer.valueOf(top) - chunk;
-
-		if (chunk < 10)
-		    num = chunk;
-
-		start = start + 10;
+	    if (this.prop == null){
+	        System.out.println("Error: config file is not loaded yet");
+	        return null;
 	    }
-	} 
-	catch (MalformedURLException e1) {
-	    e1.printStackTrace();
-	} 
-	catch (IOException e) {
-	    e.printStackTrace();
-	}
-	catch (Exception e){
-	    e.printStackTrace();
-	}
 
-	download.shutdown();
-	System.out.println("Number of results: " + String.valueOf(results.size()));
-	return results;
+	    Download download = new Download(query, es_index, es_doc_type, es_server);
+	    
+	    ArrayList<String> results = new ArrayList<String>();
+	    ArrayList<String> titles = new ArrayList<String>();
+	    ArrayList<String> snippets = new ArrayList<String>();
+	    query = "&num=" + String.valueOf(step) + "&key=" + accountKey + "&cx=" + cseID + "&q=" + query.replaceAll(" ", "%20");
+	    URL query_url;
+
+	    try {
+            int step = 10; //10 is the maximum number of results to return in each query
+            for (int start = 1; start < nTop; start += step){
+	        	query_url = new URL("https://www.googleapis.com/customsearch/v1?start=" + String.valueOf(start) + query);  
+	        	System.out.println(query_url);
+
+	        	HttpURLConnection conn = (HttpURLConnection)query_url.openConnection();
+	        	conn.setRequestMethod("GET");
+	        	BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+	        	String output = "";
+	            String line;
+	        	while ((line = br.readLine()) != null) {
+	    		    output = output + line;
+	        	} 
+	        	conn.disconnect();
+
+                JSONObject obj = new JSONObject(output);
+	    	    JSONArray items = obj.getJSONArray("items");
+
+	    	    for(int i=0; i < items.length(); ++i){
+                    JSONObject item = items.getJSONObject(i);
+                    String link = (String)item.get("link");
+	    	        results.add(link);
+	    	        download.addTask(link);
+
+                    titles.add((String)item.get("title"));
+                    snippets.add((String)item.get("snippet"));
+                    //All keys of the json object: snippet, htmlFormattedUrl, htmlTitle
+                    //kind, pagemap, displayLink, link, htmlSnippet, title, formatedUrl, cacheId 
+	    	    }
+	        }
+
+	     } 
+	     catch (MalformedURLException e) {
+	         e.printStackTrace();
+	     } 
+	     catch (IOException e) {
+	         e.printStackTrace();
+	     }
+	     catch (Exception e){
+	         e.printStackTrace();
+	     }
+
+	    download.shutdown();
+	    System.out.println("Number of results: " + String.valueOf(results.size()));
+    
+        //TODO: Return titles and snippets
+	    return results;
     }
 
     public static void main(String[] args) {
