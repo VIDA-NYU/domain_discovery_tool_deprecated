@@ -45,9 +45,9 @@ class word2vec:
             if self.word_vec is None:
                 results = get_documents_by_id(doc.keys(), ["term", "vector"], "word_phrase_to_vec", "terms", self.es)
                 word_vec_doc = [res["vector"][0] for res in results]
-            else:    
-                word_vec_doc = [self.word_vec[term] for term in doc.keys() if doc[term] > 5 and not self.word_vec.get(term) is None]
-
+            else:
+                word_vec_doc = [self.word_vec[term] for term in doc.keys() if doc[term] >= 1 and not self.word_vec.get(term) is None]
+                
             if word_vec_doc:
                 m_word_vec = np.array(word_vec_doc).mean(axis=0) 
                 word2vec_list_docs.append(m_word_vec.tolist())
@@ -74,9 +74,11 @@ class word2vec:
                 word_vec_doc = [res["vector"] for res in results]
             else:    
                 word_vec_doc = [self.word_vec[term] for term in doc.keys() if not self.word_vec.get(term) is None]
-                
+                #word_vec_doc = [self.word_vec[term]*doc[term] for term in doc.keys() if not self.word_vec.get(term) is None]
+
             if word_vec_doc:
-                m_word_vec = np.array(word_vec_doc).mean(axis=0) 
+                m_word_vec = np.array(word_vec_doc).mean(axis=0)
+                #m_word_vec = np.sum(np.array(word_vec_doc), axis=0)/np.sum(np.array([doc[term] for term in doc.keys() if not self.word_vec.get(term) is None]))
                 word2vec_list_docs.append(m_word_vec.tolist())
                 final_urls.append(urls[i])
             i = i + 1
