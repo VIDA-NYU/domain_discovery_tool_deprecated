@@ -77,13 +77,11 @@ docker pull vidanyu/ddt:2.7.0-demo
 docker run -i -p 8084:8084 -p 9200:9200 -p 9001:9001  -t vidanyu/ddt:2.7.0-demo
 ```
 
+## Publication
+
+Yamuna Krishnamurthy, Kien Pham, Aecio Santos, and Juliana Friere. 2016. [Interactive Web Content Exploration for Domain Discovery](http://poloclub.gatech.edu/idea2016/papers/p64-krishnamurthy.pdf) (Interactive Data Exploration and Analytics ([IDEA](http://poloclub.gatech.edu/idea2016/)) Workshop at Knowledge Discovery and Data Mining ([KDD](http://www.kdd.org/kdd2016/)), San Francisco, CA).
+
 ## Contact
 
-Yamuna Krishnamurthy [yamuna@nyu.edu]
-
-Aecio Santos [aecio.santos@nyu.edu]
-
-
-
-
+DDT Development Team [ddt-dev@vgc.poly.edu]
 
